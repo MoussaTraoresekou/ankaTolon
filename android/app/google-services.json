@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "624128819913",
+    "project_id": "ankatolon",
+    "storage_bucket": "ankatolon.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624128819913:android:f3e9a207bf7fe3638ec318",
+        "android_client_info": {
+          "package_name": "com.example.tolon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBASiydvig1cR4B5FTAuXQwzrXvGJCYT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

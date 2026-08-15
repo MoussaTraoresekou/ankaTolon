@@ -1,0 +1,45 @@
+lib/
+│
+├── main.dart                      # Point d'entrée : Initialisation Firebase (ankatolon) et configuration du thème Material Design
+├── firebase_options.dart          # Configuration cloud partagée pour toute l'équipe (générée via FlutterFire CLI)
+│
+├── core/                          # 🟥 COUCHE CORE : Fondations transversales et configuration de l'application
+│   ├── constants/                 # Constantes de l'application Tolon (AppColors, AppStrings)
+│   ├── theme/                     # Chartes graphiques (AppStyles : polices Madimi One, bascule thème Clair / Sombre obligatoire)
+│   ├── router/                    # Routage déclaratif complet via GoRouter avec aiguillage dynamique Parent/Admin et sécurité
+│   └── utils/                     # Classes utilitaires (SizeConfig responsive pour adapter les maquettes Figma, helpers d'UI)
+│
+├── models/                        # 🟨 COUCHE MODÈLES : Structures NoSQL mappées sur les documents Firestore
+│   ├── auth/                      # Comptes utilisateurs (UserModel : type parent/admin, ChildModel : profils de suivi des enfants)
+│   ├── shop/                      # E-commerce Éveil Enfant (ToyModel : prix en FCFA, bénéfices pédagogiques, stock, CartItemModel, OrderModel)
+│   ├── content/                   # Contenus éducatifs (TutorialModel : vidéos de jeux, ArticleModel, ActivityModel : défis créatifs)
+│   └── common/                    # Structures d'accompagnement (FavoriteModel, NotificationModel Firebase Cloud Messaging)
+│
+├── repositories/                  # 🟦 COUCHE DÉPÔTS : Requêtes brutes et connecteurs vers Firebase / Firestore NoSQL
+│   ├── auth/                      # Gestion des sessions Firebase Auth et persistance des profils parents/admins dans Firestore
+│   ├── shop/                      # CRUD du catalogue de jouets, gestion des stocks et écriture des transactions de commandes
+│   └── ...                        # (Contient les fichiers d'équipe générés .g.dart)
+│
+├── controllers/                   # 🟩 COUCHE CONTRÔLEURS : Logique métier de Tolon et gestion des états asynchrones de l'UI
+│   ├── auth/                      # Traitement de la connexion, de l'inscription parent et des pop-ups graphiques d'alertes
+│   ├── shop/                      # Logique du panier, incrémentation, calculs automatiques des montants et validation des commandes
+│   └── ...                        # (Contient les fichiers d'équipe générés .g.dart)
+│
+├── providers/                     # 🟪 COUCHE PROVIDERS : États visuels globaux et temporaires de l'interface
+│   ├── theme_notifier.dart        # Gestion dynamique du mode sombre requis par les contraintes techniques du TP
+│   ├── current_tab_notifier.dart  # Index de sélection pour la BottomNavigationBar (Accueil, Catalogue, Panier, Profil)
+│   └── search_notifier.dart       # Saisie textuelle en temps réel et filtres (catégories, âges recommandés) pour la recherche de jouets
+│
+├── widgets/                       # 🟧 COUCHE WIDGETS COMMUNS : Composants atomiques graphiques et réutilisables
+│   ├── custom_button.dart         # Bouton d'action orange de la maquette Figma avec état AsyncLoading intégré
+│   ├── custom_text_field.dart     # Champ de saisie universel avec gestion des icônes et masquage des mots de passe
+│   ├── common_container.dart      # Conteneur cliquable avec bordure douce pour harmoniser l'interface enfantine
+│   └── shimmer_widget.dart       
+│
+└── screens/                       # 🟫 COUCHE ÉCRANS : Vues principales de l'application décomposées en sous-widgets
+    ├── splash/                    # Lancement : Logo Ankan Tolon animé en SlideTransition
+    ├── onboarding/                # Présentation de l'application en 3 pages (Apprends, Joue, Gagne) avec SharedPreferences
+    ├── auth/                      # Formulaires d'authentification (LoginScreen, RegisterScreen)
+    │   └── widgets/               # Décomposition en widgets locaux (LoginFormWidget) pour respecter le Clean Code
+    ├── home/                      # Tableau de bord Parent (Bannière de bienvenue, suivi horizontal des enfants, carrousels de jeux)
+    └── ...                        # (CatalogueScreen avec Hero animation, CartScreen, ChildrenScreen pour ajouter un enfant)
