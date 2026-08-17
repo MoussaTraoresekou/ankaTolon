@@ -20,14 +20,16 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _emailController       = TextEditingController();
   final _passwordController    = TextEditingController();
-  final _nameController        = TextEditingController();
+  final _nomController         = TextEditingController();
+  final _prenomController      = TextEditingController();
   final _phoneNumberController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _nameController.dispose();
+    _nomController.dispose();
+    _prenomController.dispose();
     _phoneNumberController.dispose();
     super.dispose();
   }
@@ -37,25 +39,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     SizeConfig.init(context);
     final state = ref.watch(authControllerProvider);
 
-    // Écoute de l'état asynchrone envoyé par l'authController
     ref.listen<AsyncValue>(authControllerProvider, (_, state) {
       if (!state.isLoading && !state.hasError && state.hasValue) {
-        // Déclenchement du dialogue graphique de succès
         state.showSuccessDialog(
-          context, 
-          'Votre compte parent a été créé avec succès !', 
+          context,
+          'Votre compte parent a été créé avec succès !',
           () async {
-            // 1. Déconnexion forcée en arrière-plan pour annuler la session automatique
             await ref.read(authControllerProvider.notifier).logout();
-            
             if (context.mounted) {
-              // 2. Redirection manuelle et propre vers l'écran de saisie des identifiants
               context.goNamed(AppRoutes.login.name);
             }
           },
         );
       }
-      // Affichage du pop-up d'erreur rouge si Firebase rejette la requête (ex: mail déjà pris)
       state.showErrorDialog(context);
     });
 
@@ -85,7 +81,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
               child: Column(
                 children: [
-                  // Logo lié à l'animation Hero du SplashScreen
                   Hero(
                     tag: 'app_logo',
                     child: Image.asset(
@@ -96,7 +91,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
+
                   Text(
                     'Inscription du parent',
                     style: AppStyles.titleTextStyle.copyWith(color: Colors.black87),
@@ -106,10 +101,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   SizedBox(height: SizeConfig.getProportionateHeight(15)),
 
                   CustomTextField(
-                    label: 'Nom complet',
-                    hintText: 'Votre nom complet',
+                    label: 'Nom',
+                    hintText: 'Votre nom',
                     keyboardType: TextInputType.name,
-                    controller: _nameController,
+                    controller: _nomController,
+                    prefixIcon: Icons.person_outline,
+                  ),
+                  SizedBox(height: SizeConfig.getProportionateHeight(12)),
+
+                  CustomTextField(
+                    label: 'Prénom',
+                    hintText: 'Votre prénom',
+                    keyboardType: TextInputType.name,
+                    controller: _prenomController,
                     prefixIcon: Icons.person_outline,
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(12)),
@@ -147,9 +151,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       ref.read(authControllerProvider.notifier).loginOrCreateUserWithEmailAndPassword(
                             email:       _emailController.text.trim(),
                             password:    _passwordController.text.trim(),
-                            name:        _nameController.text.trim(),
+                            nom:         _nomController.text.trim(),
+                            prenom:      _prenomController.text.trim(),
                             phoneNumber: _phoneNumberController.text.trim(),
-                            type:        'parent',
                           );
                     },
                     title: "M'inscrire",

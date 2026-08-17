@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,10 +33,6 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(milliseconds: 2200),
     );
-
-    // =========================
-    // LOGO
-    // =========================
 
     logoSlideAnimation = Tween<Offset>(
       begin: const Offset(0, -0.8),
@@ -81,10 +76,6 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // =========================
-    // TITRE : ANKAN TOLON
-    // =========================
-
     titleSlideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.4),
       end: Offset.zero,
@@ -112,10 +103,6 @@ class _SplashScreenState extends State<SplashScreen>
         ),
       ),
     );
-
-    // =========================
-    // SOUS-TITRE
-    // =========================
 
     subtitleSlideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.3),
@@ -145,33 +132,24 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // Lancer l'animation
     controller.forward();
 
-    // Navigation après le Splash
     _navigateToTheNextPage();
   }
 
   Future<void> _navigateToTheNextPage() async {
-    // On laisse le temps à l'animation de se terminer
     await Future.delayed(const Duration(milliseconds: 2500));
 
     final prefs = await SharedPreferences.getInstance();
-
     final bool hasSeenOnboarding =
         prefs.getBool("hasSeenOnboarding") ?? false;
 
-    final bool isLoggedIn =
-        FirebaseAuth.instance.currentUser != null;
-
     if (!mounted) return;
 
-    if (isLoggedIn) {
-      context.goNamed(AppRoutes.home.name);
-    } else if (hasSeenOnboarding) {
-      context.goNamed(AppRoutes.login.name);
-    } else {
+    if (!hasSeenOnboarding) {
       context.goNamed(AppRoutes.onboarding.name);
+    } else {
+      context.goNamed(AppRoutes.login.name);
     }
   }
 
@@ -189,11 +167,6 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-            // =========================
-            // LOGO
-            // =========================
-
             FadeTransition(
               opacity: logoFadeAnimation,
               child: SlideTransition(
@@ -207,13 +180,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // =========================
-            // NOM DE L'APPLICATION
-            // =========================
-
             FadeTransition(
               opacity: titleFadeAnimation,
               child: SlideTransition(
@@ -226,13 +193,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
             ),
-
             const SizedBox(height: 5),
-
-            // =========================
-            // SLOGAN
-            // =========================
-
             FadeTransition(
               opacity: subtitleFadeAnimation,
               child: SlideTransition(
