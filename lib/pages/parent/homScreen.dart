@@ -37,7 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       backgroundColor: const Color(0xFFFAFBF9),
       body: SafeArea(
         child: RefreshIndicator(
-          color: AppStyles.mainColor,
+          color: AppStyles.bgColor,
           onRefresh: _loadData,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

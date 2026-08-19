@@ -56,7 +56,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     });
 
     return Scaffold(
-      backgroundColor: AppStyles.pastelBg,
+      backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -81,24 +81,34 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
               child: Column(
                 children: [
+                  Text(
+                    'Inscription',
+                    style: AppStyles.titleTextStyle.copyWith(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 30
+                    ),
+                  ),
+
+                  // Logo
                   Hero(
                     tag: 'app_logo',
                     child: Image.asset(
                       'assets/images/logo.png',
-                      height: SizeConfig.getProportionateHeight(100),
                       width: SizeConfig.getProportionateWidth(100),
+                      height: SizeConfig.getProportionateHeight(100),
                       fit: BoxFit.contain,
                     ),
                   ),
-                  const SizedBox(height: 16),
-
                   Text(
-                    'Inscription du parent',
-                    style: AppStyles.titleTextStyle.copyWith(color: Colors.black87),
+                    'Inscrivez-vous sur ankan tolon',
+                    style: AppStyles.titleTextStyle.copyWith(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15
+                    ),
                   ),
-                  const SizedBox(height: 8),
-                  const Divider(color: Colors.black12, thickness: 1),
-                  SizedBox(height: SizeConfig.getProportionateHeight(15)),
+
 
                   CustomTextField(
                     label: 'Nom',
@@ -159,7 +169,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     title: "M'inscrire",
                     isLoading: state.isLoading,
                   ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
+                  SizedBox(height: SizeConfig.getProportionateHeight(10)),
                   Text(
                     'OU',
                     style: AppStyles.normalTextStyle.copyWith(
@@ -167,7 +177,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
+                  SizedBox(height: SizeConfig.getProportionateHeight(10)),
 
                   CommonContainer(
                     onTap: () => context.goNamed(AppRoutes.login.name),

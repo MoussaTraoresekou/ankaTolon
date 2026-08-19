@@ -162,7 +162,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.pastelBg,
+      backgroundColor: AppStyles.onboading13,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -176,32 +176,6 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Image.asset(
                     'assets/images/logo.png',
                     width: 150,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            FadeTransition(
-              opacity: titleFadeAnimation,
-              child: SlideTransition(
-                position: titleSlideAnimation,
-                child: Text(
-                  'Ankan Tolon',
-                  style: AppStyles.headingTextStyle.copyWith(
-                    color: AppStyles.mainColor,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 5),
-            FadeTransition(
-              opacity: subtitleFadeAnimation,
-              child: SlideTransition(
-                position: subtitleSlideAnimation,
-                child: Text(
-                  'Éveil, Jeux & Apprentissage',
-                  style: AppStyles.normalTextStyle.copyWith(
-                    color: Colors.black54,
                   ),
                 ),
               ),

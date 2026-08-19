@@ -85,7 +85,7 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
     final state = ref.watch(enfantControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.pastelBg,
+      backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(

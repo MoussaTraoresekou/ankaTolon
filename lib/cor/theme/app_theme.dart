@@ -26,7 +26,8 @@ class AppStyles {
   );
 
   // Couleurs de la charte graphique
-  static const mainColor = Color(0xFF1591EA);
+  static const bgColor =Color(0xFFFAFFFB);
   static const primaryOrange = Color(0xFFE67E22);
-  static const pastelBg = Color(0xFFE3F2FD);
+  static const onboading13= Color(0xFFDDEDDF);
+  
 }

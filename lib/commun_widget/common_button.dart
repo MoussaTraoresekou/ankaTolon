@@ -23,7 +23,7 @@ class _CustomButtonState extends State<CustomButton> {
     SizeConfig.init(context);
     return InkWell(
       onTap: widget.isLoading ? null : widget.onTap,
-      borderRadius: BorderRadius.circular(10), // Coins arrondis selon votre Figma
+      borderRadius: BorderRadius.circular(10), // Coins arrondis selon notre Figma
       child: Container(
         alignment: Alignment.center,
         height: SizeConfig.getProportionateHeight(48),
