@@ -92,7 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Bonjour Hamidou ! 👋',
+                  'Bonjour Hamidou1 ! 👋',
                   style: AppStyles.titleTextStyle
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
