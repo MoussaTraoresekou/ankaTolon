@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
 
@@ -35,7 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       backgroundColor: const Color(0xFFFAFBF9),
       body: SafeArea(
         child: RefreshIndicator(
-          color: AppStyles.mainColor,
+          color: AppStyles.bgColor,
           onRefresh: _loadData,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -169,28 +171,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           _buildChildCard('Adama', '10 ans', const Color(0xFFE8F5E9)),
           _buildChildCard('Aïcha', '8 ans', const Color(0xFFFFF3E0)),
-          Container(
-            width: SizeConfig.getProportionateWidth(100),
-            margin: const EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black12,
-                style: BorderStyle.solid,
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.add_circle_outline, color: Colors.green, size: 26),
-                SizedBox(height: 4),
-                Text(
-                  'Ajouter',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
+          GestureDetector(
+  onTap: () => context.goNamed(AppRoutes.addEnfant.name),
+  child: Container(
+    width: SizeConfig.getProportionateWidth(100),
+    margin: const EdgeInsets.only(right: 12),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.black12, style: BorderStyle.solid),
+      borderRadius: BorderRadius.circular(16),
+    ),
+    child: const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.add_circle_outline, color: Colors.green, size: 26),
+        SizedBox(height: 4),
+        Text('Ajouter', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      ],
+    ),
+  ),
+),
         ],
       ),
     );
