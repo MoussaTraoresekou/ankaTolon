@@ -68,22 +68,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
               child: Column(
                 children: [
                   Text(
                     'Inscription',
-                    style: AppStyles.titleTextStyle.copyWith(
+                    style: AppStyles.headingTextStyle.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w800,
                       fontSize: 30
@@ -142,7 +131,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     hintText: 'parent@email.com',
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
-                    prefixIcon: Icons.email_outlined,
+                    prefixIcon: Icons.send_outlined,
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(12)),
 
@@ -152,7 +141,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     keyboardType: TextInputType.visiblePassword,
                     isPassword: true,
                     controller: _passwordController,
-                    prefixIcon: Icons.lock_outline,
+                    prefixIcon: Icons.visibility_off_outlined,
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
 

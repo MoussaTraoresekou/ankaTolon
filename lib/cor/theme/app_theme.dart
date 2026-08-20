@@ -6,7 +6,7 @@ class AppStyles {
     fontSize: 20,
     color: Colors.black87,
     fontWeight: FontWeight.bold,
-    fontFamily: 'Inter',
+    fontFamily: 'Quicksand',
   );
 
   // Style des titres
@@ -29,5 +29,5 @@ class AppStyles {
   static const bgColor =Color(0xFFFAFFFB);
   static const primaryOrange = Color(0xFFE67E22);
   static const onboading13= Color(0xFFDDEDDF);
-  
+  static const navbarColor=Color(0xFF7FB685);
 }

@@ -47,10 +47,7 @@ class MyApp extends ConsumerWidget {
           backgroundColor: AppStyles.bgColor,
           iconTheme: IconThemeData(color: Colors.white, size: 28),
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppStyles.bgColor,
-          primary: AppStyles.primaryOrange,
-        ),
+        
       ),
     );
   }

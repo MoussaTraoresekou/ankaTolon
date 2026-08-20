@@ -63,7 +63,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                    // Titre
                   Text(
                     'Connexion',
-                    style: AppStyles.titleTextStyle.copyWith(
+                    style: AppStyles.headingTextStyle.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w800,
                       fontSize: 30
