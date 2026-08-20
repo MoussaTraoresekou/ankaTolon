@@ -1,84 +1,75 @@
+enum UserType { admin, parent }
+
 class UserModel {
   final String email;
-  final String name;
+  final String nom;
+  final String prenom;
   final String phoneNumber;
-  final String userId;
-  final String type;
+  final String uid;
+  final UserType type;
 
   const UserModel({
     required this.email,
-    required this.name,
+    required this.nom,
+    required this.prenom,
     required this.phoneNumber,
-    required this.userId,
+    required this.uid,
     required this.type,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map<String, dynamic> json, String uid) {
     return UserModel(
+      uid:         uid,
       email:       json['email']       as String? ?? '',
-      name:        json['name']        as String? ?? '',
+      nom:         json['nom']         as String? ?? '',
+      prenom:      json['prenom']      as String? ?? '',
       phoneNumber: json['phoneNumber'] as String? ?? '',
-      userId:      json['userId']      as String? ?? '',
-      type:        json['type']        as String? ?? 'parent',
+      type: UserType.values.firstWhere(
+        (e) => e.name == json['type'],
+        orElse: () => UserType.parent,
+      ),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'email':       email,
-      'name':        name,
+      'nom':         nom,
+      'prenom':      prenom,
       'phoneNumber': phoneNumber,
-      'userId':      userId,
-      'type':        type,
+      'type':        type.name,
     };
   }
 
   UserModel copyWith({
     String? email,
-    String? name,
+    String? nom,
+    String? prenom,
     String? phoneNumber,
-    String? userId,
-    String? type,
+    String? uid,
+    UserType? type,
   }) {
     return UserModel(
       email:       email       ?? this.email,
-      name:        name        ?? this.name,
+      nom:         nom         ?? this.nom,
+      prenom:      prenom      ?? this.prenom,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      userId:      userId      ?? this.userId,
+      uid:         uid         ?? this.uid,
       type:        type        ?? this.type,
     );
   }
 
-  bool get isAdmin  => type == 'admin';
-  bool get isParent => type == 'parent';
+  bool get isAdmin => type == UserType.admin;
 
   @override
   String toString() {
     return 'UserModel('
         'email: $email, '
-        'name: $name, '
+        'nom: $nom, '
+        'prenom: $prenom, '
         'phoneNumber: $phoneNumber, '
-        'userId: $userId, '
-        'type: $type'
+        'uid: $uid, '
+        'type: ${type.name}'
         ')';
   }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is UserModel &&
-        other.email       == email       &&
-        other.name        == name        &&
-        other.phoneNumber == phoneNumber &&
-        other.userId      == userId      &&
-        other.type        == type;
-  }
-
-  @override
-  int get hashCode =>
-      email.hashCode       ^
-      name.hashCode        ^
-      phoneNumber.hashCode ^
-      userId.hashCode      ^
-      type.hashCode;
 }
