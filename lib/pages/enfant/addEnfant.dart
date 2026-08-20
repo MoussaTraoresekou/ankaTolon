@@ -97,33 +97,14 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    height: SizeConfig.getProportionateHeight(100),
-                    width: SizeConfig.getProportionateWidth(100),
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(height: 16),
+                 
 
                   Text(
-                    'Ajouter un enfant',
-                    style: AppStyles.titleTextStyle.copyWith(color: Colors.black87),
+                    'Nouveau  profil Enfant',
+                    style: AppStyles.headingTextStyle.copyWith(color: Colors.black87),
                   ),
-                  const SizedBox(height: 8),
-                  const Divider(color: Colors.black12, thickness: 1),
                   SizedBox(height: SizeConfig.getProportionateHeight(15)),
 
                   CustomTextField(
