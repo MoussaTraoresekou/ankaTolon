@@ -53,4 +53,45 @@ final class EnfantRepositoryProvider
   }
 }
 
-String _$enfantRepositoryHash() => r'8bf83d59c8784e6aa20ab7a0ab866ad4eb099c58';
+String _$enfantRepositoryHash() => r'253ca3bf4009a42f39edabe7cc918ac53547d625';
+
+@ProviderFor(enfants)
+final enfantsProvider = EnfantsProvider._();
+
+final class EnfantsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<EnfantModel>>,
+          List<EnfantModel>,
+          Stream<List<EnfantModel>>
+        >
+    with
+        $FutureModifier<List<EnfantModel>>,
+        $StreamProvider<List<EnfantModel>> {
+  EnfantsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'enfantsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$enfantsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<EnfantModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<EnfantModel>> create(Ref ref) {
+    return enfants(ref);
+  }
+}
+
+String _$enfantsHash() => r'9a851a52984c621384c0f1729286137f40a843e7';

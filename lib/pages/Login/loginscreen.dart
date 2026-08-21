@@ -88,8 +88,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       fontSize: 15
                     ),
                   ),
-
-                  const SizedBox(height: 16),
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
                   // Email
                   CustomTextField(

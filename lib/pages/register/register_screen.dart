@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -158,21 +159,33 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     title: "M'inscrire",
                     isLoading: state.isLoading,
                   ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(10)),
-                  Text(
-                    'OU',
-                    style: AppStyles.normalTextStyle.copyWith(
-                      color: Colors.black38,
-                      fontWeight: FontWeight.bold,
+                  SizedBox(height: SizeConfig.getProportionateHeight(24)),
+                  RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Vous avez un compte ? ',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "Se connecter",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF0066CC),
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.goNamed(AppRoutes.login.name);
+                              },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(10)),
-
-                  CommonContainer(
-                    onTap: () => context.goNamed(AppRoutes.login.name),
-                    text: 'Me connecter à un compte existant',
-                  ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
                 ],
               ),
             ),
