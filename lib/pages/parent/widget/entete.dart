@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:tolon/cor/theme/app_theme.dart';
+import 'package:tolon/cor/utils/size_config.dart';
 
 class Entete extends StatelessWidget {
   const Entete({super.key});
@@ -8,60 +10,81 @@ class Entete extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
       children: [
         Row(
           children: [
-            const CircleAvatar(
-              radius: 24,
-              backgroundColor: Color(0xFFE8F5E9),
-              child: Icon(Icons.person, color: Colors.grey),
+            Container(
+              width: SizeConfig.getProportionateWidth(48),
+              height: SizeConfig.getProportionateWidth(48),
+
+              decoration: BoxDecoration(
+                color: AppStyles.onboading13,
+                shape: BoxShape.circle,
+              ),
+
+              child: Icon(
+                Icons.person,
+                color: Colors.black45,
+                size: SizeConfig.getProportionateWidth(25),
+              ),
             ),
 
-            const SizedBox(width: 12),
+            SizedBox(width: SizeConfig.getProportionateWidth(12)),
 
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
                 Text(
                   'Bonjour 👋',
+
                   style: AppStyles.titleTextStyle.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                const Text(
+                SizedBox(height: SizeConfig.getProportionateHeight(2)),
+
+                Text(
                   'Heureux de vous retrouver',
-                  style: TextStyle(color: Colors.black45, fontSize: 13),
+
+                  style: AppStyles.normalTextStyle.copyWith(
+                    fontSize: 13,
+                    color: Colors.black45,
+                  ),
                 ),
               ],
             ),
           ],
         ),
-
         Stack(
+          clipBehavior: Clip.none,
           children: [
             IconButton(
-              icon: const Icon(Icons.notifications_none_outlined, size: 28),
               onPressed: () {},
+
+              icon: Icon(
+                Icons.notifications_none_outlined,
+                size: SizeConfig.getProportionateWidth(28),
+                color: Colors.black87,
+              ),
             ),
 
             Positioned(
-              right: 6,
-              top: 6,
+              right: SizeConfig.getProportionateWidth(5),
+              top: SizeConfig.getProportionateHeight(3),
 
               child: Container(
-                padding: const EdgeInsets.all(4),
+                padding: EdgeInsets.all(SizeConfig.getProportionateWidth(4)),
 
                 decoration: const BoxDecoration(
                   color: Colors.red,
                   shape: BoxShape.circle,
                 ),
 
-                child: const Text(
+                child: Text(
                   '10',
-                  style: TextStyle(
+
+                  style: AppStyles.normalTextStyle.copyWith(
                     color: Colors.white,
                     fontSize: 9,
                     fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/pages/parent/widget/jouetCart.dart';
@@ -16,33 +17,36 @@ class BoutiquejouetSection extends StatelessWidget {
       loading: () {
         return SizedBox(
           height: SizeConfig.getProportionateHeight(240),
-
-          child: const Center(child: CircularProgressIndicator()),
+          child: Center(
+            child: CircularProgressIndicator(color: AppStyles.navbarColor),
+          ),
         );
       },
-
       error: (error, stack) {
         return SizedBox(
           height: SizeConfig.getProportionateHeight(100),
-
-          child: const Center(
+          child: Center(
             child: Text(
               'Impossible de charger les jouets.',
-              style: TextStyle(color: Colors.red),
+              style: AppStyles.normalTextStyle.copyWith(
+                color: Colors.red,
+                fontSize: 12,
+              ),
             ),
           ),
         );
       },
-
       data: (jouets) {
         if (jouets.isEmpty) {
           return SizedBox(
             height: SizeConfig.getProportionateHeight(100),
-
-            child: const Center(
+            child: Center(
               child: Text(
                 'Aucun jouet disponible.',
-                style: TextStyle(color: Colors.black45),
+                style: AppStyles.normalTextStyle.copyWith(
+                  color: Colors.black45,
+                  fontSize: 13,
+                ),
               ),
             ),
           );
@@ -50,12 +54,9 @@ class BoutiquejouetSection extends StatelessWidget {
 
         return SizedBox(
           height: SizeConfig.getProportionateHeight(240),
-
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-
             itemCount: jouets.length,
-
             itemBuilder: (context, index) {
               return Jouetcart(jouet: jouets[index]);
             },

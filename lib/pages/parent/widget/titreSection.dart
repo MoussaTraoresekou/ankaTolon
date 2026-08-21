@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:tolon/cor/theme/app_theme.dart';
 
 class TitreSection extends StatelessWidget {
@@ -10,10 +11,10 @@ class TitreSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
       children: [
         Text(
           title,
+
           style: AppStyles.titleTextStyle.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -23,9 +24,20 @@ class TitreSection extends StatelessWidget {
         TextButton(
           onPressed: () {},
 
-          child: const Text(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+
+          child: Text(
             'Voir tout',
-            style: TextStyle(color: Color(0xFF6FB565)),
+
+            style: AppStyles.normalTextStyle.copyWith(
+              fontSize: 13,
+              color: AppStyles.navbarColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],

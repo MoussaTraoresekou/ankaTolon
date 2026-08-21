@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
-
 import 'package:tolon/models/enfant/enfant_modal.dart';
 
 class EnfantCart extends StatelessWidget {
@@ -14,52 +13,49 @@ class EnfantCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: SizeConfig.getProportionateWidth(140),
-
-      margin: const EdgeInsets.only(right: 12),
-
-      padding: const EdgeInsets.all(10),
-
+      margin: EdgeInsets.only(right: SizeConfig.getProportionateWidth(12)),
+      padding: EdgeInsets.all(SizeConfig.getProportionateWidth(10)),
       decoration: BoxDecoration(
-        color: const Color(0xFFE8F5E9),
+        color: AppStyles.onboading13,
         borderRadius: BorderRadius.circular(16),
       ),
-
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.white,
-
-            child: Icon(Icons.person, color: Colors.grey),
+          Container(
+            width: SizeConfig.getProportionateWidth(40),
+            height: SizeConfig.getProportionateWidth(40),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.person,
+              color: Colors.black45,
+              size: SizeConfig.getProportionateWidth(22),
+            ),
           ),
-
-          const SizedBox(width: 10),
-
+          SizedBox(width: SizeConfig.getProportionateWidth(8)),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
                 Text(
                   '${enfant.prenom} ${enfant.nom}',
-
                   maxLines: 1,
-
                   overflow: TextOverflow.ellipsis,
-
                   style: AppStyles.normalTextStyle.copyWith(
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
-                const SizedBox(height: 3),
-
+                SizedBox(height: SizeConfig.getProportionateHeight(3)),
                 Text(
                   _calculerAge(enfant.naissance),
-
-                  style: const TextStyle(color: Colors.black45, fontSize: 12),
+                  style: AppStyles.normalTextStyle.copyWith(
+                    fontSize: 11,
+                    color: Colors.black45,
+                  ),
                 ),
               ],
             ),
