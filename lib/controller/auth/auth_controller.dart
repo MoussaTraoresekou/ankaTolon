@@ -7,7 +7,9 @@ part 'auth_controller.g.dart';
 @riverpod
 class AuthController extends _$AuthController {
   @override
-  FutureOr<void> build() async {}
+  FutureOr<void> build() async {
+    return null;
+  }
 
   Future<void> signInWithEmailAndPassword({
     required String email,
