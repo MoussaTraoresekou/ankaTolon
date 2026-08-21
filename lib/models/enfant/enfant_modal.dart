@@ -10,7 +10,6 @@ class EnfantModel {
   final int niveau;
   final int activitesRealisees;
 
-  // On garde les données Firestore telles quelles
   final List<dynamic> defisRealises;
 
   final List<String> tutosTelecharges;
@@ -52,8 +51,7 @@ class EnfantModel {
       activitesRealisees:
           (json['activites_realisees'] as num?)?.toInt() ?? 0,
 
-      // IMPORTANT :
-      // Firestore contient des Map ici, pas des String
+      
       defisRealises:
           json['defis_realises'] is List
               ? List<dynamic>.from(

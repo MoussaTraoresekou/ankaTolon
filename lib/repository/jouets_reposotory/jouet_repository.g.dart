@@ -89,3 +89,43 @@ final class WatchJouetsProvider
 }
 
 String _$watchJouetsHash() => r'147a665a94323f9b1a35cba3ea349ab5bf96a174';
+
+@ProviderFor(streamJouetLesplusNotes)
+final streamJouetLesplusNotesProvider = StreamJouetLesplusNotesProvider._();
+
+final class StreamJouetLesplusNotesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<JouetModel>>,
+          List<JouetModel>,
+          Stream<List<JouetModel>>
+        >
+    with $FutureModifier<List<JouetModel>>, $StreamProvider<List<JouetModel>> {
+  StreamJouetLesplusNotesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'streamJouetLesplusNotesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$streamJouetLesplusNotesHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<JouetModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<JouetModel>> create(Ref ref) {
+    return streamJouetLesplusNotes(ref);
+  }
+}
+
+String _$streamJouetLesplusNotesHash() =>
+    r'218ec9928c541d110887c63e67f19303667f993a';

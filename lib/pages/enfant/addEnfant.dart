@@ -18,17 +18,17 @@ class AddEnfantScreen extends ConsumerStatefulWidget {
 }
 
 class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
-  final _nomController = TextEditingController();
-  final _prenomController = TextEditingController();
-  final _dateNaissanceController = TextEditingController();
+  final nomController = TextEditingController();
+  final prenomController = TextEditingController();
+  final dateNaissanceController = TextEditingController();
 
   DateTime? _dateNaissance;
 
   @override
   void dispose() {
-    _nomController.dispose();
-    _prenomController.dispose();
-    _dateNaissanceController.dispose();
+    nomController.dispose();
+    prenomController.dispose();
+    dateNaissanceController.dispose();
     super.dispose();
   }
 
@@ -42,7 +42,7 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
     if (date != null) {
       setState(() {
         _dateNaissance = date;
-        _dateNaissanceController.text =
+        dateNaissanceController.text =
             '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
       });
     }
@@ -57,8 +57,8 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
     }
 
     final succes = await ref.read(enfantControllerProvider.notifier).ajouterEnfant(
-          nom: _nomController.text.trim(),
-          prenom: _prenomController.text.trim(),
+          nom: nomController.text.trim(),
+          prenom: prenomController.text.trim(),
           naissance: _dateNaissance!,
         );
 
@@ -111,7 +111,7 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                     label: 'Nom',
                     hintText: 'Nom de l\'enfant',
                     keyboardType: TextInputType.name,
-                    controller: _nomController,
+                    controller: nomController,
                     prefixIcon: Icons.person_outline,
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(12)),
@@ -120,7 +120,7 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                     label: 'Prénom',
                     hintText: 'Prénom de l\'enfant',
                     keyboardType: TextInputType.name,
-                    controller: _prenomController,
+                    controller: prenomController,
                     prefixIcon: Icons.person_outline,
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(12)),
@@ -132,7 +132,7 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                         label: 'Date de naissance',
                         hintText: 'JJ/MM/AAAA',
                         keyboardType: TextInputType.datetime,
-                        controller: _dateNaissanceController,
+                        controller: dateNaissanceController,
                         prefixIcon: Icons.cake_outlined,
                       ),
                     ),

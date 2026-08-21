@@ -13,19 +13,7 @@ class JouetModel {
   final double noteMoyen;
   final double prix;
 
-  const JouetModel({
-    required this.id,
-    required this.ageMax,
-    required this.ageMin,
-    required this.benefices,
-    required this.categorieId,
-    required this.dateAjout,
-    required this.description,
-    required this.image,
-    required this.nomJouet,
-    required this.noteMoyen,
-    required this.prix,
-  });
+  const JouetModel({required this.id,required this.ageMax,required this.ageMin,required this.benefices, required this.categorieId,required this.dateAjout,required this.description,required this.image,required this.nomJouet,required this.noteMoyen,required this.prix,});
 
   factory JouetModel.fromJson( Map<String, dynamic> json,String id) {
     return JouetModel(

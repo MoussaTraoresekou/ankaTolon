@@ -6,17 +6,13 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 part 'enfant_repository.g.dart';
 
 class EnfantRepository {
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _auth;
+  final FirebaseFirestore firestore;
+  final FirebaseAuth auth;
 
-  EnfantRepository(this._firestore, this._auth);
-
-  // ============================================================
-  // UTILISATEUR CONNECTÉ
-  // ============================================================
+  EnfantRepository(this.firestore, this.auth);
 
   String get _uid {
-    final user = _auth.currentUser;
+    final user = auth.currentUser;
 
     if (user == null) {
       throw Exception('Aucun utilisateur connecté');
@@ -25,118 +21,59 @@ class EnfantRepository {
     return user.uid;
   }
 
-  // ============================================================
-  // COLLECTION ENFANTS DE L'UTILISATEUR CONNECTÉ
-  // ============================================================
-
-  CollectionReference<Map<String, dynamic>> get _enfantsRef {
-    return _firestore
-        .collection('users')
-        .doc(_uid)
-        .collection('enfants');
+  CollectionReference<Map<String, dynamic>> get enfantsRef {
+    return firestore.collection('users').doc(_uid).collection('enfants');
   }
-
-  // ============================================================
-  // AJOUTER UN ENFANT
-  // ============================================================
 
   Future<void> ajouterEnfant(EnfantModel enfant) async {
-    await _enfantsRef.add(enfant.toJson());
+    await enfantsRef.add(enfant.toJson());
   }
 
-  // ============================================================
-  // RÉCUPÉRER LES ENFANTS DE L'UTILISATEUR CONNECTÉ
-  // ============================================================
-
   Stream<List<EnfantModel>> streamEnfants() {
-    final user = _auth.currentUser;
+    final user = auth.currentUser;
 
     if (user == null) {
-      return Stream.error(
-        Exception('Aucun utilisateur connecté'),
-      );
+      return Stream.error(Exception('Aucun utilisateur connecté'));
     }
 
-    return _firestore
+    return firestore
         .collection('users')
         .doc(user.uid)
         .collection('enfants')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return EnfantModel.fromJson(
-          doc.data(),
-          doc.id,
-        );
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return EnfantModel.fromJson(doc.data(), doc.id);
+          }).toList();
+        });
   }
 
-  // ============================================================
-  // RÉCUPÉRER UN ENFANT
-  // ============================================================
-
   Future<EnfantModel?> getEnfant(String enfantId) async {
-    final doc = await _enfantsRef.doc(enfantId).get();
+    final doc = await enfantsRef.doc(enfantId).get();
 
     if (!doc.exists || doc.data() == null) {
       return null;
     }
 
-    return EnfantModel.fromJson(
-      doc.data()!,
-      doc.id,
-    );
+    return EnfantModel.fromJson(doc.data()!, doc.id);
   }
 
-  // ============================================================
-  // MODIFIER UN ENFANT
-  // ============================================================
-
-  Future<void> modifierEnfant(
-    EnfantModel enfant,
-  ) async {
-    await _enfantsRef.doc(enfant.id).update(
-          enfant.toJson(),
-        );
+  Future<void> modifierEnfant(EnfantModel enfant) async {
+    await enfantsRef.doc(enfant.id).update(enfant.toJson());
   }
-
-  // ============================================================
-  // SUPPRIMER UN ENFANT
-  // ============================================================
-
-  Future<void> supprimerEnfant(
-    String enfantId,
-  ) async {
-    await _enfantsRef.doc(enfantId).delete();
+  Future<void> supprimerEnfant(String enfantId) async {
+    await enfantsRef.doc(enfantId).delete();
   }
 }
 
-// ============================================================
-// PROVIDER REPOSITORY
-// ============================================================
-
 @riverpod
-EnfantRepository enfantRepository(
-  Ref ref,
-) {
-  return EnfantRepository(
-    FirebaseFirestore.instance,
-    FirebaseAuth.instance,
-  );
+EnfantRepository enfantRepository(Ref ref) {
+  return EnfantRepository(FirebaseFirestore.instance, FirebaseAuth.instance);
 }
 
-// ============================================================
-// PROVIDER DES ENFANTS
-// ============================================================
-
 @riverpod
-Stream<List<EnfantModel>> enfants(
-  Ref ref,
-) {
-  final repository = ref.watch(
-    enfantRepositoryProvider,
-  );
+Stream<List<EnfantModel>> enfants(Ref ref) {
+  final repository = ref.watch(enfantRepositoryProvider);
 
   return repository.streamEnfants();
 }

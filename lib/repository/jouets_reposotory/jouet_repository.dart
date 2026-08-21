@@ -5,48 +5,28 @@ import 'package:tolon/models/jouets/jouet_models.dart';
 part 'jouet_repository.g.dart';
 
 class JouetRepository {
-  final FirebaseFirestore _firestore;
+  final FirebaseFirestore firestore;
 
-  JouetRepository(this._firestore);
+  JouetRepository(this.firestore);
 
-  CollectionReference<Map<String, dynamic>> get _jouetsCollection =>
-      _firestore.collection('jouets');
-
-  // ============================================================
-  // RÉCUPÉRER TOUS LES JOUETS
-  // ============================================================
-
+  CollectionReference<Map<String, dynamic>> get jouetsCollection =>firestore.collection('jouets');
   Future<List<JouetModel>> getJouets() async {
-    final snapshot = await _jouetsCollection.get();
+    final snapshot = await jouetsCollection.get();
 
     return snapshot.docs.map((doc) {
-      return JouetModel.fromJson(
-        doc.data(),
-        doc.id,
-      );
+      return JouetModel.fromJson(doc.data(), doc.id);
     }).toList();
   }
 
-  // ============================================================
-  // RÉCUPÉRER UN JOUET
-  // ============================================================
-
   Future<JouetModel?> getJouetById(String id) async {
-    final doc = await _jouetsCollection.doc(id).get();
+    final doc = await jouetsCollection.doc(id).get();
 
     if (!doc.exists || doc.data() == null) {
       return null;
     }
 
-    return JouetModel.fromJson(
-      doc.data()!,
-      doc.id,
-    );
+    return JouetModel.fromJson(doc.data()!, doc.id);
   }
-
-  // ============================================================
-  // AJOUTER UN JOUET
-  // ============================================================
 
   Future<void> ajouterJouet({
     required JouetModel jouet,
@@ -55,67 +35,51 @@ class JouetRepository {
     // Ta logique d'upload Supabase doit être ici
   }
 
-  // ============================================================
-  // MODIFIER
-  // ============================================================
-
-  Future<void> modifierJouet({
-    required JouetModel jouet,
-  }) async {
-    await _jouetsCollection
-        .doc(jouet.id)
-        .update(jouet.toJson());
+  Future<void> modifierJouet({required JouetModel jouet}) async {
+    await jouetsCollection.doc(jouet.id).update(jouet.toJson());
   }
-
-  // ============================================================
-  // SUPPRIMER
-  // ============================================================
 
   Future<void> supprimerJouet(String id) async {
-    await _jouetsCollection
-        .doc(id)
-        .delete();
+    await jouetsCollection.doc(id).delete();
   }
-
-  // ============================================================
-  // ÉCOUTER LES JOUETS EN TEMPS RÉEL
-  // ============================================================
 
   Stream<List<JouetModel>> watchJouets() {
-    return _jouetsCollection.snapshots().map(
-      (snapshot) {
-        return snapshot.docs.map(
-          (doc) {
-            return JouetModel.fromJson(
-              doc.data(),
-              doc.id,
-            );
-          },
-        ).toList();
-      },
-    );
+    return jouetsCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return JouetModel.fromJson(doc.data(), doc.id);
+      }).toList();
+    });
   }
+  Stream<List<JouetModel>> streamJouetLesplusNotes() {
+    return jouetsCollection.orderBy("note_moyen",descending:true)
+        .snapshots().map((snapshot){
+          return snapshot.docs.map((doc) {
+        return JouetModel.fromJson(doc.data(), doc.id);
+           }).toList();
+
+        });
+          
+      }
 }
 
-// ================================================================
-// RIVERPOD : REPOSITORY
-// ================================================================
+
+
 
 @riverpod
 JouetRepository jouetRepository(Ref ref) {
-  return JouetRepository(
-    FirebaseFirestore.instance,
-  );
+  return JouetRepository(FirebaseFirestore.instance);
 }
-
-// ================================================================
-// RIVERPOD : LISTE DES JOUETS EN TEMPS RÉEL
-// ================================================================
 
 @riverpod
 Stream<List<JouetModel>> watchJouets(Ref ref) {
-  final repository =
-      ref.watch(jouetRepositoryProvider);
+  final repository = ref.watch(jouetRepositoryProvider);
 
   return repository.watchJouets();
 }
+@riverpod
+Stream<List<JouetModel>> streamJouetLesplusNotes(Ref ref){
+   final repository=ref.watch(jouetRepositoryProvider);
+   return repository.streamJouetLesplusNotes();
+}
+          
+  

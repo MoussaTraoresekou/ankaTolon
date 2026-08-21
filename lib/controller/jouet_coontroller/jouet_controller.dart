@@ -10,11 +10,6 @@ part 'jouet_controller.g.dart';
 class JouetController extends _$JouetController {
   @override
   FutureOr<void> build() async {}
-
-  // ============================================================
-  // AJOUTER UN JOUET
-  // ============================================================
-
   Future<bool> ajouterJouet({
     required String nom,
     required String ageMin,
@@ -25,9 +20,6 @@ class JouetController extends _$JouetController {
     required DocumentReference? categorieId,
     required List<File> images,
   }) async {
-    // ==========================================================
-    // VALIDATION DU NOM
-    // ==========================================================
 
     if (nom.trim().isEmpty) {
       state = AsyncError(
@@ -37,10 +29,6 @@ class JouetController extends _$JouetController {
       return false;
     }
 
-    // ==========================================================
-    // VALIDATION CATÉGORIE
-    // ==========================================================
-
     if (categorieId == null) {
       state = AsyncError(
         'Veuillez sélectionner une catégorie.',
@@ -48,10 +36,6 @@ class JouetController extends _$JouetController {
       );
       return false;
     }
-
-    // ==========================================================
-    // CONVERSION ÂGE MINIMUM
-    // ==========================================================
 
     final ageMinValue = int.tryParse(
       ageMin.trim(),
@@ -65,10 +49,6 @@ class JouetController extends _$JouetController {
       return false;
     }
 
-    // ==========================================================
-    // CONVERSION ÂGE MAXIMUM
-    // ==========================================================
-
     final ageMaxValue = int.tryParse(
       ageMax.trim(),
     );
@@ -80,10 +60,6 @@ class JouetController extends _$JouetController {
       );
       return false;
     }
-
-    // ==========================================================
-    // VALIDATION DES ÂGES
-    // ==========================================================
 
     if (ageMinValue < 0 || ageMaxValue < 0) {
       state = AsyncError(
@@ -101,10 +77,6 @@ class JouetController extends _$JouetController {
       return false;
     }
 
-    // ==========================================================
-    // CONVERSION PRIX
-    // ==========================================================
-
     final prixValue = double.tryParse(
       prix.trim().replaceAll(',', '.'),
     );
@@ -116,11 +88,6 @@ class JouetController extends _$JouetController {
       );
       return false;
     }
-
-    // ==========================================================
-    // VALIDATION DESCRIPTION
-    // ==========================================================
-
     if (description.trim().isEmpty) {
       state = AsyncError(
         'Veuillez saisir une description.',
@@ -128,11 +95,6 @@ class JouetController extends _$JouetController {
       );
       return false;
     }
-
-    // ==========================================================
-    // VALIDATION DES IMAGES
-    // ==========================================================
-
     if (images.isEmpty) {
       state = AsyncError(
         'Veuillez sélectionner au moins une image.',
@@ -140,10 +102,6 @@ class JouetController extends _$JouetController {
       );
       return false;
     }
-
-    // ==========================================================
-    // CONVERSION DES BÉNÉFICES
-    // ==========================================================
 
     final List<String> beneficesList = benefices
         .split(',')
@@ -154,10 +112,6 @@ class JouetController extends _$JouetController {
           (benefice) => benefice.isNotEmpty,
         )
         .toList();
-
-    // ==========================================================
-    // CRÉATION DU MODEL
-    // ==========================================================
 
     final jouet = JouetModel(
       id: '',
@@ -173,9 +127,7 @@ class JouetController extends _$JouetController {
       prix: prixValue,
     );
 
-    // ==========================================================
-    // ENVOI AU REPOSITORY
-    // ==========================================================
+    
 
     state = const AsyncLoading();
 
@@ -190,10 +142,6 @@ class JouetController extends _$JouetController {
 
     return !state.hasError;
   }
-
-  // ============================================================
-  // MODIFIER UN JOUET
-  // ============================================================
 
   Future<bool> modifierJouet(
     JouetModel jouet,
@@ -210,10 +158,6 @@ class JouetController extends _$JouetController {
 
     return !state.hasError;
   }
-
-  // ============================================================
-  // SUPPRIMER UN JOUET
-  // ============================================================
 
   Future<bool> supprimerJouet(
     String jouetId,

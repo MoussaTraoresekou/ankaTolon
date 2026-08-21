@@ -8,9 +8,7 @@ import 'package:tolon/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialisation obligatoire de votre projet Firebase 'ankatolon' lié à l'étape précédente
-  await Firebase.initializeApp(
+    await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Supabase.initialize(
