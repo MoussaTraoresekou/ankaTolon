@@ -9,7 +9,10 @@ class EnfantModel {
   final int points;
   final int niveau;
   final int activitesRealisees;
-  final List<String> defisRealises;
+
+  // On garde les données Firestore telles quelles
+  final List<dynamic> defisRealises;
+
   final List<String> tutosTelecharges;
 
   const EnfantModel({
@@ -25,32 +28,59 @@ class EnfantModel {
     required this.tutosTelecharges,
   });
 
-  factory EnfantModel.fromJson(Map<String, dynamic> json, String id) {
+  factory EnfantModel.fromJson(
+    Map<String, dynamic> json,
+    String id,
+  ) {
     return EnfantModel(
-      id:                 id,
-      nom:                json['nom']        as String? ?? '',
-      prenom:             json['prenom']     as String? ?? '',
-      naissance:          (json['naissance'] as Timestamp).toDate(),
-      avatarUrl:          json['avatar_url'] as String?,
-      points:             json['points']     as int? ?? 0,
-      niveau:             json['niveau']     as int? ?? 1,
-      activitesRealisees: json['activites_realisees'] as int? ?? 0,
-      defisRealises:      List<String>.from(json['defis_realises'] ?? []),
-      tutosTelecharges:   List<String>.from(json['tutos_telecharges'] ?? []),
+      id: id,
+
+      nom: json['nom'] as String? ?? '',
+
+      prenom: json['prenom'] as String? ?? '',
+
+      naissance: json['naissance'] is Timestamp
+          ? (json['naissance'] as Timestamp).toDate()
+          : DateTime.now(),
+
+      avatarUrl: json['avatar_url'] as String?,
+
+      points: (json['points'] as num?)?.toInt() ?? 0,
+
+      niveau: (json['niveau'] as num?)?.toInt() ?? 1,
+
+      activitesRealisees:
+          (json['activites_realisees'] as num?)?.toInt() ?? 0,
+
+      // IMPORTANT :
+      // Firestore contient des Map ici, pas des String
+      defisRealises:
+          json['defis_realises'] is List
+              ? List<dynamic>.from(
+                  json['defis_realises'] as List,
+                )
+              : [],
+
+      tutosTelecharges:
+          json['tutos_telecharges'] is List
+              ? List<String>.from(
+                  json['tutos_telecharges'] as List,
+                )
+              : [],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'nom':                  nom,
-      'prenom':               prenom,
-      'naissance':            Timestamp.fromDate(naissance),
-      'avatar_url':           avatarUrl,
-      'points':               points,
-      'niveau':               niveau,
-      'activites_realisees':  activitesRealisees,
-      'defis_realises':       defisRealises,
-      'tutos_telecharges':    tutosTelecharges,
+      'nom': nom,
+      'prenom': prenom,
+      'naissance': Timestamp.fromDate(naissance),
+      'avatar_url': avatarUrl,
+      'points': points,
+      'niveau': niveau,
+      'activites_realisees': activitesRealisees,
+      'defis_realises': defisRealises,
+      'tutos_telecharges': tutosTelecharges,
     };
   }
 
@@ -63,20 +93,23 @@ class EnfantModel {
     int? points,
     int? niveau,
     int? activitesRealisees,
-    List<String>? defisRealises,
+    List<dynamic>? defisRealises,
     List<String>? tutosTelecharges,
   }) {
     return EnfantModel(
-      id:                 id                 ?? this.id,
-      nom:                nom                ?? this.nom,
-      prenom:             prenom             ?? this.prenom,
-      naissance:          naissance          ?? this.naissance,
-      avatarUrl:          avatarUrl          ?? this.avatarUrl,
-      points:             points             ?? this.points,
-      niveau:             niveau             ?? this.niveau,
-      activitesRealisees: activitesRealisees ?? this.activitesRealisees,
-      defisRealises:      defisRealises      ?? this.defisRealises,
-      tutosTelecharges:   tutosTelecharges   ?? this.tutosTelecharges,
+      id: id ?? this.id,
+      nom: nom ?? this.nom,
+      prenom: prenom ?? this.prenom,
+      naissance: naissance ?? this.naissance,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      points: points ?? this.points,
+      niveau: niveau ?? this.niveau,
+      activitesRealisees:
+          activitesRealisees ?? this.activitesRealisees,
+      defisRealises:
+          defisRealises ?? this.defisRealises,
+      tutosTelecharges:
+          tutosTelecharges ?? this.tutosTelecharges,
     );
   }
 
