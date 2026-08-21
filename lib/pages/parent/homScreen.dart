@@ -437,6 +437,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           icon: Icon(Icons.shopping_cart_outlined),
           activeIcon: Icon(Icons.shopping_cart),
           label: 'Panier',
+
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_outline),
