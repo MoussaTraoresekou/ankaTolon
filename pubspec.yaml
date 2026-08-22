@@ -73,3 +73,7 @@ flutter:
       fonts:
         - asset: assets/fonts/Inter_18pt-Regular.ttf
           weight: 400
+    - family: Quicksand
+      fonts:
+      - asset: assets/fonts/Quicksand-Bold.ttf
+        weight: 700

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tolon/commun_widget/common_button.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool("hasSeenOnboarding", true);
     if (mounted) {
-      context.go('/login'); // Utilisation de votre route d'authentification cible
+      context.goNamed(AppRoutes.login.name); // Utilisation de votre route d'authentification cible
     }
   }
 
@@ -61,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.pastelBg, // Utilise la couleur de fond pastel de votre AppStyles
+      backgroundColor: AppStyles.onboading13, 
       body: Stack(
         children: [
           PageView.builder(

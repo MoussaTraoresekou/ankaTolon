@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tolon/models/auth/user_modal.dart';
 
-part 'auth_repository.g.dart'; // Vérifiez si votre build_runner génère en .dart.g.dart ou .g.dart selon votre config
+part 'auth_repository.g.dart';
 
 class AuthRepository {
   final FirebaseAuth auth;
@@ -22,13 +22,14 @@ class AuthRepository {
     );
   }
 
-  // Inscription parent (Nettoyée du signOut prématuré)
+  // Inscription parent
   Future<void> createUserWithEmailPasseword({
     required String email,
     required String password,
-    required String name,
+    required String nom,
+    required String prenom,
     required String phoneNumber,
-    required String type,
+    required UserType type,
   }) async {
     final cred = await auth.createUserWithEmailAndPassword(
       email: email,
@@ -37,9 +38,10 @@ class AuthRepository {
 
     final userModel = UserModel(
       email:       email,
-      name:        name,
+      nom:         nom,
+      prenom:      prenom,
       phoneNumber: phoneNumber,
-      userId:      cred.user!.uid,
+      uid:         cred.user!.uid,
       type:        type,
     );
 
@@ -47,9 +49,6 @@ class AuthRepository {
         .collection('users')
         .doc(cred.user!.uid)
         .set(userModel.toJson());
-        
-    // REMARQUE : Le signOut a été retiré d'ici. C'est l'écran (UI) qui déclenchera 
-    // la déconnexion proprement au moment où le parent cliquera sur "Continuer" sur le pop-up.
   }
 
   User? get currentUser => auth.currentUser;
