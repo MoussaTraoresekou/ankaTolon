@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tolon/models/auth/user_modal.dart';
 import 'package:tolon/repository/authRepository/auth_repository.dart';
 
 part 'auth_controller.g.dart';
@@ -6,7 +7,9 @@ part 'auth_controller.g.dart';
 @riverpod
 class AuthController extends _$AuthController {
   @override
-  FutureOr<void> build() async {}
+  FutureOr<void> build() async {
+    return null;
+  }
 
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -28,15 +31,15 @@ class AuthController extends _$AuthController {
   Future<void> loginOrCreateUserWithEmailAndPassword({
     required String email,
     required String password,
-    required String name,
+    required String nom,
+    required String prenom,
     required String phoneNumber,
-    required String type,
   }) async {
     if (email.trim().isEmpty ||
         password.trim().isEmpty ||
-        name.trim().isEmpty ||
-        phoneNumber.trim().isEmpty ||
-        type.trim().isEmpty) {
+        nom.trim().isEmpty ||
+        prenom.trim().isEmpty ||
+        phoneNumber.trim().isEmpty) {
       state = AsyncValue.error('Veuillez remplir toutes les informations !', StackTrace.current);
       return;
     }
@@ -45,9 +48,10 @@ class AuthController extends _$AuthController {
       () => ref.read(authRepositoryProvider).createUserWithEmailPasseword(
             email: email,
             password: password,
-            name: name,
+            nom: nom,
+            prenom: prenom,
             phoneNumber: phoneNumber,
-            type: type,
+            type: UserType.parent,   // fixé : l'inscription publique ne crée que des parents
           ),
     );
   }

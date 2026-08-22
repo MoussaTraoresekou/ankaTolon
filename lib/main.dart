@@ -44,13 +44,10 @@ class MyApp extends ConsumerWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFFAFBF9),
         appBarTheme: const AppBarTheme(
-          backgroundColor: AppStyles.mainColor,
+          backgroundColor: AppStyles.bgColor,
           iconTheme: IconThemeData(color: Colors.white, size: 28),
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppStyles.mainColor,
-          primary: AppStyles.primaryOrange,
-        ),
+        
       ),
     );
   }
