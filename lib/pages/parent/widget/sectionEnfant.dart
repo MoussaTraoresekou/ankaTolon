@@ -57,7 +57,7 @@ class SectionEnfant extends StatelessWidget {
   Widget _buildAddChildButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.goNamed(AppRoutes.addEnfant.name);
+        context.pushNamed(AppRoutes.addEnfant.name);
       },
       child: Container(
         width: SizeConfig.getProportionateWidth(100),

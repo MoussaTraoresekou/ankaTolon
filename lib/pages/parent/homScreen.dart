@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tolon/cor/router/routes.dart';
 
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
@@ -21,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     SizeConfig.init(context);
 
-    final enfantsAsync = ref.watch(enfantsProvider);
+    final enfantsAsync = ref.watch(enfantsStreamProvider);
 
     final jouetsAsync = ref.watch(streamJouetLesplusNotesProvider);
 
@@ -31,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
         child: RefreshIndicator(
           color: AppStyles.primaryOrange,
           onRefresh: () async {
-            ref.invalidate(enfantsProvider);
+            ref.invalidate(enfantsStreamProvider);
             ref.invalidate(streamJouetLesplusNotesProvider);
           },
           child: SingleChildScrollView(
@@ -48,7 +50,10 @@ class HomeScreen extends ConsumerWidget {
 
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
 
-                  const TitreSection(title: 'Mes enfants'),
+                   TitreSection(title: 'Mes enfants',onVoirTout:(){
+                    context.pushNamed(AppRoutes.mesenfants.name);
+
+                  },),
 
                   SizedBox(height: SizeConfig.getProportionateHeight(8)),
 

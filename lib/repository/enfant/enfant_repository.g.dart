@@ -55,10 +55,10 @@ final class EnfantRepositoryProvider
 
 String _$enfantRepositoryHash() => r'253ca3bf4009a42f39edabe7cc918ac53547d625';
 
-@ProviderFor(enfants)
-final enfantsProvider = EnfantsProvider._();
+@ProviderFor(enfantsStream)
+final enfantsStreamProvider = EnfantsStreamProvider._();
 
-final class EnfantsProvider
+final class EnfantsStreamProvider
     extends
         $FunctionalProvider<
           AsyncValue<List<EnfantModel>>,
@@ -68,19 +68,19 @@ final class EnfantsProvider
     with
         $FutureModifier<List<EnfantModel>>,
         $StreamProvider<List<EnfantModel>> {
-  EnfantsProvider._()
+  EnfantsStreamProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'enfantsProvider',
+        name: r'enfantsStreamProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$enfantsHash();
+  String debugGetCreateSourceHash() => _$enfantsStreamHash();
 
   @$internal
   @override
@@ -90,8 +90,8 @@ final class EnfantsProvider
 
   @override
   Stream<List<EnfantModel>> create(Ref ref) {
-    return enfants(ref);
+    return enfantsStream(ref);
   }
 }
 
-String _$enfantsHash() => r'9a851a52984c621384c0f1729286137f40a843e7';
+String _$enfantsStreamHash() => r'cd9b6228e6c360af6d35f9bdb3487fa081cf8f33';
