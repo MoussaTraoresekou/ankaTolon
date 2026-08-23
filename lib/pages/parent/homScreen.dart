@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart'; // Pour SystemNavigator
 
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
+import 'package:tolon/cor/utils/mock_jouet.dart';
+
+import 'package:tolon/controller/panier/panier_controller.dart';
 
 import 'package:tolon/pages/parent/widget/barreNavigation.dart';
 import 'package:tolon/pages/parent/widget/boutiqueJouet.dart';
@@ -25,59 +29,111 @@ class HomeScreen extends ConsumerWidget {
 
     final jouetsAsync = ref.watch(streamJouetLesplusNotesProvider);
 
-    return Scaffold(
-      backgroundColor: AppStyles.bgColor,
-      body: SafeArea(
-        child: RefreshIndicator(
-          color: AppStyles.primaryOrange,
-          onRefresh: () async {
-            ref.invalidate(enfantsProvider);
-            ref.invalidate(streamJouetLesplusNotesProvider);
-          },
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.getProportionateWidth(16),
-                vertical: SizeConfig.getProportionateHeight(12),
+    return PopScope(
+      canPop: false, // On intercepte le retour
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+
+        // Affichage de la confirmation
+        final shouldPop = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Quitter l'application ?"),
+            content: const Text("Voulez-vous vraiment fermer AnkaTolon ?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Non"),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Entete(),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Oui"),
+              ),
+            ],
+          ),
+        );
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(24)),
+        if (shouldPop ?? false) {
+          SystemNavigator.pop(); // Ferme l'application native
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppStyles.bgColor,
+        body: SafeArea(
+          child: RefreshIndicator(
+            color: AppStyles.primaryOrange,
+            onRefresh: () async {
+              ref.invalidate(enfantsProvider);
+              ref.invalidate(streamJouetLesplusNotesProvider);
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.getProportionateWidth(16),
+                  vertical: SizeConfig.getProportionateHeight(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Entete(),
 
-                  const TitreSection(title: 'Mes enfants'),
+                    SizedBox(height: SizeConfig.getProportionateHeight(24)),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(8)),
+                    const TitreSection(title: 'Mes enfants'),
 
-                  SectionEnfant(enfantsAsync: enfantsAsync),
+                    SizedBox(height: SizeConfig.getProportionateHeight(8)),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(24)),
+                    SectionEnfant(enfantsAsync: enfantsAsync),
 
-                  const TitreSection(title: 'Jeux les plus notés'),
+                    SizedBox(height: SizeConfig.getProportionateHeight(24)),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(8)),
+                    const TitreSection(title: 'Jeux les plus notés'),
 
-                  BoutiquejouetSection(jouetsAsync: jouetsAsync),
+                    SizedBox(height: SizeConfig.getProportionateHeight(8)),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(24)),
+                    BoutiquejouetSection(jouetsAsync: jouetsAsync),
 
-                  const TitreSection(title: 'Mes favoris'),
+                    SizedBox(height: SizeConfig.getProportionateHeight(24)),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(8)),
+                    const TitreSection(title: 'Mes favoris'),
 
-                  const SectionFavoris(),
+                    SizedBox(height: SizeConfig.getProportionateHeight(8)),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(24)),
-                ],
+                    const SectionFavoris(),
+
+                    SizedBox(height: SizeConfig.getProportionateHeight(24)),
+
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppStyles.primaryOrange,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () {
+                        // On ajoute un jouet factice au panier
+                        final jouet = MockData.createMockJouet();
+                        ref.read(panierProvider.notifier).addToCart(jouet);
+
+                        // Feedback visuel
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text(
+                        //       "Jouet ajouté au panier (Simulation) !",
+                        //     ),
+                        //   ),
+                        // );
+                      },
+                      icon: const Icon(Icons.add_shopping_cart),
+                      label: const Text("Tester : Ajouter un jouet"),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: const Barrenavigation(),
+        bottomNavigationBar: const Barrenavigation(),
+      ), // Votre Scaffold actuel
     );
   }
 }

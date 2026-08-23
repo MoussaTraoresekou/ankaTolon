@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
+import '../../../controller/panier/panier_controller.dart';
 
-class Barrenavigation extends StatelessWidget {
+class Barrenavigation extends ConsumerWidget {
   const Barrenavigation({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final panierCount = ref.watch(
+      panierProvider.select((state) => state.distinctItemCount),
+    );
+
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.white,
@@ -16,7 +23,28 @@ class Barrenavigation extends StatelessWidget {
       selectedFontSize: 11,
       unselectedFontSize: 10,
       currentIndex: 0,
-      onTap: (index) {},
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            context.go('/home');
+            break;
+          case 1:
+            context.go('/cart');
+            break;
+          case 2:
+            context.push('/cart');
+            break;
+          case 3:
+            context.go('/cart');
+            break;
+          case 4:
+            context.go('/success');
+            break;
+          default:
+            context.go('/home');
+        }
+      },
+
       items: [
         BottomNavigationBarItem(
           icon: Icon(
@@ -40,17 +68,38 @@ class Barrenavigation extends StatelessWidget {
           ),
           label: 'Catalogue',
         ),
+
+        // BottomNavigationBarItem(
+        //   icon: Icon(
+        //     Icons.shopping_cart_outlined,
+        //     size: SizeConfig.getProportionateWidth(23),
+        //   ),
+        //   activeIcon: Icon(
+        //     Icons.shopping_cart,
+        //     size: SizeConfig.getProportionateWidth(23),
+        //   ),
+        //   label: 'Panier',
+        // ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.shopping_cart_outlined,
-            size: SizeConfig.getProportionateWidth(23),
+          icon: Badge(
+            isLabelVisible: panierCount > 0,
+            label: Text('$panierCount'),
+            child: Icon(
+              Icons.shopping_cart_outlined,
+              size: SizeConfig.getProportionateWidth(23),
+            ),
           ),
-          activeIcon: Icon(
-            Icons.shopping_cart,
-            size: SizeConfig.getProportionateWidth(23),
+          activeIcon: Badge(
+            isLabelVisible: panierCount > 0,
+            label: Text('$panierCount'),
+            child: Icon(
+              Icons.shopping_cart,
+              size: SizeConfig.getProportionateWidth(23),
+            ),
           ),
           label: 'Panier',
         ),
+
         BottomNavigationBarItem(
           icon: Icon(
             Icons.favorite_outline,

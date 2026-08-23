@@ -14,6 +14,10 @@ import 'package:tolon/pages/parent/homScreen.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
 
+import 'package:tolon/pages/panier/panier_page.dart';
+import 'package:tolon/pages/panier/checkout_page.dart';
+import 'package:tolon/pages/panier/success_page.dart';
+
 part 'routes.g.dart';
 
 enum AppRoutes {
@@ -26,7 +30,11 @@ enum AppRoutes {
   register,
   home,
   catalogue,
+
   cart,
+  checkout,
+  success,
+
   orders,
   favorites,
   profile,
@@ -49,19 +57,12 @@ GoRouter appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      final publicRoutes = [
-        '/splash',
-        '/onboarding',
-        '/login',
-        '/register',
-      ];
+      final publicRoutes = ['/splash', '/onboarding', '/login', '/register'];
       final isPublic = publicRoutes.contains(currentLoc);
 
       if (user == null) {
@@ -153,6 +154,22 @@ GoRouter appRouter(Ref ref) {
         path: '/detailJouet',
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
+      ),
+
+      GoRoute(
+        path: '/cart',
+        name: AppRoutes.cart.name,
+        builder: (context, state) => const PanierPage(),
+      ),
+      GoRoute(
+        path: '/checkout',
+        name: AppRoutes.checkout.name,
+        builder: (context, state) => const CheckoutPage(),
+      ),
+      GoRoute(
+        path: '/success',
+        name: AppRoutes.success.name,
+        builder: (context, state) => const SuccessPage(),
       ),
     ],
   );
