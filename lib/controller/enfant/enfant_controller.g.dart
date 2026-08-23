@@ -33,7 +33,7 @@ final class EnfantControllerProvider
   EnfantController create() => EnfantController();
 }
 
-String _$enfantControllerHash() => r'e05bf349b5364a6b0c458f468c041e4276f22d93';
+String _$enfantControllerHash() => r'd2bb4727b9872f7d1887e5b7222f65dec6b09c19';
 
 abstract class _$EnfantController extends $AsyncNotifier<void> {
   FutureOr<void> build();

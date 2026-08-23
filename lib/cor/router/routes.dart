@@ -8,6 +8,8 @@ import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/catalogue/catalogue_jouet.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
+import 'package:tolon/pages/jouets/jouetDetail.dart';
+import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/parent/homScreen.dart';
 import 'package:tolon/pages/register/register_screen.dart';
@@ -16,6 +18,8 @@ import 'package:tolon/pages/splush/splushScreen.dart';
 part 'routes.g.dart';
 
 enum AppRoutes {
+  jouetDetail,
+  addjouet,
   addEnfant,
   splash,
   onboarding,
@@ -142,9 +146,14 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const AddEnfantScreen(),
       ),
       GoRoute(
-        path: '/catalogue',
-        name: AppRoutes.catalogue.name,
-        builder: (context, state) => const CatalogueJouet(),
+        path: '/addjouet',
+        name: AppRoutes.addjouet.name,
+        builder: (context, state) => const JouetForm(),
+      ),
+      GoRoute(
+        path: '/detailJouet',
+        name: AppRoutes.jouetDetail.name,
+        builder: (context, state) => const Jouetdetail(),
       ),
     ],
   );
