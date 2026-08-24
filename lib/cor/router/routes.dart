@@ -19,6 +19,9 @@ import 'package:tolon/pages/panier/panier_page.dart';
 import 'package:tolon/pages/panier/checkout_page.dart';
 import 'package:tolon/pages/panier/success_page.dart';
 
+import 'package:tolon/pages/catalogue/catalogue.dart';
+
+
 part 'routes.g.dart';
 
 enum AppRoutes {
@@ -175,6 +178,12 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.success.name,
         builder: (context, state) => const SuccessPage(),
       ),
+
+      GoRoute(
+        path: '/catalogue',
+        name: AppRoutes.catalogue.name,
+        builder: (context, state) => const CataloguePage(),
+      )
     ],
   );
 }

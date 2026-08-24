@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 import 'package:tolon/cor/router/routes.dart';
+import 'package:flutter/services.dart';
 
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
@@ -136,7 +138,8 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
         ),
-        bottomNavigationBar: const Barrenavigation(),
+        // bottomNavigationBar: const Barrenavigation(),
+        bottomNavigationBar: const AppBottomNavigationBar(),
       ), // Votre Scaffold actuel
     );
   }

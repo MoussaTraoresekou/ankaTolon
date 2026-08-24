@@ -23,7 +23,6 @@ class PanierNotifier extends Notifier<PanierState> {
   @override
   PanierState build() => const PanierState();
 
-  // On passe directement le JouetModel
   void addToCart(JouetModel jouet) {
     final current = state.items;
     final index = current.indexWhere((item) => item.jouetId == jouet.id);

@@ -5,6 +5,7 @@ import 'package:tolon/pages/catalogue/catalogue.dart';
 import 'package:tolon/pages/page_to_delete.dart';
 import 'package:tolon/pages/page_to_delete2.dart';
 import 'package:tolon/pages/page_to_delete3.dart';
+import 'package:tolon/pages/parent/homScreen.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({super.key});
@@ -17,9 +18,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    Page2(),
+    // HomeScreen(),
     CataloguePage(),
+    Page2(),
     Page3(),
+    Page1()
   ];
   @override
   Widget build(BuildContext context) {
@@ -34,8 +37,10 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         buttonBackgroundColor: AppStyles.navbarColor,
 
         items: [
-          Icon(Icons.home, size: 25, color: Colors.white),
+          // Icon(Icons.home, size: 25, color: Colors.white),
           Icon(Icons.shopping_cart, size: 25, color: Colors.white),
+          Icon(Icons.person, size: 25, color: Colors.white),
+          Icon(Icons.person, size: 25, color: Colors.white),
           Icon(Icons.person, size: 25, color: Colors.white),
         ],
 

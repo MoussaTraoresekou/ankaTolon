@@ -29,10 +29,10 @@ class Barrenavigation extends ConsumerWidget {
             context.go('/home');
             break;
           case 1:
-            context.go('/cart');
+            context.go('/catalogue');
             break;
           case 2:
-            context.push('/cart');
+            context.go('/cart');
             break;
           case 3:
             context.go('/cart');

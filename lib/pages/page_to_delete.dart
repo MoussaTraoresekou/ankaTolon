@@ -13,7 +13,7 @@ class _Page1State extends State<Page1> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(child: Text("page1"),),
-      bottomNavigationBar: AppBottomNavigationBar(),
+      // bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 }
