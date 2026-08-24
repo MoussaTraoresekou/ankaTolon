@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/pages/catalogue/catalogue.dart';
 import 'package:tolon/pages/page_to_delete.dart';
