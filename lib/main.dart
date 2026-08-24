@@ -28,7 +28,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Écoute dynamique de la configuration de votre GoRouter d'équipe
+    // Écoute dynamique de la configuration de votre GoRouter 
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(

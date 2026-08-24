@@ -14,42 +14,50 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController pageController = PageController();
+
   int currenpage = 0;
 
-  // Données des trois pages issues de notre maquette Figma
+  // Données des trois pages issues de la maquette Figma
   final List<Map<String, String>> pages = [
     {
       "title": "Apprends en t'amusant",
       "description": "Des contenus éducatifs adaptés à chaque âge.",
-      "image": "assets/images/onboarding/b1.png"
+      "image": "assets/images/onboarding/b1.png",
     },
     {
       "title": "Joue, progresse et gagne !",
-      "description": "Transforme les efforts en victoires et suis tes réussites.",
-      "image": "assets/images/onboarding/b2.png"
+      "description":
+          "Transforme les efforts en victoires et suis tes réussites.",
+      "image": "assets/images/onboarding/b2.png",
     },
     {
       "title": "Des récompenses, oui !",
-      "description": "Cumule tes points au quotidien et collectionne tous les trophées.",
-      "image": "assets/images/onboarding/b3.png"
-    }
+      "description":
+          "Cumule tes points au quotidien et collectionne tous les trophées.",
+      "image": "assets/images/onboarding/b3.png",
+    },
   ];
 
+  // Quand l'utilisateur change de page
   void onpageChanged(int index) {
     setState(() {
       currenpage = index;
     });
   }
 
+  // Passer l'onboarding
   void skip() {
     completOnboarding();
   }
 
+  // Terminer l'onboarding
   Future<void> completOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
+
     await prefs.setBool("hasSeenOnboarding", true);
+
     if (mounted) {
-      context.goNamed(AppRoutes.login.name); // Utilisation de votre route d'authentification cible
+      context.goNamed(AppRoutes.login.name);
     }
   }
 
@@ -62,37 +70,66 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.onboading13, 
+      backgroundColor: AppStyles.onboading13,
       body: Stack(
         children: [
+          // =========================
+          // LES PAGES D'ONBOARDING
+          // =========================
           PageView.builder(
             controller: pageController,
             itemCount: pages.length,
             onPageChanged: onpageChanged,
             itemBuilder: (context, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(pages[index]["image"]!, height: 250),
-                  const SizedBox(height: 30),
-                  Text(
-                    pages[index]["title"]!,
-                    textAlign: TextAlign.center,
-                    style: AppStyles.headingTextStyle.copyWith(color: Colors.black87),
-                  ),
-                  const SizedBox(height: 15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      pages[index]["description"]!,
-                      textAlign: TextAlign.center,
-                      style: AppStyles.normalTextStyle.copyWith(color: Colors.black54),
+              return Container(
+                // Deuxième page = FAFFFB
+                color: index == 1
+                    ? AppStyles.bgColor
+                    : AppStyles.onboading13,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Image
+                    Image.asset(
+                      pages[index]["image"]!,
+                      height: 250,
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 30),
+
+                    // Titre
+                    Text(
+                      pages[index]["title"]!,
+                      textAlign: TextAlign.center,
+                      style: AppStyles.headingTextStyle.copyWith(
+                        color: Colors.black87,
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // Description
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                      ),
+                      child: Text(
+                        pages[index]["description"]!,
+                        textAlign: TextAlign.center,
+                        style: AppStyles.normalTextStyle.copyWith(
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           ),
+
+          // =========================
+          // BOUTON "PASSER"
+          // =========================
           Positioned(
             top: 50,
             right: 20,
@@ -100,7 +137,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ? GestureDetector(
                     onTap: skip,
                     child: Text(
-                      "Passer", // Version française de Skip conforme à l'application
+                      "Passer",
                       style: AppStyles.normalTextStyle.copyWith(
                         color: Colors.black54,
                         fontWeight: FontWeight.bold,
@@ -109,8 +146,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   )
                 : const SizedBox(),
           ),
+
+          // =========================
+          // INDICATEURS DE PAGES
+          // =========================
           Positioned(
-            bottom: 120, // Remonté légèrement pour laisser la place au bouton CustomButton
+            bottom: 120,
             left: 0,
             right: 0,
             child: Row(
@@ -123,19 +164,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: currenpage == index ? 12 : 8,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: currenpage == index ? AppStyles.primaryOrange : Colors.grey.withOpacity(0.5),
+                    color: currenpage == index
+                        ? AppStyles.primaryOrange
+                        : Colors.grey.withOpacity(0.5),
                   ),
                 ),
               ),
             ),
           ),
+
+          // =========================
+          // BOUTON "COMMENCER"
+          // =========================
           if (currenpage == pages.length - 1)
             Positioned(
               bottom: 40,
               left: 30,
               right: 30,
               child: CustomButton(
-                title: 'Commencer', // Utilise directement votre bouton réutilisable avec chargement
+                title: 'Commencer',
                 isLoading: false,
                 onTap: completOnboarding,
               ),
