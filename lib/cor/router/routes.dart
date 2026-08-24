@@ -6,7 +6,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
-import 'package:tolon/pages/catalogue/catalogue_jouet.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
@@ -148,6 +147,7 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.addEnfant.name,
         builder: (context, state) => const AddEnfantScreen(),
       ),
+<<<<<<< HEAD
       GoRoute(
         path: '/addjouet',
         name: AppRoutes.addjouet.name,
@@ -160,6 +160,8 @@ GoRouter appRouter(Ref ref) {
       ),
       
   
+=======
+>>>>>>> parent of e431d00 (derniere modif vendredi)
     ],
   );
 }
