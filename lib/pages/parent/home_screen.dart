@@ -102,7 +102,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -276,7 +276,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 8,
             spreadRadius: 0,
             offset: const Offset(0, 4),
@@ -295,7 +295,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       width: 48,
                       height: 48,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
+                      errorBuilder: (_, _, _) =>
                           const Icon(Icons.person, color: AppStyles.primary),
                     )
                   : const Icon(Icons.person, color: AppStyles.primary),
@@ -347,7 +347,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           border: Border.all(color: Colors.grey.shade300, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -420,7 +420,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: _buildGameCard(
                   title: jouet.nomJouet ?? 'Jeu',
                   rating: (jouet.noteMoyen ?? 0.0).toStringAsFixed(1),
-                  imageUrl: (jouet.image != null && jouet.image.isNotEmpty)
+                  imageUrl: (jouet.image.isNotEmpty)
                       ? jouet.image.first
                       : null,
                   onTap: () {
@@ -463,7 +463,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.12),
+              color: Colors.black.withValues(alpha: 0.12),
               blurRadius: 8,
               spreadRadius: 0,
               offset: const Offset(0, 4),
@@ -490,7 +490,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Center(
+                          errorBuilder: (_, _, _) => const Center(
                             child: Icon(
                               Icons.extension,
                               size: 48,
@@ -600,7 +600,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 8,
             spreadRadius: 0,
             offset: const Offset(0, 4),

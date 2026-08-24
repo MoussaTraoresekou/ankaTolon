@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 
 class Page1 extends StatefulWidget {
   const Page1({super.key});
