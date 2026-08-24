@@ -16,15 +16,17 @@ class AuthController extends _$AuthController {
     required String password,
   }) async {
     if (email.trim().isEmpty || password.trim().isEmpty) {
-      state = AsyncError('Veuillez remplir tous les champs !', StackTrace.current);
+      state = AsyncError(
+        'Veuillez remplir tous les champs !',
+        StackTrace.current,
+      );
       return;
     }
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).connectionAvecEmailPassword(
-            email: email,
-            password: password,
-          ),
+      () => ref
+          .read(authRepositoryProvider)
+          .connectionAvecEmailPassword(email: email, password: password),
     );
   }
 
@@ -40,24 +42,32 @@ class AuthController extends _$AuthController {
         nom.trim().isEmpty ||
         prenom.trim().isEmpty ||
         phoneNumber.trim().isEmpty) {
-      state = AsyncValue.error('Veuillez remplir toutes les informations !', StackTrace.current);
+      state = AsyncValue.error(
+        'Veuillez remplir toutes les informations !',
+        StackTrace.current,
+      );
       return;
     }
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).createUserWithEmailPasseword(
+      () => ref
+          .read(authRepositoryProvider)
+          .createUserWithEmailPasseword(
             email: email,
             password: password,
             nom: nom,
             prenom: prenom,
             phoneNumber: phoneNumber,
-            type: UserType.parent,   // fixé : l'inscription publique ne crée que des parents
+            type: UserType
+                .parent, // fixé : l'inscription publique ne crée que des parents
           ),
     );
   }
 
   Future<void> logout() async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => ref.read(authRepositoryProvider).deconnecter());
+    state = await AsyncValue.guard(
+      () => ref.read(authRepositoryProvider).deconnecter(),
+    );
   }
 }
