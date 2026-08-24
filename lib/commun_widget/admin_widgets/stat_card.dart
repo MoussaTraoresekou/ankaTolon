@@ -13,7 +13,7 @@ class StatCard extends StatelessWidget {
     required this.icon,
     required this.isHighlighted,
     super.key,
-  }) 
+  }) ;
 
   
   @override

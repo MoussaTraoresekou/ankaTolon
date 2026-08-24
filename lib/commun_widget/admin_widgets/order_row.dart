@@ -21,9 +21,9 @@ class OrderRow extends StatelessWidget {
     required this.statusColor,
     this.avatarUrl,
     super.key,
-  }) 
+  }) ;
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

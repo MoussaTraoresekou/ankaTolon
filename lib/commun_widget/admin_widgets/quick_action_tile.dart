@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../cor/app_colors.dart';
+import 'package:tolon/cor/app_colors.dart';
 
 class QuickActionTile extends StatelessWidget {
   final String label;

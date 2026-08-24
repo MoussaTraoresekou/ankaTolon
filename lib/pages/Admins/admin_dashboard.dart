@@ -149,13 +149,13 @@ class AdminDashboard extends ConsumerWidget {
                       icon: Icons.people_alt_rounded,
                       isHighlighted: false,
                     ),
-                    loading: () => const StatCard(
+                    loading: () => StatCard(
                       title: 'Utilisateurs',
                       value: '...',
                       icon: Icons.people_alt_rounded,
                       isHighlighted: false,
                     ),
-                    error: (e, _) => const StatCard(
+                    error: (e, _) => StatCard(
                       title: 'Utilisateurs',
                       value: 'Erreur',
                       icon: Icons.people_alt_rounded,
@@ -172,13 +172,13 @@ class AdminDashboard extends ConsumerWidget {
                       icon: Icons.child_care,
                       isHighlighted: true,
                     ),
-                    loading: () => const StatCard(
+                    loading: () =>  StatCard(
                       title: 'Enfants',
                       value: '...',
                       icon: Icons.child_care,
                       isHighlighted: true,
                     ),
-                    error: (e, _) => const StatCard(
+                    error: (e, _) =>  StatCard(
                       title: 'Enfants',
                       value: '0',
                       icon: Icons.child_care,
