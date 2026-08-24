@@ -34,7 +34,7 @@ class _JouetcartState extends State<Jouetcart> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -91,7 +91,6 @@ class _JouetcartState extends State<Jouetcart> {
                       horizontal: SizeConfig.getProportionateWidth(6),
                       vertical: SizeConfig.getProportionateHeight(2),
                     ),
-                   
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(6)),
                   Row(
