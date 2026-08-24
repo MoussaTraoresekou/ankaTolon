@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
@@ -138,7 +139,7 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: '/home',
         name: AppRoutes.home.name,
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => const AppBottomNavigationBar(),
       ),
       GoRoute(
         path: '/addEnfant',
