@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 
 class Page1 extends StatefulWidget {
   const Page1({super.key});
@@ -13,7 +12,7 @@ class _Page1State extends State<Page1> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(child: Text("page1"),),
-      bottomNavigationBar: AppBottomNavigationBar(),
+      // bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 }

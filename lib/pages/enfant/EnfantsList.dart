@@ -166,7 +166,7 @@ class EnfantsListScreen extends ConsumerWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFF2D6A4F).withOpacity(0.4), // Bordure verte fine
+          color: const Color(0xFF2D6A4F).withValues(alpha: 0.4), // Bordure verte fine
           width: 1,
         ),
       ),
@@ -182,7 +182,7 @@ class EnfantsListScreen extends ConsumerWidget {
                       width: 72,
                       height: 72,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const Icon(
+                      errorBuilder: (_, _, _) => const Icon(
                         Icons.person,
                         color: AppStyles.primary,
                         size: 36,

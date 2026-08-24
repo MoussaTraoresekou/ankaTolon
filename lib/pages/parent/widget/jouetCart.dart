@@ -91,7 +91,6 @@ class _JouetcartState extends State<Jouetcart> {
                       horizontal: SizeConfig.getProportionateWidth(6),
                       vertical: SizeConfig.getProportionateHeight(2),
                     ),
-                   
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(6)),
                   Row(
