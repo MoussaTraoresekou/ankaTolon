@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tolon/commun_widget/common_button.dart';
 import 'package:tolon/commun_widget/common_container_widget.dart';
 import 'package:tolon/commun_widget/custom_text_field.dart';
-import 'package:tolon/controller/jouet_coontroller/jouet_controller.dart';
+import 'package:tolon/controller/jouet_controller/jouet_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/async_value_ui.dart';
@@ -265,7 +265,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black
-                          .withValues(alpha: 0.03),
+                          .withOpacity(0.03),
                       blurRadius: 10,
                       offset:
                           const Offset(0, 4),
@@ -519,7 +519,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
 
             return DropdownButtonFormField<
                 DocumentReference>(
-              initialValue: _selectedCategory,
+              value: _selectedCategory,
 
               hint: const Text(
                 'Choisir une catégorie',
