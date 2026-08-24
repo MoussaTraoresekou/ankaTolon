@@ -18,6 +18,9 @@ import 'package:tolon/pages/favoris/favoris_page.dart';
 part 'routes.g.dart';
 
 enum AppRoutes {
+  profileEnfant,
+  mesenfants,
+  addEnfantAvatar,
   jouetDetail,
   addjouet,
   addEnfant,
@@ -155,11 +158,8 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
       ),
-      GoRoute(
-        path: '/favorites',
-        name: AppRoutes.favorites.name,
-        builder: (context, state) => const FavorisPage(),
-      ),
+      
+  
     ],
   );
 }
