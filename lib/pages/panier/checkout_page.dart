@@ -88,7 +88,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppStyles.primaryOrange.withOpacity(0.2)),
+                border: Border.all(color: AppStyles.primaryOrange.withValues(alpha: 0.2)),
               ),
               child: Column(
                 children: [
