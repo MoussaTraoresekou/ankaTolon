@@ -47,7 +47,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(height: 12),
               _buildTopRatedGamesList(),
               const SizedBox(height: 24),
-              _buildSectionTitle('Mes Favoris', 'Voir tous les favoris'),
+              _buildSectionTitle('Mes Favoris', 'Voir tous les favoris', onTap: () {
+    context.pushNamed(AppRoutes.favorites.name);
+  },),
               const SizedBox(height: 12),
               _buildFavoritesList(),
               const SizedBox(height: 20),
