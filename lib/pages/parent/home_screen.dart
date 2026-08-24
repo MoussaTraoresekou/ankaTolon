@@ -57,11 +57,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-
-  // ============================================================
-  // HEADER
-  // ============================================================
-
   Widget _buildHeader() {
     final userPrenom = ref.watch(userDisplayNameProvider);
 
@@ -141,10 +136,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  // ============================================================
-  // TITRE DES SECTIONS
-  // ============================================================
-
   Widget _buildSectionTitle(
     String title,
     String actionText, {
@@ -191,9 +182,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ],
     );
   }
-  // ============================================================
-  // MES ENFANTS
-  // ============================================================
 
   Widget _buildChildrenList() {
     final enfantsAsync = ref.watch(enfantsStreamProvider);
@@ -385,11 +373,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-
-  // ============================================================
-  // JEUX LES PLUS NOTÉS
-  // ============================================================
-
   Widget _buildTopRatedGamesList() {
     final jouetsAsync = ref.watch(streamJouetLesplusNotesProvider);
 
@@ -566,11 +549,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-
-
-  // ============================================================
-  // FAVORIS
-  // ============================================================
 
   Widget _buildFavoritesList() {
     return SizedBox(
