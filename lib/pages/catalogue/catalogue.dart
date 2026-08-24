@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 import 'package:tolon/controller/catalogue/catalogue_controller.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tolon/firebase_options.dart';
+import 'package:tolon/pages/page_to_delete.dart';
 
 class CataloguePage extends StatefulWidget {
   const CataloguePage({super.key});
@@ -139,6 +141,8 @@ class _CataloguePageState
           ],
         ),
       ),
+
+      //bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 
@@ -723,7 +727,7 @@ Future<void> main() async {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CataloguePage(),
+      home: Page1(),
     ),
   );
 }

@@ -15,6 +15,33 @@ class JouetModel {
 
   const JouetModel({required this.id,required this.ageMax,required this.ageMin,required this.benefices, required this.categorieId,required this.dateAjout,required this.description,required this.image,required this.nomJouet,required this.noteMoyen,required this.prix,});
 
+  factory JouetModel.jouetModelForCatalogue({
+    required String id,
+    required String nomJouet,
+    required double prix,
+    required List<String> image,
+    required int ageMax,
+    required int ageMin,
+    required double noteMoyen,
+    required DocumentReference? categorieId,
+  }) {
+    return JouetModel(
+      id: id,
+      nomJouet: nomJouet,
+      prix: prix,
+      image: image,
+      ageMax: ageMax,
+      ageMin: ageMin,
+      noteMoyen: noteMoyen,
+      categorieId: categorieId,
+      // des valeurs par défaut pour les variables manquantes
+      benefices: const [],
+      dateAjout: DateTime.now(),
+      description: '',
+    );
+  }
+
+
   factory JouetModel.fromJson( Map<String, dynamic> json,String id) {
     return JouetModel(
       id: id,
@@ -84,4 +111,35 @@ class JouetModel {
         'noteMoyen: $noteMoyen'
         ')';
   }
+
+  factory JouetModel.fromFirestoreToCatalogue(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      ) {
+    final data = snapshot.data() ?? {};
+
+    return JouetModel.jouetModelForCatalogue(
+      id: snapshot.id,
+
+      ageMax: (data['age_max'] ?? 0).toInt(),
+
+      ageMin: (data['age_min'] ?? 0).toInt(),
+
+      categorieId:
+      data['categorie_id'] as DocumentReference?,
+
+      image: List<String>.from(
+        data['image'] ?? [],
+      ),
+
+      nomJouet:
+      data['nom_jouet']?.toString() ?? '',
+
+      noteMoyen:
+      (data['note_moyen'] ?? 0).toDouble(),
+
+      prix:
+      (data['prix'] ?? 0).toDouble(),
+    );
+  }
+
 }
