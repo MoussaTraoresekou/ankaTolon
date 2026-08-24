@@ -713,7 +713,6 @@ class _CataloguePageState
 }
 
 
-//MAIN POUR TESTER L ECRAN
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
