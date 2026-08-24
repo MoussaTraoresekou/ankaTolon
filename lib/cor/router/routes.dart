@@ -3,18 +3,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 
+import 'package:tolon/pages/enfant/EnfantsList.dart';
+import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
-import 'package:tolon/pages/catalogue/catalogue_jouet.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
-import 'package:tolon/pages/parent/homScreen.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
-import 'package:tolon/pages/favoris/favoris_page.dart';
+
+import 'package:tolon/pages/panier/panier_page.dart';
+import 'package:tolon/pages/panier/checkout_page.dart';
+import 'package:tolon/pages/panier/success_page.dart';
+
+import 'package:tolon/pages/catalogue/catalogue.dart';
+
 
 part 'routes.g.dart';
 
@@ -31,11 +38,17 @@ enum AppRoutes {
   register,
   home,
   catalogue,
+
   cart,
+  checkout,
+  success,
+
   orders,
   favorites,
   profile,
   adminDashboard,
+  listEnfants,
+  selectAvatar,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -54,19 +67,12 @@ GoRouter appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      final publicRoutes = [
-        '/splash',
-        '/onboarding',
-        '/login',
-        '/register',
-      ];
+      final publicRoutes = ['/splash', '/onboarding', '/login', '/register'];
       final isPublic = publicRoutes.contains(currentLoc);
 
       if (user == null) {
@@ -142,7 +148,7 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: '/home',
         name: AppRoutes.home.name,
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => const AppBottomNavigationBar(),
       ),
       GoRoute(
         path: '/addEnfant',
@@ -159,8 +165,41 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
       ),
-      
-  
+      GoRoute(
+        path: '/listEnfants',
+        name: AppRoutes.listEnfants.name,
+        builder: (context, state) => const EnfantsListScreen(),
+      ),
+      GoRoute(
+        path: '/selectAvatar',
+        name: AppRoutes.selectAvatar.name,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return SelectAvatarScreen(dataEnfant: extra);
+        },
+      ),
+
+      GoRoute(
+        path: '/cart',
+        name: AppRoutes.cart.name,
+        builder: (context, state) => const PanierPage(),
+      ),
+      GoRoute(
+        path: '/checkout',
+        name: AppRoutes.checkout.name,
+        builder: (context, state) => const CheckoutPage(),
+      ),
+      GoRoute(
+        path: '/success',
+        name: AppRoutes.success.name,
+        builder: (context, state) => const SuccessPage(),
+      ),
+
+      GoRoute(
+        path: '/catalogue',
+        name: AppRoutes.catalogue.name,
+        builder: (context, state) => const CataloguePage(),
+      )
     ],
   );
 }

@@ -444,8 +444,8 @@ class _CataloguePageState
         boxShadow: [
           BoxShadow(
             color:
-            Colors.black.withOpacity(
-              0.18,
+            Colors.black.withValues(
+              alpha: 0.18,
             ),
 
             blurRadius: 5,
@@ -713,7 +713,6 @@ class _CataloguePageState
 }
 
 
-//MAIN POUR TESTER L ECRAN
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

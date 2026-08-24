@@ -26,8 +26,15 @@ class AppStyles {
   );
 
   // Couleurs de la charte graphique
-  static const bgColor =Color(0xFFFAFFFB);
+  static const bgColor = Color(0xFFFAFFFB);
   static const primaryOrange = Color(0xFFE67E22);
-  static const onboading13= Color(0xFFDDEDDF);
-  static const navbarColor=Color(0xFF7FB685);
+  static const onboading13 = Color(0xFFDDEDDF);
+  static const navbarColor = Color(0xFF7FB685);
+
+  static const Color primary = Color(0xFF63B47E);
+  static const Color primarySoft = Color(0xFFE8F5EE);
+  static const Color background = Color(0xFFFAFAFA);
+  static const Color textDark = Color(0xFF212121);
+  static const Color textMuted = Color(0xFF757575);
+  static const Color badgeRed = Color(0xFFEF5350);
 }

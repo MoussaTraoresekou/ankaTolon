@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/commun_widget/common_button.dart';
-import 'package:tolon/commun_widget/common_container_widget.dart';
 import 'package:tolon/commun_widget/custom_text_field.dart';
 import 'package:tolon/controller/auth/auth_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
@@ -19,10 +18,10 @@ class RegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
-  final _emailController       = TextEditingController();
-  final _passwordController    = TextEditingController();
-  final _nomController         = TextEditingController();
-  final _prenomController      = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _nomController = TextEditingController();
+  final _prenomController = TextEditingController();
   final _phoneNumberController = TextEditingController();
 
   @override
@@ -76,7 +75,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     style: AppStyles.headingTextStyle.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w800,
-                      fontSize: 30
+                      fontSize: 30,
                     ),
                   ),
 
@@ -95,10 +94,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     style: AppStyles.titleTextStyle.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w800,
-                      fontSize: 15
+                      fontSize: 15,
                     ),
                   ),
-
 
                   CustomTextField(
                     label: 'Nom',
@@ -148,11 +146,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
                   CustomButton(
                     onTap: () {
-                      ref.read(authControllerProvider.notifier).loginOrCreateUserWithEmailAndPassword(
-                            email:       _emailController.text.trim(),
-                            password:    _passwordController.text.trim(),
-                            nom:         _nomController.text.trim(),
-                            prenom:      _prenomController.text.trim(),
+                      ref
+                          .read(authControllerProvider.notifier)
+                          .loginOrCreateUserWithEmailAndPassword(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim(),
+                            nom: _nomController.text.trim(),
+                            prenom: _prenomController.text.trim(),
                             phoneNumber: _phoneNumberController.text.trim(),
                           );
                     },
@@ -161,31 +161,31 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
                   RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Vous avez un compte ? ',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                            ),
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Vous avez un compte ? ',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black87,
                           ),
-                          TextSpan(
-                            text: "Se connecter",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF0066CC),
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                context.goNamed(AppRoutes.login.name);
-                              },
+                        ),
+                        TextSpan(
+                          text: "Se connecter",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF0066CC),
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
                           ),
-                        ],
-                      ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.goNamed(AppRoutes.login.name);
+                            },
+                        ),
+                      ],
                     ),
+                  ),
                 ],
               ),
             ),
