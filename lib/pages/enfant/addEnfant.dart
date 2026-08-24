@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/commun_widget/common_button.dart';
-import 'package:tolon/commun_widget/common_container_widget.dart';
 import 'package:tolon/commun_widget/custom_text_field.dart';
 import 'package:tolon/controller/enfant/enfant_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
@@ -23,6 +22,9 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
   final dateNaissanceController = TextEditingController();
 
   DateTime? _dateNaissance;
+  String? _sexeSelectionne;
+
+  final List<String> _genres = ['Garçon', 'Fille'];
 
   @override
   void dispose() {
@@ -48,35 +50,44 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
     }
   }
 
-  Future<void> _onCreerTap() async {
-    if (_dateNaissance == null) {
+  Future<void> _onSuivantTap() async {
+    final nom = nomController.text.trim();
+    final prenom = prenomController.text.trim();
+
+    if (nom.isEmpty || prenom.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Veuillez choisir une date de naissance !')),
+        const SnackBar(
+          content: Text('Veuillez renseigner le nom et le prénom !'),
+        ),
       );
       return;
     }
 
-    final succes = await ref.read(enfantControllerProvider.notifier).ajouterEnfant(
-          nom: nomController.text.trim(),
-          prenom: prenomController.text.trim(),
-          naissance: _dateNaissance!,
-        );
-
-    if (!mounted) return;
-
-    final state = ref.read(enfantControllerProvider);
-
-    if (succes) {
-      state.showSuccessDialog(
-        context,
-        'Enfant ajouté avec succès !',
-        () {
-          context.goNamed(AppRoutes.home.name);
-        },
+    if (_dateNaissance == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Veuillez choisir une date de naissance !'),
+        ),
       );
-    } else {
-      state.showErrorDialog(context);
+      return;
     }
+
+    if (_sexeSelectionne == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Veuillez sélectionner le sexe !')),
+      );
+      return;
+    }
+
+    context.pushNamed(
+      AppRoutes.selectAvatar.name,
+      extra: {
+        'nom': nom,
+        'prenom': prenom,
+        'naissance': _dateNaissance,
+        'sexe': _sexeSelectionne,
+      },
+    );
   }
 
   @override
@@ -88,72 +99,177 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
       backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            SizeConfig.getProportionateWidth(16),
-            SizeConfig.getProportionateHeight(40),
-            SizeConfig.getProportionateWidth(16),
-            0,
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.getProportionateWidth(20),
           ),
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              child: Column(
-                children: [
-                 
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: SizeConfig.getProportionateHeight(16)),
 
-                  Text(
-                    'Nouveau  profil Enfant',
-                    style: AppStyles.headingTextStyle.copyWith(color: Colors.black87),
-                  ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(15)),
-
-                  CustomTextField(
-                    label: 'Nom',
-                    hintText: 'Nom de l\'enfant',
-                    keyboardType: TextInputType.name,
-                    controller: nomController,
-                    prefixIcon: Icons.person_outline,
-                  ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(12)),
-
-                  CustomTextField(
-                    label: 'Prénom',
-                    hintText: 'Prénom de l\'enfant',
-                    keyboardType: TextInputType.name,
-                    controller: prenomController,
-                    prefixIcon: Icons.person_outline,
-                  ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(12)),
-
-                  GestureDetector(
-                    onTap: _choisirDateNaissance,
-                    child: AbsorbPointer(
-                      child: CustomTextField(
-                        label: 'Date de naissance',
-                        hintText: 'JJ/MM/AAAA',
-                        keyboardType: TextInputType.datetime,
-                        controller: dateNaissanceController,
-                        prefixIcon: Icons.cake_outlined,
+                      // En-tête : Bouton retour + Titre
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (context.canPop()) {
+                                context.pop();
+                              } else {
+                                context.goNamed(AppRoutes.home.name);
+                              }
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFE8F2EE),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.arrow_back_ios_new,
+                                size: 18,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Nouveau profil Enfant',
+                              textAlign: TextAlign.center,
+                              style: AppStyles.headingTextStyle.copyWith(
+                                color: Colors.black87,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 40),
+                        ],
                       ),
-                    ),
-                  ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(24)),
 
-                  CustomButton(
-                    onTap: _onCreerTap,
-                    title: 'Créer',
-                    isLoading: state.isLoading,
-                  ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(12)),
+                      SizedBox(height: SizeConfig.getProportionateHeight(32)),
 
-                  CommonContainer(
-                    onTap: () => context.goNamed(AppRoutes.home.name),
-                    text: 'Annuler',
+                      // Champ Nom
+                      CustomTextField(
+                        label: 'Nom',
+                        hintText: "Entrer le nom de l'enfant",
+                        keyboardType: TextInputType.name,
+                        controller: nomController,
+                        prefixIcon: Icons.person_outline,
+                      ),
+
+                      SizedBox(height: SizeConfig.getProportionateHeight(16)),
+
+                      // Champ Prénom
+                      CustomTextField(
+                        label: 'Prénom',
+                        hintText: "Entrer le prenom de l'enfant",
+                        keyboardType: TextInputType.name,
+                        controller: prenomController,
+                        prefixIcon: Icons.abc,
+                      ),
+
+                      SizedBox(height: SizeConfig.getProportionateHeight(16)),
+
+                      // Champ Date de naissance
+                      GestureDetector(
+                        onTap: _choisirDateNaissance,
+                        child: AbsorbPointer(
+                          child: CustomTextField(
+                            label: 'Date de naissance',
+                            hintText: 'Entrer sa date de naissance',
+                            keyboardType: TextInputType.datetime,
+                            controller: dateNaissanceController,
+                            prefixIcon: Icons.calendar_today_outlined,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: SizeConfig.getProportionateHeight(16)),
+
+                      // Champ Sexe (Dropdown)
+                      const Text(
+                        'Sexe',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.green.shade300),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _sexeSelectionne,
+                            hint: Row(
+                              children: [
+                                Icon(
+                                  Icons.accessibility_new,
+                                  color: Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'Entrer son sexe',
+                                  style: TextStyle(
+                                    color: Colors.grey.shade400,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            isExpanded: true,
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.black87,
+                            ),
+                            items: _genres.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      value == 'Garçon'
+                                          ? Icons.boy
+                                          : Icons.girl,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(value),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _sexeSelectionne = newValue;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
-                ],
+                ),
               ),
-            ),
+
+              // Bouton Suivant en bas
+              CustomButton(
+                onTap: _onSuivantTap,
+                title: 'Suivant',
+                isLoading: state.isLoading,
+              ),
+              SizedBox(height: SizeConfig.getProportionateHeight(20)),
+            ],
           ),
         ),
       ),
