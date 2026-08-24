@@ -17,6 +17,9 @@ import 'package:tolon/pages/splush/splushScreen.dart';
 part 'routes.g.dart';
 
 enum AppRoutes {
+  profileEnfant,
+  mesenfants,
+  addEnfantAvatar,
   jouetDetail,
   addjouet,
   addEnfant,
@@ -154,6 +157,8 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
       ),
+      
+  
     ],
   );
 }
