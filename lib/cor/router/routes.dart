@@ -3,7 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 
+import 'package:tolon/pages/enfant/EnfantsList.dart';
+import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/catalogue/catalogue_jouet.dart';
@@ -21,6 +24,7 @@ import 'package:tolon/pages/panier/success_page.dart';
 
 import 'package:tolon/pages/catalogue/catalogue.dart';
 
+import 'package:tolon/pages/favoris/favoris_page.dart';
 
 part 'routes.g.dart';
 
@@ -46,6 +50,8 @@ enum AppRoutes {
   favorites,
   profile,
   adminDashboard,
+  listEnfants,
+  selectAvatar,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -145,7 +151,7 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: '/home',
         name: AppRoutes.home.name,
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => const AppBottomNavigationBar(),
       ),
       GoRoute(
         path: '/addEnfant',
@@ -161,6 +167,19 @@ GoRouter appRouter(Ref ref) {
         path: '/detailJouet',
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
+      ),
+      GoRoute(
+        path: '/listEnfants',
+        name: AppRoutes.listEnfants.name,
+        builder: (context, state) => const EnfantsListScreen(),
+      ),
+      GoRoute(
+        path: '/selectAvatar',
+        name: AppRoutes.selectAvatar.name,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return SelectAvatarScreen(dataEnfant: extra);
+        },
       ),
 
       GoRoute(

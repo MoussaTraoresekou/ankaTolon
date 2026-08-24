@@ -18,7 +18,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    // HomeScreen(),
+    HomeScreen(),
     CataloguePage(),
     Page2(),
     Page3(),
