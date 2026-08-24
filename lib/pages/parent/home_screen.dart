@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:go_router/go_router.dart';
+
 import 'package:tolon/controller/auth/auth_provider.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
@@ -16,12 +16,19 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // Déclaration static const pour garantir la disponibilité
+  // ============================================================
+  // COULEURS DES AVATARS
+  // ============================================================
+
   static const List<Color> _avatarBgColors = [
     Color(0xFFE2F1E4),
     Color(0xFFFFF3D6),
     Color(0xFFEAE3FF),
   ];
+
+  // ============================================================
+  // BUILD
+  // ============================================================
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +36,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       backgroundColor: AppStyles.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 12.0,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(),
+
               const SizedBox(height: 24),
+
+              // ==================================================
+              // MES ENFANTS
+              // ==================================================
+
               _buildSectionTitle(
                 'Mes enfants',
                 'Voir tous les enfants',
-                onTap: () => context.pushNamed(AppRoutes.listEnfants.name),
+                onTap: () => context.pushNamed(
+                  AppRoutes.listEnfants.name,
+                ),
               ),
+
               const SizedBox(height: 12),
+
               _buildChildrenList(),
+
               const SizedBox(height: 24),
-              _buildSectionTitle('Jeux les plus notés', 'Voir tous les jeux'),
+
+              // ==================================================
+              // JEUX LES PLUS NOTÉS
+              // ==================================================
+
+              _buildSectionTitle(
+                'Jeux les plus notés',
+                'Voir tous les jeux',
+              ),
+
               const SizedBox(height: 12),
+
               _buildTopRatedGamesList(),
+
               const SizedBox(height: 24),
-              _buildSectionTitle('Mes Favoris', 'Voir tous les favoris'),
+
+              // ==================================================
+              // MES FAVORIS
+              // ==================================================
+
+              _buildSectionTitle(
+                'Mes Favoris',
+                'Voir tous les favoris',
+              ),
+
               const SizedBox(height: 12),
+
               _buildFavoritesList(),
+
               const SizedBox(height: 20),
             ],
           ),
@@ -81,17 +124,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     color: AppStyles.textDark,
                   ),
                 ),
+
                 const SizedBox(width: 6),
-                const Text('👋', style: TextStyle(fontSize: 18)),
+
+                const Text(
+                  '👋',
+                  style: TextStyle(fontSize: 18),
+                ),
               ],
             ),
+
             const SizedBox(height: 4),
+
             const Text(
               'Heureux de vous retrouver',
-              style: TextStyle(fontSize: 13, color: AppStyles.textMuted),
+              style: TextStyle(
+                fontSize: 13,
+                color: AppStyles.textMuted,
+              ),
             ),
           ],
         ),
+
+        // Notification
         Stack(
           clipBehavior: Clip.none,
           children: [
@@ -114,12 +169,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 size: 28,
               ),
             ),
+
             Positioned(
               right: -2,
               top: -2,
               child: Container(
                 padding: const EdgeInsets.all(4),
-                constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                constraints: const BoxConstraints(
+                  minWidth: 18,
+                  minHeight: 18,
+                ),
                 decoration: const BoxDecoration(
                   color: AppStyles.badgeRed,
                   shape: BoxShape.circle,
@@ -154,7 +213,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 6,
+          ),
           decoration: BoxDecoration(
             color: AppStyles.primarySoft,
             borderRadius: BorderRadius.circular(20),
@@ -168,6 +230,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
         ),
+
         InkWell(
           onTap: onTap,
           child: Row(
@@ -180,6 +243,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+
               const Icon(
                 Icons.chevron_right,
                 size: 18,
@@ -191,6 +255,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ],
     );
   }
+
   // ============================================================
   // MES ENFANTS
   // ============================================================
@@ -202,7 +267,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       height: 92,
       child: enfantsAsync.when(
         data: (enfants) {
-          // Limite l'affichage aux 3 premiers enfants
+          // Affichage des 4 premiers enfants maximum
           final displayedEnfants = enfants.take(4).toList();
 
           return ListView.builder(
@@ -210,19 +275,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             clipBehavior: Clip.none,
             itemCount: displayedEnfants.length + 1,
             itemBuilder: (context, index) {
+              // Carte "Ajouter un enfant"
               if (index == displayedEnfants.length) {
                 return _buildAddChildCard();
               }
 
               final enfant = displayedEnfants[index];
-              final ageCalculated = _calculerAge(enfant.naissance);
+
+              final ageCalculated = _calculerAge(
+                enfant.naissance,
+              );
 
               // Récupération uniquement du prénom
               final String prenomOnly = enfant.prenom ?? '';
 
-              // Sécurité sur l'accès à la liste de couleurs
+              // Couleur de fond de l'avatar
               final Color bgColor = _avatarBgColors.isNotEmpty
-                  ? _avatarBgColors[index % _avatarBgColors.length]
+                  ? _avatarBgColors[
+                      index % _avatarBgColors.length
+                    ]
                   : AppStyles.primarySoft;
 
               return Container(
@@ -237,29 +308,53 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
           );
         },
+
+        // Chargement
         loading: () => const Center(
-          child: CircularProgressIndicator(color: AppStyles.primary),
+          child: CircularProgressIndicator(
+            color: AppStyles.primary,
+          ),
         ),
+
+        // Erreur
         error: (error, stack) => const Center(
           child: Text(
             'Erreur de chargement des enfants',
-            style: TextStyle(fontSize: 12, color: Colors.red),
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.red,
+            ),
           ),
         ),
       ),
     );
   }
 
+  // ============================================================
+  // CALCUL DE L'ÂGE
+  // ============================================================
+
   int _calculerAge(DateTime? dateNaissance) {
-    if (dateNaissance == null) return 0;
+    if (dateNaissance == null) {
+      return 0;
+    }
+
     final today = DateTime.now();
+
     int age = today.year - dateNaissance.year;
+
     if (today.month < dateNaissance.month ||
-        (today.month == dateNaissance.month && today.day < dateNaissance.day)) {
+        (today.month == dateNaissance.month &&
+            today.day < dateNaissance.day)) {
       age--;
     }
+
     return age < 0 ? 0 : age;
   }
+
+  // ============================================================
+  // CARTE ENFANT
+  // ============================================================
 
   Widget _buildChildCard(
     String name,
@@ -270,10 +365,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Container(
       width: 150,
       height: 72,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 8,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
+
+        // Ombre
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.12),
@@ -283,8 +383,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
+
       child: Row(
         children: [
+          // Avatar
           CircleAvatar(
             radius: 24,
             backgroundColor: avatarBgColor,
@@ -295,13 +397,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       width: 48,
                       height: 48,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) =>
-                          const Icon(Icons.person, color: AppStyles.primary),
+                      errorBuilder: (_, _, _) {
+                        return const Icon(
+                          Icons.person,
+                          color: AppStyles.primary,
+                        );
+                      },
                     )
-                  : const Icon(Icons.person, color: AppStyles.primary),
+                  : const Icon(
+                      Icons.person,
+                      color: AppStyles.primary,
+                    ),
             ),
           ),
-          const SizedBox(width: 8),
+
+          const SizedBox(width: 10),
+
+          // Informations de l'enfant
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -313,57 +425,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                    fontSize: 16,
                     color: Color(0xFF2E4D32),
                   ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: Color(0xFF2E4D32) == Colors.white 
-                ? MainAxisAlignment.center 
-                : MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Color(0xFF2E4D32),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                age,
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+
+                const SizedBox(height: 2),
+
+                Text(
+                  age,
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
+
+  // ============================================================
+  // AJOUTER UN ENFANT
+  // ============================================================
 
   Widget _buildAddChildCard() {
     return InkWell(
-      onTap: () => context.pushNamed(AppRoutes.addEnfant.name),
+      onTap: () => context.pushNamed(
+        AppRoutes.addEnfant.name,
+      ),
       borderRadius: BorderRadius.circular(16),
+
       child: Container(
         width: 100,
         height: 72,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.shade300, width: 1.5),
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 1.5,
+          ),
+
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -372,6 +478,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
         ),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -379,16 +486,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               width: 32,
               height: 32,
               decoration: const BoxDecoration(
-                color: Color(0xFF2D6A4F), // Vert conforme à la maquette
+                color: Color(0xFF2D6A4F),
                 shape: BoxShape.circle,
               ),
+
               child: const Icon(
                 Icons.add,
                 color: Colors.white,
-                size: 22, // Icône plus grande et bien centrée
+                size: 22,
               ),
             ),
+
             const SizedBox(height: 6),
+
             Text(
               'Ajouter\nun enfant',
               textAlign: TextAlign.center,
@@ -410,7 +520,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   // ============================================================
 
   Widget _buildTopRatedGamesList() {
-    final jouetsAsync = ref.watch(streamJouetLesplusNotesProvider);
+    final jouetsAsync = ref.watch(
+      streamJouetLesplusNotesProvider,
+    );
 
     return SizedBox(
       height: 220,
@@ -420,7 +532,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             return const Center(
               child: Text(
                 'Aucun jeu disponible',
-                style: TextStyle(color: AppStyles.textMuted),
+                style: TextStyle(
+                  color: AppStyles.textMuted,
+                ),
               ),
             );
           }
@@ -434,36 +548,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               return Padding(
                 padding: EdgeInsets.only(
-                  right: index == jouets.length - 1 ? 0 : 14,
+                  right: index == jouets.length - 1
+                      ? 0
+                      : 14,
                 ),
+
                 child: _buildGameCard(
                   title: jouet.nomJouet ?? 'Jeu',
-                  rating: (jouet.noteMoyen ?? 0.0).toStringAsFixed(1),
-                  imageUrl: (jouet.image.isNotEmpty)
+                  rating: (jouet.noteMoyen ?? 0.0)
+                      .toStringAsFixed(1),
+                  imageUrl: jouet.image.isNotEmpty
                       ? jouet.image.first
                       : null,
+
                   onTap: () {
-                    context.pushNamed(AppRoutes.jouetDetail.name);
+                    context.pushNamed(
+                      AppRoutes.jouetDetail.name,
+                    );
                   },
                 ),
               );
             },
           );
         },
+
+        // Chargement
         loading: () => const Center(
-          child: CircularProgressIndicator(color: AppStyles.primary),
+          child: CircularProgressIndicator(
+            color: AppStyles.primary,
+          ),
         ),
+
+        // Erreur
         error: (error, stack) => const Center(
           child: Text(
             'Erreur lors du chargement des jeux',
-            style: TextStyle(fontSize: 12, color: Colors.red),
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.red,
+            ),
           ),
         ),
       ),
-      //bottomNavigationBar: const AppBottomNavigationBar(),
-      //bottomNavigationBar: const Barrenavigation(),
     );
   }
+
+  // ============================================================
+  // CARTE DE JEU
+  // ============================================================
 
   Widget _buildGameCard({
     required String title,
@@ -472,14 +604,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     VoidCallback? onTap,
   }) {
     bool estFavori = false;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(18),
+
       child: Container(
         width: 155,
+
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
+
+          // Ombre identique
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.12),
@@ -489,33 +626,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
         ),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image du jeu
             Expanded(
               child: Container(
                 width: double.infinity,
+
                 decoration: BoxDecoration(
                   color: Colors.orange.shade50,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(18),
                   ),
                 ),
+
                 child: ClipRRect(
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(18),
                   ),
-                  child: imageUrl != null && imageUrl.isNotEmpty
+
+                  child: imageUrl != null &&
+                          imageUrl.isNotEmpty
                       ? Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => const Center(
-                            child: Icon(
-                              Icons.extension,
-                              size: 48,
-                              color: AppStyles.primary,
-                            ),
-                          ),
+
+                          errorBuilder: (_, _, _) {
+                            return const Center(
+                              child: Icon(
+                                Icons.extension,
+                                size: 48,
+                                color: AppStyles.primary,
+                              ),
+                            );
+                          },
                         )
                       : const Center(
                           child: Icon(
@@ -527,8 +673,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
             ),
+
+            // Informations du jeu
             Padding(
               padding: const EdgeInsets.all(10),
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -536,20 +685,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
                       color: AppStyles.textDark,
                     ),
                   ),
+
                   const SizedBox(height: 6),
+
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
                     children: [
+                      // Note
                       Row(
                         children: [
-                          const Icon(Icons.star, color: Colors.amber, size: 16),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 16,
+                          ),
+
                           const SizedBox(width: 4),
+
                           Text(
                             rating,
                             style: const TextStyle(
@@ -559,20 +719,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ],
                       ),
+
+                      // Favori
                       IconButton(
                         padding: EdgeInsets.zero,
-                        constraints:
-                            const BoxConstraints(), // Réduit la zone d'espace vide autour de l'icône
+                        constraints: const BoxConstraints(),
+
                         onPressed: () {
                           setState(() {
                             estFavori = !estFavori;
                           });
                         },
+
                         icon: Icon(
-                          estFavori ? Icons.favorite : Icons.favorite_border,
-                          color: estFavori ? Colors.red : Colors.black45,
-                          size:
-                              20, // Taille fixe et adaptée (ou SizeConfig.getProportionateWidth(20))
+                          estFavori
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: estFavori
+                              ? Colors.red
+                              : Colors.black45,
+                          size: 20,
                         ),
                       ),
                     ],
@@ -586,7 +752,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-
   // ============================================================
   // FAVORIS
   // ============================================================
@@ -594,29 +759,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildFavoritesList() {
     return SizedBox(
       height: 130,
+
       child: ListView(
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
+
         children: [
           _buildFavoriteCard('Tours colorées'),
+
           const SizedBox(width: 12),
+
           _buildFavoriteCard('Mémoire'),
+
           const SizedBox(width: 12),
+
           _buildFavoriteCard('Calcul'),
+
           const SizedBox(width: 12),
+
           _buildFavoriteCard('Sciences'),
         ],
       ),
     );
   }
 
+  // ============================================================
+  // CARTE FAVORI
+  // ============================================================
+
   Widget _buildFavoriteCard(String title) {
     return Container(
       width: 100,
       padding: const EdgeInsets.all(8),
+
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
+
+        // Ombre
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.12),
@@ -626,32 +806,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             height: 45,
             width: 45,
+
             decoration: BoxDecoration(
               color: Colors.green.shade50,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.style, color: AppStyles.primary),
+
+            child: const Icon(
+              Icons.style,
+              color: AppStyles.primary,
+            ),
           ),
+
           const SizedBox(height: 6),
+
           Text(
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+
           const SizedBox(height: 6),
+
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 2,
+            ),
+
             decoration: BoxDecoration(
               color: AppStyles.primarySoft,
               borderRadius: BorderRadius.circular(10),
             ),
+
             child: const Text(
               'Voir plus',
               style: TextStyle(
@@ -665,6 +864,4 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-
-
 }
