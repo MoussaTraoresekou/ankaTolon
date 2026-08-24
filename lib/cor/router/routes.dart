@@ -13,6 +13,7 @@ import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/parent/homScreen.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
+import 'package:tolon/pages/favoris/favoris_page.dart';
 
 part 'routes.g.dart';
 
