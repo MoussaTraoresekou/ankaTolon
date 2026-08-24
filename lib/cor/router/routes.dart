@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import 'package:tolon/pages/enfant/EnfantsList.dart';
+import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/catalogue/catalogue_jouet.dart';
@@ -14,6 +15,7 @@ import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/parent/homScreen.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
+import 'package:tolon/pages/favoris/favoris_page.dart';
 
 part 'routes.g.dart';
 
@@ -35,6 +37,8 @@ enum AppRoutes {
   favorites,
   profile,
   adminDashboard,
+  listEnfants,
+  selectAvatar,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -53,19 +57,12 @@ GoRouter appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      final publicRoutes = [
-        '/splash',
-        '/onboarding',
-        '/login',
-        '/register',
-      ];
+      final publicRoutes = ['/splash', '/onboarding', '/login', '/register'];
       final isPublic = publicRoutes.contains(currentLoc);
 
       if (user == null) {
@@ -158,8 +155,19 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
       ),
-      
-  
+      GoRoute(
+        path: '/listEnfants',
+        name: AppRoutes.listEnfants.name,
+        builder: (context, state) => const EnfantsListScreen(),
+      ),
+      GoRoute(
+        path: '/selectAvatar',
+        name: AppRoutes.selectAvatar.name,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return SelectAvatarScreen(dataEnfant: extra);
+        },
+      ),
     ],
   );
 }
