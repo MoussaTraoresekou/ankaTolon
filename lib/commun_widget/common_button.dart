@@ -23,13 +23,13 @@ class _CustomButtonState extends State<CustomButton> {
     SizeConfig.init(context);
     return InkWell(
       onTap: widget.isLoading ? null : widget.onTap,
-      borderRadius: BorderRadius.circular(10), // Coins arrondis selon votre Figma
+      borderRadius: BorderRadius.circular(10), // Coins arrondis selon notre Figma
       child: Container(
         alignment: Alignment.center,
         height: SizeConfig.getProportionateHeight(48),
         width: SizeConfig.screenWidth,
         decoration: BoxDecoration(
-          color: widget.isLoading ? AppStyles.primaryOrange.withOpacity(0.7) : AppStyles.primaryOrange,
+          color: widget.isLoading ? AppStyles.primaryOrange.withValues(alpha: 0.7) : AppStyles.primaryOrange,
           borderRadius: BorderRadius.circular(10),
         ),
         child: widget.isLoading

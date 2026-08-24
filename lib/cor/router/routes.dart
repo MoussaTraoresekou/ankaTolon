@@ -8,6 +8,9 @@ import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Admins/admin_dashboard.dart';
 import 'package:tolon/pages/Admins/commande_detail.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
+import 'package:tolon/pages/enfant/addEnfant.dart';
+import 'package:tolon/pages/jouets/jouetDetail.dart';
+import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/parent/homScreen.dart';
 import 'package:tolon/pages/register/register_screen.dart';
@@ -16,6 +19,9 @@ import 'package:tolon/pages/splush/splushScreen.dart';
 part 'routes.g.dart';
 
 enum AppRoutes {
+  jouetDetail,
+  addjouet,
+  addEnfant,
   splash,
   onboarding,
   login,
@@ -53,157 +59,90 @@ GoRouter appRouter(Ref ref) {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      // ==========================================
-      // ROUTES PUBLIQUES
-      // ==========================================
       final publicRoutes = [
         '/splash',
         '/onboarding',
         '/login',
         '/register',
       ];
-
       final isPublic = publicRoutes.contains(currentLoc);
 
-      // ==========================================
-      // UTILISATEUR NON CONNECTÉ
-      // ==========================================
       if (user == null) {
-        if (isPublic) {
-          return null;
-        }
-        return '/login';
+        return isPublic ? null : '/login';
       }
 
-      // ==========================================
-      // UTILISATEUR CONNECTÉ (BLOQUAGE PENDANT L'INSCRIPTION)
-      // ==========================================
-      // Si l'utilisateur vient de valider son inscription sur /register,
-      // on annule temporairement la redirection automatique vers la Home
-      // pour lui laisser le temps de voir son pop-up graphique de succès.
       if (currentLoc == '/register') {
         return null;
       }
 
-      // ==========================================
-      // REDIRECTION ET VÉRIFICATION APRÈS CONNEXION
-      // ==========================================
-      if (currentLoc == '/login') {
-        final userDocument = await firestore
-            .collection('users')
-            .doc(user.uid)
-            .get();
+      String? role;
+      Future<String?> getRole() async {
+        if (role != null) return role;
+        final doc = await firestore.collection('users').doc(user.uid).get();
+        role = doc.data()?['type'] as String?;
+        return role;
+      }
 
-        if (!userDocument.exists) {
-          return '/login';
-        }
-
-        final data = userDocument.data();
-        final role = data?['type'];
-
-        // ADMIN
-        if (role == 'admin') {
+      if (currentLoc == '/splash' ||
+          currentLoc == '/onboarding' ||
+          currentLoc == '/login') {
+        final r = await getRole();
+        if (r == 'admin') {
           return '/adminDashboard';
         }
-
-        // PARENT
-        if (role == 'parent') {
+        if (r == 'parent') {
           return '/home';
         }
-
-        // Rôle inconnu
         return '/login';
       }
 
-      // ==========================================
-      // PROTECTION INTERFACE ADMIN
-      // ==========================================
       if (currentLoc == '/adminDashboard') {
-        final userDocument = await firestore
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        final role = userDocument.data()?['type'];
-
-        if (role != 'admin') {
-          return '/home';
-        }
+        if (await getRole() != 'admin') return '/home';
+        return null;
       }
 
-      // ==========================================
-      // PROTECTION INTERFACE PARENT
-      // ==========================================
-      if (currentLoc == '/home') {
-        final userDocument = await firestore
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        final role = userDocument.data()?['type'];
-
-        if (role != 'parent') {
-          return '/adminDashboard';
-        }
+      final parentRoutes = [
+        '/home',
+        '/catalogue',
+        '/cart',
+        '/orders',
+        '/favorites',
+        '/profile',
+      ];
+      if (parentRoutes.contains(currentLoc)) {
+        if (await getRole() != 'parent') return '/adminDashboard';
+        return null;
       }
 
       return null;
     },
     routes: [
-      // =========================
-      // SPLASH
-      // =========================
       GoRoute(
         path: '/splash',
         name: AppRoutes.splash.name,
-        builder: (context, state) {
-          return const SplashScreen();
-        },
+        builder: (context, state) => const SplashScreen(),
       ),
-
-      // =========================
-      // ONBOARDING
-      // =========================
       GoRoute(
         path: '/onboarding',
         name: AppRoutes.onboarding.name,
-        builder: (context, state) {
-          return const OnboardingScreen();
-        },
+        builder: (context, state) => const OnboardingScreen(),
       ),
-
-      // =========================
-      // LOGIN
-      // =========================
       GoRoute(
         path: '/login',
         name: AppRoutes.login.name,
-        builder: (context, state) {
-          return const LoginScreen();
-        },
+        builder: (context, state) => const LoginScreen(),
       ),
-
-      // =========================
-      // REGISTER
-      // =========================
       GoRoute(
         path: '/register',
         name: AppRoutes.register.name,
-        builder: (context, state) {
-          return const RegisterScreen();
-        },
+        builder: (context, state) => const RegisterScreen(),
       ),
-
-      // =========================
-      // HOME PARENT
-      // =========================
       GoRoute(
         path: '/home',
         name: AppRoutes.home.name,
-        builder: (context, state) {
-          return const HomeScreen();
-        },
+        builder: (context, state) => const HomeScreen(),
       ),
+
 
       // =========================
       // ADMIN
@@ -246,10 +185,25 @@ GoRouter appRouter(Ref ref) {
         },
        ),
 
+       GoRoute(
+        path: '/addEnfant',
+        name: AppRoutes.addEnfant.name,
+        builder: (context, state) => const AddEnfantScreen(),
+      ),
+      GoRoute(
+        path: '/addjouet',
+        name: AppRoutes.addjouet.name,
+        builder: (context, state) => const JouetForm(),
+      ),
+      GoRoute(
+        path: '/detailJouet',
+        name: AppRoutes.jouetDetail.name,
+        builder: (context, state) => const Jouetdetail(),
+      ),
 
-      
 
     ],
   );
 
 }
+      

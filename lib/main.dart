@@ -8,9 +8,7 @@ import 'package:tolon/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialisation obligatoire de votre projet Firebase 'ankatolon' lié à l'étape précédente
-  await Firebase.initializeApp(
+    await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Supabase.initialize(
@@ -44,13 +42,10 @@ class MyApp extends ConsumerWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFFAFBF9),
         appBarTheme: const AppBarTheme(
-          backgroundColor: AppStyles.mainColor,
+          backgroundColor: AppStyles.bgColor,
           iconTheme: IconThemeData(color: Colors.white, size: 28),
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppStyles.mainColor,
-          primary: AppStyles.primaryOrange,
-        ),
+        
       ),
     );
   }

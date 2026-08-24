@@ -9,6 +9,8 @@ import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/async_value_ui.dart';
 import 'package:tolon/cor/utils/size_config.dart';
+import 'package:flutter/gestures.dart';
+
 
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -40,7 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     return Scaffold(
-      backgroundColor: AppStyles.pastelBg,
+      backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -55,19 +57,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 horizontal: 16,
                 vertical: 24,
               ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
+              
               child: Column(
                 children: [
+                   // Titre
+                  Text(
+                    'Connexion',
+                    style: AppStyles.headingTextStyle.copyWith(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 30
+                    ),
+                  ),
 
                   // Logo
                   Hero(
@@ -79,26 +80,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       fit: BoxFit.contain,
                     ),
                   ),
-
-                  const SizedBox(height: 16),
-
-                  // Titre
                   Text(
-                    'Connectez-vous à votre compte',
+                    'Accédez à votre compte',
                     style: AppStyles.titleTextStyle.copyWith(
                       color: Colors.black87,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15
                     ),
                   ),
-
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
-
                   // Email
                   CustomTextField(
-                    label: 'Adresse Email',
+                    label: 'Email',
                     hintText: 'exemple@email.com',
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
-                    prefixIcon: Icons.email_outlined,
+                    prefixIcon: Icons.send_outlined,
+                  
                   ),
 
                   SizedBox(height: SizeConfig.getProportionateHeight(16)),
@@ -110,7 +108,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     keyboardType: TextInputType.visiblePassword,
                     isPassword: true,
                     controller: _passwordController,
-                    prefixIcon: Icons.lock_outline,
+                    prefixIcon: Icons.visibility_off_outlined,
                   ),
 
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
@@ -128,26 +126,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     title: 'Se connecter',
                     isLoading: state.isLoading,
                   ),
-
                   SizedBox(height: SizeConfig.getProportionateHeight(20)),
-
-                  Text(
-                    'OU',
-                    style: AppStyles.normalTextStyle.copyWith(
-                      color: Colors.black38,
-                      fontWeight: FontWeight.bold,
+                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
+                  RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Pas de compte ? ',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "S'inscrire",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF0066CC),
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.goNamed(AppRoutes.register.name);
+                              },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-
-                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
-
-                  // Créer un compte
-                  CommonContainer(
-                    onTap: () => context.goNamed(AppRoutes.register.name),
-                    text: 'Créer un compte parent',
-                  ),
-
-                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
+                  
                 ],
               ),
             ),
@@ -157,3 +164,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
+
+
+

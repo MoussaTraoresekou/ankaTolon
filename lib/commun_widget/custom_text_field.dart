@@ -48,7 +48,7 @@ class CustomTextField extends StatelessWidget {
             prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: Colors.black45) : null,
             suffixIcon: suffixIcon,
             filled: true,
-            fillColor: const Color(0xFFF9F9F6),
+            fillColor: const Color(0xFFFFFFFF),
             contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -56,11 +56,11 @@ class CustomTextField extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.black12, width: 1),
+              borderSide: const BorderSide(color: Color.fromARGB(255, 187, 245, 194), width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: AppStyles.primaryOrange, width: 1.5),
+              borderSide: const BorderSide(color: Color.fromARGB(255, 35, 198, 54), width: 1.5),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
