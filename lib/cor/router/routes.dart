@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
+import 'package:tolon/pages/Admins/admin_dashboard.dart';
+import 'package:tolon/pages/Admins/commande_detail.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/parent/homScreen.dart';
@@ -25,6 +27,7 @@ enum AppRoutes {
   favorites,
   profile,
   adminDashboard,
+  commandeDetail,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -205,15 +208,48 @@ GoRouter appRouter(Ref ref) {
       // =========================
       // ADMIN
       // =========================
-      /*
+      
       GoRoute(
         path: '/adminDashboard',
         name: AppRoutes.adminDashboard.name,
         builder: (context, state) {
-          return const AdminDashboardScreen();
+          return const AdminDashboard();
         },
       ),
-      */
+
+      // =========================
+      // ADMIN - DÉTAIL UTILISATEUR
+      // =========================
+
+      //   GoRoute(
+      //   path: '/user/:userId',
+      //   builder: (context, state) {
+      //     // Extraction de l'ID depuis les paramètres de chemin
+      //     final userId = state.pathParameters[']; 
+      //     return UserDetailsScreen(userId: userId!);
+      //   },
+      // ),
+
+      // =========================
+      // ADMIN - DÉTAIL COMMANDE
+      // =========================
+
+       GoRoute(
+      path: '/adminDashboard/commande-detail/:orderId', // ":orderId" est la partie dynamique
+      name: AppRoutes.commandeDetail.name,
+      builder: (context, state) {
+
+        // Extraction de l'ID depuis les paramètres du chemin
+      final orderId = state.pathParameters['orderId']; 
+      // Retourne votre écran de détails (à créer) en lui passant l'ID
+      return CommandeDetail(orderId: orderId!); 
+        },
+       ),
+
+
+      
+
     ],
   );
+
 }

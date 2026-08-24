@@ -1,3 +1,4 @@
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tolon/repository/authRepository/auth_repository.dart';
 
@@ -7,6 +8,9 @@ part 'auth_controller.g.dart';
 class AuthController extends _$AuthController {
   @override
   FutureOr<void> build() async {}
+
+  // Déclaration de l'adresse mail unique de votre administrateur
+  static const String _adminEmail = "ankatolon@gmail.com";
 
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -23,6 +27,18 @@ class AuthController extends _$AuthController {
             password: password,
           ),
     );
+
+    //AJOUT : Si la connexion a réussi sans erreur, le système décide du rôle
+    if (!state.hasError) {
+      if (email.trim().toLowerCase() == _adminEmail) {
+        // C'est l'administrateur -> GoRouter interceptera ou vous ferez context.go('/admin') dans l'UI
+        print("Authentifié en tant qu'ADMINISTRATEUR UNIQUE SYSTEME");
+      } else {
+        // C'est un parent normal
+        print("Authentifié en tant que PARENT");
+      }
+    }
+    
   }
 
   Future<void> loginOrCreateUserWithEmailAndPassword({
@@ -40,6 +56,13 @@ class AuthController extends _$AuthController {
       state = AsyncValue.error('Veuillez remplir toutes les informations !', StackTrace.current);
       return;
     }
+
+ // SÉCURITÉ : Empêcher qu'un utilisateur s'inscrive frauduleusement avec l'email de l'admin
+    if (email.trim().toLowerCase() == _adminEmail) {
+      state = AsyncError('Cet email est réservé au système !', StackTrace.current);
+      return;
+    }
+
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () => ref.read(authRepositoryProvider).createUserWithEmailPasseword(
