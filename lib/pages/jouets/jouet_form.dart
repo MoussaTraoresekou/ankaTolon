@@ -265,7 +265,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black
-                          .withOpacity(0.03),
+                          .withValues(alpha: 0.03),
                       blurRadius: 10,
                       offset:
                           const Offset(0, 4),
@@ -519,7 +519,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
 
             return DropdownButtonFormField<
                 DocumentReference>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
 
               hint: const Text(
                 'Choisir une catégorie',

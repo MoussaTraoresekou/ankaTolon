@@ -123,7 +123,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: currenpage == index ? 12 : 8,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: currenpage == index ? AppStyles.primaryOrange : Colors.grey.withOpacity(0.5),
+                    color: currenpage == index ? AppStyles.primaryOrange : Colors.grey.withValues(alpha: 0.5),
                   ),
                 ),
               ),
