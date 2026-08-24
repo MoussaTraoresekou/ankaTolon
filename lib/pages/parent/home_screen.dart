@@ -57,11 +57,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-
-  // ============================================================
-  // HEADER
-  // ============================================================
-
   Widget _buildHeader() {
     final userPrenom = ref.watch(userDisplayNameProvider);
 
@@ -141,10 +136,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  // ============================================================
-  // TITRE DES SECTIONS
-  // ============================================================
-
   Widget _buildSectionTitle(
     String title,
     String actionText, {
@@ -191,9 +182,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ],
     );
   }
+<<<<<<< HEAD
   // ============================================================
   // MES ENFANTS
   // ============================================================
+=======
+>>>>>>> 1a239ef25a2c214670c12f737f0fd0c9fbe20002
 
   Widget _buildChildrenList() {
     final enfantsAsync = ref.watch(enfantsStreamProvider);
@@ -317,6 +311,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     color: Color(0xFF2E4D32),
                   ),
                 ),
+<<<<<<< HEAD
         
         const SizedBox(width: 10),
         Expanded(
@@ -334,6 +329,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: Color(0xFF2E4D32),
+=======
+                const SizedBox(height: 2),
+                Text(
+                  age,
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                  ),
+>>>>>>> 1a239ef25a2c214670c12f737f0fd0c9fbe20002
                 ),
               ),
               const SizedBox(height: 2),
@@ -347,11 +352,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ],
           ),
+<<<<<<< HEAD
         ),
       ],
     ),
   );
 }
+=======
+        ],
+      ),
+    );
+  }
+>>>>>>> 1a239ef25a2c214670c12f737f0fd0c9fbe20002
 
   Widget _buildAddChildCard() {
     return InkWell(
@@ -404,11 +416,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-
-  // ============================================================
-  // JEUX LES PLUS NOTÉS
-  // ============================================================
-
   Widget _buildTopRatedGamesList() {
     final jouetsAsync = ref.watch(streamJouetLesplusNotesProvider);
 
@@ -586,11 +593,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
+<<<<<<< HEAD
 
   // ============================================================
   // FAVORIS
   // ============================================================
 
+=======
+>>>>>>> 1a239ef25a2c214670c12f737f0fd0c9fbe20002
   Widget _buildFavoritesList() {
     return SizedBox(
       height: 130,

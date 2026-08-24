@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
+import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:tolon/pages/jouets/jouetDetail.dart';
 
 import 'package:tolon/pages/enfant/EnfantsList.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
@@ -160,11 +162,17 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.addjouet.name,
         builder: (context, state) => const JouetForm(),
       ),
-      GoRoute(
-        path: '/detailJouet',
-        name: AppRoutes.jouetDetail.name,
-        builder: (context, state) => const Jouetdetail(),
-      ),
+     GoRoute(
+  path: '/detailJouet',
+  name: AppRoutes.jouetDetail.name,
+  builder: (context, state) {
+    final jouet = state.extra as JouetModel;
+
+    return Jouetdetail(
+      jouet: jouet,
+    );
+  },
+),
       GoRoute(
         path: '/listEnfants',
         name: AppRoutes.listEnfants.name,
@@ -200,6 +208,7 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.catalogue.name,
         builder: (context, state) => const CataloguePage(),
       )
+      
     ],
   );
 }
