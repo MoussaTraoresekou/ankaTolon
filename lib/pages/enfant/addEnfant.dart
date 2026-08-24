@@ -34,12 +34,24 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
   }
 
   Future<void> _choisirDateNaissance() async {
+    final now = DateTime.now();
+
+    // 12 ans au plus ancien (ex: né en 2014)
+    final firstDate = DateTime(now.year - 12, now.month, now.day); 
+
+    // 4 ans au plus récent (ex: né en 2019)
+    final lastDate = DateTime(now.year - 4, now.month, now.day);   
+
+    // Date par défaut sélectionnée (10 ans par exemple)
+    final initialDate = lastDate;
+
     final date = await showDatePicker(
       context: context,
-      initialDate: DateTime.now().subtract(const Duration(days: 365 * 6)),
-      firstDate: DateTime.now().subtract(const Duration(days: 365 * 15)),
-      lastDate: DateTime.now(),
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
+
     if (date != null) {
       setState(() {
         _dateNaissance = date;

@@ -316,23 +316,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     fontSize: 13,
                     color: Color(0xFF2E4D32),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  age,
-                  style: TextStyle(
-                    color: Colors.grey.shade500,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: Color(0xFF2E4D32) == Colors.white 
+                ? MainAxisAlignment.center 
+                : MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Color(0xFF2E4D32),
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                age,
+                style: TextStyle(
+                  color: Colors.grey.shade500,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildAddChildCard() {
     return InkWell(
