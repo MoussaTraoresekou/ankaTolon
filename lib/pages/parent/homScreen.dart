@@ -57,7 +57,7 @@ class HomeScreen extends ConsumerWidget {
 
                   SizedBox(height: SizeConfig.getProportionateHeight(8)),
 
-                  SectionEnfant(enfantsAsync: enfantsAsync),
+                  SectionEnfant(),
 
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
 

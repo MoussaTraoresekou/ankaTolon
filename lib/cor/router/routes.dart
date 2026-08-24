@@ -5,13 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
-import 'package:tolon/models/enfant/enfant_avant_choix_avartar.dart';
-import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
-import 'package:tolon/pages/avatar/avartarScreen.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
-import 'package:tolon/pages/enfant/liste_enfants.dart';
-import 'package:tolon/pages/enfant/profileEnfant.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
@@ -162,29 +157,8 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
       ),
-      GoRoute(
-          path: '/addEnfantAvatar',
-          name: AppRoutes.addEnfantAvatar.name,
-          builder: (context, state) {
-            final draft = state.extra as EnfantInfoAvantchoixAvatar;
-            return AvatarSelectionScreen(draft: draft);
-          },
-    ),
-    GoRoute(
-          path: '/mesEnfants',
-          name: AppRoutes.mesenfants.name,
-          builder: (context, state) => const ListeEnfants()
-    ),
-   GoRoute(
-          path: '/profileEnfant',
-          name: AppRoutes.profileEnfant.name,
-          builder: (context, state) {
-            final enfant = state.extra as EnfantModel;
-            return ProfileEnfant(
-              enfant: enfant,
-            );
-  },
-),
+      
+  
     ],
   );
 }
