@@ -15,7 +15,6 @@ import 'package:tolon/pages/enfant/addEnfant.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
-import 'package:tolon/pages/parent/home_screen.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
 
@@ -25,7 +24,6 @@ import 'package:tolon/pages/panier/success_page.dart';
 
 import 'package:tolon/pages/catalogue/catalogue.dart';
 
-import 'package:tolon/pages/favoris/favoris_page.dart';
 
 part 'routes.g.dart';
 
