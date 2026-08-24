@@ -9,10 +9,25 @@ class CatalogueController {
     toFirestore: (jouet, _) => jouet.toJson(),
   );
 
+  // Stream<List<JouetModel>> getJouets() {
+  //   return _jouetCollection.snapshots().map((snapshot) {
+  //
+  //     print("***********NOOB SAYBOT*****les donnees arrivent ils");
+  //     print(snapshot.docs.map((doc) => doc.data()).toList());
+  //
+  //     return snapshot.docs.map((doc) => doc.data()).toList();
+  //   });
+  // }
+
   Stream<List<JouetModel>> getJouets() {
     return _jouetCollection.snapshots().map((snapshot) {
+      print("******** SNAPSHOT ********");
+      print("Nombre de documents : ${snapshot.docs.length}");
 
-      print("***********NOOB SAYBOT*****les donnees arrivent ils");
+      for (final doc in snapshot.docs) {
+        print("ID : ${doc.id}");
+        print("DATA : ${doc.data()}");
+      }
 
       return snapshot.docs.map((doc) => doc.data()).toList();
     });

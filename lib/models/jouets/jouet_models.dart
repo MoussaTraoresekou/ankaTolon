@@ -134,11 +134,9 @@ class JouetModel {
       nomJouet:
       data['nom_jouet']?.toString() ?? '',
 
-      noteMoyen:
-      (data['note_moyen'] ?? 0).toDouble(),
+      noteMoyen: double.tryParse(data['note_moyen'].toString()) ?? 0.0,
+      prix: double.tryParse(data['prix'].toString()) ?? 0.0,
 
-      prix:
-      (data['prix'] ?? 0).toDouble(),
     );
   }
 
