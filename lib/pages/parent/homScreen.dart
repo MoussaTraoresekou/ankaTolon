@@ -74,22 +74,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Row(
               children: [
                 Text(
-<<<<<<< HEAD
                   'Bonjour $userPrenom !',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppStyles.textDark,
                   ),
-=======
-                  'Bonjour Hamidou1 ! 👋',
-                  style: AppStyles.titleTextStyle
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'Heureux de vous retrouver',
-                  style: TextStyle(color: Colors.black45, fontSize: 13),
->>>>>>> aae8b6a0774f0842987b59fceb7eb457debccc89
                 ),
                 const SizedBox(width: 6),
                 const Text('👋', style: TextStyle(fontSize: 18)),
