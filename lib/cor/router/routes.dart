@@ -147,21 +147,6 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.addEnfant.name,
         builder: (context, state) => const AddEnfantScreen(),
       ),
-<<<<<<< HEAD
-      GoRoute(
-        path: '/addjouet',
-        name: AppRoutes.addjouet.name,
-        builder: (context, state) => const JouetForm(),
-      ),
-      GoRoute(
-        path: '/detailJouet',
-        name: AppRoutes.jouetDetail.name,
-        builder: (context, state) => const Jouetdetail(),
-      ),
-      
-  
-=======
->>>>>>> parent of e431d00 (derniere modif vendredi)
     ],
   );
 }
