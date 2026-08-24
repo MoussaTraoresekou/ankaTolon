@@ -102,7 +102,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -262,49 +262,59 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildChildCard(
-  String name,
-  String age,
-  String? avatarUrl, {
-  required Color avatarBgColor,
-}) {
-  return Container(
-    width: 160, // Ajusté légèrement pour éviter un overflow de texte
-    height: 72,
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.12),
-          blurRadius: 8,
-          spreadRadius: 0,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    ),
-    child: Row(
-      children: [
-        CircleAvatar(
-          radius: 28, // Augmenté de 24 à 28 (diamètre de 56px sur 72px)
-          backgroundColor: avatarBgColor,
-          child: ClipOval(
-            child: avatarUrl != null && avatarUrl.isNotEmpty
-                ? Image.asset(
-                    avatarUrl,
-                    width: 56,
-                    height: 56,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const Icon(
-                      Icons.person,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Icon(
-                    Icons.person,
-                    size: 30,
-                    color: Colors.white,
+    String name,
+    String age,
+    String? avatarUrl, {
+    required Color avatarBgColor,
+  }) {
+    return Container(
+      width: 150,
+      height: 72,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.12),
+            blurRadius: 8,
+            spreadRadius: 0,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 24,
+            backgroundColor: avatarBgColor,
+            child: ClipOval(
+              child: avatarUrl != null && avatarUrl.isNotEmpty
+                  ? Image.asset(
+                      avatarUrl,
+                      width: 48,
+                      height: 48,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) =>
+                          const Icon(Icons.person, color: AppStyles.primary),
+                    )
+                  : const Icon(Icons.person, color: AppStyles.primary),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: Color(0xFF2E4D32),
                   ),
           ),
         ),
@@ -356,7 +366,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           border: Border.all(color: Colors.grey.shade300, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -429,7 +439,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: _buildGameCard(
                   title: jouet.nomJouet ?? 'Jeu',
                   rating: (jouet.noteMoyen ?? 0.0).toStringAsFixed(1),
-                  imageUrl: (jouet.image != null && jouet.image.isNotEmpty)
+                  imageUrl: (jouet.image.isNotEmpty)
                       ? jouet.image.first
                       : null,
                   onTap: () {
@@ -472,7 +482,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.12),
+              color: Colors.black.withValues(alpha: 0.12),
               blurRadius: 8,
               spreadRadius: 0,
               offset: const Offset(0, 4),
@@ -499,7 +509,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Center(
+                          errorBuilder: (_, _, _) => const Center(
                             child: Icon(
                               Icons.extension,
                               size: 48,
@@ -609,7 +619,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 8,
             spreadRadius: 0,
             offset: const Offset(0, 4),
