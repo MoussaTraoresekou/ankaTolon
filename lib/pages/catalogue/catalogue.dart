@@ -1,136 +1,148 @@
 import 'package:flutter/material.dart';
-import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
-import 'package:tolon/controller/catalogue/catalogue_controller.dart';
-import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:tolon/controller/catalogue/catalogue_controller.dart';
+import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/firebase_options.dart';
 import 'package:tolon/pages/page_to_delete.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tolon/cor/router/routes.dart';
 
 class CataloguePage extends StatefulWidget {
   const CataloguePage({super.key});
 
   @override
-  State<CataloguePage> createState() =>
-      _CataloguePageState();
+  State<CataloguePage> createState() => _CataloguePageState();
 }
 
-class _CataloguePageState
-    extends State<CataloguePage> {
-
-  final CatalogueController
-  _catalogueController =
-  CatalogueController();
+class _CataloguePageState extends State<CataloguePage> {
+  final CatalogueController _catalogueController =
+      CatalogueController();
 
   String selectedAge = 'Tous';
-
   String searchText = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAF8),
+
       body: SafeArea(
         child: Column(
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
-
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ==================================================
+            // TITRE
+            // ==================================================
+
             const Padding(
               padding: EdgeInsets.only(
                 left: 20,
                 right: 20,
                 top: 18,
               ),
-
               child: Text(
                 'Catalogue de jouets',
-
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight:
-                  FontWeight.w700,
-                  color:
-                  Color(0xFF171717),
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF171717),
                 ),
               ),
             ),
 
             const SizedBox(height: 15),
 
-            // barre de rechreche
+            // ==================================================
+            // BARRE DE RECHERCHE
+            // ==================================================
 
             _buildSearchBar(),
 
             const SizedBox(height: 17),
 
-            // FILTRES age
+            // ==================================================
+            // FILTRES ÂGE
+            // ==================================================
+
             _buildAgeFilters(),
 
             const SizedBox(height: 24),
 
-            // FIRESTORE list
+            // ==================================================
+            // LISTE DES JOUETS
+            // ==================================================
+
             Expanded(
-              child: StreamBuilder<
-                  List<JouetModel>>(
-                stream:
-                _catalogueController
-                    .getJouets(),
+              child: StreamBuilder<List<JouetModel>>(
+                stream: _catalogueController.getJouets(),
 
-                builder:
-                    (context, snapshot) {
-
+                builder: (context, snapshot) {
+                  // ==================================================
                   // CHARGEMENT
+                  // ==================================================
 
-                  if (snapshot
-                      .connectionState ==
+                  if (snapshot.connectionState ==
                       ConnectionState.waiting) {
                     return const Center(
-                      child:
-                      CircularProgressIndicator(),
-                    );
-                  }
-
-                  // ERREUR
-
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        'Erreur : '
-                            '${snapshot.error}',
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF0AA361),
                       ),
                     );
                   }
 
-                  // DONNÉES
+                  // ==================================================
+                  // ERREUR
+                  // ==================================================
 
-                  final jouets =
-                      snapshot.data ?? [];
-                  //print(jouets);
-                  // FILTRAGE
-
-                  final filteredJouets =
-                  _filterJouets(
-                    jouets,
-                  );
-
-                  // AUCUN RÉSULTAT
-
-                  if (filteredJouets
-                      .isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Aucun jouet trouvé',
-
-                        style: TextStyle(
-                          fontSize: 14,
-                          color:
-                          Colors.grey,
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          'Erreur : ${snapshot.error}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.red,
+                          ),
                         ),
                       ),
                     );
                   }
 
+                  // ==================================================
+                  // DONNÉES
+                  // ==================================================
+
+                  final jouets = snapshot.data ?? [];
+
+                  // ==================================================
+                  // FILTRAGE
+                  // ==================================================
+
+                  final filteredJouets = _filterJouets(jouets);
+
+                  // ==================================================
+                  // AUCUN RÉSULTAT
+                  // ==================================================
+
+                  if (filteredJouets.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Aucun jouet trouvé',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    );
+                  }
+
+                  // ==================================================
                   // GRILLE
+                  // ==================================================
 
                   return _buildProductGrid(
                     filteredJouets,
@@ -142,24 +154,25 @@ class _CataloguePageState
         ),
       ),
 
-      //bottomNavigationBar: AppBottomNavigationBar(),
+      // ==================================================
+      // BOTTOM NAVIGATION
+      // ==================================================
+
+      // bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 
   // ==================================================
-  // Recherche
+  // BARRE DE RECHERCHE
   // ==================================================
 
   Widget _buildSearchBar() {
     return Padding(
-      padding:
-      const EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 20,
       ),
-
       child: SizedBox(
         height: 36,
-
         child: TextField(
           onChanged: (value) {
             setState(() {
@@ -167,21 +180,15 @@ class _CataloguePageState
             });
           },
 
-          decoration:
-          InputDecoration(
+          decoration: InputDecoration(
+            hintText: 'Rechercher un jouet',
 
-            hintText:
-            'Rechercher un jouet',
-
-            hintStyle:
-            const TextStyle(
+            hintStyle: const TextStyle(
               fontSize: 12,
-              color:
-              Color(0xFF999999),
+              color: Color(0xFF999999),
             ),
 
-            prefixIcon:
-            const Icon(
+            prefixIcon: const Icon(
               Icons.search,
               size: 21,
               color: Colors.black,
@@ -189,51 +196,31 @@ class _CataloguePageState
 
             filled: true,
 
-            fillColor:
-            Colors.white,
+            fillColor: Colors.white,
 
-            contentPadding:
-            EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
 
-            border:
-            OutlineInputBorder(
-              borderRadius:
-              BorderRadius.circular(
-                10,
-              ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
 
-              borderSide:
-              const BorderSide(
-                color:
-                Color(0xFFD8D8D8),
+              borderSide: const BorderSide(
+                color: Color(0xFFD8D8D8),
               ),
             ),
 
-            enabledBorder:
-            OutlineInputBorder(
-              borderRadius:
-              BorderRadius.circular(
-                10,
-              ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
 
-              borderSide:
-              const BorderSide(
-                color:
-                Color(0xFFD8D8D8),
+              borderSide: const BorderSide(
+                color: Color(0xFFD8D8D8),
               ),
             ),
 
-            focusedBorder:
-            OutlineInputBorder(
-              borderRadius:
-              BorderRadius.circular(
-                10,
-              ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
 
-              borderSide:
-              const BorderSide(
-                color:
-                Color(0xFF0AA361),
+              borderSide: const BorderSide(
+                color: Color(0xFF0AA361),
               ),
             ),
           ),
@@ -255,24 +242,18 @@ class _CataloguePageState
     ];
 
     return SingleChildScrollView(
-      scrollDirection:
-      Axis.horizontal,
+      scrollDirection: Axis.horizontal,
 
-      padding:
-      const EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 35,
       ),
 
       child: Row(
-        children:
-        ages.map((age) {
-
-          final selected =
-              selectedAge == age;
+        children: ages.map((age) {
+          final selected = selectedAge == age;
 
           return Padding(
-            padding:
-            const EdgeInsets.only(
+            padding: const EdgeInsets.only(
               right: 6,
             ),
 
@@ -286,30 +267,21 @@ class _CataloguePageState
               child: Container(
                 height: 33,
 
-                padding:
-                const EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 17,
                 ),
 
-                decoration:
-                BoxDecoration(
-
+                decoration: BoxDecoration(
                   color: selected
-                      ? const Color(
-                    0xFF0AA361,
-                  )
-                      : const Color(
-                    0xFFE0F0E5,
-                  ),
+                      ? const Color(0xFF0AA361)
+                      : const Color(0xFFE0F0E5),
 
-                  borderRadius:
-                  BorderRadius.circular(
+                  borderRadius: BorderRadius.circular(
                     20,
                   ),
                 ),
 
-                alignment:
-                Alignment.center,
+                alignment: Alignment.center,
 
                 child: Text(
                   age,
@@ -323,9 +295,7 @@ class _CataloguePageState
 
                     color: selected
                         ? Colors.white
-                        : const Color(
-                      0xFF222222,
-                    ),
+                        : const Color(0xFF222222),
                   ),
                 ),
               ),
@@ -341,69 +311,68 @@ class _CataloguePageState
   // ==================================================
 
   List<JouetModel> _filterJouets(
-      List<JouetModel> jouets) {
-
+    List<JouetModel> jouets,
+  ) {
     return jouets.where((jouet) {
-
       bool matchesAge = true;
 
+      // ==================================================
+      // FILTRE PAR ÂGE
+      // ==================================================
+
       if (selectedAge != 'Tous') {
-
         switch (selectedAge) {
-
           case '4-6 ans':
             matchesAge =
-                jouet.ageMin <= 4 &&
-                    jouet.ageMax >= 6;
+                jouet.ageMin <= 6 &&
+                jouet.ageMax >= 4;
             break;
 
           case '7-9 ans':
             matchesAge =
-                jouet.ageMin <= 7 &&
-                    jouet.ageMax >= 9;
+                jouet.ageMin <= 9 &&
+                jouet.ageMax >= 7;
             break;
 
           case '10-12 ans':
             matchesAge =
-                jouet.ageMin <= 10 &&
-                    jouet.ageMax >= 12;
+                jouet.ageMin <= 12 &&
+                jouet.ageMax >= 10;
             break;
         }
       }
 
-      final matchesSearch =
-      jouet.nomJouet
+      // ==================================================
+      // RECHERCHE
+      // ==================================================
+
+      final matchesSearch = jouet.nomJouet
           .toLowerCase()
           .contains(
-        searchText.toLowerCase(),
-      );
+            searchText.toLowerCase(),
+          );
 
-      return matchesAge &&
-          matchesSearch;
-
+      return matchesAge && matchesSearch;
     }).toList();
   }
 
   // ==================================================
-  // GRID
+  // GRILLE DES PRODUITS
   // ==================================================
 
   Widget _buildProductGrid(
-      List<JouetModel> jouets) {
-
+    List<JouetModel> jouets,
+  ) {
     return GridView.builder(
-
-      padding:
-      const EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 20,
+        vertical: 5,
       ),
 
-      itemCount:
-      jouets.length,
+      itemCount: jouets.length,
 
       gridDelegate:
-      const SliverGridDelegateWithFixedCrossAxisCount(
-
+          const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
 
         crossAxisSpacing: 20,
@@ -413,9 +382,7 @@ class _CataloguePageState
         childAspectRatio: 0.62,
       ),
 
-      itemBuilder:
-          (context, index) {
-
+      itemBuilder: (context, index) {
         return _buildProductCard(
           jouets[index],
         );
@@ -424,305 +391,309 @@ class _CataloguePageState
   }
 
   // ==================================================
-  // PRODUCT CARD
+  // CARTE PRODUIT
   // ==================================================
 
   Widget _buildProductCard(
-      JouetModel jouet) {
+  JouetModel jouet,
+) {
+  return InkWell(
+    borderRadius: BorderRadius.circular(10),
 
-    return Container(
-      decoration:
-      BoxDecoration(
+    onTap: () {
+      context.pushNamed(
+        AppRoutes.jouetDetail.name,
+        extra: jouet,
+      );
+    },
 
-        color: Colors.white,
+    child: Container(
+      
+        decoration: BoxDecoration(
+          color: Colors.white,
 
-        borderRadius:
-        BorderRadius.circular(
-          10,
+          borderRadius: BorderRadius.circular(10),
+
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(
+                alpha: 0.18,
+              ),
+
+              blurRadius: 5,
+
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
 
-        boxShadow: [
-          BoxShadow(
-            color:
-            Colors.black.withValues(
-              alpha: 0.18,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+
+          children: [
+            // ==================================================
+            // IMAGE
+            // ==================================================
+
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+
+              child: AspectRatio(
+                aspectRatio: 1.15,
+
+                child: jouet.image.isNotEmpty
+                    ? Image.network(
+                        jouet.image.first,
+
+                        fit: BoxFit.cover,
+
+                        loadingBuilder: (
+                          context,
+                          child,
+                          loadingProgress,
+                        ) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFF0AA361),
+                            ),
+                          );
+                        },
+
+                        errorBuilder: (
+                          context,
+                          error,
+                          stackTrace,
+                        ) {
+                          return Container(
+                            color: const Color(
+                              0xFFEAF5ED,
+                            ),
+
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              size: 40,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      )
+                    : Container(
+                        color: const Color(
+                          0xFFEAF5ED,
+                        ),
+
+                        child: const Icon(
+                          Icons.image,
+                          size: 40,
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
             ),
 
-            blurRadius: 5,
+            // ==================================================
+            // NOM DU JOUET
+            // ==================================================
 
-            offset:
-            const Offset(0, 3),
-          ),
-        ],
-      ),
-
-      child: Column(
-        mainAxisSize:
-        MainAxisSize.min,
-
-        children: [
-
-          // IMAGE
-
-          ClipRRect(
-            borderRadius:
-            const BorderRadius.only(
-
-              topLeft:
-              Radius.circular(10),
-
-              topRight:
-              Radius.circular(10),
+            const SizedBox(
+              height: 3,
             ),
 
-            child: AspectRatio(
-              aspectRatio: 1.15,
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 4,
+              ),
 
-              child:
-              jouet.image.isNotEmpty
+              child: Text(
+                jouet.nomJouet,
 
-                  ? Image.network(
-                jouet.image.first,
+                maxLines: 1,
 
-                fit:
-                BoxFit.cover,
+                overflow: TextOverflow.ellipsis,
 
-                loadingBuilder:
-                    (
-                    context,
-                    child,
-                    loadingProgress,
-                    ) {
+                textAlign: TextAlign.center,
 
-                  if (loadingProgress ==
-                      null) {
-                    return child;
-                  }
+                style: const TextStyle(
+                  fontSize: 12,
 
-                  return const Center(
-                    child:
-                    CircularProgressIndicator(),
-                  );
-                },
+                  fontWeight: FontWeight.w500,
 
-                errorBuilder:
-                    (
-                    context,
-                    error,
-                    stackTrace,
-                    ) {
-                  return Container(
-                    color:
-                    const Color(
-                      0xFFEAF5ED,
-                    ),
+                  color: Colors.black,
+                ),
+              ),
+            ),
 
-                    child:
-                    const Icon(
-                      Icons
-                          .image_not_supported,
-                      size: 40,
-                      color:
-                      Colors.grey,
-                    ),
-                  );
-                },
-              )
+            const SizedBox(
+              height: 3,
+            ),
 
-                  : Container(
-                color:
-                const Color(
-                  0xFFEAF5ED,
+            // ==================================================
+            // ÂGE
+            // ==================================================
+
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 2,
+              ),
+
+              decoration: BoxDecoration(
+                color: const Color(
+                  0xFFE5F2E8,
                 ),
 
-                child:
-                const Icon(
-                  Icons.image,
-                  size: 40,
-                  color:
-                  Colors.grey,
+                borderRadius: BorderRadius.circular(
+                  10,
                 ),
               ),
-            ),
-          ),
 
-          // NOM
+              child: Text(
+                '${jouet.ageMin}-${jouet.ageMax} ans',
 
-          const SizedBox(
-            height: 3,
-          ),
+                maxLines: 1,
 
-          Padding(
-            padding:
-            const EdgeInsets.symmetric(
-              horizontal: 4,
-            ),
+                overflow: TextOverflow.ellipsis,
 
-            child: Text(
-              jouet.nomJouet,
+                style: const TextStyle(
+                  fontSize: 9,
 
-              maxLines: 1,
-
-              overflow:
-              TextOverflow.ellipsis,
-
-              textAlign:
-              TextAlign.center,
-
-              style:
-              const TextStyle(
-                fontSize: 12,
-                fontWeight:
-                FontWeight.w500,
-                color:
-                Colors.black,
-              ),
-            ),
-          ),
-
-          const SizedBox(
-            height: 3,
-          ),
-
-          // ÂGE
-
-          Container(
-            padding:
-            const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 2,
-            ),
-
-            decoration:
-            BoxDecoration(
-              color:
-              const Color(
-                0xFFE5F2E8,
-              ),
-
-              borderRadius:
-              BorderRadius.circular(
-                10,
-              ),
-            ),
-
-            child: Text(
-              '${jouet.ageMin}-'
-                  '${jouet.ageMax} ans',
-
-              maxLines: 1,
-
-              overflow:
-              TextOverflow.ellipsis,
-
-              style:
-              const TextStyle(
-                fontSize: 9,
-                color:
-                Color(0xFF4B6A52),
-              ),
-            ),
-          ),
-
-          const SizedBox(
-            height: 4,
-          ),
-
-          // NOTE + PRIX
-
-          Padding(
-            padding:
-            const EdgeInsets.symmetric(
-              horizontal: 7,
-            ),
-
-            child: Row(
-              children: [
-
-                const Icon(
-                  Icons.star,
-                  color:
-                  Color(0xFFFFC400),
-                  size: 16,
-                ),
-
-                const SizedBox(
-                  width: 2,
-                ),
-
-                Text(
-                  jouet.noteMoyen
-                      .toStringAsFixed(
-                    1,
-                  ),
-
-                  style:
-                  const TextStyle(
-                    fontSize: 10,
-                    color:
-                    Color(0xFF777777),
+                  color: Color(
+                    0xFF4B6A52,
                   ),
                 ),
+              ),
+            ),
 
-                const Spacer(),
+            const SizedBox(
+              height: 4,
+            ),
 
-                Flexible(
-                  child: Text(
-                    '${jouet.prix.toStringAsFixed(0)} FCFA',
+            // ==================================================
+            // NOTE + PRIX + FAVORIS
+            // ==================================================
 
-                    maxLines: 1,
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 7,
+              ),
 
-                    overflow:
-                    TextOverflow.ellipsis,
+              child: Row(
+                children: [
+                  // NOTE
+                  const Icon(
+                    Icons.star,
+                    color: Color(
+                      0xFFFFC400,
+                    ),
+                    size: 16,
+                  ),
 
-                    textAlign:
-                    TextAlign.right,
+                  const SizedBox(
+                    width: 2,
+                  ),
 
-                    style:
-                    const TextStyle(
+                  Text(
+                    jouet.noteMoyen.toStringAsFixed(
+                      1,
+                    ),
+
+                    style: const TextStyle(
                       fontSize: 10,
-                      fontWeight:
-                      FontWeight.w500,
-                      color:
-                      Colors.black,
+
+                      color: Color(
+                        0xFF777777,
+                      ),
                     ),
                   ),
-                ),
 
-                const SizedBox(
-                  width: 2,
-                ),
+                  const Spacer(),
 
-                const Icon(
-                  Icons.favorite,
-                  color:
-                  Color(0xFFF04435),
-                  size: 14,
-                ),
-              ],
+                  // PRIX
+                  Flexible(
+                    child: Text(
+                      '${jouet.prix.toStringAsFixed(0)} FCFA',
+
+                      maxLines: 1,
+
+                      overflow:
+                          TextOverflow.ellipsis,
+
+                      textAlign:
+                          TextAlign.right,
+
+                      style: const TextStyle(
+                        fontSize: 10,
+
+                        fontWeight:
+                            FontWeight.w500,
+
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    width: 2,
+                  ),
+
+                  // FAVORIS
+                  const Icon(
+                    Icons.favorite,
+                    color: Color(
+                      0xFFF04435,
+                    ),
+                    size: 14,
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          const SizedBox(
-            height: 5,
-          ),
-        ],
+            const SizedBox(
+              height: 5,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-
+// ============================================================
+// MAIN
+// ============================================================
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // ==========================================================
+  // FIREBASE
+  // ==========================================================
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // ==========================================================
+  // SUPABASE
+  // ==========================================================
+
   await Supabase.initialize(
     url: 'https://zoagjvcjrolrrlhdkhob.supabase.co',
-    anonKey: 'sb_publishable_KDK3Dxx_1XfarmHK1CI5YA_c4aRncjy',
+    anonKey:
+        'sb_publishable_KDK3Dxx_1XfarmHK1CI5YA_c4aRncjy',
   );
+
+  // ==========================================================
+  // APPLICATION
+  // ==========================================================
+
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -463,11 +463,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-<<<<<<< HEAD
-              color: Colors.black.withValues(alpha: 0.12),
-=======
               color: Colors.black.withOpacity(0.12),
->>>>>>> a6c71b2ac4deaa38b9b0d96fcc7f9186d61b0b78
               blurRadius: 8,
               spreadRadius: 0,
               offset: const Offset(0, 4),
@@ -494,11 +490,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-<<<<<<< HEAD
-                          errorBuilder: (_, _, _) => const Center(
-=======
                           errorBuilder: (_, __, ___) => const Center(
->>>>>>> a6c71b2ac4deaa38b9b0d96fcc7f9186d61b0b78
                             child: Icon(
                               Icons.extension,
                               size: 48,
@@ -608,11 +600,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-<<<<<<< HEAD
-            color: Colors.black.withValues(alpha: 0.12),
-=======
             color: Colors.black.withOpacity(0.12),
->>>>>>> a6c71b2ac4deaa38b9b0d96fcc7f9186d61b0b78
             blurRadius: 8,
             spreadRadius: 0,
             offset: const Offset(0, 4),
