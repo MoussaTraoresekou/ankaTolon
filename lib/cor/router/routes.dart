@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
+import 'package:tolon/pages/catalogue/catalogue_jouet.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
@@ -17,6 +18,9 @@ import 'package:tolon/pages/splush/splushScreen.dart';
 part 'routes.g.dart';
 
 enum AppRoutes {
+  profileEnfant,
+  mesenfants,
+  addEnfantAvatar,
   jouetDetail,
   addjouet,
   addEnfant,
@@ -154,6 +158,8 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
       ),
+      
+  
     ],
   );
 }

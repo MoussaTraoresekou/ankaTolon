@@ -4,6 +4,7 @@ class EnfantModel {
   final String id;
   final String nom;
   final String prenom;
+  final String sexe;
   final DateTime naissance;
   final String? avatarUrl;
   final int points;
@@ -18,6 +19,7 @@ class EnfantModel {
     required this.id,
     required this.nom,
     required this.prenom,
+    required this.sexe,
     required this.naissance,
     this.avatarUrl,
     required this.points,
@@ -38,6 +40,8 @@ class EnfantModel {
 
       prenom: json['prenom'] as String? ?? '',
 
+      sexe: json['sexe'] as String? ?? '',
+
       naissance: json['naissance'] is Timestamp
           ? (json['naissance'] as Timestamp).toDate()
           : DateTime.now(),
@@ -51,7 +55,6 @@ class EnfantModel {
       activitesRealisees:
           (json['activites_realisees'] as num?)?.toInt() ?? 0,
 
-      
       defisRealises:
           json['defis_realises'] is List
               ? List<dynamic>.from(
@@ -72,12 +75,22 @@ class EnfantModel {
     return {
       'nom': nom,
       'prenom': prenom,
+
+      // ⭐ AJOUT DU SEXE
+      'sexe': sexe,
+
       'naissance': Timestamp.fromDate(naissance),
+
       'avatar_url': avatarUrl,
+
       'points': points,
+
       'niveau': niveau,
+
       'activites_realisees': activitesRealisees,
+
       'defis_realises': defisRealises,
+
       'tutos_telecharges': tutosTelecharges,
     };
   }
@@ -86,6 +99,7 @@ class EnfantModel {
     String? id,
     String? nom,
     String? prenom,
+    String? sexe,
     DateTime? naissance,
     String? avatarUrl,
     int? points,
@@ -98,6 +112,10 @@ class EnfantModel {
       id: id ?? this.id,
       nom: nom ?? this.nom,
       prenom: prenom ?? this.prenom,
+
+      // ⭐ CORRECTION
+      sexe: sexe ?? this.sexe,
+
       naissance: naissance ?? this.naissance,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       points: points ?? this.points,
@@ -117,6 +135,7 @@ class EnfantModel {
         'id: $id, '
         'nom: $nom, '
         'prenom: $prenom, '
+        'sexe: $sexe, '
         'naissance: $naissance, '
         'points: $points, '
         'niveau: $niveau'

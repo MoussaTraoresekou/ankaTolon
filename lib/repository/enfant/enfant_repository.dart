@@ -72,7 +72,7 @@ EnfantRepository enfantRepository(Ref ref) {
 }
 
 @riverpod
-Stream<List<EnfantModel>> enfants(Ref ref) {
+Stream<List<EnfantModel>> enfantsStream(Ref ref) {
   final repository = ref.watch(enfantRepositoryProvider);
 
   return repository.streamEnfants();
