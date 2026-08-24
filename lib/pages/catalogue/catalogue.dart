@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tolon/commun_widget/favoris/bouton_favori.dart';
 import 'package:tolon/controller/catalogue/catalogue_controller.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/firebase_options.dart';
 import 'package:tolon/pages/page_to_delete.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/cor/router/routes.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-class CataloguePage extends StatefulWidget {
+class CataloguePage extends ConsumerStatefulWidget {
   const CataloguePage({super.key});
 
   @override
-  State<CataloguePage> createState() => _CataloguePageState();
+ ConsumerState<CataloguePage> createState() =>
+      _CataloguePageState();
 }
 
-class _CataloguePageState extends State<CataloguePage> {
-  final CatalogueController _catalogueController =
-      CatalogueController();
+class _CataloguePageState
+    extends ConsumerState<CataloguePage> {
+
+  final CatalogueController
+  _catalogueController =
+  CatalogueController();
 
   String selectedAge = 'Tous';
   String searchText = '';
@@ -162,10 +167,7 @@ class _CataloguePageState extends State<CataloguePage> {
     );
   }
 
-  // ==================================================
-  // BARRE DE RECHERCHE
-  // ==================================================
-
+  
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -306,9 +308,7 @@ class _CataloguePageState extends State<CataloguePage> {
     );
   }
 
-  // ==================================================
-  // FILTRAGE
-  // ==================================================
+ 
 
   List<JouetModel> _filterJouets(
     List<JouetModel> jouets,
@@ -356,10 +356,6 @@ class _CataloguePageState extends State<CataloguePage> {
     }).toList();
   }
 
-  // ==================================================
-  // GRILLE DES PRODUITS
-  // ==================================================
-
   Widget _buildProductGrid(
     List<JouetModel> jouets,
   ) {
@@ -390,9 +386,7 @@ class _CataloguePageState extends State<CataloguePage> {
     );
   }
 
-  // ==================================================
-  // CARTE PRODUIT
-  // ==================================================
+ 
 
   Widget _buildProductCard(
   JouetModel jouet,
@@ -498,9 +492,6 @@ class _CataloguePageState extends State<CataloguePage> {
               ),
             ),
 
-            // ==================================================
-            // NOM DU JOUET
-            // ==================================================
 
             const SizedBox(
               height: 3,
@@ -643,17 +634,9 @@ class _CataloguePageState extends State<CataloguePage> {
                     width: 2,
                   ),
 
-                  // FAVORIS
-                  const Icon(
-                    Icons.favorite,
-                    color: Color(
-                      0xFFF04435,
-                    ),
-                    size: 14,
-                  ),
-                ],
-              ),
+                 BoutonFavori(jouetId: jouet.id),              ],
             ),
+          ),
 
             const SizedBox(
               height: 5,
