@@ -22,6 +22,7 @@ import 'package:tolon/pages/splush/splushScreen.dart';
 import 'package:tolon/pages/panier/panier_page.dart';
 import 'package:tolon/pages/panier/checkout_page.dart';
 import 'package:tolon/pages/panier/success_page.dart';
+import 'package:tolon/pages/jouets/rediger_avis.dart';
 
 import 'package:tolon/pages/catalogue/catalogue.dart';
 
@@ -32,6 +33,7 @@ enum AppRoutes {
   mesenfants,
   addEnfantAvatar,
   jouetDetail,
+  redigerAvis, // AJOUT
   addjouet,
   addEnfant,
   splash,
@@ -40,11 +42,9 @@ enum AppRoutes {
   register,
   home,
   catalogue,
-
   cart,
   checkout,
   success,
-
   orders,
   favorites,
   profile,
@@ -169,6 +169,18 @@ GoRouter appRouter(Ref ref) {
     final jouet = state.extra as JouetModel;
 
     return Jouetdetail(
+      jouet: jouet,
+    );
+  },
+),
+
+GoRoute(
+  path: '/redigerAvis',
+  name: AppRoutes.redigerAvis.name,
+  builder: (context, state) {
+    final jouet = state.extra as JouetModel;
+
+    return RedigerAvisPage(
       jouet: jouet,
     );
   },

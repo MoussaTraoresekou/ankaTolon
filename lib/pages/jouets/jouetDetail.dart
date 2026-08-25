@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tolon/controller/panier/panier_controller.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:tolon/cor/router/routes.dart';
 
 class Jouetdetail extends ConsumerStatefulWidget {
   final JouetModel jouet;
@@ -422,10 +423,11 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: () {
-              context.push(
-                '/detailJouet/${jouet.id}/avis',
-              );
-            },
+  context.pushNamed(
+    AppRoutes.redigerAvis.name,
+    extra: jouet,
+  );
+},
             icon: const Icon(
               Icons.edit_outlined,
             ),
