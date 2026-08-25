@@ -36,7 +36,6 @@ class InformationsPersonnelles extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // NOM
           _InformationItem(
             icon: Icons.person_rounded,
             titre: 'Nom',
@@ -45,7 +44,6 @@ class InformationsPersonnelles extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // EMAIL
           _InformationItem(
             icon: Icons.alternate_email_rounded,
             titre: 'Email',
@@ -56,7 +54,6 @@ class InformationsPersonnelles extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // TÉLÉPHONE
           _InformationItem(
             icon: Icons.phone_rounded,
             titre: 'Téléphone',
@@ -85,7 +82,6 @@ class _InformationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // ICÔNE VERTE
         Icon(
           icon,
           color: const Color(0xFF4D8A52),
@@ -94,19 +90,17 @@ class _InformationItem extends StatelessWidget {
         
         const SizedBox(width: 12),
 
-        // TITRE (Nom, Email, Téléphone - Texte normal)
         Text(
           titre,
           style: const TextStyle(
             fontSize: 15,
-            fontWeight: FontWeight.normal, // non gras
+            fontWeight: FontWeight.normal, 
             color: Colors.black87,
           ),
         ),
 
         const Spacer(),
 
-        // VALEUR ALIGNÉE À DROITE (Texte normal)
         Text(
           valeur,
           style: const TextStyle(

@@ -18,18 +18,17 @@ class BoutonDeconnexion extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.white,
           side: const BorderSide(
-            color: Color(0xFFE67E22), // Contour orange
+            color: Color(0xFFE67E22), 
             width: 1.5,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20), // Coins arrondis Figma
+            borderRadius: BorderRadius.circular(20), 
           ),
           elevation: 0,
         ),
         child: Row(
           children: [
             const SizedBox(width: 8),
-            // ICÔNE AVEC FLÈCHE TOURNÉE VERS LA GAUCHE
             Transform.flip(
               flipX: true,
               child: const Icon(

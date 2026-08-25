@@ -57,7 +57,6 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
 
                     const SizedBox(height: 20),
 
-                    // PROFIL PARENT (Centré)
                     if (profil.utilisateur != null)
                       ProfilHeader(
                         utilisateur: profil.utilisateur!,
@@ -65,7 +64,6 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
 
                     const SizedBox(height: 16),
 
-                    // BOUTON MODIFIER PROFIL
                     ModifierProfilButton(
                       utilisateur: profil.utilisateur,
                     ),
@@ -80,7 +78,6 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
 
                     const SizedBox(height: 16),
 
-                    // CARD CONTENEUR MES ENFANTS
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
@@ -129,7 +126,6 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
 
                     const SizedBox(height: 20),
 
-                    // BOUTON DÉCONNEXION
                     BoutonDeconnexion(
                       onPressed: () async {
                         await ref

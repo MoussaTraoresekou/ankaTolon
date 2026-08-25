@@ -24,7 +24,6 @@ class EnfantProfilCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final age = _calculerAge(enfant.naissance);
 
-    // Nettoyage de la chaîne de caractères du sexe
     final sexeTexte = enfant.sexe.trim();
 
     return Row(
@@ -50,7 +49,6 @@ class EnfantProfilCard extends StatelessWidget {
 
               const SizedBox(height: 6),
 
-              // BADGES : ÂGE ET SEXE
               Row(
                 children: [
                   // BADGE ÂGE

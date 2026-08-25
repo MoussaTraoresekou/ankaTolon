@@ -80,7 +80,6 @@ class ModifierProfilButton extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // EN-TÊTE DU BOTTOMSHEET
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -100,7 +99,6 @@ class ModifierProfilButton extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
-                    // Champ Prénom
                     TextFormField(
                       controller: prenomController,
                       decoration: InputDecoration(
@@ -118,7 +116,6 @@ class ModifierProfilButton extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    // Champ Nom
                     TextFormField(
                       controller: nomController,
                       decoration: InputDecoration(
@@ -136,7 +133,6 @@ class ModifierProfilButton extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    // Champ Téléphone
                     TextFormField(
                       controller: phoneController,
                       keyboardType: TextInputType.phone,
@@ -153,7 +149,6 @@ class ModifierProfilButton extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // BOUTON ENREGISTRER
                     SizedBox(
                       width: double.infinity,
                       height: 50,

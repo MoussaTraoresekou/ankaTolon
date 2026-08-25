@@ -21,12 +21,12 @@ class ProfilHeader extends StatelessWidget {
           height: 90,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Color.fromARGB(255, 230, 241, 228), // Orange très clair en fond
+            color: Color.fromARGB(255, 230, 241, 228), 
           ),
           child: const Icon(
             Icons.person,
             size: 55,
-            color: Color.fromARGB(255, 132, 134, 132), // Icône utilisateur orange
+            color: Color.fromARGB(255, 132, 134, 132), 
           ),
         ),
 
@@ -52,7 +52,7 @@ class ProfilHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF7CA982), // Vert doux conforme à la maquette
+            color: Color(0xFF7CA982), 
           ),
         ),
       ],
