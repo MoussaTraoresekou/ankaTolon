@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.keyboardType = TextInputType.text,
+    this.inputFormatters,
   });
 
   final String label;
@@ -26,6 +28,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +50,7 @@ class CustomTextField extends StatelessWidget {
           obscureText: isPassword,
           validator: validator,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
 
           style: AppStyles.normalTextStyle.copyWith(
             color: Colors.black87,
@@ -59,7 +63,6 @@ class CustomTextField extends StatelessWidget {
               color: Colors.black38,
             ),
 
-            // Icône à gauche
             prefixIcon: prefixIcon != null
                 ? Icon(
                     prefixIcon,
@@ -67,7 +70,6 @@ class CustomTextField extends StatelessWidget {
                   )
                 : null,
 
-            // Icône à droite
             suffixIcon: suffixIcon,
 
             filled: true,
@@ -115,3 +117,4 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
+

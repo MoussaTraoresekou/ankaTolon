@@ -17,7 +17,7 @@ class AppBottomNavigationBar extends StatefulWidget {
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [HomeScreen(), CataloguePage(), Page1(), Page2()];
+  final List<Widget> _pages = [HomeScreen(), CataloguePage(), Page1(), ProfileParent()];
   @override
   Widget build(BuildContext context) {
     return PopScope(

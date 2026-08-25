@@ -407,7 +407,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? jouet.image.first
                       : null,
                   onTap: () {
-                    context.pushNamed(AppRoutes.jouetDetail.name);
+                    context.pushNamed(AppRoutes.jouetDetail.name,extra:jouet);
                   },
                 ),
               );
