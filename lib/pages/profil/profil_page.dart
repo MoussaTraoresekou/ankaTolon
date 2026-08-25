@@ -6,6 +6,7 @@ import 'package:tolon/pages/profil/widget/enfant_profil_card.dart';
 import 'package:tolon/pages/profil/widget/informations_personnelles.dart';
 import 'package:tolon/pages/profil/widget/modifier_profil_button.dart';
 import 'package:tolon/pages/profil/widget/profil_header.dart';
+import 'package:tolon/repository/enfant/enfant_repository.dart';
 
 class ProfilPage extends ConsumerStatefulWidget {
   const ProfilPage({super.key});
@@ -26,6 +27,7 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
   @override
   Widget build(BuildContext context) {
     final profil = ref.watch(profilControllerProvider);
+    final enfantsAsync = ref.watch(enfantsStreamProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9FCF8), // Fond vert très clair / cassé
@@ -101,25 +103,46 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                             ),
                           ),
                           const SizedBox(height: 14),
-                          if (profil.enfants.isEmpty)
-                            const Center(
+                      enfantsAsync.when(
+                            data: (enfants) {
+                              if (enfants.isEmpty) {
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Text(
+                                      'Aucun enfant enregistré',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                );
+                              }
+                              return Column(
+                                children: enfants
+                                    .map(
+                                      (enfant) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: EnfantProfilCard(
+                                          enfant: enfant,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                            loading: () => const Center(
                               child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text(
-                                  'Aucun enfant enregistré',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                            )
-                          else
-                            ...profil.enfants.map(
-                              (enfant) => Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: EnfantProfilCard(
-                                  enfant: enfant,
+                                padding: EdgeInsets.all(12.0),
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFE67E22),
                                 ),
                               ),
                             ),
+                            error: (err, stack) => Text(
+                              'Erreur de chargement : $err',
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          ),
                         ],
                       ),
                     ),
