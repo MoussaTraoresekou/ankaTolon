@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
+import 'package:tolon/models/auth/user_modal.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 
@@ -17,6 +18,7 @@ import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/profil/profil_page.dart';
+import 'package:tolon/pages/parent/profilmodif.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
 
@@ -29,6 +31,7 @@ import 'package:tolon/pages/catalogue/catalogue.dart';
 part 'routes.g.dart';
 
 enum AppRoutes {
+  profilmodifaprent,
   profileEnfant,
   mesenfants,
   addEnfantAvatar,
@@ -164,14 +167,14 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const JouetForm(),
       ),
      GoRoute(
-  path: '/detailJouet',
-  name: AppRoutes.jouetDetail.name,
-  builder: (context, state) {
-    final jouet = state.extra as JouetModel;
+        path: '/detailJouet',
+        name: AppRoutes.jouetDetail.name,
+        builder: (context, state) {
+          final jouet = state.extra as JouetModel;
 
-    return Jouetdetail(
-      jouet: jouet,
-    );
+          return Jouetdetail(
+            jouet: jouet,
+          );
   },
 ),
       GoRoute(
