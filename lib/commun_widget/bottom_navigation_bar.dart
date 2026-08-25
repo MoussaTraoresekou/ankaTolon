@@ -6,6 +6,7 @@ import 'package:tolon/pages/page_to_delete.dart';
 import 'package:tolon/pages/page_to_delete2.dart';
 import 'package:tolon/pages/parent/home_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:tolon/pages/profil/profil_page.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({super.key});
@@ -17,7 +18,7 @@ class AppBottomNavigationBar extends StatefulWidget {
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [HomeScreen(), CataloguePage(), Page1(), Page2()];
+  final List<Widget> _pages = [HomeScreen(), CataloguePage(), Page1(), ProfilPage()];
   @override
   Widget build(BuildContext context) {
     return PopScope(

@@ -16,6 +16,7 @@ import 'package:tolon/pages/favoris/favoris_page.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
+import 'package:tolon/pages/profil/profil_page.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
 
@@ -212,6 +213,11 @@ GoRouter appRouter(Ref ref) {
         path: '/favorites',
         name: AppRoutes.favorites.name,
         builder: (context, state) => const FavorisPage(),
+      ),
+      GoRoute(
+        path: '/profile',
+        name: AppRoutes.profile.name,
+        builder: (context, state) => const ProfilPage(),
       ),
     ],
   );
