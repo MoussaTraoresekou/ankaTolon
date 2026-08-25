@@ -3,6 +3,10 @@ import 'package:go_router/go_router.dart';
 
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:tolon/models/avis/avis_model.dart';
+import 'package:tolon/repository/avis/avis_repository.dart';
 
 class RedigerAvisPage extends StatefulWidget {
   final JouetModel jouet;
@@ -17,11 +21,19 @@ class RedigerAvisPage extends StatefulWidget {
       _RedigerAvisPageState();
 }
 
-class _RedigerAvisPageState extends State<RedigerAvisPage> {
-  final TextEditingController _commentaireController =
+class _RedigerAvisPageState
+    extends State<RedigerAvisPage> {
+
+  final TextEditingController
+      _commentaireController =
       TextEditingController();
 
+  final AvisRepository _avisRepository =
+      AvisRepository();
+
   int _note = 5;
+
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -330,41 +342,60 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
             // ==================================================
 
             SizedBox(
-              width: double.infinity,
-              height: 52,
+  width: double.infinity,
+  height: 52,
 
-              child: ElevatedButton.icon(
-                onPressed: _publierAvis,
+  child: ElevatedButton.icon(
+    onPressed: _isLoading
+        ? null
+        : _publierAvis,
 
-                icon: const Icon(
-                  Icons.send_outlined,
-                ),
-
-                label: const Text(
-                  'Publier mon avis',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      AppStyles.primary,
-
-                  foregroundColor:
-                      Colors.white,
-
-                  elevation: 0,
-
-                  shape:
-                      RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(14),
-                  ),
-                ),
-              ),
+    icon: _isLoading
+        ? const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
             ),
+          )
+        : const Icon(
+            Icons.send_outlined,
+          ),
+
+    label: Text(
+      _isLoading
+          ? 'Publication...'
+          : 'Publier mon avis',
+
+      style: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+
+    style: ElevatedButton.styleFrom(
+      backgroundColor:
+          AppStyles.primary,
+
+      foregroundColor:
+          Colors.white,
+
+      disabledBackgroundColor:
+          AppStyles.primary.withValues(
+        alpha: 0.5,
+      ),
+
+      elevation: 0,
+
+      shape:
+          RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.circular(14),
+      ),
+    ),
+  ),
+),
           ],
         ),
       ),
@@ -375,45 +406,104 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
   // PUBLIER
   // ========================================================
 
-  void _publierAvis() {
-    final commentaire =
-        _commentaireController.text.trim();
+  Future<void> _publierAvis() async {
+  final commentaire =
+      _commentaireController.text.trim();
 
-    if (commentaire.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Veuillez écrire un commentaire.',
-          ),
-        ),
-      );
+  // ============================================
+  // VÉRIFICATION DU COMMENTAIRE
+  // ============================================
 
-      return;
-    }
-
-    // Pour le moment nous vérifions simplement
-    // que les données sont correctement récupérées.
-
-    debugPrint(
-      'Jouet : ${widget.jouet.id}',
-    );
-
-    debugPrint(
-      'Note : $_note',
-    );
-
-    debugPrint(
-      'Commentaire : $commentaire',
-    );
-
+  if (commentaire.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
-          'Votre avis est prêt à être publié.',
+          'Veuillez écrire un commentaire.',
         ),
       ),
     );
 
-    context.pop();
+    return;
   }
+
+  // ============================================
+  // UTILISATEUR CONNECTÉ
+  // ============================================
+
+  final user = FirebaseAuth.instance.currentUser;
+
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Vous devez être connecté pour publier un avis.',
+        ),
+      ),
+    );
+
+    return;
+  }
+
+  // ============================================
+  // ACTIVATION DU CHARGEMENT
+  // ============================================
+
+  setState(() {
+    _isLoading = true;
+  });
+
+  try {
+    // ==========================================
+    // CRÉATION DE L'AVIS
+    // ==========================================
+
+    final avis = AvisModel(
+      id: '',
+      userId: user.uid,
+      note: _note,
+      commentaire: commentaire,
+      date: DateTime.now(),
+    );
+
+    // ==========================================
+    // ENREGISTREMENT FIREBASE
+    // ==========================================
+
+    await _avisRepository.ajouterAvis(
+      jouetId: widget.jouet.id,
+      avis: avis,
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Votre avis a été publié avec succès !',
+        ),
+      ),
+    );
+
+    // Retour vers la page du jouet
+    context.pop();
+
+  } catch (e) {
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Erreur lors de la publication : $e',
+        ),
+      ),
+    );
+
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+}
 }
