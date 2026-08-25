@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/commun_widget/common_button.dart';
-import 'package:tolon/commun_widget/common_container_widget.dart';
 import 'package:tolon/commun_widget/custom_text_field.dart';
 import 'package:tolon/controller/auth/auth_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
@@ -10,8 +9,6 @@ import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/async_value_ui.dart';
 import 'package:tolon/cor/utils/size_config.dart';
 import 'package:flutter/gestures.dart';
-
-
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -21,7 +18,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _emailController    = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
@@ -53,20 +50,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
           child: SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 24,
-              ),
-              
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+
               child: Column(
                 children: [
-                   // Titre
+                  // Titre
                   Text(
                     'Connexion',
                     style: AppStyles.headingTextStyle.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w800,
-                      fontSize: 30
+                      fontSize: 30,
                     ),
                   ),
 
@@ -85,11 +79,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     style: AppStyles.titleTextStyle.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w800,
-                      fontSize: 15
+                      fontSize: 15,
                     ),
                   ),
-
-                  const SizedBox(height: 16),
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
                   // Email
                   CustomTextField(
@@ -98,7 +90,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
                     prefixIcon: Icons.send_outlined,
-                  
                   ),
 
                   SizedBox(height: SizeConfig.getProportionateHeight(16)),
@@ -121,7 +112,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ref
                           .read(authControllerProvider.notifier)
                           .signInWithEmailAndPassword(
-                            email:    _emailController.text.trim(),
+                            email: _emailController.text.trim(),
                             password: _passwordController.text.trim(),
                           );
                     },
@@ -131,32 +122,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   SizedBox(height: SizeConfig.getProportionateHeight(20)),
                   SizedBox(height: SizeConfig.getProportionateHeight(20)),
                   RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Pas de compte ? ',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                            ),
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Pas de compte ? ',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black87,
                           ),
-                          TextSpan(
-                            text: "S'inscrire",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF0066CC),
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                context.goNamed(AppRoutes.register.name);
-                              },
+                        ),
+                        TextSpan(
+                          text: "S'inscrire",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF0066CC),
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
                           ),
-                        ],
-                      ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.goNamed(AppRoutes.register.name);
+                            },
+                        ),
+                      ],
                     ),
-                  
+                  ),
                 ],
               ),
             ),
@@ -166,6 +156,3 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
-
-
-
