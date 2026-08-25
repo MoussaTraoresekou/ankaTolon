@@ -13,6 +13,7 @@ import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
+import 'package:tolon/pages/favoris/favoris_page.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
@@ -25,7 +26,6 @@ import 'package:tolon/pages/panier/checkout_page.dart';
 import 'package:tolon/pages/panier/success_page.dart';
 
 import 'package:tolon/pages/catalogue/catalogue.dart';
-
 
 part 'routes.g.dart';
 
@@ -212,11 +212,10 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const CataloguePage(),
       ),
       GoRoute(
-          path: '/profilmodifaprent',
-          name: AppRoutes.profilmodifaprent.name,
-          builder: (context, state) => const ModifierProfilParent()
-     ),
-      
+        path: '/favorites',
+        name: AppRoutes.favorites.name,
+        builder: (context, state) => const FavorisPage(),
+      ),
     ],
   );
 }
