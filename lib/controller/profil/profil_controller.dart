@@ -70,10 +70,10 @@ void initialiserProfil() {
           .map((doc) => EnfantModel.fromJson(doc.data(), doc.id))
           .toList();
 
-      // 3. Mettre à jour l'état AVEC l'utilisateur ET les enfants
+      //  Mettre à jour l'état AVEC l'utilisateur ET les enfants
       state = state.copyWith(
         utilisateur: user,
-        enfants: listeEnfants, // 👈 Conserve la liste des enfants
+        enfants: listeEnfants, 
         chargement: false,
       );
     }
