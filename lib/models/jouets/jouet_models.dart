@@ -24,6 +24,7 @@ class JouetModel {
     required int ageMin,
     required double noteMoyen,
     required DocumentReference? categorieId,
+    DateTime? dateAjout, 
   }) {
     return JouetModel(
       id: id,

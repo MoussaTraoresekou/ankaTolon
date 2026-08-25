@@ -50,16 +50,30 @@ void initialiserProfil() {
 
   state = state.copyWith(chargement: true);
 
-  // Écoute en direct du document utilisateur
+  //  Écouter l'utilisateur en temps réel
   FirebaseFirestore.instance
       .collection('users')
       .doc(uid)
       .snapshots()
-      .listen((snapshot) {
+      .listen((snapshot) async {
     if (snapshot.exists && snapshot.data() != null) {
       final user = UserModel.fromJson(snapshot.data()!, snapshot.id);
+
+      //  Charger les enfants correspondant à cet utilisateur
+      final enfantsSnapshot = await FirebaseFirestore.instance
+          .collection('users') 
+          .doc(uid)
+          .collection('enfants') 
+          .get();
+
+      final listeEnfants = enfantsSnapshot.docs
+          .map((doc) => EnfantModel.fromJson(doc.data(), doc.id))
+          .toList();
+
+      // 3. Mettre à jour l'état AVEC l'utilisateur ET les enfants
       state = state.copyWith(
         utilisateur: user,
+        enfants: listeEnfants, // 👈 Conserve la liste des enfants
         chargement: false,
       );
     }
