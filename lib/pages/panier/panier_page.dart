@@ -17,12 +17,25 @@ class PanierPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppStyles.bgColor,
+
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xFFF8FAF8),
+      //   elevation: 0,
+      //   title: const Text(
+      //     'Catalogue de jouets',
+      //     style: TextStyle(
+      //       fontSize: 18,
+      //       fontWeight: FontWeight.w700,
+      //       color: Color(0xFF171717),
+      //     ),
+      //   ),
+      // ),
       appBar: AppBar(
         title: const Text("Mon panier"),
         backgroundColor: AppStyles.bgColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(), // Retour fluide
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
+          onPressed: () => context.pop(),
         ),
       ),
       body: panier.items.isEmpty
@@ -146,12 +159,12 @@ class PanierPage extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
                       PrimaryButton(
                         label: "Passer commande",
-                        onPressed: () =>
-                            context.push('/checkout'), // Push pour fluidité
+                        onPressed: () => context.push('/checkout'),
                       ),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
