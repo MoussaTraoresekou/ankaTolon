@@ -6,6 +6,7 @@ import 'package:tolon/pages/page_to_delete.dart';
 import 'package:tolon/pages/page_to_delete2.dart';
 import 'package:tolon/pages/parent/home_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:tolon/pages/profil/profil_page.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({super.key});

@@ -24,6 +24,7 @@ class JouetModel {
     required int ageMin,
     required double noteMoyen,
     required DocumentReference? categorieId,
+    DateTime? dateAjout, 
   }) {
     return JouetModel(
       id: id,
@@ -55,8 +56,13 @@ class JouetModel {
       description: json['description'] ?? '',
       image: List<String>.from(json['image'] ?? []),
       nomJouet: json['nom_jouet'] ?? '',
-      noteMoyen: (json['note_moyen'] ?? 0).toDouble(),
-      prix: (json['prix'] ?? 0).toDouble(),
+      // noteMoyen: (json['note_moyen'] ?? 0).toDouble(),
+      noteMoyen: double.tryParse(
+  (json['note_moyen'] ?? 0).toString(),
+) ?? 0.0,
+
+      // prix: (json['prix'] ?? 0).toDouble(),
+      prix: double.tryParse( (json['prix'] ?? 0).toString(),) ?? 0.0,
     );
   }
 
