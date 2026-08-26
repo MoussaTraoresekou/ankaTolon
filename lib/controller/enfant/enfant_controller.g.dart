@@ -20,7 +20,7 @@ final class EnfantControllerProvider
         argument: null,
         retry: null,
         name: r'enfantControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -33,7 +33,7 @@ final class EnfantControllerProvider
   EnfantController create() => EnfantController();
 }
 
-String _$enfantControllerHash() => r'd2bb4727b9872f7d1887e5b7222f65dec6b09c19';
+String _$enfantControllerHash() => r'53beb43fc558e0e95ed2f865e45dabd9fcc778a8';
 
 abstract class _$EnfantController extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -52,44 +52,3 @@ abstract class _$EnfantController extends $AsyncNotifier<void> {
     return element.handleCreate(ref, build);
   }
 }
-
-@ProviderFor(enfantsStream)
-final enfantsStreamProvider = EnfantsStreamProvider._();
-
-final class EnfantsStreamProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<EnfantModel>>,
-          List<EnfantModel>,
-          Stream<List<EnfantModel>>
-        >
-    with
-        $FutureModifier<List<EnfantModel>>,
-        $StreamProvider<List<EnfantModel>> {
-  EnfantsStreamProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'enfantsStreamProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$enfantsStreamHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<List<EnfantModel>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<EnfantModel>> create(Ref ref) {
-    return enfantsStream(ref);
-  }
-}
-
-String _$enfantsStreamHash() => r'cd9b6228e6c360af6d35f9bdb3487fa081cf8f33';

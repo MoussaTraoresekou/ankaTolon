@@ -67,7 +67,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/onboarding/
-    - assets/images/JouetHeader.png
 
   fonts:
     - family: Inter
