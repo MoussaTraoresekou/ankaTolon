@@ -62,13 +62,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   context.pushNamed(AppRoutes.favorites.name);
                 },
               ),
-              _buildSectionTitle(
-                'Mes Favoris',
-                'Voir tous les favoris',
-                onTap: () {
-                  context.pushNamed(AppRoutes.favorites.name);
-                },
-              ),
               const SizedBox(height: 12),
               _buildFavoritesList(),
               const SizedBox(height: 20),
