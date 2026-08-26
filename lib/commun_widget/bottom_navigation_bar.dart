@@ -28,7 +28,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       body: _pages[_selectedIndex],
       extendBody: true,
       bottomNavigationBar: CurvedNavigationBar(
-        height: 60,
+        height: 70,
         index: _selectedIndex,
         color: AppStyles.navbarColor,
         backgroundColor: Colors.transparent,

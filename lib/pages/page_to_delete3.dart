@@ -11,7 +11,7 @@ class _Page3State extends State<Page3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("page3"),),
+      body: Center(child: Text("Page de profil bientot disponible (°_°)", style: TextStyle(fontSize: 22),),),
     );
   }
 }
