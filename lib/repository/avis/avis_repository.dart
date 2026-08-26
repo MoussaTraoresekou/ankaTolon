@@ -15,17 +15,31 @@ class AvisRepository {
   // ==================================================
 
   Future<void> ajouterAvis({
-    required String jouetId,
-    required AvisModel avis,
-  }) async {
-    await _firestore
-        .collection('jouets')
-        .doc(jouetId)
-        .collection('avis')
-        .add(
-          avis.toFirestore(),
-        );
+  required String jouetId,
+  required AvisModel avis,
+}) async {
+  final jouetRef = _firestore.collection('jouets').doc(jouetId);
+  final avisRef = jouetRef.collection('avis');
+
+  // Ajouter l'avis
+  await avisRef.add(avis.toFirestore());
+
+  // Recalculer la note moyenne
+  final snapshot = await avisRef.get();
+  if (snapshot.docs.isEmpty) {
+    await jouetRef.update({'note_moyen': 0.0});
+    return;
   }
+
+  double total = 0;
+  for (final doc in snapshot.docs) {
+    final data = doc.data();
+    total += (data['note'] ?? 0).toDouble();
+  }
+  final moyenne = total / snapshot.docs.length;
+
+  await jouetRef.update({'note_moyen': moyenne});
+}
 
   // ==================================================
   // RÉCUPÉRER LES AVIS
