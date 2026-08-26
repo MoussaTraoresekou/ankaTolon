@@ -30,6 +30,13 @@ import 'package:tolon/pages/profil/profil_page.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
 
+import 'package:tolon/pages/panier/panier_page.dart';
+import 'package:tolon/pages/panier/checkout_page.dart';
+import 'package:tolon/pages/panier/success_page.dart';
+import 'package:tolon/pages/jouets/rediger_avis.dart';
+
+import 'package:tolon/pages/catalogue/catalogue.dart';
+
 part 'routes.g.dart';
 
 enum AppRoutes {
@@ -37,6 +44,7 @@ enum AppRoutes {
   mesenfants,
   addEnfantAvatar,
   jouetDetail,
+  redigerAvis, // AJOUT
   addjouet,
   addEnfant,
   splash,
@@ -169,14 +177,29 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.addjouet.name,
         builder: (context, state) => const JouetForm(),
       ),
-      GoRoute(
-        path: '/detailJouet',
-        name: AppRoutes.jouetDetail.name,
-        builder: (context, state) {
-          final jouet = state.extra as JouetModel;
-          return Jouetdetail(jouet: jouet);
-        },
-      ),
+     GoRoute(
+  path: '/detailJouet',
+  name: AppRoutes.jouetDetail.name,
+  builder: (context, state) {
+    final jouet = state.extra as JouetModel;
+
+    return Jouetdetail(
+      jouet: jouet,
+    );
+  },
+),
+
+GoRoute(
+  path: '/redigerAvis',
+  name: AppRoutes.redigerAvis.name,
+  builder: (context, state) {
+    final jouet = state.extra as JouetModel;
+
+    return RedigerAvisPage(
+      jouet: jouet,
+    );
+  },
+),
       GoRoute(
         path: '/listEnfants',
         name: AppRoutes.listEnfants.name,

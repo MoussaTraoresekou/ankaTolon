@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:tolon/controller/panier/panier_controller.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
+import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:tolon/repository/avis/avis_repository.dart';
 
 class Jouetdetail extends ConsumerStatefulWidget {
   final JouetModel jouet;
@@ -19,7 +23,18 @@ class Jouetdetail extends ConsumerStatefulWidget {
       _JouetdetailState();
 }
 
-class _JouetdetailState extends ConsumerState<Jouetdetail> {
+class _JouetdetailState
+    extends ConsumerState<Jouetdetail> {
+
+  final AvisRepository _avisRepository =
+      AvisRepository();
+
+  int _selectedImage = 0;
+
+  // ==========================================================
+  // BUILD
+  // ==========================================================
+
   @override
   Widget build(BuildContext context) {
     final jouet = widget.jouet;
@@ -27,335 +42,428 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     final panier = ref.watch(panierProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: const Color(0xFFF7F8F5),
 
-      appBar: AppBar(
-        backgroundColor: AppStyles.bgColor,
-        elevation: 0,
+      body: Stack(
+        children: [
 
-        leading: IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: AppStyles.textDark,
+          // ====================================================
+          // CONTENU PRINCIPAL
+          // ====================================================
+
+          CustomScrollView(
+            physics:
+                const BouncingScrollPhysics(),
+
+            slivers: [
+
+              // ==================================================
+              // GALERIE
+              // ==================================================
+
+              SliverToBoxAdapter(
+                child: _buildProductHeader(
+                  jouet,
+                  panier.totalQuantity,
+                ),
+              ),
+
+              // ==================================================
+              // INFORMATIONS PRODUIT
+              // ==================================================
+
+              SliverToBoxAdapter(
+                child: _buildProductInformation(
+                  jouet,
+                ),
+              ),
+
+              // ==================================================
+              // DESCRIPTION / BENEFICES
+              // ==================================================
+
+              SliverToBoxAdapter(
+                child: _buildDetailsSection(
+                  jouet,
+                ),
+              ),
+
+              // ==================================================
+              // AVIS
+              // ==================================================
+
+              SliverToBoxAdapter(
+                child: _buildReviewsSection(
+                  jouet,
+                ),
+              ),
+
+              // ==================================================
+              // ESPACE POUR LA BARRE DU BAS
+              // ==================================================
+
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 130,
+                ),
+              ),
+            ],
           ),
-        ),
 
-        title: const Text(
-          'Détail du jouet',
-          style: AppStyles.titleTextStyle,
-        ),
+          // ====================================================
+          // BARRE D'ACHAT FIXE
+          // ====================================================
 
-        actions: [
-          _buildCartIcon(panier.totalQuantity),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _buildBottomPurchaseBar(
+              jouet,
+            ),
+          ),
         ],
       ),
+    );
+  }
 
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-          bottom: 110,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+  // ==========================================================
+  // HEADER / GALERIE
+  // ==========================================================
 
-            // ==========================================
-            // IMAGE
-            // ==========================================
+  Widget _buildProductHeader(
+    JouetModel jouet,
+    int quantity,
+  ) {
+    return SizedBox(
+      height: 410,
+      child: Stack(
+        children: [
 
-            _buildImage(jouet),
+          // ====================================================
+          // IMAGE PRINCIPALE
+          // ====================================================
 
-            const SizedBox(height: 20),
+          Container(
+            height: 355,
+            width: double.infinity,
 
-            // ==========================================
-            // INFORMATIONS
-            // ==========================================
+            decoration: BoxDecoration(
+              color: AppStyles.primarySoft,
 
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
+              borderRadius:
+                  const BorderRadius.only(
+                bottomLeft:
+                    Radius.circular(40),
+                bottomRight:
+                    Radius.circular(40),
               ),
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
+            ),
 
-                  Text(
-                    jouet.nomJouet,
-                    style: const TextStyle(
-                      fontFamily: 'Quicksand',
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppStyles.textDark,
+            child: jouet.image.isEmpty
+                ? const Center(
+                    child: Icon(
+                      Icons
+                          .image_not_supported_outlined,
+                      size: 80,
+                      color: Colors.grey,
                     ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        color: Color(0xFFFFC400),
-                        size: 22,
-                      ),
-
-                      const SizedBox(width: 5),
-
-                      Text(
-                        jouet.noteMoyen
-                            .toStringAsFixed(1),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-
-                      const SizedBox(width: 15),
-
-                      Container(
-                        padding:
-                            const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppStyles.primarySoft,
-                          borderRadius:
-                              BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          '${jouet.ageMin}-${jouet.ageMax} ans',
-                          style: const TextStyle(
-                            color: AppStyles.primary,
-                            fontSize: 12,
-                            fontWeight:
-                                FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  Text(
-                    '${jouet.prix.toStringAsFixed(0)} FCFA',
-                    style: const TextStyle(
-                      color: AppStyles.primary,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 25),
-
-                  // ======================================
-                  // DESCRIPTION
-                  // ======================================
-
-                  const Text(
-                    'Description',
-                    style: AppStyles.headingTextStyle,
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  Text(
-                    jouet.description.isNotEmpty
-                        ? jouet.description
-                        : 'Aucune description disponible.',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      height: 1.6,
-                      color: AppStyles.textMuted,
-                    ),
-                  ),
-
-                  const SizedBox(height: 25),
-
-                  // ======================================
-                  // BENEFICES
-                  // ======================================
-
-                  if (jouet.benefices.isNotEmpty) ...[
-                    const Text(
-                      'Bénéfices pédagogiques',
-                      style: AppStyles.headingTextStyle,
+                  )
+                : ClipRRect(
+                    borderRadius:
+                        const BorderRadius.only(
+                      bottomLeft:
+                          Radius.circular(40),
+                      bottomRight:
+                          Radius.circular(40),
                     ),
 
-                    const SizedBox(height: 10),
+                    child: PageView.builder(
+                      itemCount:
+                          jouet.image.length,
 
-                    ...jouet.benefices.map(
-                      (benefice) {
-                        return Padding(
-                          padding:
-                              const EdgeInsets.only(
-                            bottom: 8,
-                          ),
-                          child: Row(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
-                              const Icon(
-                                Icons.check_circle,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _selectedImage =
+                              index;
+                        });
+                      },
+
+                      itemBuilder:
+                          (context, index) {
+                        return Image.network(
+                          jouet.image[index],
+
+                          fit: BoxFit.cover,
+
+                          errorBuilder:
+                              (
+                            context,
+                            error,
+                            stackTrace,
+                          ) {
+                            return const Center(
+                              child: Icon(
+                                Icons
+                                    .image_not_supported_outlined,
+                                size: 70,
+                                color:
+                                    Colors.grey,
+                              ),
+                            );
+                          },
+
+                          loadingBuilder:
+                              (
+                            context,
+                            child,
+                            progress,
+                          ) {
+                            if (progress ==
+                                null) {
+                              return child;
+                            }
+
+                            return const Center(
+                              child:
+                                  CircularProgressIndicator(
                                 color:
                                     AppStyles.primary,
-                                size: 20,
                               ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  benefice,
-                                  style:
-                                      const TextStyle(
-                                    fontSize: 14,
-                                    height: 1.4,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         );
                       },
                     ),
-                  ],
-
-                  const SizedBox(height: 30),
-
-                  // ======================================
-                  // AVIS
-                  // ======================================
-
-                  _buildReviewsSection(
-                    jouet,
                   ),
-                ],
+          ),
+
+          // ====================================================
+          // GRADIENT PAR-DESSUS L'IMAGE
+          // ====================================================
+
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 120,
+
+              decoration:
+                  const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(
+                      0x66000000,
+                    ),
+                    Colors.transparent,
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
-
-      // ================================================
-      // BOUTON PANIER
-      // ================================================
-
-      bottomNavigationBar: _buildAddToCartButton(
-        jouet,
-      ),
-    );
-  }
-
-  // ====================================================
-  // IMAGE
-  // ====================================================
-
-  Widget _buildImage(JouetModel jouet) {
-    if (jouet.image.isEmpty) {
-      return Container(
-        height: 280,
-        width: double.infinity,
-        color: AppStyles.primarySoft,
-        child: const Icon(
-          Icons.image_not_supported,
-          size: 80,
-          color: Colors.grey,
-        ),
-      );
-    }
-
-    return Container(
-      height: 280,
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-      decoration: BoxDecoration(
-        color: AppStyles.primarySoft,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Image.network(
-        jouet.image.first,
-        fit: BoxFit.cover,
-
-        loadingBuilder:
-            (context, child, progress) {
-          if (progress == null) {
-            return child;
-          }
-
-          return const Center(
-            child: CircularProgressIndicator(
-              color: AppStyles.primary,
-            ),
-          );
-        },
-
-        errorBuilder:
-            (context, error, stackTrace) {
-          return const Center(
-            child: Icon(
-              Icons.image_not_supported,
-              size: 70,
-              color: Colors.grey,
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  // ====================================================
-  // ICONE PANIER
-  // ====================================================
-
-  Widget _buildCartIcon(int quantity) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: 15,
-      ),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-
-          IconButton(
-            onPressed: () {
-              context.push('/cart');
-            },
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-              color: AppStyles.textDark,
-              size: 27,
             ),
           ),
 
-          if (quantity > 0)
-            Positioned(
-              right: 2,
-              top: 0,
-              child: Container(
-                width: 20,
-                height: 20,
-                decoration:
-                    const BoxDecoration(
-                  color: AppStyles.badgeRed,
-                  shape: BoxShape.circle,
+          // ====================================================
+          // BOUTON RETOUR
+          // ====================================================
+
+          Positioned(
+            top: 48,
+            left: 20,
+
+            child: _buildCircleButton(
+              icon: Icons.arrow_back_ios_new,
+              onTap: () {
+                context.pop();
+              },
+            ),
+          ),
+
+          // ====================================================
+          // FAVORIS
+          // ====================================================
+
+          Positioned(
+            top: 48,
+            right: 70,
+
+            child: _buildCircleButton(
+              icon: Icons.favorite_border,
+              onTap: () {
+                // On pourra connecter
+                // cette action à Firebase
+                // favoris ensuite.
+              },
+            ),
+          ),
+
+          // ====================================================
+          // PANIER
+          // ====================================================
+
+          Positioned(
+            top: 48,
+            right: 20,
+
+            child: Stack(
+              clipBehavior:
+                  Clip.none,
+
+              children: [
+
+                _buildCircleButton(
+                  icon:
+                      Icons.shopping_bag_outlined,
+                  onTap: () {
+                    context.push('/cart');
+                  },
                 ),
-                child: Center(
-                  child: Text(
-                    '$quantity',
-                    style:
-                        const TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight:
-                          FontWeight.bold,
+
+                if (quantity > 0)
+                  Positioned(
+                    right: -2,
+                    top: -4,
+
+                    child: Container(
+                      width: 20,
+                      height: 20,
+
+                      decoration:
+                          const BoxDecoration(
+                        color:
+                            AppStyles.badgeRed,
+                        shape:
+                            BoxShape.circle,
+                      ),
+
+                      child: Center(
+                        child: Text(
+                          '$quantity',
+
+                          style:
+                              const TextStyle(
+                            color:
+                                Colors.white,
+                            fontSize: 10,
+                            fontWeight:
+                                FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
+              ],
+            ),
+          ),
+
+          // ====================================================
+          // MINIATURES
+          // ====================================================
+
+          if (jouet.image.length > 1)
+            Positioned(
+              left: 20,
+              bottom: 15,
+              right: 20,
+
+              child: SizedBox(
+                height: 65,
+
+                child: ListView.separated(
+                  scrollDirection:
+                      Axis.horizontal,
+
+                  itemCount:
+                      jouet.image.length,
+
+                  separatorBuilder:
+                      (_, __) =>
+                          const SizedBox(
+                    width: 10,
+                  ),
+
+                  itemBuilder:
+                      (context, index) {
+
+                    final selected =
+                        _selectedImage ==
+                            index;
+
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedImage =
+                              index;
+                        });
+                      },
+
+                      child: AnimatedContainer(
+                        duration:
+                            const Duration(
+                          milliseconds: 200,
+                        ),
+
+                        width: 65,
+                        height: 65,
+
+                        padding:
+                            const EdgeInsets.all(
+                          3,
+                        ),
+
+                        decoration:
+                            BoxDecoration(
+                          color:
+                              Colors.white,
+
+                          borderRadius:
+                              BorderRadius
+                                  .circular(
+                            14,
+                          ),
+
+                          border: Border.all(
+                            color: selected
+                                ? AppStyles
+                                    .primary
+                                : Colors
+                                    .transparent,
+
+                            width: 2,
+                          ),
+
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors
+                                  .black
+                                  .withValues(
+                                alpha: 0.08,
+                              ),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+
+                        child: ClipRRect(
+                          borderRadius:
+                              BorderRadius
+                                  .circular(
+                            11,
+                          ),
+
+                          child:
+                              Image.network(
+                            jouet.image[
+                                index],
+
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -364,164 +472,830 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ====================================================
+  // ==========================================================
+  // BOUTON CERCLE
+  // ==========================================================
+
+  Widget _buildCircleButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.white,
+      elevation: 4,
+
+      shadowColor:
+          Colors.black.withValues(
+        alpha: 0.15,
+      ),
+
+      shape: const CircleBorder(),
+
+      child: InkWell(
+        onTap: onTap,
+
+        customBorder:
+            const CircleBorder(),
+
+        child: SizedBox(
+          width: 46,
+          height: 46,
+
+          child: Icon(
+            icon,
+            size: 21,
+            color: AppStyles.textDark,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ==========================================================
+  // INFORMATIONS PRODUIT
+  // ==========================================================
+
+  Widget _buildProductInformation(
+    JouetModel jouet,
+  ) {
+    return Padding(
+      padding:
+          const EdgeInsets.fromLTRB(
+        20,
+        5,
+        20,
+        0,
+      ),
+
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+
+        children: [
+
+          // ====================================================
+          // BADGE AGE
+          // ====================================================
+
+          Container(
+            padding:
+                const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 7,
+            ),
+
+            decoration: BoxDecoration(
+              color:
+                  AppStyles.primarySoft,
+
+              borderRadius:
+                  BorderRadius.circular(
+                20,
+              ),
+            ),
+
+            child: Text(
+              '${jouet.ageMin} - ${jouet.ageMax} ans',
+
+              style: const TextStyle(
+                color:
+                    AppStyles.primary,
+                fontWeight:
+                    FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // ====================================================
+          // NOM
+          // ====================================================
+
+          Text(
+            jouet.nomJouet,
+
+            style: const TextStyle(
+              fontFamily: 'Quicksand',
+              fontSize: 28,
+              fontWeight:
+                  FontWeight.w700,
+              color:
+                  AppStyles.textDark,
+              height: 1.15,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // ====================================================
+          // NOTE
+          // ====================================================
+
+          Container(
+  padding: const EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 6,
+  ),
+  
+),
+
+          // ====================================================
+          // PRIX
+          // ====================================================
+
+          Row(
+            crossAxisAlignment:
+                CrossAxisAlignment.end,
+
+            children: [
+
+              Text(
+                jouet.prix
+                    .toStringAsFixed(0),
+
+                style: const TextStyle(
+                  fontFamily: 'Quicksand',
+                  fontSize: 30,
+                  fontWeight:
+                      FontWeight.w700,
+                  color:
+                      AppStyles.primary,
+                ),
+              ),
+
+              const SizedBox(width: 7),
+
+              const Padding(
+                padding:
+                    EdgeInsets.only(
+                  bottom: 5,
+                ),
+
+                child: Text(
+                  'FCFA',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight:
+                        FontWeight.w600,
+                    color:
+                        AppStyles.textMuted,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          // ====================================================
+          // SÉPARATEUR
+          // ====================================================
+
+          Container(
+            height: 1,
+            color: Colors.black
+                .withValues(alpha: 0.06),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================================
+  // DESCRIPTION / BENEFICES
+  // ==========================================================
+
+  Widget _buildDetailsSection(
+    JouetModel jouet,
+  ) {
+    return Padding(
+      padding:
+          const EdgeInsets.fromLTRB(
+        20,
+        25,
+        20,
+        0,
+      ),
+
+      child: Container(
+        width: double.infinity,
+
+        padding:
+            const EdgeInsets.all(20),
+
+        decoration: BoxDecoration(
+          color: Colors.white,
+
+          borderRadius:
+              BorderRadius.circular(24),
+
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black
+                  .withValues(
+                alpha: 0.04,
+              ),
+
+              blurRadius: 15,
+
+              offset:
+                  const Offset(0, 5),
+            ),
+          ],
+        ),
+
+        child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
+
+          children: [
+
+            // ==================================================
+            // TITRE
+            // ==================================================
+
+            const Row(
+              children: [
+
+                Icon(
+                  Icons.auto_awesome,
+                  color:
+                      AppStyles.primary,
+                  size: 22,
+                ),
+
+                SizedBox(width: 8),
+
+                Text(
+                  'À propos de ce jeu',
+                  style: TextStyle(
+                    fontFamily:
+                        'Quicksand',
+                    fontSize: 19,
+                    fontWeight:
+                        FontWeight.bold,
+                    color:
+                        AppStyles.textDark,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 18),
+
+            // ==================================================
+            // DESCRIPTION
+            // ==================================================
+
+            Text(
+              jouet.description.isNotEmpty
+                  ? jouet.description
+                  : 'Aucune description disponible pour le moment.',
+
+              style: const TextStyle(
+                fontSize: 14,
+                height: 1.7,
+                color:
+                    AppStyles.textMuted,
+              ),
+            ),
+
+            // ==================================================
+            // BENEFICES
+            // ==================================================
+
+            if (jouet.benefices.isNotEmpty) ...[
+              const SizedBox(height: 25),
+
+              const Text(
+                'Ce que votre enfant va développer',
+                style: TextStyle(
+                  fontFamily:
+                      'Quicksand',
+                  fontSize: 17,
+                  fontWeight:
+                      FontWeight.bold,
+                  color:
+                      AppStyles.textDark,
+                ),
+              ),
+
+              const SizedBox(height: 14),
+
+              ...jouet.benefices
+                  .asMap()
+                  .entries
+                  .map(
+                (entry) {
+
+                  return _buildBenefitItem(
+                    entry.value,
+                  );
+                },
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ==========================================================
+  // BENEFICE
+  // ==========================================================
+
+  Widget _buildBenefitItem(
+    String text,
+  ) {
+    return Container(
+      width: double.infinity,
+
+      margin:
+          const EdgeInsets.only(
+        bottom: 10,
+      ),
+
+      padding:
+          const EdgeInsets.all(13),
+
+      decoration: BoxDecoration(
+        color:
+            const Color(0xFFF8FAF7),
+
+        borderRadius:
+            BorderRadius.circular(
+          15,
+        ),
+      ),
+
+      child: Row(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+
+        children: [
+
+          Container(
+            width: 30,
+            height: 30,
+
+            decoration:
+                const BoxDecoration(
+              color:
+                  AppStyles.primarySoft,
+              shape:
+                  BoxShape.circle,
+            ),
+
+            child: const Icon(
+              Icons.check,
+              size: 17,
+              color:
+                  AppStyles.primary,
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          Expanded(
+            child: Text(
+              text,
+
+              style: const TextStyle(
+                fontSize: 13,
+                height: 1.4,
+                color:
+                    AppStyles.textDark,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================================
   // AVIS
-  // ====================================================
+  // ==========================================================
 
   Widget _buildReviewsSection(
     JouetModel jouet,
   ) {
-    return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
-      children: [
+    return Padding(
+      padding:
+          const EdgeInsets.fromLTRB(
+        20,
+        25,
+        20,
+        0,
+      ),
 
-        Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
-          children: [
-
-            const Text(
-              'Avis',
-              style: AppStyles.headingTextStyle,
-            ),
-
-            Text(
-              '${jouet.noteMoyen.toStringAsFixed(1)} ⭐',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppStyles.textDark,
-              ),
-            ),
-          ],
+      child: StreamBuilder<List<AvisModel>>(
+        stream:
+            _avisRepository.recupererAvis(
+          jouet.id,
         ),
 
-        const SizedBox(height: 15),
+        builder:
+            (context, snapshot) {
 
-        // Avis temporaire
-        // Nous allons ensuite remplacer
-        // cette partie par Firestore.
+          if (snapshot.connectionState ==
+              ConnectionState.waiting) {
+            return _buildReviewsLoading();
+          }
 
-        _buildReviewCard(
-          name: 'Aminata',
-          rating: 5,
-          comment:
-              'Mon enfant adore ce jeu ! Très amusant et éducatif.',
-        ),
+          if (snapshot.hasError) {
+            return _buildReviewsError(
+              jouet,
+            );
+          }
 
-        _buildReviewCard(
-          name: 'Moussa',
-          rating: 4,
-          comment:
-              'Très bon jeu, mon enfant passe beaucoup de temps dessus.',
-        ),
+          final avis =
+              snapshot.data ?? [];
 
-        const SizedBox(height: 10),
+          double moyenne =
+              jouet.noteMoyen;
 
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () {
-              context.push(
-                '/detailJouet/${jouet.id}/avis',
-              );
-            },
-            icon: const Icon(
-              Icons.edit_outlined,
-            ),
-            label: const Text(
-              'Rédiger un avis',
-            ),
-            style: OutlinedButton.styleFrom(
-              foregroundColor:
-                  AppStyles.primary,
-              side: const BorderSide(
-                color: AppStyles.primary,
+          if (avis.isNotEmpty) {
+            final total =
+                avis.fold<int>(
+              0,
+              (sum, item) =>
+                  sum + item.note,
+            );
+
+            moyenne =
+                total / avis.length;
+          }
+
+          return Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+
+            children: [
+
+              // ==================================================
+              // TITRE
+              // ==================================================
+
+              const Text(
+                'Avis des parents',
+                style: TextStyle(
+                  fontFamily:
+                      'Quicksand',
+                  fontSize: 22,
+                  fontWeight:
+                      FontWeight.bold,
+                  color:
+                      AppStyles.textDark,
+                ),
               ),
-              padding:
-                  const EdgeInsets.symmetric(
-                vertical: 14,
+
+              const SizedBox(height: 15),
+
+              // ==================================================
+              // RÉSUMÉ NOTE
+              // ==================================================
+
+              _buildRatingSummary(
+                moyenne,
+                avis.length,
               ),
-              shape:
-                  RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(12),
+
+              const SizedBox(height: 20),
+
+              // ==================================================
+              // AVIS
+              // ==================================================
+
+              if (avis.isEmpty)
+
+                _buildEmptyReviews()
+
+              else
+
+                ...avis.map(
+                  (avisItem) {
+                    return _buildReviewCard(
+                      avis: avisItem,
+                    );
+                  },
+                ),
+
+              const SizedBox(height: 5),
+
+              // ==================================================
+              // REDIGER UN AVIS
+              // ==================================================
+
+              _buildWriteReviewButton(
+                jouet,
               ),
-            ),
-          ),
-        ),
-      ],
+            ],
+          );
+        },
+      ),
     );
   }
 
-  // ====================================================
-  // CARTE AVIS
-  // ====================================================
+  // ==========================================================
+  // RÉSUMÉ NOTE
+  // ==========================================================
 
-  Widget _buildReviewCard({
-    required String name,
-    required int rating,
-    required String comment,
-  }) {
+  Widget _buildRatingSummary(
+    double moyenne,
+    int nombreAvis,
+  ) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(
-        bottom: 12,
-      ),
-      padding: const EdgeInsets.all(15),
+
+      padding:
+          const EdgeInsets.all(20),
+
       decoration: BoxDecoration(
         color: Colors.white,
+
         borderRadius:
-            BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black
-                .withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            BorderRadius.circular(22),
+
+        border: Border.all(
+          color: Colors.black
+              .withValues(alpha: 0.05),
+        ),
+      ),
+
+      child: Row(
+        children: [
+
+          // ==================================================
+          // NOTE
+          // ==================================================
+
+          Column(
+            children: [
+
+              Text(
+                moyenne.toStringAsFixed(1),
+
+                style: const TextStyle(
+                  fontFamily:
+                      'Quicksand',
+                  fontSize: 34,
+                  fontWeight:
+                      FontWeight.bold,
+                  color:
+                      AppStyles.textDark,
+                ),
+              ),
+
+              Row(
+                children:
+                    List.generate(
+                  5,
+                  (index) {
+                    return Icon(
+                      index <
+                              moyenne.round()
+                          ? Icons.star
+                          : Icons.star_border,
+
+                      size: 18,
+
+                      color:
+                          const Color(
+                        0xFFFFC400,
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 5),
+
+              Text(
+                '$nombreAvis avis',
+
+                style: const TextStyle(
+                  fontSize: 12,
+                  color:
+                      AppStyles.textMuted,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(width: 25),
+
+          // ==================================================
+          // TEXTE
+          // ==================================================
+
+          const Expanded(
+            child: Text(
+              'Les parents partagent leur expérience pour vous aider à choisir les meilleurs jeux pour vos enfants.',
+              style: TextStyle(
+                fontSize: 13,
+                height: 1.5,
+                color:
+                    AppStyles.textMuted,
+              ),
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  // ==========================================================
+  // CARTE AVIS
+  // ==========================================================
+
+  Widget _buildReviewCard({
+    required AvisModel avis,
+  }) {
+    return Container(
+      width: double.infinity,
+
+      margin:
+          const EdgeInsets.only(
+        bottom: 12,
+      ),
+
+      padding:
+          const EdgeInsets.all(16),
+
+      decoration: BoxDecoration(
+        color: Colors.white,
+
+        borderRadius:
+            BorderRadius.circular(20),
+
+        border: Border.all(
+          color: Colors.black
+              .withValues(alpha: 0.04),
+        ),
+      ),
+
       child: Column(
         crossAxisAlignment:
             CrossAxisAlignment.start,
+
         children: [
 
           Row(
             children: [
 
+              // ==================================================
+              // AVATAR
+              // ==================================================
+
               CircleAvatar(
-                radius: 20,
+                radius: 21,
+
                 backgroundColor:
                     AppStyles.primarySoft,
+
                 child: const Icon(
                   Icons.person,
-                  color: AppStyles.primary,
+                  color:
+                      AppStyles.primary,
+                  size: 21,
                 ),
               ),
 
               const SizedBox(width: 10),
 
-              Text(
-                name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+              // ==================================================
+              // UTILISATEUR
+              // ==================================================
+
+              Expanded(
+                child: FutureBuilder<
+                    DocumentSnapshot<
+                        Map<String,
+                            dynamic>>>(
+                  future:
+                      FirebaseFirestore
+                          .instance
+                          .collection(
+                              'users')
+                          .doc(
+                              avis.userId)
+                          .get(),
+
+                  builder:
+                      (
+                    context,
+                    snapshot,
+                  ) {
+
+                    if (snapshot
+                            .connectionState ==
+                        ConnectionState
+                            .waiting) {
+                      return const Text(
+                        'Chargement...',
+                        style: TextStyle(
+                          fontWeight:
+                              FontWeight.bold,
+                        ),
+                      );
+                    }
+
+                    final data =
+                        snapshot.data
+                            ?.data();
+
+                    if (data == null) {
+                      return const Text(
+                        'Utilisateur',
+                        style: TextStyle(
+                          fontWeight:
+                              FontWeight.bold,
+                        ),
+                      );
+                    }
+
+                    final prenom =
+                        data['prenom']
+                                ?.toString()
+                                .trim() ??
+                            '';
+
+                    final nom =
+                        data['nom']
+                                ?.toString()
+                                .trim() ??
+                            '';
+
+                    final email =
+                        data['email']
+                                ?.toString()
+                                .trim() ??
+                            '';
+
+                    String nomUtilisateur;
+
+                    if (prenom.isNotEmpty &&
+                        nom.isNotEmpty) {
+                      nomUtilisateur =
+                          '$prenom $nom';
+                    } else if (
+                        prenom.isNotEmpty) {
+                      nomUtilisateur =
+                          prenom;
+                    } else if (
+                        nom.isNotEmpty) {
+                      nomUtilisateur =
+                          nom;
+                    } else if (
+                        email.isNotEmpty) {
+                      nomUtilisateur =
+                          email;
+                    } else {
+                      nomUtilisateur =
+                          'Utilisateur';
+                    }
+
+                    return Text(
+                      nomUtilisateur,
+
+                      overflow:
+                          TextOverflow.ellipsis,
+
+                      style:
+                          const TextStyle(
+                        fontWeight:
+                            FontWeight.bold,
+                        color:
+                            AppStyles.textDark,
+                      ),
+                    );
+                  },
                 ),
               ),
 
-              const Spacer(),
+              // ==================================================
+              // NOTE
+              // ==================================================
 
               Row(
-                children: List.generate(
+                children:
+                    List.generate(
                   5,
                   (index) {
                     return Icon(
-                      index < rating
+                      index < avis.note
                           ? Icons.star
                           : Icons.star_border,
-                      size: 17,
+
+                      size: 16,
+
                       color:
-                          const Color(0xFFFFC400),
+                          const Color(
+                        0xFFFFC400,
+                      ),
                     );
                   },
                 ),
@@ -529,14 +1303,16 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             ],
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
 
           Text(
-            comment,
+            avis.commentaire,
+
             style: const TextStyle(
-              color: AppStyles.textMuted,
               fontSize: 13,
-              height: 1.4,
+              height: 1.5,
+              color:
+                  AppStyles.textMuted,
             ),
           ),
         ],
@@ -544,77 +1320,369 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ====================================================
-  // AJOUTER AU PANIER
-  // ====================================================
+  // ==========================================================
+  // AUCUN AVIS
+  // ==========================================================
 
-  Widget _buildAddToCartButton(
-    JouetModel jouet,
-  ) {
-    return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(
-          20,
-          12,
-          20,
-          12,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black
-                  .withValues(alpha: 0.08),
-              blurRadius: 10,
-              offset: const Offset(0, -3),
-            ),
-          ],
-        ),
-        child: SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: ElevatedButton.icon(
-            onPressed: () {
+  Widget _buildEmptyReviews() {
+    return Container(
+      width: double.infinity,
 
-              // Notre PanierNotifier existe déjà
-              // dans ton projet.
+      padding:
+          const EdgeInsets.symmetric(
+        vertical: 28,
+        horizontal: 20,
+      ),
 
-              ref
-                  .read(panierProvider.notifier)
-                  .addToCart(jouet);
+      decoration: BoxDecoration(
+        color: Colors.white,
 
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(
-                SnackBar(
-                  content: Text(
-                    '${jouet.nomJouet} ajouté au panier',
-                  ),
-                  backgroundColor:
-                      AppStyles.primary,
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-            ),
-            label: const Text(
-              'Ajouter au panier',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  AppStyles.primary,
-              foregroundColor: Colors.white,
-              elevation: 0,
-              shape:
-                  RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(14),
-              ),
+        borderRadius:
+            BorderRadius.circular(20),
+      ),
+
+      child: const Column(
+        children: [
+
+          Icon(
+            Icons.rate_review_outlined,
+            size: 45,
+            color: Colors.grey,
+          ),
+
+          SizedBox(height: 10),
+
+          Text(
+            'Aucun avis pour le moment',
+
+            style: TextStyle(
+              fontWeight:
+                  FontWeight.bold,
+              color:
+                  AppStyles.textDark,
             ),
           ),
+
+          SizedBox(height: 5),
+
+          Text(
+            'Soyez le premier parent à partager votre expérience.',
+            textAlign:
+                TextAlign.center,
+
+            style: TextStyle(
+              fontSize: 13,
+              color:
+                  AppStyles.textMuted,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================================
+  // CHARGEMENT AVIS
+  // ==========================================================
+
+  Widget _buildReviewsLoading() {
+    return const Padding(
+      padding:
+          EdgeInsets.symmetric(
+        vertical: 40,
+      ),
+
+      child: Center(
+        child:
+            CircularProgressIndicator(
+          color:
+              AppStyles.primary,
+        ),
+      ),
+    );
+  }
+
+  // ==========================================================
+  // ERREUR AVIS
+  // ==========================================================
+
+  Widget _buildReviewsError(
+    JouetModel jouet,
+  ) {
+    return Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+
+      children: [
+
+        const Text(
+          'Avis des parents',
+
+          style: TextStyle(
+            fontFamily: 'Quicksand',
+            fontSize: 22,
+            fontWeight:
+                FontWeight.bold,
+          ),
+        ),
+
+        const SizedBox(height: 15),
+
+        const Text(
+          'Impossible de charger les avis.',
+          style: TextStyle(
+            color:
+                AppStyles.textMuted,
+          ),
+        ),
+
+        const SizedBox(height: 15),
+
+        _buildWriteReviewButton(
+          jouet,
+        ),
+      ],
+    );
+  }
+
+  // ==========================================================
+  // BOUTON RÉDIGER UN AVIS
+  // ==========================================================
+
+  Widget _buildWriteReviewButton(
+    JouetModel jouet,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+
+      child: OutlinedButton.icon(
+        onPressed: () {
+
+          context.pushNamed(
+            AppRoutes.redigerAvis.name,
+            extra: jouet,
+          );
+        },
+
+        icon: const Icon(
+          Icons.edit_outlined,
+        ),
+
+        label: const Text(
+          'Rédiger un avis',
+          style: TextStyle(
+            fontWeight:
+                FontWeight.w600,
+          ),
+        ),
+
+        style:
+            OutlinedButton.styleFrom(
+          foregroundColor:
+              AppStyles.primary,
+
+          side: const BorderSide(
+            color:
+                AppStyles.primary,
+          ),
+
+          padding:
+              const EdgeInsets.symmetric(
+            vertical: 15,
+          ),
+
+          shape:
+              RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(
+              15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ==========================================================
+  // BARRE ACHAT
+  // ==========================================================
+
+  Widget _buildBottomPurchaseBar(
+    JouetModel jouet,
+  ) {
+    return Container(
+      padding:
+          const EdgeInsets.fromLTRB(
+        20,
+        12,
+        20,
+        14,
+      ),
+
+      decoration: BoxDecoration(
+        color: Colors.white,
+
+        borderRadius:
+            const BorderRadius.only(
+          topLeft:
+              Radius.circular(25),
+          topRight:
+              Radius.circular(25),
+        ),
+
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black
+                .withValues(
+              alpha: 0.10,
+            ),
+
+            blurRadius: 20,
+
+            offset:
+                const Offset(0, -5),
+          ),
+        ],
+      ),
+
+      child: SafeArea(
+        top: false,
+
+        child: Row(
+          children: [
+
+            // ==================================================
+            // PRIX
+            // ==================================================
+
+            Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+
+              mainAxisSize:
+                  MainAxisSize.min,
+
+              children: [
+
+                const Text(
+                  'Prix',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color:
+                        AppStyles.textMuted,
+                  ),
+                ),
+
+                const SizedBox(height: 2),
+
+                Text(
+                  '${jouet.prix.toStringAsFixed(0)} FCFA',
+
+                  style:
+                      const TextStyle(
+                    fontFamily:
+                        'Quicksand',
+                    fontSize: 17,
+                    fontWeight:
+                        FontWeight.bold,
+                    color:
+                        AppStyles.textDark,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(width: 15),
+
+            // ==================================================
+            // BOUTON
+            // ==================================================
+
+            Expanded(
+              child: SizedBox(
+                height: 54,
+
+                child:
+                    ElevatedButton.icon(
+                  onPressed: () {
+
+                    ref
+                        .read(
+                          panierProvider
+                              .notifier,
+                        )
+                        .addToCart(
+                          jouet,
+                        );
+
+                    ScaffoldMessenger
+                            .of(context)
+                        .hideCurrentSnackBar();
+
+                    ScaffoldMessenger
+                            .of(context)
+                        .showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          '${jouet.nomJouet} ajouté au panier',
+                        ),
+
+                        backgroundColor:
+                            AppStyles.primary,
+
+                        behavior:
+                            SnackBarBehavior
+                                .floating,
+
+                        shape:
+                            RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius
+                                  .circular(
+                            15,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+
+                  icon: const Icon(
+                    Icons
+                        .shopping_bag_outlined,
+                    size: 21,
+                  ),
+
+                  label: const Text(
+                    'Ajouter au panier',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight:
+                          FontWeight.bold,
+                    ),
+                  ),
+
+                  style: ElevatedButton
+                      .styleFrom(
+                    backgroundColor:
+                        AppStyles.primary,
+
+                    foregroundColor:
+                        Colors.white,
+
+                    elevation: 0,
+
+                    shape:
+                        RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(
+                        16,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
