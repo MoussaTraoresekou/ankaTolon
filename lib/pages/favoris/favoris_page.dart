@@ -17,21 +17,14 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
   List<JouetModel> jouetsFavoris = [];
   bool chargement = true;
   String _triSelectionne = 'Plus récent';
-
   Map<String, DateTime> _datesAjout = {};
 
   @override
   void initState() {
     super.initState();
+    // Premier chargement au lancement
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchJouets();
-
-      ref.listenManual<List<String>>(favorisControllerProvider, (
-        previous,
-        next,
-      ) {
-        _fetchJouets(next);
-      });
     });
   }
 
@@ -43,16 +36,14 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
     });
 
     final List<String> ids = idsExternes ?? ref.read(favorisControllerProvider);
-
     final jouetRepo = ref.read(jouetRepositoryProvider);
     final favorisRepo = ref.read(favorisRepositoryProvider);
 
     try {
-      // Récupérer les dates d'ajout
+      // 1. Récupérer les dates d'ajout
       final dates = await favorisRepo.getDatesAjout();
-      debugPrint(' DATES FAVORIS : $dates');
 
-      // Aucun favori
+      // 2. Traitement si aucun favori
       if (ids.isEmpty) {
         if (mounted) {
           setState(() {
@@ -64,35 +55,21 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
         return;
       }
 
-      // Récupérer les informations de chaque jouet
+      // 3. Récupérer les détails des jouets en parallèle
       final futures = ids.map((id) => jouetRepo.getJouetById(id));
-
       final resultats = await Future.wait(futures);
-      debugPrint('IDs favoris : $ids');
-      debugPrint('Résultats jouets : $resultats');
-
       final jouets = resultats.whereType<JouetModel>().toList();
-      debugPrint('Nombre IDs favoris : ${ids.length}');
-      debugPrint('Nombre jouets récupérés : ${jouets.length}');
-      for (final jouet in jouets) {
-  debugPrint(
-    ' ${jouet.nomJouet} | ID=${jouet.id} | DATE=${_datesAjout[jouet.id]}',
-  );
-}
 
       if (mounted) {
         setState(() {
           _datesAjout = dates;
           jouetsFavoris = jouets;
-
           _trierJouets();
-
           chargement = false;
         });
       }
     } catch (e) {
-      debugPrint('Erreur chargement favoris : $e');
-
+      debugPrint('Erreur lors du chargement des favoris : $e');
       if (mounted) {
         setState(() {
           chargement = false;
@@ -131,15 +108,13 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
 
       case 'Nom A-Z':
         jouetsFavoris.sort(
-          (a, b) =>
-              a.nomJouet.toLowerCase().compareTo(b.nomJouet.toLowerCase()),
+          (a, b) => a.nomJouet.toLowerCase().compareTo(b.nomJouet.toLowerCase()),
         );
         break;
 
       case 'Nom Z-A':
         jouetsFavoris.sort(
-          (a, b) =>
-              b.nomJouet.toLowerCase().compareTo(a.nomJouet.toLowerCase()),
+          (a, b) => b.nomJouet.toLowerCase().compareTo(a.nomJouet.toLowerCase()),
         );
         break;
     }
@@ -147,17 +122,22 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Écouter les changements de la liste d'IDs favoris de façon idiomatique
+    ref.listen<List<String>>(favorisControllerProvider, (previous, next) {
+      _fetchJouets(next);
+    });
+
     final idsFavoris = ref.watch(favorisControllerProvider);
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 236, 243, 236),
+      backgroundColor: const Color.fromARGB(255, 236, 243, 236),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // EN-TÊTE AVEC IMAGE OURS
+              // EN-TÊTE
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -190,12 +170,6 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // const SizedBox(width: 6),
-                        // Icon(
-                        //   Icons.favorite,
-                        //   color: Color.fromARGB(255, 174, 8, 8),
-                        //   size: 18,
-                        // ),
                         SizedBox(height: 6),
                         Text(
                           'Retrouvez tous les jouets que vous avez ajoutés à vos favoris',
@@ -208,16 +182,12 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       ],
                     ),
                   ),
-                  // const SizedBox(width: 8),
-
-                  // Ours en haut à droite
                   Padding(
                     padding: const EdgeInsets.only(top: 25),
                     child: Image.asset(
                       'assets/images/imageHours.png',
                       width: 100,
                       height: 100,
-                      // fit: BoxFit.contain,
                     ),
                   ),
                 ],
@@ -235,7 +205,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 219, 238, 221),
+                      color: const Color.fromARGB(255, 219, 238, 221),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -257,131 +227,59 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                     ),
                   ),
                   PopupMenuButton<String>(
-  onSelected: (value) {
-    setState(() {
-      _triSelectionne = value;
-      _trierJouets();
-    });
-  },
-
-  itemBuilder: (context) => [
-    PopupMenuItem(
-      value: 'Plus récent',
-      child: Row(
-        children: [
-          if (_triSelectionne == 'Plus récent')
-            const Icon(
-              Icons.check,
-              color: Color(0xFFE67E22),
-              size: 18,
-            ),
-          if (_triSelectionne == 'Plus récent')
-            const SizedBox(width: 8),
-
-          const Text('Plus récent'),
-        ],
-      ),
-    ),
-
-    PopupMenuItem(
-      value: 'Plus ancien',
-      child: Row(
-        children: [
-          if (_triSelectionne == 'Plus ancien')
-            const Icon(
-              Icons.check,
-              color: Color(0xFFE67E22),
-              size: 18,
-            ),
-          if (_triSelectionne == 'Plus ancien')
-            const SizedBox(width: 8),
-
-          const Text('Plus ancien'),
-        ],
-      ),
-    ),
-
-    PopupMenuItem(
-      value: 'Nom A-Z',
-      child: Row(
-        children: [
-          if (_triSelectionne == 'Nom A-Z')
-            const Icon(
-              Icons.check,
-              color: Color(0xFFE67E22),
-              size: 18,
-            ),
-          if (_triSelectionne == 'Nom A-Z')
-            const SizedBox(width: 8),
-
-          const Text('Nom A-Z'),
-        ],
-      ),
-    ),
-
-    PopupMenuItem(
-      value: 'Nom Z-A',
-      child: Row(
-        children: [
-          if (_triSelectionne == 'Nom Z-A')
-            const Icon(
-              Icons.check,
-              color: Color(0xFFE67E22),
-              size: 18,
-            ),
-          if (_triSelectionne == 'Nom Z-A')
-            const SizedBox(width: 8),
-
-          const Text('Nom Z-A'),
-        ],
-      ),
-    ),
-  ],
-
-  child: Container(
-    padding: const EdgeInsets.symmetric(
-      horizontal: 10,
-      vertical: 7,
-    ),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      border: Border.all(
-        color: Colors.grey.shade300,
-        width: 1,
-      ),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Text(
-          'Trier par : ',
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.black54,
-          ),
-        ),
-
-        Text(
-          _triSelectionne,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFE67E22),
-          ),
-        ),
-
-        const SizedBox(width: 2),
-
-        const Icon(
-          Icons.keyboard_arrow_down,
-          size: 20,
-          color: Color(0xFFE67E22),
-        ),
-      ],
-    ),
-  ),
-),
+                    onSelected: (value) {
+                      setState(() {
+                        _triSelectionne = value;
+                        _trierJouets();
+                      });
+                    },
+                    itemBuilder: (context) => [
+                      _buildMenuItem('Plus récent'),
+                      _buildMenuItem('Plus ancien'),
+                      _buildMenuItem('Nom A-Z'),
+                      _buildMenuItem('Nom Z-A'),
+                    ],
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'Trier par : ',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          Text(
+                            _triSelectionne,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFE67E22),
+                            ),
+                          ),
+                          const SizedBox(width: 2),
+                          const Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 20,
+                            color: Color(0xFFE67E22),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
 
@@ -424,6 +322,27 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  // Factorisation des éléments du Menu de Tri pour alléger la méthode build
+  PopupMenuItem<String> _buildMenuItem(String title) {
+    final bool isSelected = _triSelectionne == title;
+    return PopupMenuItem<String>(
+      value: title,
+      child: Row(
+        children: [
+          if (isSelected) ...[
+            const Icon(
+              Icons.check,
+              color: Color(0xFFE67E22),
+              size: 18,
+            ),
+            const SizedBox(width: 8),
+          ],
+          Text(title),
+        ],
       ),
     );
   }
