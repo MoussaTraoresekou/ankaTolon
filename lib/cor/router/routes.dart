@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
+import 'package:tolon/models/JouetsAdmin/jouet_list_model.dart';
 
 import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
@@ -448,7 +449,19 @@ GoRouter appRouter(Ref ref) {
         },
       ),
 
+      GoRoute(
+        path: '/modifierJouet',
+        name: AppRoutes.modifierJouet.name,
+        builder: (context, state) {
 
+          final Jouet jouet =
+          state.extra as Jouet;
+
+          return ModifierJouetPage(
+            jouet: jouet,
+          );
+        },
+      ),
     ],
   );
 }
