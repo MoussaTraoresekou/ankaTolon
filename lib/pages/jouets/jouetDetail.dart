@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tolon/controller/panier/panier_controller.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:tolon/models/avis/avis_model.dart';
+import 'package:tolon/repository/avis/avis_repository.dart';
 import 'package:tolon/cor/router/routes.dart';
 
 class Jouetdetail extends ConsumerStatefulWidget {
@@ -21,6 +23,10 @@ class Jouetdetail extends ConsumerStatefulWidget {
 }
 
 class _JouetdetailState extends ConsumerState<Jouetdetail> {
+
+  final AvisRepository _avisRepository =
+      AvisRepository();
+
   @override
   Widget build(BuildContext context) {
     final jouet = widget.jouet;
@@ -370,16 +376,39 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
   // ====================================================
 
   Widget _buildReviewsSection(
-    JouetModel jouet,
-  ) {
-    return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
-      children: [
+  JouetModel jouet,
+) {
+  return StreamBuilder<List<AvisModel>>(
+    stream: _avisRepository.recupererAvis(
+      jouet.id,
+    ),
 
-        Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+    builder: (context, snapshot) {
+
+      // ==================================================
+      // CHARGEMENT
+      // ==================================================
+
+      if (snapshot.connectionState ==
+          ConnectionState.waiting) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: CircularProgressIndicator(
+              color: AppStyles.primary,
+            ),
+          ),
+        );
+      }
+
+      // ==================================================
+      // ERREUR
+      // ==================================================
+
+      if (snapshot.hasError) {
+        return Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
           children: [
 
             const Text(
@@ -387,164 +416,342 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               style: AppStyles.headingTextStyle,
             ),
 
+            const SizedBox(height: 15),
+
             Text(
-              '${jouet.noteMoyen.toStringAsFixed(1)} ⭐',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppStyles.textDark,
+              'Impossible de charger les avis.',
+              style: TextStyle(
+                color: Colors.red.shade400,
+                fontSize: 14,
               ),
             ),
+
+            const SizedBox(height: 15),
+
+            _buildWriteReviewButton(jouet),
           ],
-        ),
+        );
+      }
 
-        const SizedBox(height: 15),
+      // ==================================================
+      // RÉCUPÉRATION DES AVIS
+      // ==================================================
 
-        // Avis temporaire
-        // Nous allons ensuite remplacer
-        // cette partie par Firestore.
+      final avis = snapshot.data ?? [];
 
-        _buildReviewCard(
-          name: 'Aminata',
-          rating: 5,
-          comment:
-              'Mon enfant adore ce jeu ! Très amusant et éducatif.',
-        ),
+      // ==================================================
+      // CALCUL DE LA MOYENNE
+      // ==================================================
 
-        _buildReviewCard(
-          name: 'Moussa',
-          rating: 4,
-          comment:
-              'Très bon jeu, mon enfant passe beaucoup de temps dessus.',
-        ),
+      double moyenne = jouet.noteMoyen;
 
-        const SizedBox(height: 10),
+      if (avis.isNotEmpty) {
+        final total = avis.fold<int>(
+          0,
+          (sum, item) => sum + item.note,
+        );
 
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () {
-  context.pushNamed(
-    AppRoutes.redigerAvis.name,
-    extra: jouet,
-  );
-},
-            icon: const Icon(
-              Icons.edit_outlined,
-            ),
-            label: const Text(
-              'Rédiger un avis',
-            ),
-            style: OutlinedButton.styleFrom(
-              foregroundColor:
-                  AppStyles.primary,
-              side: const BorderSide(
-                color: AppStyles.primary,
+        moyenne = total / avis.length;
+      }
+
+      return Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+
+        children: [
+
+          // ==================================================
+          // TITRE AVIS
+          // ==================================================
+
+          Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+
+            children: [
+
+              const Text(
+                'Avis',
+                style:
+                    AppStyles.headingTextStyle,
               ),
-              padding:
-                  const EdgeInsets.symmetric(
-                vertical: 14,
+
+              Row(
+                children: [
+
+                  const Icon(
+                    Icons.star,
+                    color: Color(0xFFFFC400),
+                    size: 20,
+                  ),
+
+                  const SizedBox(width: 4),
+
+                  Text(
+                    moyenne.toStringAsFixed(1),
+                    style: const TextStyle(
+                      fontWeight:
+                          FontWeight.bold,
+                      color:
+                          AppStyles.textDark,
+                    ),
+                  ),
+                ],
               ),
-              shape:
-                  RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(12),
-              ),
+            ],
+          ),
+
+          const SizedBox(height: 5),
+
+          // ==================================================
+          // NOMBRE D'AVIS
+          // ==================================================
+
+          Text(
+            avis.isEmpty
+                ? 'Aucun avis pour le moment'
+                : '${avis.length} avis',
+
+            style: const TextStyle(
+              color: AppStyles.textMuted,
+              fontSize: 13,
             ),
           ),
-        ),
-      ],
-    );
-  }
+
+          const SizedBox(height: 15),
+
+          // ==================================================
+          // LISTE DES AVIS
+          // ==================================================
+
+          if (avis.isEmpty)
+
+            Container(
+              width: double.infinity,
+
+              padding:
+                  const EdgeInsets.all(20),
+
+              decoration: BoxDecoration(
+                color: Colors.white,
+
+                borderRadius:
+                    BorderRadius.circular(15),
+              ),
+
+              child: const Column(
+                children: [
+
+                  Icon(
+                    Icons.rate_review_outlined,
+                    size: 45,
+                    color: Colors.grey,
+                  ),
+
+                  SizedBox(height: 10),
+
+                  Text(
+                    'Soyez le premier à donner votre avis !',
+                    textAlign:
+                        TextAlign.center,
+
+                    style: TextStyle(
+                      color:
+                          AppStyles.textMuted,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            )
+
+          else
+
+            ...avis.map(
+              (avisItem) {
+                return _buildReviewCard(
+                  avis: avisItem,
+                );
+              },
+            ),
+
+          const SizedBox(height: 10),
+
+          // ==================================================
+          // BOUTON RÉDIGER UN AVIS
+          // ==================================================
+
+          _buildWriteReviewButton(jouet),
+        ],
+      );
+    },
+  );
+}
 
   // ====================================================
   // CARTE AVIS
   // ====================================================
 
   Widget _buildReviewCard({
-    required String name,
-    required int rating,
-    required String comment,
-  }) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(
-        bottom: 12,
-      ),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius:
-            BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black
-                .withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+  required AvisModel avis,
+}) {
+  return Container(
+    width: double.infinity,
+
+    margin: const EdgeInsets.only(
+      bottom: 12,
+    ),
+
+    padding: const EdgeInsets.all(15),
+
+    decoration: BoxDecoration(
+      color: Colors.white,
+
+      borderRadius:
+          BorderRadius.circular(15),
+
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(
+            alpha: 0.05,
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-        children: [
+          blurRadius: 8,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
 
-          Row(
-            children: [
+    child: Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
 
-              CircleAvatar(
-                radius: 20,
-                backgroundColor:
-                    AppStyles.primarySoft,
-                child: const Icon(
-                  Icons.person,
-                  color: AppStyles.primary,
-                ),
+      children: [
+
+        Row(
+          children: [
+
+            // ==================================================
+            // AVATAR
+            // ==================================================
+
+            CircleAvatar(
+              radius: 20,
+
+              backgroundColor:
+                  AppStyles.primarySoft,
+
+              child: const Icon(
+                Icons.person,
+                color: AppStyles.primary,
               ),
-
-              const SizedBox(width: 10),
-
-              Text(
-                name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const Spacer(),
-
-              Row(
-                children: List.generate(
-                  5,
-                  (index) {
-                    return Icon(
-                      index < rating
-                          ? Icons.star
-                          : Icons.star_border,
-                      size: 17,
-                      color:
-                          const Color(0xFFFFC400),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 10),
-
-          Text(
-            comment,
-            style: const TextStyle(
-              color: AppStyles.textMuted,
-              fontSize: 13,
-              height: 1.4,
             ),
+
+            const SizedBox(width: 10),
+
+            // ==================================================
+            // NOM
+            // ==================================================
+
+            const Expanded(
+              child: Text(
+                'Parent',
+                style: TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+              ),
+            ),
+
+            // ==================================================
+            // ÉTOILES
+            // ==================================================
+
+            Row(
+              children: List.generate(
+                5,
+                (index) {
+
+                  return Icon(
+                    index < avis.note
+                        ? Icons.star
+                        : Icons.star_border,
+
+                    size: 17,
+
+                    color: const Color(
+                      0xFFFFC400,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 10),
+
+        // ==================================================
+        // COMMENTAIRE
+        // ==================================================
+
+        Text(
+          avis.commentaire,
+
+          style: const TextStyle(
+            color: AppStyles.textMuted,
+            fontSize: 13,
+            height: 1.4,
           ),
-        ],
+        ),
+      ],
+    ),
+  );
+}
+Widget _buildWriteReviewButton(
+  JouetModel jouet,
+) {
+  return SizedBox(
+    width: double.infinity,
+
+    child: OutlinedButton.icon(
+      onPressed: () {
+
+        context.pushNamed(
+          AppRoutes.redigerAvis.name,
+          extra: jouet,
+        );
+      },
+
+      icon: const Icon(
+        Icons.edit_outlined,
       ),
-    );
-  }
+
+      label: const Text(
+        'Rédiger un avis',
+      ),
+
+      style: OutlinedButton.styleFrom(
+        foregroundColor:
+            AppStyles.primary,
+
+        side: const BorderSide(
+          color: AppStyles.primary,
+        ),
+
+        padding:
+            const EdgeInsets.symmetric(
+          vertical: 14,
+        ),
+
+        shape:
+            RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(12),
+        ),
+      ),
+    ),
+  );
+}
 
   // ====================================================
   // AJOUTER AU PANIER
