@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
@@ -13,6 +15,9 @@ void main() async {
     url: 'https://zoagjvcjrolrrlhdkhob.supabase.co',
     anonKey: 'sb_publishable_KDK3Dxx_1XfarmHK1CI5YA_c4aRncjy',
   );
+
+  await initializeDateFormatting('fr_FR', null);
+  Intl.defaultLocale = 'fr_FR';
 
   runApp(const ProviderScope(child: MyApp()));
 }

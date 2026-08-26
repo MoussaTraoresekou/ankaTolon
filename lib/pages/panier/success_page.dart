@@ -10,7 +10,14 @@ class SuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Simulation des données (à remplacer par les vraies données de commande si vous les passez en arguments)
+    // données transmises par le router
+    final Map<String, dynamic>? args =
+        GoRouterState.of(context).extra as Map<String, dynamic>?;
+
+    final String adresse = args?['adresse'] ?? 'Adresse non spécifiée';
+    final double montant = args?['montant'] ?? 0.0;
+    final String montantFormatted = "${montant.toStringAsFixed(0)} FCFA";
+
     final dateEstimee = DateTime.now().add(const Duration(days: 1));
     final formattedDate = DateFormat('d MMMM, HH\'h\'').format(dateEstimee);
 
@@ -18,22 +25,25 @@ class SuccessPage extends StatelessWidget {
       backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: SizeConfig.getProportionateWidth(24)),
+          padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: SizeConfig.getProportionateHeight(40)),
+              SizedBox(height: 40),
 
               // Bouton retour
               Align(
                 alignment: Alignment.centerLeft,
                 child: InkWell(
                   onTap: () => context.go('/home'),
-                  child: const Icon(Icons.arrow_back_ios_new, color: Colors.grey),
+                  child: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
 
-              SizedBox(height: SizeConfig.getProportionateHeight(60)),
+              SizedBox(height: 60),
 
               // Icône de succès
               Center(
@@ -44,11 +54,15 @@ class SuccessPage extends StatelessWidget {
                     color: const Color(0xFF7FB685).withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.check, color: Color(0xFF7FB685), size: 50),
+                  child: const Icon(
+                    Icons.check,
+                    color: Color(0xFF7FB685),
+                    size: 50,
+                  ),
                 ),
               ),
 
-              SizedBox(height: SizeConfig.getProportionateHeight(24)),
+              SizedBox(height: 24),
 
               // Titre
               const Center(
@@ -59,7 +73,7 @@ class SuccessPage extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: SizeConfig.getProportionateHeight(40)),
+              SizedBox(height: 40),
 
               // Récapitulatif
               Container(
@@ -71,11 +85,18 @@ class SuccessPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _buildSuccessRow("Lieu de livraison", "Kalaban Coura", isOrange: true),
+                    _buildSuccessRow(
+                      "Lieu de livraison",
+                      adresse,
+                      isOrange: true,
+                    ),
                     const Divider(height: 24),
-                    _buildSuccessRow("Date de livraison estimé", formattedDate),
+                    _buildSuccessRow(
+                      "Date de livraison estimée",
+                      formattedDate,
+                    ),
                     const Divider(height: 24),
-                    _buildSuccessRow("Montant à payer", "26 000 FCFA"),
+                    _buildSuccessRow("Montant à payer", montantFormatted),
                   ],
                 ),
               ),
@@ -89,11 +110,18 @@ class SuccessPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppStyles.primaryOrange,
                     foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: SizeConfig.getProportionateHeight(16)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   onPressed: () => context.go('/home'),
-                  child: Text("Retour au catalogue", style: AppStyles.titleTextStyle.copyWith(color: Colors.white)),
+                  child: Text(
+                    "Retour au catalogue",
+                    style: AppStyles.titleTextStyle.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: SizeConfig.getProportionateHeight(24)),
@@ -108,15 +136,25 @@ class SuccessPage extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(label, style: AppStyles.normalTextStyle.copyWith(fontSize: 14, color: Colors.grey)),
+          child: Text(
+            label,
+            style: AppStyles.normalTextStyle.copyWith(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+          ),
         ),
-        const SizedBox(width: 16),
-        Text(
-          value,
-          style: AppStyles.titleTextStyle.copyWith(
-            fontSize: 14,
-            color: isOrange ? AppStyles.primaryOrange : Colors.black87,
-            fontWeight: FontWeight.bold,
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            value,
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.ellipsis,
+            style: AppStyles.titleTextStyle.copyWith(
+              fontSize: 14,
+              color: isOrange ? AppStyles.primaryOrange : Colors.black87,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
