@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:tolon/controller/panier/panier_controller.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
@@ -606,9 +607,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
     decoration: BoxDecoration(
       color: Colors.white,
-
-      borderRadius:
-          BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(15),
 
       boxShadow: [
         BoxShadow(
@@ -622,17 +621,16 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     ),
 
     child: Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
 
       children: [
 
         Row(
           children: [
 
-            // ==================================================
+            // ==========================================
             // AVATAR
-            // ==================================================
+            // ==========================================
 
             CircleAvatar(
               radius: 20,
@@ -648,29 +646,135 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
             const SizedBox(width: 10),
 
-            // ==================================================
-            // NOM
-            // ==================================================
+            // ==========================================
+            // NOM DE L'UTILISATEUR
+            // ==========================================
 
-            const Expanded(
-              child: Text(
-                'Parent',
-                style: TextStyle(
-                  fontWeight:
-                      FontWeight.bold,
-                ),
+            Expanded(
+              child: FutureBuilder<
+                  DocumentSnapshot<Map<String, dynamic>>>(
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(avis.userId)
+                    .get(),
+
+                builder: (
+                  context,
+                  snapshot,
+                ) {
+
+                  // Pendant le chargement
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Text(
+                      'Chargement...',
+                      style: TextStyle(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    );
+                  }
+
+                  // Si erreur
+                  if (snapshot.hasError) {
+                    return const Text(
+                      'Utilisateur',
+                      style: TextStyle(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    );
+                  }
+
+                  // Document utilisateur
+                  final data =
+                      snapshot.data?.data();
+
+                  if (data == null) {
+                    return const Text(
+                      'Utilisateur',
+                      style: TextStyle(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    );
+                  }
+
+                  // ==================================
+                  // RÉCUPÉRATION DU NOM
+                  // ==================================
+
+                  final prenom =
+                      data['prenom']
+                              ?.toString()
+                              .trim() ??
+                          '';
+
+                  final nom =
+                      data['nom']
+                              ?.toString()
+                              .trim() ??
+                          '';
+
+                  final email =
+                      data['email']
+                              ?.toString()
+                              .trim() ??
+                          '';
+
+                  String nomUtilisateur;
+
+                  // Prénom + nom
+                  if (prenom.isNotEmpty &&
+                      nom.isNotEmpty) {
+                    nomUtilisateur =
+                        '$prenom $nom';
+                  }
+
+                  // Seulement prénom
+                  else if (prenom.isNotEmpty) {
+                    nomUtilisateur = prenom;
+                  }
+
+                  // Seulement nom
+                  else if (nom.isNotEmpty) {
+                    nomUtilisateur = nom;
+                  }
+
+                  // Sinon email
+                  else if (email.isNotEmpty) {
+                    nomUtilisateur = email;
+                  }
+
+                  // Aucun renseignement
+                  else {
+                    nomUtilisateur =
+                        'Utilisateur';
+                  }
+
+                  return Text(
+                    nomUtilisateur,
+
+                    overflow:
+                        TextOverflow.ellipsis,
+
+                    style: const TextStyle(
+                      fontWeight:
+                          FontWeight.bold,
+                    ),
+                  );
+                },
               ),
             ),
 
-            // ==================================================
+            // ==========================================
             // ÉTOILES
-            // ==================================================
+            // ==========================================
 
             Row(
               children: List.generate(
                 5,
                 (index) {
-
                   return Icon(
                     index < avis.note
                         ? Icons.star
@@ -690,9 +794,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
         const SizedBox(height: 10),
 
-        // ==================================================
+        // ==========================================
         // COMMENTAIRE
-        // ==================================================
+        // ==========================================
 
         Text(
           avis.commentaire,
