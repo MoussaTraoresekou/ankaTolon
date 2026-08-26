@@ -33,7 +33,7 @@ migrate_working_dir/
 /build/
 /coverage/
 macos/Flutter/ephemeral/
-git rm --cached macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Flutter/GeneratedPluginRegistrant.swift
 # Symbolication related
 app.*.symbols
 
