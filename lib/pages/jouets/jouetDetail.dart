@@ -30,6 +30,19 @@ class _JouetdetailState
       AvisRepository();
 
   int _selectedImage = 0;
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   // ==========================================================
   // BUILD
@@ -179,56 +192,41 @@ class _JouetdetailState
                     ),
 
                     child: PageView.builder(
-                      itemCount:
-                          jouet.image.length,
-
+                      controller: _pageController,
+                      itemCount: jouet.image.length,
                       onPageChanged: (index) {
                         setState(() {
-                          _selectedImage =
-                              index;
+                          _selectedImage = index;
                         });
                       },
-
-                      itemBuilder:
-                          (context, index) {
+                      itemBuilder: (context, index) {
                         return Image.network(
                           jouet.image[index],
-
                           fit: BoxFit.cover,
-
-                          errorBuilder:
-                              (
+                          errorBuilder: (
                             context,
                             error,
                             stackTrace,
                           ) {
                             return const Center(
                               child: Icon(
-                                Icons
-                                    .image_not_supported_outlined,
+                                Icons.image_not_supported_outlined,
                                 size: 70,
-                                color:
-                                    Colors.grey,
+                                color: Colors.grey,
                               ),
                             );
                           },
-
-                          loadingBuilder:
-                              (
+                          loadingBuilder: (
                             context,
                             child,
                             progress,
                           ) {
-                            if (progress ==
-                                null) {
+                            if (progress == null) {
                               return child;
                             }
-
                             return const Center(
-                              child:
-                                  CircularProgressIndicator(
-                                color:
-                                    AppStyles.primary,
+                              child: CircularProgressIndicator(
+                                color: AppStyles.primary,
                               ),
                             );
                           },
@@ -359,112 +357,109 @@ class _JouetdetailState
           ),
 
           // ====================================================
-          // MINIATURES
+          // MINIATURES + INDICATEURS
           // ====================================================
 
           if (jouet.image.length > 1)
             Positioned(
-              left: 20,
-              bottom: 15,
-              right: 20,
+              left: 0,
+              right: 0,
+              bottom: 12,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Miniatures
+                  SizedBox(
+                    height: 62,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: jouet.image.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 10),
+                      itemBuilder: (context, index) {
+                        final selected = _selectedImage == index;
 
-              child: SizedBox(
-                height: 65,
-
-                child: ListView.separated(
-                  scrollDirection:
-                      Axis.horizontal,
-
-                  itemCount:
-                      jouet.image.length,
-
-                  separatorBuilder:
-                      (_, __) =>
-                          const SizedBox(
-                    width: 10,
+                        return GestureDetector(
+                          onTap: () {
+                            _pageController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            width: 58,
+                            height: 58,
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: selected
+                                    ? AppStyles.primary
+                                    : Colors.white.withValues(alpha: 0.6),
+                                width: selected ? 2.5 : 1.5,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.12),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                jouet.image[index],
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const Icon(
+                                  Icons.image_not_supported,
+                                  size: 22,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
 
-                  itemBuilder:
-                      (context, index) {
+                  const SizedBox(height: 10),
 
-                    final selected =
-                        _selectedImage ==
-                            index;
-
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedImage =
-                              index;
-                        });
-                      },
-
-                      child: AnimatedContainer(
-                        duration:
-                            const Duration(
-                          milliseconds: 200,
-                        ),
-
-                        width: 65,
-                        height: 65,
-
-                        padding:
-                            const EdgeInsets.all(
-                          3,
-                        ),
-
-                        decoration:
-                            BoxDecoration(
-                          color:
-                              Colors.white,
-
-                          borderRadius:
-                              BorderRadius
-                                  .circular(
-                            14,
-                          ),
-
-                          border: Border.all(
+                  // Points indicateurs
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      jouet.image.length,
+                      (index) {
+                        final selected = _selectedImage == index;
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          width: selected ? 18 : 7,
+                          height: 7,
+                          decoration: BoxDecoration(
                             color: selected
-                                ? AppStyles
-                                    .primary
-                                : Colors
-                                    .transparent,
-
-                            width: 2,
+                                ? AppStyles.primary
+                                : Colors.white.withValues(alpha: 0.7),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: selected
+                                ? [
+                                    BoxShadow(
+                                      color: AppStyles.primary.withValues(alpha: 0.4),
+                                      blurRadius: 4,
+                                    ),
+                                  ]
+                                : null,
                           ),
-
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors
-                                  .black
-                                  .withValues(
-                                alpha: 0.08,
-                              ),
-                              blurRadius: 8,
-                            ),
-                          ],
-                        ),
-
-                        child: ClipRRect(
-                          borderRadius:
-                              BorderRadius
-                                  .circular(
-                            11,
-                          ),
-
-                          child:
-                              Image.network(
-                            jouet.image[
-                                index],
-
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
         ],
