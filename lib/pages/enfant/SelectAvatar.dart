@@ -46,7 +46,7 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
           prenom: widget.dataEnfant['prenom'],
           naissance: widget.dataEnfant['naissance'] as DateTime,
           sexe: widget.dataEnfant['sexe'],
-          avatarUrl: avatarSelectionne, // À ajouter dans ton contrôleur/modèle
+          avatarUrl: avatarSelectionne,
         );
 
     if (!mounted) return;

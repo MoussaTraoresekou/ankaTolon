@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-
-class Page2 extends StatefulWidget {
-  const Page2({super.key});
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+class ProfileParent extends ConsumerWidget {
+  const ProfileParent({super.key});
 
   @override
-  State<Page2> createState() => _Page2State();
-}
-
-class _Page2State extends State<Page2> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("page2"),),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+      return Container();
   }
 }

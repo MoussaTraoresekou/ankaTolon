@@ -12,7 +12,7 @@ final userDocProvider = StreamProvider<DocumentSnapshot?>((ref) {
   if (user == null) return Stream.value(null);
 
   return FirebaseFirestore.instance
-      .collection('users') // Ajustez le nom de votre collection si besoin
+      .collection('users')
       .doc(user.uid)
       .snapshots();
 });

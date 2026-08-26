@@ -20,7 +20,7 @@ final class EnfantControllerProvider
         argument: null,
         retry: null,
         name: r'enfantControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -33,7 +33,7 @@ final class EnfantControllerProvider
   EnfantController create() => EnfantController();
 }
 
-String _$enfantControllerHash() => r'40b6aa33896b0e0bcfc6997e397d011b2bef59d4';
+String _$enfantControllerHash() => r'53beb43fc558e0e95ed2f865e45dabd9fcc778a8';
 
 abstract class _$EnfantController extends $AsyncNotifier<void> {
   FutureOr<void> build();
