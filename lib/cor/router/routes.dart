@@ -4,9 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
+import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
+import 'package:tolon/pages/enfant/EditEnfantProfil.dart';
+import 'package:tolon/pages/enfant/EnfantProfil.dart';
+import 'package:tolon/pages/jouets/JouetsListNotes.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
-
+import 'package:flutter/material.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
@@ -51,6 +56,10 @@ enum AppRoutes {
   adminDashboard,
   listEnfants,
   selectAvatar,
+  enfantProfil,
+  editEnfant,
+  choisirAvatar,
+  jouetList,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -162,17 +171,15 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.addjouet.name,
         builder: (context, state) => const JouetForm(),
       ),
-     GoRoute(
-  path: '/detailJouet',
-  name: AppRoutes.jouetDetail.name,
-  builder: (context, state) {
-    final jouet = state.extra as JouetModel;
+      GoRoute(
+        path: '/detailJouet',
+        name: AppRoutes.jouetDetail.name,
+        builder: (context, state) {
+          final jouet = state.extra as JouetModel;
 
-    return Jouetdetail(
-      jouet: jouet,
-    );
-  },
-),
+          return Jouetdetail(jouet: jouet);
+        },
+      ),
       GoRoute(
         path: '/listEnfants',
         name: AppRoutes.listEnfants.name,
@@ -212,6 +219,51 @@ GoRouter appRouter(Ref ref) {
         path: '/favorites',
         name: AppRoutes.favorites.name,
         builder: (context, state) => const FavorisPage(),
+      ),
+
+      GoRoute(
+        path: '/enfant-profil',
+        name: AppRoutes.enfantProfil.name,
+        builder: (context, state) {
+          // Récupération de l'objet transmis dans 'extra'
+          final enfant = state.extra as EnfantModel;
+          return EnfantProfilScreen(enfant: enfant);
+        },
+      ),
+      GoRoute(
+        path: '/edit-enfant-profil',
+        name: AppRoutes.editEnfant.name,
+        builder: (context, state) {
+          final enfant = state.extra as EnfantModel;
+          return EditEnfantProfilScreen(enfant: enfant);
+        },
+      ),
+      GoRoute(
+        path: '/choisir-avatar',
+        name: AppRoutes.choisirAvatar.name,
+        builder: (context, state) {
+          // 1. Récupération sécurisée du map extra
+          final extraData = state.extra as Map<String, dynamic>?;
+
+          // 2. Extraction sécurisée de l'objet enfant
+          final enfant = extraData?['enfant'] as EnfantModel?;
+          final updatedData =
+              extraData?['updatedData'] as Map<String, dynamic>?;
+
+          // 3. Redirection de secours si l'objet enfant est nul
+          if (enfant == null) {
+            return const Scaffold(
+              body: Center(child: Text('Erreur : Profil enfant introuvable.')),
+            );
+          }
+
+          return ChoisirAvatarScreen(enfant: enfant, updatedData: updatedData);
+        },
+      ),
+      GoRoute(
+        path: '/jeux-list',
+        name: AppRoutes.jouetList.name,
+        builder: (context, state) => const JeuxListScreen(),
       ),
     ],
   );
