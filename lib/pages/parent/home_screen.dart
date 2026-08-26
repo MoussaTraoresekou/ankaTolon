@@ -438,7 +438,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   rating: (jouet.noteMoyen ?? 0.0).toStringAsFixed(1),
                   imageUrl: (jouet.image.isNotEmpty) ? jouet.image.first : null,
                   onTap: () {
-                    context.pushNamed(AppRoutes.jouetDetail.name, extra: jouet);
+                    context.pushNamed(AppRoutes.jouetDetail.name,extra:jouet);
                   },
                 ),
               );

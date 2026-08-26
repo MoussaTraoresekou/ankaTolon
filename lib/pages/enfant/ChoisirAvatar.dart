@@ -24,7 +24,7 @@ class ChoisirAvatarScreen extends ConsumerStatefulWidget {
 class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
   final List<String> _avatars = [
     'assets/images/avatars/avatar1.png',
-    'assets/images/avatar2.png',
+    'assets/images/avatars/avatar2.png',
     'assets/images/avatars/avatar3.png',
     'assets/images/avatars/avatar2.png',
     'assets/images/avatars/avatar3.png',
