@@ -69,17 +69,17 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // ==========================================
+            
             // IMAGE
-            // ==========================================
+           
 
             _buildImage(jouet),
 
             const SizedBox(height: 20),
 
-            // ==========================================
+            
             // INFORMATIONS
-            // ==========================================
+            
 
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -160,9 +160,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
                   const SizedBox(height: 25),
 
-                  // ======================================
+                  
                   // DESCRIPTION
-                  // ======================================
+                  
 
                   const Text(
                     'Description',
@@ -184,9 +184,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
                   const SizedBox(height: 25),
 
-                  // ======================================
+                  
                   // BENEFICES
-                  // ======================================
+                  
 
                   if (jouet.benefices.isNotEmpty) ...[
                     const Text(
@@ -233,9 +233,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
                   const SizedBox(height: 30),
 
-                  // ======================================
+                  
                   // AVIS
-                  // ======================================
+                  
 
                   _buildReviewsSection(
                     jouet,
@@ -247,9 +247,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         ),
       ),
 
-      // ================================================
+      
       // BOUTON PANIER
-      // ================================================
+      
 
       bottomNavigationBar: _buildAddToCartButton(
         jouet,
@@ -257,9 +257,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ====================================================
+  
   // IMAGE
-  // ====================================================
+  
 
   Widget _buildImage(JouetModel jouet) {
     if (jouet.image.isEmpty) {
@@ -317,9 +317,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ====================================================
+  
   // ICONE PANIER
-  // ====================================================
+  
 
   Widget _buildCartIcon(int quantity) {
     return Padding(
@@ -372,9 +372,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ====================================================
+  
   // AVIS
-  // ====================================================
+  
 
   Widget _buildReviewsSection(
   JouetModel jouet,
@@ -402,9 +402,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         );
       }
 
-      // ==================================================
+      
       // ERREUR
-      // ==================================================
+      
 
       if (snapshot.hasError) {
         return Column(
@@ -434,15 +434,15 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         );
       }
 
-      // ==================================================
+      
       // RÉCUPÉRATION DES AVIS
-      // ==================================================
+      
 
       final avis = snapshot.data ?? [];
 
-      // ==================================================
+    
       // CALCUL DE LA MOYENNE
-      // ==================================================
+      
 
       double moyenne = jouet.noteMoyen;
 
@@ -461,9 +461,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
         children: [
 
-          // ==================================================
+         
           // TITRE AVIS
-          // ==================================================
+          
 
           Row(
             mainAxisAlignment:
@@ -504,9 +504,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
           const SizedBox(height: 5),
 
-          // ==================================================
+          
           // NOMBRE D'AVIS
-          // ==================================================
+          
 
           Text(
             avis.isEmpty
@@ -521,9 +521,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
           const SizedBox(height: 15),
 
-          // ==================================================
+          
           // LISTE DES AVIS
-          // ==================================================
+          
 
           if (avis.isEmpty)
 
@@ -589,9 +589,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
   );
 }
 
-  // ====================================================
+
   // CARTE AVIS
-  // ====================================================
+  
 
   Widget _buildReviewCard({
   required AvisModel avis,
@@ -628,9 +628,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         Row(
           children: [
 
-            // ==========================================
+            
             // AVATAR
-            // ==========================================
+            
 
             CircleAvatar(
               radius: 20,
@@ -646,9 +646,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
             const SizedBox(width: 10),
 
-            // ==========================================
+            
             // NOM DE L'UTILISATEUR
-            // ==========================================
+            
 
             Expanded(
               child: FutureBuilder<
@@ -857,9 +857,9 @@ Widget _buildWriteReviewButton(
   );
 }
 
-  // ====================================================
+  
   // AJOUTER AU PANIER
-  // ====================================================
+  
 
   Widget _buildAddToCartButton(
     JouetModel jouet,

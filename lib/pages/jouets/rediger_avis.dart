@@ -46,9 +46,8 @@ class _RedigerAvisPageState
     return Scaffold(
       backgroundColor: AppStyles.bgColor,
 
-      // ==================================================
+       
       // APP BAR
-      // ==================================================
 
       appBar: AppBar(
         backgroundColor: AppStyles.bgColor,
@@ -70,9 +69,9 @@ class _RedigerAvisPageState
         ),
       ),
 
-      // ==================================================
+      
       // CONTENU
-      // ==================================================
+      
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
@@ -86,9 +85,9 @@ class _RedigerAvisPageState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // ==================================================
+           
             // JOUET
-            // ==================================================
+            
 
             Container(
               padding: const EdgeInsets.all(15),
@@ -183,9 +182,9 @@ class _RedigerAvisPageState
 
             const SizedBox(height: 30),
 
-            // ==================================================
+            
             // TITRE
-            // ==================================================
+            
 
             const Text(
               'Partagez votre expérience',
@@ -206,9 +205,9 @@ class _RedigerAvisPageState
 
             const SizedBox(height: 30),
 
-            // ==================================================
+            
             // NOTE
-            // ==================================================
+          
 
             const Text(
               'Quelle note donnez-vous à ce jouet ?',
@@ -267,9 +266,9 @@ class _RedigerAvisPageState
 
             const SizedBox(height: 30),
 
-            // ==================================================
+            
             // COMMENTAIRE
-            // ==================================================
+            
 
             const Text(
               'Votre commentaire',
@@ -337,9 +336,9 @@ class _RedigerAvisPageState
 
             const SizedBox(height: 20),
 
-            // ==================================================
+
             // BOUTON PUBLIER
-            // ==================================================
+            
 
             SizedBox(
   width: double.infinity,
@@ -402,17 +401,17 @@ class _RedigerAvisPageState
     );
   }
 
-  // ========================================================
+  
   // PUBLIER
-  // ========================================================
+  
 
   Future<void> _publierAvis() async {
   final commentaire =
       _commentaireController.text.trim();
 
-  // ============================================
+  
   // VÉRIFICATION DU COMMENTAIRE
-  // ============================================
+  
 
   if (commentaire.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -426,9 +425,9 @@ class _RedigerAvisPageState
     return;
   }
 
-  // ============================================
+  
   // UTILISATEUR CONNECTÉ
-  // ============================================
+  
 
   final user = FirebaseAuth.instance.currentUser;
 
@@ -444,18 +443,18 @@ class _RedigerAvisPageState
     return;
   }
 
-  // ============================================
+  
   // ACTIVATION DU CHARGEMENT
-  // ============================================
+  
 
   setState(() {
     _isLoading = true;
   });
 
   try {
-    // ==========================================
+    
     // CRÉATION DE L'AVIS
-    // ==========================================
+    
 
     final avis = AvisModel(
       id: '',
@@ -465,9 +464,9 @@ class _RedigerAvisPageState
       date: DateTime.now(),
     );
 
-    // ==========================================
+    
     // ENREGISTREMENT FIREBASE
-    // ==========================================
+    
 
     await _avisRepository.ajouterAvis(
       jouetId: widget.jouet.id,
