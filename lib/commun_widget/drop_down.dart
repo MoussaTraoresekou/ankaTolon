@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
+class CustomDropdown<T> extends StatelessWidget {
+  const CustomDropdown({
     super.key,
     required this.label,
     required this.hintText,
-    required this.controller,
-    this.isPassword = false,
+    required this.value,
+    required this.items,
+    required this.onChanged,
     this.prefixIcon,
     this.prefixIconColor,
-    this.suffixIcon,
     this.validator,
-    this.keyboardType = TextInputType.text,
   });
 
   final String label;
   final String hintText;
-  final TextEditingController controller;
-  final bool isPassword;
+  final T? value;
+  final List<DropdownMenuItem<T>> items;
+  final void Function(T?)? onChanged;
 
   final IconData? prefixIcon;
   final Color? prefixIconColor;
-
-  final Widget? suffixIcon;
-  final String? Function(String?)? validator;
-  final TextInputType keyboardType;
+  final String? Function(T?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +39,25 @@ class CustomTextField extends StatelessWidget {
 
         const SizedBox(height: 6),
 
-        TextFormField(
-          controller: controller,
-          obscureText: isPassword,
+        DropdownButtonFormField<T>(
+          value: value,
+          items: items,
+          onChanged: onChanged,
           validator: validator,
-          keyboardType: keyboardType,
+          isExpanded: true,
 
           style: AppStyles.normalTextStyle.copyWith(
             color: Colors.black87,
           ),
+
+          icon: const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Colors.black45,
+          ),
+
+          dropdownColor: Colors.white,
+
+          borderRadius: BorderRadius.circular(10),
 
           decoration: InputDecoration(
             hintText: hintText,
@@ -59,16 +66,12 @@ class CustomTextField extends StatelessWidget {
               color: Colors.black38,
             ),
 
-            // Icône à gauche
             prefixIcon: prefixIcon != null
                 ? Icon(
                     prefixIcon,
                     color: prefixIconColor ?? Colors.black45,
                   )
                 : null,
-
-            // Icône à droite
-            suffixIcon: suffixIcon,
 
             filled: true,
             fillColor: const Color(0xFFFFFFFF),
@@ -107,6 +110,14 @@ class CustomTextField extends StatelessWidget {
               borderSide: const BorderSide(
                 color: Colors.redAccent,
                 width: 1,
+              ),
+            ),
+
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: Colors.redAccent,
+                width: 1.5,
               ),
             ),
           ),
