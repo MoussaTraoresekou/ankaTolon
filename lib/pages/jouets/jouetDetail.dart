@@ -151,115 +151,105 @@ class _JouetdetailState
     JouetModel jouet,
     int quantity,
   ) {
-    return SizedBox(
-      height: 410,
-      child: Stack(
-        children: [
+    final hasMultipleImages = jouet.image.length > 1;
 
+    return SizedBox(
+      height: hasMultipleImages ? 340 : 300,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
           // ====================================================
           // IMAGE PRINCIPALE
           // ====================================================
-
-          Container(
-            height: 355,
-            width: double.infinity,
-
-            decoration: BoxDecoration(
-              color: AppStyles.primarySoft,
-
-              borderRadius:
-                  const BorderRadius.only(
-                bottomLeft:
-                    Radius.circular(40),
-                bottomRight:
-                    Radius.circular(40),
-              ),
-            ),
-
-            child: jouet.image.isEmpty
-                ? const Center(
-                    child: Icon(
-                      Icons
-                          .image_not_supported_outlined,
-                      size: 80,
-                      color: Colors.grey,
-                    ),
-                  )
-                : ClipRRect(
-                    borderRadius:
-                        const BorderRadius.only(
-                      bottomLeft:
-                          Radius.circular(40),
-                      bottomRight:
-                          Radius.circular(40),
-                    ),
-
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: jouet.image.length,
-                      onPageChanged: (index) {
-                        setState(() {
-                          _selectedImage = index;
-                        });
-                      },
-                      itemBuilder: (context, index) {
-                        return Image.network(
-                          jouet.image[index],
-                          fit: BoxFit.cover,
-                          errorBuilder: (
-                            context,
-                            error,
-                            stackTrace,
-                          ) {
-                            return const Center(
-                              child: Icon(
-                                Icons.image_not_supported_outlined,
-                                size: 70,
-                                color: Colors.grey,
-                              ),
-                            );
-                          },
-                          loadingBuilder: (
-                            context,
-                            child,
-                            progress,
-                          ) {
-                            if (progress == null) {
-                              return child;
-                            }
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                color: AppStyles.primary,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-          ),
-
-          // ====================================================
-          // GRADIENT PAR-DESSUS L'IMAGE
-          // ====================================================
-
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: Container(
-              height: 120,
+              height: 280,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: AppStyles.primarySoft,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(28),
+                  bottomRight: Radius.circular(28),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: jouet.image.isEmpty
+                  ? const Center(
+                      child: Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 64,
+                        color: Colors.grey,
+                      ),
+                    )
+                  : ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(28),
+                        bottomRight: Radius.circular(28),
+                      ),
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: jouet.image.length,
+                        onPageChanged: (index) {
+                          setState(() => _selectedImage = index);
+                        },
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            jouet.image[index],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                            errorBuilder: (_, __, ___) => const Center(
+                              child: Icon(
+                                Icons.image_not_supported_outlined,
+                                size: 64,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            loadingBuilder: (context, child, progress) {
+                              if (progress == null) return child;
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppStyles.primary,
+                                  strokeWidth: 2.5,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+            ),
+          ),
 
-              decoration:
-                  const BoxDecoration(
+          // ====================================================
+          // GRADIENT HAUT (lisibilité des boutons)
+          // ====================================================
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 110,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(0),
+                ),
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Color(
-                      0x66000000,
-                    ),
-                    Colors.transparent,
+                    Color(0x55000000),
+                    Color(0x00000000),
                   ],
                 ),
               ),
@@ -269,26 +259,21 @@ class _JouetdetailState
           // ====================================================
           // BOUTON RETOUR
           // ====================================================
-
           Positioned(
             top: 48,
-            left: 20,
-
+            left: 16,
             child: _buildCircleButton(
               icon: Icons.arrow_back_ios_new,
-              onTap: () {
-                context.pop();
-              },
+              onTap: () => context.pop(),
             ),
           ),
 
           // ====================================================
           // FAVORIS
           // ====================================================
-
           Positioned(
             top: 48,
-            right: 70,
+            right: 66,
             child: Builder(
               builder: (context) {
                 final favorisIds = ref.watch(favorisControllerProvider);
@@ -329,53 +314,34 @@ class _JouetdetailState
           // ====================================================
           // PANIER
           // ====================================================
-
           Positioned(
             top: 48,
-            right: 20,
-
+            right: 16,
             child: Stack(
-              clipBehavior:
-                  Clip.none,
-
+              clipBehavior: Clip.none,
               children: [
-
                 _buildCircleButton(
-                  icon:
-                      Icons.shopping_bag_outlined,
-                  onTap: () {
-                    context.push('/cart');
-                  },
+                  icon: Icons.shopping_bag_outlined,
+                  onTap: () => context.push('/cart'),
                 ),
-
                 if (quantity > 0)
                   Positioned(
                     right: -2,
                     top: -4,
-
                     child: Container(
                       width: 20,
                       height: 20,
-
-                      decoration:
-                          const BoxDecoration(
-                        color:
-                            AppStyles.badgeRed,
-                        shape:
-                            BoxShape.circle,
+                      decoration: const BoxDecoration(
+                        color: AppStyles.badgeRed,
+                        shape: BoxShape.circle,
                       ),
-
                       child: Center(
                         child: Text(
                           '$quantity',
-
-                          style:
-                              const TextStyle(
-                            color:
-                                Colors.white,
+                          style: const TextStyle(
+                            color: Colors.white,
                             fontSize: 10,
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -386,22 +352,22 @@ class _JouetdetailState
           ),
 
           // ====================================================
-          // MINIATURES + INDICATEURS
+          // MINIATURES + POINTS
           // ====================================================
-
-          if (jouet.image.length > 1)
+          if (hasMultipleImages)
             Positioned(
               left: 0,
               right: 0,
-              bottom: 12,
+              bottom: 8,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Miniatures
+                  // Miniatures centrées
                   SizedBox(
-                    height: 62,
+                    height: 54,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemCount: jouet.image.length,
                       separatorBuilder: (_, __) => const SizedBox(width: 10),
@@ -417,24 +383,26 @@ class _JouetdetailState
                             );
                           },
                           child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            width: 58,
-                            height: 58,
-                            padding: const EdgeInsets.all(3),
+                            duration: const Duration(milliseconds: 220),
+                            width: selected ? 52 : 46,
+                            height: selected ? 52 : 46,
+                            padding: const EdgeInsets.all(2.5),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
                                 color: selected
-                                    ? AppStyles.primary
-                                    : Colors.white.withValues(alpha: 0.6),
+                                    ? const Color.fromRGBO(230, 126, 34, 1)
+                                    : Colors.white,
                                 width: selected ? 2.5 : 1.5,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.12),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
+                                  color: Colors.black.withValues(
+                                    alpha: selected ? 0.16 : 0.10,
+                                  ),
+                                  blurRadius: selected ? 10 : 6,
+                                  offset: const Offset(0, 3),
                                 ),
                               ],
                             ),
@@ -445,7 +413,7 @@ class _JouetdetailState
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => const Icon(
                                   Icons.image_not_supported,
-                                  size: 22,
+                                  size: 18,
                                   color: Colors.grey,
                                 ),
                               ),
@@ -461,32 +429,27 @@ class _JouetdetailState
                   // Points indicateurs
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      jouet.image.length,
-                      (index) {
-                        final selected = _selectedImage == index;
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          margin: const EdgeInsets.symmetric(horizontal: 3),
-                          width: selected ? 18 : 7,
-                          height: 7,
-                          decoration: BoxDecoration(
-                            color: selected
-                                ? AppStyles.primary
-                                : Colors.white.withValues(alpha: 0.7),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: selected
-                                ? [
-                                    BoxShadow(
-                                      color: AppStyles.primary.withValues(alpha: 0.4),
-                                      blurRadius: 4,
-                                    ),
-                                  ]
-                                : null,
-                          ),
-                        );
-                      },
-                    ),
+                    children: List.generate(jouet.image.length, (index) {
+                      final selected = _selectedImage == index;
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        margin: const EdgeInsets.symmetric(horizontal: 3.5),
+                        width: selected ? 20 : 7,
+                        height: 7,
+                        decoration: BoxDecoration(
+                          color: selected
+                              ? const Color.fromRGBO(230, 126, 34, 1)
+                              : Colors.white.withValues(alpha: 0.85),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.12),
+                              blurRadius: 3,
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                   ),
                 ],
               ),
@@ -495,10 +458,6 @@ class _JouetdetailState
       ),
     );
   }
-
-  // ==========================================================
-  // BOUTON CERCLE
-  // ==========================================================
 
   Widget _buildCircleButton({
     required IconData icon,
@@ -1464,7 +1423,7 @@ class _JouetdetailState
   }
 
   // ==========================================================
-  // BOUTON RÉDIGER / MODIFIER UN AVIS
+  // BOUTON RÉDIGER UN AVIS
   // ==========================================================
 
   Widget _buildWriteReviewButton(
@@ -1472,18 +1431,15 @@ class _JouetdetailState
     List<AvisModel> avisList,
   ) {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-    AvisModel? monAvis;
 
+    // Si l'utilisateur a déjà un avis, on n'affiche pas le bouton
+    // (la modification se fait via le bouton sur la carte d'avis)
     if (currentUserId != null) {
-      for (final a in avisList) {
-        if (a.userId == currentUserId) {
-          monAvis = a;
-          break;
-        }
+      final dejaNote = avisList.any((a) => a.userId == currentUserId);
+      if (dejaNote) {
+        return const SizedBox.shrink();
       }
     }
-
-    final dejaNote = monAvis != null;
 
     return SizedBox(
       width: double.infinity,
@@ -1502,16 +1458,14 @@ class _JouetdetailState
             AppRoutes.redigerAvis.name,
             extra: {
               'jouet': jouet,
-              'avis': monAvis, // null = nouveau, sinon = modification
+              'avis': null,
             },
           );
         },
-        icon: Icon(
-          dejaNote ? Icons.edit_outlined : Icons.rate_review_outlined,
-        ),
-        label: Text(
-          dejaNote ? 'Modifier mon avis' : 'Rédiger un avis',
-          style: const TextStyle(
+        icon: const Icon(Icons.rate_review_outlined),
+        label: const Text(
+          'Rédiger un avis',
+          style: TextStyle(
             fontWeight: FontWeight.w600,
           ),
         ),
