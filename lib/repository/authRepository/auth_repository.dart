@@ -81,6 +81,9 @@ class AuthRepository {
   Future<void> deconnecter() async {
     await auth.signOut();
   }
+  Future<void> reinitialiserMotDePasse({required String email}) async {
+  await auth.sendPasswordResetEmail(email: email);
+}
 }
 
 @riverpod
