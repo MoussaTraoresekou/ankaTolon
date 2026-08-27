@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:tolon/controller/jouetsAdmin/jouets_controller.dart';
 
+import 'package:tolon/models/categorieAdmin/categorie_model.dart';
+
 import 'package:tolon/repository/JouetsAdmin/JouetsRepository.dart';
+
+import 'package:tolon/repository/categorieAdminRepository/categorie_repository.dart';
 
 import 'package:tolon/pages/JouetsAdmin/Add/informations_jouets.dart';
 import 'package:tolon/pages/JouetsAdmin/Add/images_jouet.dart';
@@ -18,7 +22,9 @@ class AjouterJouetPage extends StatefulWidget {
       _AjouterJouetPageState();
 }
 
-class _AjouterJouetPageState extends State<AjouterJouetPage> {
+class _AjouterJouetPageState
+    extends State<AjouterJouetPage> {
+
   late JouetController controller;
 
   final GlobalKey<FormState> formKey =
@@ -42,17 +48,9 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
   final TextEditingController descriptionController =
   TextEditingController();
 
-  String? categorieSelectionnee;
+  String? categorieIdSelectionnee;
 
-  final List<String> categories = [
-    'Éducatif',
-    'Construction',
-    'Puzzle',
-    'Peluches',
-    'Véhicules',
-    'Jeux de société',
-    'Créatif',
-  ];
+  List<Categorie> categories = [];
 
   List<TextEditingController> beneficesControllers = [
     TextEditingController(),
@@ -65,6 +63,24 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
     controller = JouetController(
       repository: JouetRepository(),
     );
+
+    chargerCategories();
+  }
+
+  Future<void> chargerCategories() async {
+    final CategorieRepository repository =
+    CategorieRepository();
+
+    final resultat =
+    await repository.recupererCategories();
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      categories = resultat;
+    });
   }
 
   void ajouterChampBenefice() {
@@ -99,14 +115,16 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
   }
 
   Future<void> ajouterJouet() async {
+
     if (!formKey.currentState!.validate()) {
       return;
     }
 
-    if (categorieSelectionnee == null) {
+    if (categorieIdSelectionnee == null) {
       afficherMessage(
         'Veuillez sélectionner une catégorie',
       );
+
       return;
     }
 
@@ -114,22 +132,27 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
       afficherMessage(
         'Veuillez sélectionner au moins une image',
       );
+
       return;
     }
 
-    final int ageMinimum = int.parse(
+    final int ageMinimum =
+    int.parse(
       ageMinimumController.text.trim(),
     );
 
-    final int ageMaximum = int.parse(
+    final int ageMaximum =
+    int.parse(
       ageMaximumController.text.trim(),
     );
 
-    final double prix = double.parse(
+    final double prix =
+    double.parse(
       prixController.text.trim(),
     );
 
-    final int stock = int.parse(
+    final int stock =
+    int.parse(
       stockController.text.trim(),
     );
 
@@ -139,7 +162,11 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
     TextEditingController beneficeController
     in beneficesControllers
     ) {
-      if (beneficeController.text.trim().isNotEmpty) {
+
+      if (beneficeController.text
+          .trim()
+          .isNotEmpty) {
+
         benefices.add(
           beneficeController.text.trim(),
         );
@@ -150,19 +177,37 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
       afficherMessage(
         'Veuillez ajouter au moins un bénéfice',
       );
+
       return;
     }
 
     try {
+
       await controller.ajouterJouet(
-        nom: nomController.text.trim(),
-        categorie: categorieSelectionnee!,
-        ageMinimum: ageMinimum,
-        ageMaximum: ageMaximum,
-        prix: prix,
-        stock: stock,
-        description: descriptionController.text.trim(),
-        benefices: benefices,
+
+        nom:
+        nomController.text.trim(),
+
+        categorieId:
+        categorieIdSelectionnee!,
+
+        ageMinimum:
+        ageMinimum,
+
+        ageMaximum:
+        ageMaximum,
+
+        prix:
+        prix,
+
+        stock:
+        stock,
+
+        description:
+        descriptionController.text.trim(),
+
+        benefices:
+        benefices,
       );
 
       if (!mounted) {
@@ -174,7 +219,9 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
       );
 
       Navigator.pop(context);
+
     } catch (e) {
+
       if (!mounted) {
         return;
       }
@@ -186,6 +233,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
   }
 
   void afficherMessage(String message) {
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -195,52 +243,69 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFFFB),
+      backgroundColor:
+      const Color(0xFFFAFFFB),
+
       body: SafeArea(
         child: SingleChildScrollView(
+
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 40,
               vertical: 18,
             ),
+
             child: Form(
               key: formKey,
+
               child: Column(
                 children: [
+
                   Row(
                     children: [
+
                       IconButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
+
                         icon: const Icon(
                           Icons.arrow_back_ios,
                           size: 16,
                         ),
                       ),
+
                       const SizedBox(
                         width: 5,
                       ),
+
                       const Expanded(
                         child: Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
+
                           children: [
+
                             Text(
                               'Ajouter un jouet',
+
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight:
                                 FontWeight.bold,
                               ),
                             ),
+
                             SizedBox(
                               height: 4,
                             ),
+
                             Text(
                               'Renseignez les informations\n'
                                   'du nouveau jouet',
+
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
@@ -249,9 +314,11 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                           ],
                         ),
                       ),
+
                       SizedBox(
                         width: 100,
                         height: 75,
+
                         child: Image.asset(
                           'assets/images/JouetHeader.png',
                           fit: BoxFit.contain,
@@ -259,119 +326,172 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                       ),
                     ],
                   ),
+
                   const SizedBox(
                     height: 8,
                   ),
+
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(14),
+
+                    padding:
+                    const EdgeInsets.all(14),
+
                     decoration: BoxDecoration(
                       color: Colors.white,
+
                       borderRadius:
                       BorderRadius.circular(10),
+
                       boxShadow: [
                         BoxShadow(
-                          color:
-                          Colors.black.withOpacity(0.15),
+                          color: Colors.black
+                              .withOpacity(0.15),
+
                           blurRadius: 7,
-                          offset: const Offset(0, 3),
+
+                          offset:
+                          const Offset(0, 3),
                         ),
                       ],
                     ),
+
                     child: Column(
                       crossAxisAlignment:
                       CrossAxisAlignment.start,
+
                       children: [
+
                         const Text(
                           'Informations du jouet',
+
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight:
+                            FontWeight.bold,
+
                             fontSize: 16,
                           ),
                         ),
+
                         const SizedBox(
                           height: 10,
                         ),
+
                         InformationsJouet(
                           nomController:
                           nomController,
+
                           ageMinimumController:
                           ageMinimumController,
+
                           ageMaximumController:
                           ageMaximumController,
+
                           prixController:
                           prixController,
+
                           stockController:
                           stockController,
+
                           descriptionController:
                           descriptionController,
-                          categorieSelectionnee:
-                          categorieSelectionnee,
-                          categories: categories,
+
+                          categorieIdSelectionnee:
+                          categorieIdSelectionnee,
+
+                          categories:
+                          categories,
+
                           onCategorieChanged:
                               (value) {
+
                             setState(() {
-                              categorieSelectionnee =
+
+                              categorieIdSelectionnee =
                                   value;
                             });
                           },
                         ),
+
                         const SizedBox(
                           height: 12,
                         ),
+
                         ImagesJouet(
-                          images: controller
+                          images:
+                          controller
                               .imagesSelectionnees,
+
                           selectionnerImages:
                           selectionnerImages,
+
                           supprimerImage:
                           supprimerImage,
                         ),
+
                         const SizedBox(
                           height: 12,
                         ),
+
                         BeneficesJouet(
                           controllers:
                           beneficesControllers,
+
                           ajouterBenefice:
                           ajouterChampBenefice,
+
                           supprimerBenefice:
                           supprimerBenefice,
                         ),
                       ],
                     ),
                   ),
+
                   const SizedBox(
                     height: 14,
                   ),
+
                   Row(
                     mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    MainAxisAlignment
+                        .spaceBetween,
+
                     children: [
+
                       SizedBox(
                         width: 120,
                         height: 42,
+
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
+
                           child: const Text(
                             'Annuler',
                           ),
                         ),
                       ),
+
                       SizedBox(
                         width: 120,
                         height: 42,
+
                         child: ElevatedButton(
-                          onPressed: ajouterJouet,
+                          onPressed:
+                          ajouterJouet,
+
                           style:
                           ElevatedButton.styleFrom(
                             backgroundColor:
-                            const Color(0xFFE98219),
+                            const Color(
+                              0xFFE98219,
+                            ),
+
                             foregroundColor:
                             Colors.white,
                           ),
+
                           child: const Text(
                             'Ajouter',
                           ),
@@ -379,6 +499,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                       ),
                     ],
                   ),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -393,11 +514,17 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
 
   @override
   void dispose() {
+
     nomController.dispose();
+
     ageMinimumController.dispose();
+
     ageMaximumController.dispose();
+
     prixController.dispose();
+
     stockController.dispose();
+
     descriptionController.dispose();
 
     for (

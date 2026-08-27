@@ -16,15 +16,14 @@ class JouetController {
 
 
 
-  // liste des jouets
 
   List<Jouet> jouets = [];
+
 
 
   List<XFile> imagesSelectionnees = [];
 
 
-  // selection d'images
 
   Future<void> selectionnerImages() async {
 
@@ -41,7 +40,6 @@ class JouetController {
   }
 
 
-  // supprimer une image
 
 
   void supprimerImage(int index) {
@@ -58,20 +56,26 @@ class JouetController {
 
 
 
-  // AJOUTER UN JOUET
-
   Future<void> ajouterJouet({
 
     required String nom,
-    required String categorie,
+
+    required String categorieId,
+
     required int ageMinimum,
+
     required int ageMaximum,
+
     required double prix,
+
     required int stock,
+
     required String description,
+
     required List<String> benefices,
 
   }) async {
+
 
 
     if (ageMinimum < 4 || ageMinimum > 12) {
@@ -102,8 +106,6 @@ class JouetController {
 
 
 
-    // upload des img
-
     List<String> imageUrls = [];
 
     for (XFile image in imagesSelectionnees) {
@@ -115,13 +117,12 @@ class JouetController {
     }
 
 
-    // Création de jouet
 
     final JouetModel jouet = JouetModel(
 
       nom: nom,
 
-      categorie: categorie,
+      categorieId: categorieId,
 
       ageMinimum: ageMinimum,
 
@@ -139,16 +140,16 @@ class JouetController {
     );
 
 
-    // enregistre un jouet
 
 
-    await repository.ajouterJouet(jouet);
+    await repository.ajouterJouet(
+      jouet,
+    );
 
 
 
     imagesSelectionnees.clear();
   }
-
 
 
 
@@ -159,11 +160,10 @@ class JouetController {
   }
 
 
-  // suppression du jouet
-
 
   Future<void> supprimerJouet(
-      String id) async {
+      String id,
+      ) async {
 
     await repository.supprimerJouet(id);
 
@@ -171,7 +171,6 @@ class JouetController {
   }
 
 
-  // modification du jouet
 
   Future<void> modifierJouet({
 
@@ -179,7 +178,7 @@ class JouetController {
 
     required String nom,
 
-    required String categorie,
+    required String categorieId,
 
     required int ageMinimum,
 
@@ -200,6 +199,7 @@ class JouetController {
   }) async {
 
 
+
     if (ageMinimum < 4 || ageMinimum > 12) {
 
       throw Exception(
@@ -228,14 +228,13 @@ class JouetController {
 
 
 
-
     await repository.modifierJouet(
 
       id: id,
 
       nom: nom,
 
-      categorie: categorie,
+      categorieId: categorieId,
 
       ageMinimum: ageMinimum,
 
@@ -255,7 +254,6 @@ class JouetController {
     );
 
 
-    // Vider les nouvelles images
 
     imagesSelectionnees.clear();
 
