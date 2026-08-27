@@ -91,7 +91,7 @@ class AdminDashboard extends ConsumerWidget {
            GestureDetector(
         onTap: () {
           // Clic sur la photo de profil : Redirection vers l'onglet Profil du ShellRoute
-          context.pushNamed(AppRoutes.profile.name); 
+          context.pushNamed(AppRoutes.adminprofile.name); 
         },
         child: const Padding(
           padding: EdgeInsets.only(right: 16.0),
@@ -278,8 +278,8 @@ class AdminDashboard extends ConsumerWidget {
                       }
 
                       // CORRECTION DU PRIX : Évite le plantage si le montant est un chiffre (int/double) dans Firestore
-                      final String prix = data['montant_total'] != null
-                          ? "${data['montant_total']} F CFA"
+                      final String prix = data['montant'] != null
+                          ? "${data['montant']} F CFA"
                           : '0 F CFA';
 
                       // Formatage de la date de la commande (Jour, Mois en lettres et Année)
@@ -427,7 +427,7 @@ class AdminDashboard extends ConsumerWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    //context.go('/admin/add-toy'); // Redirection vers la page d'ajout de jouet
+                    context.pushNamed(AppRoutes.addJouetAdmin.name);
                   },
                   child: const QuickActionTile(
                     label: 'Ajouter un jouet',
@@ -449,7 +449,7 @@ class AdminDashboard extends ConsumerWidget {
 
                 GestureDetector(
                   onTap: () {
-                    //context.go('/admin/add-tutorial'); // Redirection vers la page d'ajout d' un tutoriel
+                    context.pushNamed(AppRoutes.adminajoututoriels.name);
                   },
                   child: const QuickActionTile(
                     label: 'Ajouter un tutoriel',

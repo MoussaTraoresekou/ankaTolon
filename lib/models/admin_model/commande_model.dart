@@ -35,8 +35,8 @@ class CommandeModel {
 
     // Sécurité Montant
     int total = 0;
-    if (json['montant_total'] != null) {
-      total = int.tryParse(json['montant_total'].toString()) ?? 0;
+    if (json['montant'] != null) {
+      total = int.tryParse(json['montant'].toString()) ?? 0;
     }
 
     return CommandeModel(

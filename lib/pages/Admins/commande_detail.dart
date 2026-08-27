@@ -167,11 +167,7 @@ class CommandeDetail extends ConsumerWidget {
                             : Colors.orange,
                         iconColor:  Colors.orange,
                       ),
-                      LigneInfoCmd(
-                        icon: Icons.widgets_outlined,
-                        label: 'Quantité totale',
-                        value: '${orderData.jouets.length} jouets',
-                      ),
+                      
                       LigneInfoCmd(
                         icon: Icons.functions_rounded,
                         label: 'Montant total',
@@ -204,10 +200,10 @@ class CommandeDetail extends ConsumerWidget {
 
                             return LigneJouetCmd(
                               title:
-                                  toy['nom'] ?? toy['name'] ?? 'Jouet Éveil',
-                              quantity: toy['quantite_achete'] ?? 1,
-                              price: toy['prix'] != null
-                                  ? "${toy['prix']} F CFA"
+                                  toy['nom_jouet'] ?? toy['name'] ?? 'Jouet Éveil',
+                              quantity: toy['quantite'] ?? 1,
+                              price: toy['prix_unitaire'] != null
+                                  ? "${toy['prix_unitaire']} F CFA"
                                   : "0 F CFA",
                             );
                           }).toList(),

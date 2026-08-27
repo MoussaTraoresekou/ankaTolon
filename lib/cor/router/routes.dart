@@ -15,7 +15,7 @@ import 'package:tolon/pages/Admins/ajout_defis.dart';
 import 'package:tolon/pages/Admins/ajout_tutos.dart';
 import 'package:tolon/pages/Admins/commande_detail.dart';
 import 'package:tolon/pages/Admins/commande_liste.dart';
-import 'package:tolon/pages/Admins/liste_jouets.dart';
+import 'package:tolon/pages/JouetsAdmin/Listes/liste_jouet.dart';
 import 'package:tolon/pages/Admins/liste_tutos.dart';
 import 'package:tolon/pages/Admins/utilisateur_detail.dart';
 import 'package:tolon/pages/Admins/utilisateur_liste.dart';
@@ -77,6 +77,7 @@ enum AppRoutes {
   orders,
   favorites,
   profile,
+  adminprofile,
   adminDashboard,
   admincommandeDetail,
   adminutilisateurDetail,
@@ -95,6 +96,7 @@ enum AppRoutes {
   choisirAvatar,
   jouetList,
   JouetsAdmin,
+  addJouetAdmin,
   modifierJouet,
   changermotdepasse
 }
@@ -400,7 +402,7 @@ GoRouter appRouter(Ref ref) {
       // =========================
       GoRoute(
         path: '/admin/profile',
-        name: AppRoutes.profile.name,
+        name: AppRoutes.adminprofile.name,
         builder: (context, state) => const AdminProfil(), // ──> Connecté !
       ),
 
@@ -577,31 +579,10 @@ GoRouter appRouter(Ref ref) {
         },
       ),
 
-      GoRoute(
-        path: '/adminDashboard',
-        name: AppRoutes.adminDashboard.name,
-        builder: (context, state) {
-          return const Scaffold(
-            body: Center(
-              child: Text(
-                'Admin Dashboard',
-              ),
-            ),
-          );
-        },
-      ),
-
-      GoRoute(
-        path: '/JouetsAdmin',
-        name: AppRoutes.JouetsAdmin.name,
-        builder: (context, state) {
-          return const ListeJouetsPage();
-        },
-      ),
 
       GoRoute(
         path: '/add-jouet-admin',
-        name: 'addJouetAdmin',
+        name: AppRoutes.addJouetAdmin.name,
         builder: (context, state) {
           return const AjouterJouetPage();
         },
