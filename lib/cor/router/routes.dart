@@ -18,6 +18,7 @@ import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
 import 'package:tolon/pages/enfant/EditEnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
+import 'package:tolon/pages/enfant/EspaceEnfantScreen.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
 
@@ -74,7 +75,8 @@ enum AppRoutes {
   jouetList,
   JouetsAdmin,
   modifierJouet,
-  changermotdepasse
+  changermotdepasse,
+  espaceEnfant,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -95,9 +97,7 @@ GoRouter appRouter(Ref ref) {
 
     debugLogDiagnostics: true,
 
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
 
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
@@ -108,7 +108,7 @@ GoRouter appRouter(Ref ref) {
         '/onboarding',
         '/login',
         '/register',
-        '/forgotPassword'
+        '/forgotPassword',
       ];
 
       final isPublic = publicRoutes.contains(currentLoc);
@@ -128,10 +128,7 @@ GoRouter appRouter(Ref ref) {
           return role;
         }
 
-        final doc = await firestore
-            .collection('users')
-            .doc(user.uid)
-            .get();
+        final doc = await firestore.collection('users').doc(user.uid).get();
 
         role = doc.data()?['type'] as String?;
 
@@ -209,7 +206,6 @@ GoRouter appRouter(Ref ref) {
     },
 
     routes: [
-
       GoRoute(
         path: '/splash',
         name: AppRoutes.splash.name,
@@ -272,9 +268,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final jouet = state.extra as JouetModel;
 
-          return Jouetdetail(
-            jouet: jouet,
-          );
+          return Jouetdetail(jouet: jouet);
         },
       ),
 
@@ -284,9 +278,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final jouet = state.extra as JouetModel;
 
-          return RedigerAvisPage(
-            jouet: jouet,
-          );
+          return RedigerAvisPage(jouet: jouet);
         },
       ),
 
@@ -304,9 +296,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
 
-          return SelectAvatarScreen(
-            dataEnfant: extra,
-          );
+          return SelectAvatarScreen(dataEnfant: extra);
         },
       ),
 
@@ -356,9 +346,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
 
-          return EnfantProfilScreen(
-            enfant: enfant,
-          );
+          return EnfantProfilScreen(enfant: enfant);
         },
       ),
 
@@ -368,9 +356,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
 
-          return EditEnfantProfilScreen(
-            enfant: enfant,
-          );
+          return EditEnfantProfilScreen(enfant: enfant);
         },
       ),
 
@@ -378,30 +364,20 @@ GoRouter appRouter(Ref ref) {
         path: '/choisir-avatar',
         name: AppRoutes.choisirAvatar.name,
         builder: (context, state) {
-          final extraData =
-          state.extra as Map<String, dynamic>?;
+          final extraData = state.extra as Map<String, dynamic>?;
 
-          final enfant =
-          extraData?['enfant'] as EnfantModel?;
+          final enfant = extraData?['enfant'] as EnfantModel?;
 
           final updatedData =
-          extraData?['updatedData']
-          as Map<String, dynamic>?;
+              extraData?['updatedData'] as Map<String, dynamic>?;
 
           if (enfant == null) {
             return const Scaffold(
-              body: Center(
-                child: Text(
-                  'Erreur : Profil enfant introuvable.',
-                ),
-              ),
+              body: Center(child: Text('Erreur : Profil enfant introuvable.')),
             );
           }
 
-          return ChoisirAvatarScreen(
-            enfant: enfant,
-            updatedData: updatedData,
-          );
+          return ChoisirAvatarScreen(enfant: enfant, updatedData: updatedData);
         },
       ),
 
@@ -425,13 +401,7 @@ GoRouter appRouter(Ref ref) {
         path: '/adminDashboard',
         name: AppRoutes.adminDashboard.name,
         builder: (context, state) {
-          return const Scaffold(
-            body: Center(
-              child: Text(
-                'Admin Dashboard',
-              ),
-            ),
-          );
+          return const Scaffold(body: Center(child: Text('Admin Dashboard')));
         },
       ),
 
@@ -451,12 +421,18 @@ GoRouter appRouter(Ref ref) {
         },
       ),
       GoRoute(
-  path: '/forgotPassword',
-  name: AppRoutes.changermotdepasse.name,
-  builder: (context, state) => const ForgotPasswordScreen(),
-),
-
-
+        path: '/forgotPassword',
+        name: AppRoutes.changermotdepasse.name,
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: '/espace-enfant',
+        name: AppRoutes.espaceEnfant.name,
+        builder: (context, state) {
+          final enfant = state.extra as EnfantModel;
+          return EspaceEnfantScreen(enfant: enfant);
+        },
+      ),
     ],
   );
 }
