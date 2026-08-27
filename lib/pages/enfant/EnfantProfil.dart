@@ -167,10 +167,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                     elevation: 0,
                   ),
                   onPressed: () {
-                    context.pushNamed(
-                      AppRoutes.espaceEnfant.name,
-                      extra: widget.enfant, // Passe l'objet EnfantModel
-                    );
+                    // Action basculer profil actif
                   },
                   child: const Text(
                     'Basculer sur ce profil',
