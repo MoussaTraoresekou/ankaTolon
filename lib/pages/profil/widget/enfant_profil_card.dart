@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
 
 class EnfantProfilCard extends StatelessWidget {
@@ -23,7 +25,6 @@ class EnfantProfilCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final age = _calculerAge(enfant.naissance);
-
     final sexeTexte = enfant.sexe.trim();
 
     return Row(
@@ -73,7 +74,7 @@ class EnfantProfilCard extends StatelessWidget {
 
                   const SizedBox(width: 8),
 
-                  // BADGE SEXE (Affiche 'Non spécifié' si vide dans Firebase)
+                  // BADGE SEXE
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
@@ -84,7 +85,7 @@ class EnfantProfilCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      sexeTexte.isNotEmpty ? sexeTexte : 'Féminin', // Remplacez 'Féminin' par votre valeur par défaut si besoin
+                      sexeTexte.isNotEmpty ? sexeTexte : 'Féminin',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -98,11 +99,19 @@ class EnfantProfilCard extends StatelessWidget {
           ),
         ),
 
-        // CHEVRON NAVIGATION
-        const Icon(
-          Icons.chevron_right_rounded,
-          color: Colors.black,
-          size: 24,
+        // CHEVRON CLIQUABLE
+        IconButton(
+          icon: const Icon(
+            Icons.chevron_right_rounded,
+            color: Colors.black,
+            size: 24,
+          ),
+          onPressed: () {
+            context.pushNamed(
+              AppRoutes.enfantProfil.name,
+              extra: enfant,
+            );
+          },
         ),
       ],
     );

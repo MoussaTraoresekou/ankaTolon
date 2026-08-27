@@ -186,8 +186,8 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                     padding: const EdgeInsets.only(top: 25),
                     child: Image.asset(
                       'assets/images/imageHours.png',
-                      width: 100,
-                      height: 100,
+                      width: 110,
+                      height: 110,
                     ),
                   ),
                 ],
@@ -212,7 +212,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       children: [
                         const Icon(
                           Icons.favorite,
-                          color: Color.fromARGB(255, 174, 8, 8),
+                          color: Color.fromARGB(255, 221, 99, 99),
                           size: 18,
                         ),
                         const SizedBox(width: 6),
