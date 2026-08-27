@@ -86,6 +86,7 @@ class AuthRepository {
 }
 }
 
+
 @riverpod
 AuthRepository authRepository(Ref ref) {
   return AuthRepository(FirebaseAuth.instance);
