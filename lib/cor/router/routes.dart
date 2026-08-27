@@ -10,6 +10,7 @@ import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/catalogue/catalogue.dart';
@@ -17,6 +18,7 @@ import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
 import 'package:tolon/pages/enfant/EditEnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
+import 'package:tolon/pages/enfant/EspaceEnfantScreen.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
 import 'package:tolon/pages/favoris/favoris_page.dart';
@@ -67,6 +69,10 @@ enum AppRoutes {
   editEnfant,
   choisirAvatar,
   jouetList,
+  JouetsAdmin,
+  modifierJouet,
+  changermotdepasse,
+  espaceEnfant,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -90,7 +96,14 @@ GoRouter appRouter(Ref ref) {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      final publicRoutes = ['/splash', '/onboarding', '/login', '/register'];
+      final publicRoutes = [
+        '/splash',
+        '/onboarding',
+        '/login',
+        '/register',
+        '/forgotPassword',
+      ];
+
       final isPublic = publicRoutes.contains(currentLoc);
 
       if (user == null) {
@@ -178,37 +191,25 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.addjouet.name,
         builder: (context, state) => const JouetForm(),
       ),
-     GoRoute(
-  path: '/detailJouet',
-  name: AppRoutes.jouetDetail.name,
-  builder: (context, state) {
-    final jouet = state.extra as JouetModel;
+      GoRoute(
+        path: '/detailJouet',
+        name: AppRoutes.jouetDetail.name,
+        builder: (context, state) {
+          final jouet = state.extra as JouetModel;
 
-    return Jouetdetail(
-      jouet: jouet,
-    );
-  },
-),
+          return Jouetdetail(jouet: jouet);
+        },
+      ),
 
-GoRoute(
-  path: '/redigerAvis',
-  name: AppRoutes.redigerAvis.name,
-  builder: (context, state) {
-    final extra = state.extra;
+      GoRoute(
+        path: '/redigerAvis',
+        name: AppRoutes.redigerAvis.name,
+        builder: (context, state) {
+          final jouet = state.extra as JouetModel;
 
-    // Compatibilité : on peut passer un JouetModel seul (ancien)
-    // ou un Map { 'jouet': JouetModel, 'avis': AvisModel? }
-    if (extra is JouetModel) {
-      return RedigerAvisPage(jouet: extra);
-    }
-
-    final map = extra as Map<String, dynamic>;
-    return RedigerAvisPage(
-      jouet: map['jouet'] as JouetModel,
-      avisExistant: map['avis'] as AvisModel?,
-    );
-  },
-),
+          return RedigerAvisPage(jouet: jouet);
+        },
+      ),
       GoRoute(
         path: '/listEnfants',
         name: AppRoutes.listEnfants.name,
@@ -290,6 +291,28 @@ GoRoute(
         path: '/profile',
         name: AppRoutes.profile.name,
         builder: (context, state) => const ProfilPage(),
+      ),
+
+      GoRoute(
+        path: '/add-jouet-admin',
+        name: 'addJouetAdmin',
+        builder: (context, state) {
+          return const AjouterJouetPage();
+        },
+      ),
+      GoRoute(
+        path: '/forgotPassword',
+        name: AppRoutes.changermotdepasse.name,
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+
+      GoRoute(
+        path: '/espace-enfant',
+        name: AppRoutes.espaceEnfant.name,
+        builder: (context, state) {
+          final enfant = state.extra as EnfantModel;
+          return EspaceEnfantScreen(enfant: enfant);
+        },
       ),
     ],
   );
