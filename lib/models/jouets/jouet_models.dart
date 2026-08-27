@@ -43,26 +43,29 @@ class JouetModel {
   }
 
 
-  factory JouetModel.fromJson( Map<String, dynamic> json,String id) {
+  factory JouetModel.fromJson(Map<String, dynamic> json, String id) {
+    // Support both naming conventions (code vs Firebase console)
+    final ageMax = json['age_max'] ?? json['ageMaximum'] ?? json['ageMax'] ?? 0;
+    final ageMin = json['age_min'] ?? json['ageMinimum'] ?? json['ageMin'] ?? 0;
+    final images = json['image'] ?? json['images'] ?? [];
+    final nom = json['nom_jouet'] ?? json['nom'] ?? json['name'] ?? '';
+    final dateField = json['date_ajout'] ?? json['dateCreation'] ?? json['date_ajout'];
+    final categorie = json['categorie_id'] ?? json['categorie'];
+
     return JouetModel(
       id: id,
-      ageMax: json['age_max'] ?? 0,
-      ageMin: json['age_min'] ?? 0,
+      ageMax: (ageMax is int) ? ageMax : int.tryParse(ageMax.toString()) ?? 0,
+      ageMin: (ageMin is int) ? ageMin : int.tryParse(ageMin.toString()) ?? 0,
       benefices: List<String>.from(json['benefices'] ?? []),
-      categorieId: json['categorie_id'] as DocumentReference?,
-      dateAjout: json['date_ajout'] != null
-          ? (json['date_ajout'] as Timestamp).toDate()
+      categorieId: categorie is DocumentReference ? categorie : null,
+      dateAjout: dateField is Timestamp
+          ? dateField.toDate()
           : DateTime.now(),
-      description: json['description'] ?? '',
-      image: List<String>.from(json['image'] ?? []),
-      nomJouet: json['nom_jouet'] ?? '',
-      // noteMoyen: (json['note_moyen'] ?? 0).toDouble(),
-      noteMoyen: double.tryParse(
-  (json['note_moyen'] ?? 0).toString(),
-) ?? 0.0,
-
-      // prix: (json['prix'] ?? 0).toDouble(),
-      prix: double.tryParse( (json['prix'] ?? 0).toString(),) ?? 0.0,
+      description: json['description']?.toString() ?? '',
+      image: List<String>.from(images),
+      nomJouet: nom.toString(),
+      noteMoyen: double.tryParse((json['note_moyen'] ?? 0).toString()) ?? 0.0,
+      prix: double.tryParse((json['prix'] ?? 0).toString()) ?? 0.0,
     );
   }
 
@@ -119,30 +122,25 @@ class JouetModel {
   }
 
   factory JouetModel.fromFirestoreToCatalogue(
-      DocumentSnapshot<Map<String, dynamic>> snapshot,
-      ) {
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
     final data = snapshot.data() ?? {};
+
+    final ageMax = data['age_max'] ?? data['ageMaximum'] ?? data['ageMax'] ?? 0;
+    final ageMin = data['age_min'] ?? data['ageMinimum'] ?? data['ageMin'] ?? 0;
+    final images = data['image'] ?? data['images'] ?? [];
+    final nom = data['nom_jouet'] ?? data['nom'] ?? data['name'] ?? '';
+    final categorie = data['categorie_id'] ?? data['categorie'];
 
     return JouetModel.jouetModelForCatalogue(
       id: snapshot.id,
-
-      ageMax: (data['age_max'] ?? 0).toInt(),
-
-      ageMin: (data['age_min'] ?? 0).toInt(),
-
-      categorieId:
-      data['categorie_id'] as DocumentReference?,
-
-      image: List<String>.from(
-        data['image'] ?? [],
-      ),
-
-      nomJouet:
-      data['nom_jouet']?.toString() ?? '',
-
-      noteMoyen: double.tryParse(data['note_moyen'].toString()) ?? 0.0,
-      prix: double.tryParse(data['prix'].toString()) ?? 0.0,
-
+      ageMax: (ageMax is int) ? ageMax : int.tryParse(ageMax.toString()) ?? 0,
+      ageMin: (ageMin is int) ? ageMin : int.tryParse(ageMin.toString()) ?? 0,
+      categorieId: categorie is DocumentReference ? categorie : null,
+      image: List<String>.from(images),
+      nomJouet: nom.toString(),
+      noteMoyen: double.tryParse((data['note_moyen'] ?? 0).toString()) ?? 0.0,
+      prix: double.tryParse((data['prix'] ?? 0).toString()) ?? 0.0,
     );
   }
 
