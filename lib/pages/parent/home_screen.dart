@@ -27,7 +27,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("dsmmmmmmmmmmm");
     return Scaffold(
       backgroundColor: AppStyles.background,
       body: SafeArea(
@@ -229,9 +228,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               final Color bgColor = _avatarBgColors.isNotEmpty
                   ? _avatarBgColors[index % _avatarBgColors.length]
                   : AppStyles.primarySoft;
-              print("-------------------------------------");
 
-              print(enfant.avatarUrl);
               return Container(
                 margin: const EdgeInsets.only(right: 12),
                 child: _buildChildCard(
@@ -283,8 +280,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     required Color avatarBgColor,
     VoidCallback? onTap, // <- Ajout du callback
   }) {
-    print("££££££££££££££££££££££££££££££££££££££");
-    print(avatarUrl);
     return InkWell(
       onTap: onTap, // <- Gestion du clic
       borderRadius: BorderRadius.circular(16),
