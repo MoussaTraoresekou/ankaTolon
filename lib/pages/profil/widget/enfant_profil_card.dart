@@ -6,10 +6,7 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 class EnfantProfilCard extends StatelessWidget {
   final EnfantModel enfant;
 
-  const EnfantProfilCard({
-    super.key,
-    required this.enfant,
-  });
+  const EnfantProfilCard({super.key, required this.enfant});
 
   int _calculerAge(DateTime dateNaissance) {
     final aujourdhui = DateTime.now();
@@ -120,7 +117,7 @@ class EnfantProfilCard extends StatelessWidget {
   Widget _buildAvatar() {
     if (enfant.avatarUrl != null && enfant.avatarUrl!.isNotEmpty) {
       return ClipOval(
-        child: Image.network(
+        child: Image.asset(
           enfant.avatarUrl!,
           width: 55,
           height: 55,
