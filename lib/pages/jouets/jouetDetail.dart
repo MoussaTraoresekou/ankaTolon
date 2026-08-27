@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:tolon/controller/favoris/favoris_controller.dart';
 import 'package:tolon/controller/panier/panier_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
@@ -286,13 +287,39 @@ class _JouetdetailState
           Positioned(
             top: 48,
             right: 70,
+            child: Builder(
+              builder: (context) {
+                final favorisIds = ref.watch(favorisControllerProvider);
+                final isFavori = favorisIds.contains(jouet.id);
 
-            child: _buildCircleButton(
-              icon: Icons.favorite_border,
-              onTap: () {
-                // On pourra connecter
-                // cette action à Firebase
-                // favoris ensuite.
+                return _buildCircleButton(
+                  icon: isFavori ? Icons.favorite : Icons.favorite_border,
+                  iconColor: isFavori
+                      ? const Color.fromARGB(255, 214, 13, 13)
+                      : AppStyles.textDark,
+                  onTap: () {
+                    ref
+                        .read(favorisControllerProvider.notifier)
+                        .toggleFavori(jouet.id);
+
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          isFavori
+                              ? '${jouet.nomJouet} retiré des favoris'
+                              : '${jouet.nomJouet} ajouté aux favoris',
+                        ),
+                        backgroundColor: const Color.fromRGBO(230, 126, 34, 1),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),
@@ -474,32 +501,23 @@ class _JouetdetailState
   Widget _buildCircleButton({
     required IconData icon,
     required VoidCallback onTap,
+    Color? iconColor,
   }) {
     return Material(
       color: Colors.white,
       elevation: 4,
-
-      shadowColor:
-          Colors.black.withValues(
-        alpha: 0.15,
-      ),
-
+      shadowColor: Colors.black.withValues(alpha: 0.15),
       shape: const CircleBorder(),
-
       child: InkWell(
         onTap: onTap,
-
-        customBorder:
-            const CircleBorder(),
-
+        customBorder: const CircleBorder(),
         child: SizedBox(
           width: 46,
           height: 46,
-
           child: Icon(
             icon,
             size: 21,
-            color: AppStyles.textDark,
+            color: iconColor ?? AppStyles.textDark,
           ),
         ),
       ),
@@ -1471,27 +1489,15 @@ class _JouetdetailState
           ),
         ),
 
-        style:
-            OutlinedButton.styleFrom(
-          foregroundColor:
-              AppStyles.primary,
-
+        style: OutlinedButton.styleFrom(
+          foregroundColor: const Color.fromRGBO(230, 126, 34, 1),
           side: const BorderSide(
-            color:
-                AppStyles.primary,
+            color: Color.fromRGBO(230, 126, 34, 1),
+            width: 1.5,
           ),
-
-          padding:
-              const EdgeInsets.symmetric(
-            vertical: 15,
-          ),
-
-          shape:
-              RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(
-              15,
-            ),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
       ),
@@ -1623,7 +1629,7 @@ class _JouetdetailState
                         ),
 
                         backgroundColor:
-                            AppStyles.primary,
+                            const Color.fromRGBO(230, 126, 34, 1),
 
                         behavior:
                             SnackBarBehavior
@@ -1656,22 +1662,12 @@ class _JouetdetailState
                     ),
                   ),
 
-                  style: ElevatedButton
-                      .styleFrom(
-                    backgroundColor:
-                        AppStyles.primary,
-
-                    foregroundColor:
-                        Colors.white,
-
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(230, 126, 34, 1),
+                    foregroundColor: Colors.white,
                     elevation: 0,
-
-                    shape:
-                        RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(
-                        16,
-                      ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                 ),
