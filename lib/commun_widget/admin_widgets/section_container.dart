@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; 
+import 'package:go_router/go_router.dart';
+import 'package:tolon/cor/router/routes.dart'; 
 import '../../cor/app_colors.dart';
 
 class SectionContainer extends StatelessWidget {
@@ -39,11 +40,10 @@ class SectionContainer extends StatelessWidget {
                 onTap: () {
                   // Détecte automatiquement sur quel bloc on clique pour ouvrir la bonne page
                   if (title == 'Dernières commandes') {
-                    // Ouvre la liste complète des commandes
-                   // context.push('/adminDashboard/all-orders'); 
+                    context.pushNamed(AppRoutes.admincommandeListe.name); 
+
                   } else if (title == 'Nouveaux utilisateurs') {
-                    // Ouvre la liste complète des utilisateurs
-                   // context.push('/adminDashboard/all-users');
+                    context.pushNamed(AppRoutes.adminutilisateurListe.name);
                   }
                 },
                 borderRadius: BorderRadius.circular(4),

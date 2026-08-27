@@ -5,8 +5,18 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
+import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/Admins/admin_Bottom_NavigationBar.dart';
 import 'package:tolon/pages/Admins/admin_dashboard.dart';
+import 'package:tolon/pages/Admins/admin_profi.dart';
+import 'package:tolon/pages/Admins/ajout_defis.dart';
+import 'package:tolon/pages/Admins/ajout_tutos.dart';
 import 'package:tolon/pages/Admins/commande_detail.dart';
+import 'package:tolon/pages/Admins/commande_liste.dart';
+import 'package:tolon/pages/Admins/liste_jouets.dart';
+import 'package:tolon/pages/Admins/liste_tutos.dart';
+import 'package:tolon/pages/Admins/utilisateur_detail.dart';
+import 'package:tolon/pages/Admins/utilisateur_liste.dart';
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
@@ -33,7 +43,16 @@ enum AppRoutes {
   favorites,
   profile,
   adminDashboard,
-  commandeDetail,
+  admincommandeDetail,
+  adminutilisateurDetail,
+  adminutilisateurListe,
+  admincommandeListe,
+  adminjouets,
+  admindefis,
+  admintutoriels,
+  adminajoutjouets,
+  adminajoututoriels,
+  adminajoutdefis,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -52,19 +71,12 @@ GoRouter appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      final publicRoutes = [
-        '/splash',
-        '/onboarding',
-        '/login',
-        '/register',
-      ];
+      final publicRoutes = ['/splash', '/onboarding', '/login', '/register'];
       final isPublic = publicRoutes.contains(currentLoc);
 
       if (user == null) {
@@ -143,49 +155,141 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const HomeScreen(),
       ),
 
-
       // =========================
       // ADMIN
       // =========================
-      
-      GoRoute(
-        path: '/adminDashboard',
-        name: AppRoutes.adminDashboard.name,
-        builder: (context, state) {
-          return const AdminDashboard();
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          // Appel de votre layout en vague verte
+          return AdminBottomNav(navigationShell: navigationShell);
         },
+        branches: [
+          // Onglet Index 0 : Tableau de bord Admin
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/adminDashboard',
+                name: AppRoutes.adminDashboard.name,
+                builder: (context, state) => const AdminDashboard(),
+              ),
+            ],
+          ),
+
+          // Onglet Index 1 : Gestion des Jouets
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-jouets',
+                name: AppRoutes.adminjouets.name,
+                builder: (context, state) {
+                  return const ListeJouets();
+                },
+              ),
+            ],
+          ),
+
+          // Onglet Index 2 : Gestion des Tutoriels Admin
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-tutoriels',
+                name: AppRoutes.admintutoriels.name,
+                builder: (context, state) {
+                  return const ListeTutos();
+                },
+              ),
+            ],
+          ),
+
+          //Onglet Index 3 : Gestion des Défis
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-defis',
+                name: AppRoutes.adminajoutdefis.name,
+                builder: (context, state) {
+                  return const AjoutDefis();
+                },
+              ),
+            ],
+          ),
+        ],
       ),
 
       // =========================
       // ADMIN - DÉTAIL UTILISATEUR
       // =========================
-
-      //   GoRoute(
-      //   path: '/user/:userId',
-      //   builder: (context, state) {
-      //     // Extraction de l'ID depuis les paramètres de chemin
-      //     final userId = state.pathParameters[']; 
-      //     return UserDetailsScreen(userId: userId!);
-      //   },
-      // ),
+      GoRoute(
+        path: '/adminDashboard/parent-detail/:userId',
+        name: AppRoutes.adminutilisateurDetail.name,
+        builder: (context, state) {
+          
+          // Extraction de l'ID depuis les paramètres de chemin
+          final userId = state.pathParameters['userId'];
+          return UserDetail(userId: userId!);
+        },
+      ),
 
       // =========================
       // ADMIN - DÉTAIL COMMANDE
       // =========================
+      GoRoute(
+        path: '/adminDashboard/commande-detail/:orderId',
+        name: AppRoutes.admincommandeDetail.name,
+        builder: (context, state) {
 
-       GoRoute(
-      path: '/adminDashboard/commande-detail/:orderId', // ":orderId" est la partie dynamique
-      name: AppRoutes.commandeDetail.name,
-      builder: (context, state) {
-
-        // Extraction de l'ID depuis les paramètres du chemin
-      final orderId = state.pathParameters['orderId']; 
-      // Retourne votre écran de détails (à créer) en lui passant l'ID
-      return CommandeDetail(orderId: orderId!); 
+          // Extraction de l'ID depuis les paramètres du chemin
+          final orderId = state.pathParameters['orderId'];
+          return CommandeDetail(orderId: orderId!);
         },
-       ),
+      ),
 
-       GoRoute(
+      // =========================
+      // ADMIN - LISTE UTILISATEUR
+      // =========================
+      GoRoute(
+        path: '/adminDashboard/liste-utilisateur',
+        name: AppRoutes.adminutilisateurListe.name,
+        builder: (context, state) {
+          return const ParentsList();
+        },
+      ),
+
+      // =========================
+      // ADMIN - LISTE COMMANDE
+      // =========================
+      GoRoute(
+        path: '/adminDashboard/liste-commande',
+        name: AppRoutes.admincommandeListe.name,
+        builder: (context, state) {
+          return const CommandeListe();
+        },
+      ),
+
+      // =========================
+      // ADMIN - AJOUT_TUTOS
+      // =========================
+      GoRoute(
+        path: '/admin-tutoriels/ajout-tuto',
+        name: AppRoutes.adminajoututoriels.name,
+        builder: (context, state) {
+          final tutorielAModifier = state.extra as TutorielModel?;
+          return AjoutTuto(tutoriel: tutorielAModifier);
+        },
+      ),
+
+      // =========================
+      // ADMIN - PROFIL
+      // =========================
+      GoRoute(
+        path: '/admin/profile',
+        name: AppRoutes.profile.name,
+        builder: (context, state) => const AdminProfil(), // ──> Connecté !
+      ),
+
+
+
+      GoRoute(
         path: '/addEnfant',
         name: AppRoutes.addEnfant.name,
         builder: (context, state) => const AddEnfantScreen(),
@@ -200,10 +304,6 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jouetDetail.name,
         builder: (context, state) => const Jouetdetail(),
       ),
-
-
     ],
   );
-
 }
-      

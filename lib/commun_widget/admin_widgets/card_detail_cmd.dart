@@ -43,8 +43,8 @@ class CardDetailCmd extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                   color: Color(0xFF34713A),
                   fontFamily: 'Quicksand',
                 ),

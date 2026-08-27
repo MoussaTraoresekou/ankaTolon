@@ -72,7 +72,7 @@ class OrderRow extends StatelessWidget {
             padding: const EdgeInsets.only(left: 10.0, right: 4.0,  bottom: 30.0),
             child: InkWell(
               onTap: () {
-                context.pushNamed(AppRoutes.commandeDetail.name, pathParameters: {'orderId': id});
+                context.pushNamed(AppRoutes.admincommandeDetail.name, pathParameters: {'orderId': id});
               },
               child: const Padding(
                 padding: EdgeInsets.all(4.0), // Agrandit la zone cliquable pour le doigt

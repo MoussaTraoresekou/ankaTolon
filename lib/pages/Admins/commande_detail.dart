@@ -13,6 +13,7 @@ class CommandeDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     // On écoute le contrôleur (Provider) qui gère le cache et les états asynchrones
     final orderAsync = ref.watch(orderDetailProvider(orderId));
 
@@ -46,10 +47,12 @@ class CommandeDetail extends ConsumerWidget {
         centerTitle: true,
       ),
       body: orderAsync.when(
+
         // ÉTAT 1 : Chargement
         loading: () => const Center(
           child: CircularProgressIndicator(color: AppColors.greenPrimary),
         ),
+
         // ÉTAT 2 : Erreur technique
         error: (err, stack) => Center(
           child: Text(
@@ -57,6 +60,7 @@ class CommandeDetail extends ConsumerWidget {
             style: const TextStyle(fontFamily: 'Quicksand'),
           ),
         ),
+
         // ÉTAT 3 : Données reçues avec succès (Utilisation du modèle typé)
         data: (orderData) {
           if (orderData == null) {
@@ -79,6 +83,7 @@ class CommandeDetail extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 // En-tête : Badge ID et Badge Statut
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,6 +242,7 @@ class CommandeDetail extends ConsumerWidget {
                         ),
                       ),
                       onPressed: () async {
+                        
                         // Modification du statut sur Firestore via la couche Repository
                         await ref
                             .read(detailCommandeRepositoryProvider)

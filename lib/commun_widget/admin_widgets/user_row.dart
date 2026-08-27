@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tolon/cor/router/routes.dart';
 import '../../cor/app_colors.dart';
 
 class UserRow extends StatelessWidget {
+  final String id;
   final String initials;
   final String name;
   final String email;
   final String time;
 
   const UserRow({
+    required this.id,
     required this.initials,
     required this.name,
     required this.email,
@@ -41,8 +45,8 @@ class UserRow extends StatelessWidget {
                 // Partie Gauche : Bloc Nom + Email
                 InkWell(
                   onTap: () {
-                     // Navigation vers la page de détails avec l'ID du document Firestore
-                     //context.push('/user/${doc.id}');
+                     //Navigation vers la page de détails avec l'ID du document Firestore
+                     context.pushNamed(AppRoutes.adminutilisateurDetail.name, pathParameters: {'userId':id});
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

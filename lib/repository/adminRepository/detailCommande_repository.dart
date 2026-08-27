@@ -9,7 +9,7 @@ class DetailCommandeRepository {
   // Récupère les données d'une commande et les encapsule dans un CommandeModel sécurisé
   Future<CommandeModel?> getOrderDetails(String orderId) async {
     try {
-      final orderDoc = await _firestore.collection('commandes').doc(orderId).get();
+      final orderDoc = await _firestore.collection('Commandes').doc(orderId).get();
       if (!orderDoc.exists || orderDoc.data() == null) return null;
 
       final orderData = orderDoc.data() as Map<String, dynamic>;
@@ -46,6 +46,6 @@ class DetailCommandeRepository {
 
   // Permet de modifier le statut de la commande en un clic
   Future<void> updateOrderStatus(String orderId, String status) async {
-    await _firestore.collection('commandes').doc(orderId).update({'status': status});
+    await _firestore.collection('Commandes').doc(orderId).update({'status': status});
   }
 }

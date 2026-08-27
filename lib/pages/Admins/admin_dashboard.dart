@@ -12,7 +12,9 @@ import 'package:tolon/commun_widget/admin_widgets/order_row.dart';
 import 'package:tolon/commun_widget/admin_widgets/user_row.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/controller/admin_controller/admin_providers.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/utils/fonction_date_Calcul.dart';
+import 'package:tolon/pages/Admins/admin_drawer.dart';
 
 class AdminDashboard extends ConsumerWidget {
   const AdminDashboard({super.key});
@@ -32,6 +34,7 @@ class AdminDashboard extends ConsumerWidget {
     final asyncLastUsers = ref.watch(lastUsersStreamProvider);
 
     return Scaffold(
+      drawer: const AdminDrawer(),
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -41,15 +44,14 @@ class AdminDashboard extends ConsumerWidget {
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
         ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.menu,
-            color: AppColors.orangeSecondary,
-            size: 28,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(
+              Icons.menu_rounded,
+              color: AppColors.orangeSecondary,
+            ),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
-          onPressed: () {
-            // Action du tiroir de navigation latéral (Drawer)
-          },
         ),
         centerTitle: true,
         actions: [
@@ -86,13 +88,20 @@ class AdminDashboard extends ConsumerWidget {
               ),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: CircleAvatar(
-              backgroundColor: AppColors.greenPrimary,
-              child: Icon(Icons.person, color: Colors.white),
-            ),
+           GestureDetector(
+        onTap: () {
+          // Clic sur la photo de profil : Redirection vers l'onglet Profil du ShellRoute
+          context.pushNamed(AppRoutes.profile.name); 
+        },
+        child: const Padding(
+          padding: EdgeInsets.only(right: 16.0),
+          child: CircleAvatar(
+            radius: 18,
+            backgroundColor: AppColors.greenPrimary,
+            child: Icon(Icons.person, color: Colors.white, size: 20),
           ),
+        ),
+      )
         ],
       ),
       body: SingleChildScrollView(
@@ -172,13 +181,13 @@ class AdminDashboard extends ConsumerWidget {
                       icon: Icons.child_care,
                       isHighlighted: true,
                     ),
-                    loading: () =>  StatCard(
+                    loading: () => StatCard(
                       title: 'Enfants',
                       value: '...',
                       icon: Icons.child_care,
                       isHighlighted: true,
                     ),
-                    error: (e, _) =>  StatCard(
+                    error: (e, _) => StatCard(
                       title: 'Enfants',
                       value: '0',
                       icon: Icons.child_care,
@@ -388,6 +397,7 @@ class AdminDashboard extends ConsumerWidget {
                       }
 
                       return UserRow(
+                        id: doc.id,
                         initials: initialesCalculees.toUpperCase(),
                         name: name,
                         email: data['email'] ?? 'Pas d\'email',
@@ -451,30 +461,6 @@ class AdminDashboard extends ConsumerWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.greenPrimary,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.widgets_outlined),
-            label: 'Jouets',
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.play_lesson_outlined),
-            label: 'Tutoriels',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.track_changes_outlined),
-            label: 'Defis',
-          ),
-        ],
       ),
     );
   }
