@@ -15,31 +15,32 @@ class AvisRepository {
   // ==================================================
 
   Future<void> ajouterAvis({
-  required String jouetId,
-  required AvisModel avis,
-}) async {
-  final jouetRef = _firestore.collection('jouets').doc(jouetId);
-  final avisRef = jouetRef.collection('avis');
+    required String jouetId,
+    required AvisModel avis,
+  }) async {
+    final jouetRef = _firestore.collection('jouets').doc(jouetId);
+    final avisRef = jouetRef.collection('avis');
 
-  // Ajouter l'avis
-  await avisRef.add(avis.toFirestore());
+    // Ajouter l'avis
+    await avisRef.add(avis.toFirestore());
 
-  // Recalculer la note moyenne
-  final snapshot = await avisRef.get();
-  if (snapshot.docs.isEmpty) {
-    await jouetRef.update({'note_moyen': 0.0});
-    return;
+    // Recalculer la note moyenne à partir de tous les avis
+    final snapshot = await avisRef.get();
+    if (snapshot.docs.isEmpty) {
+      await jouetRef.update({'note_moyen': 0.0});
+      return;
+    }
+
+    double total = 0;
+    for (final doc in snapshot.docs) {
+      final data = doc.data();
+      total += (data['note'] ?? 0).toDouble();
+    }
+    final moyenne = total / snapshot.docs.length;
+
+    // Mettre à jour note_moyen sur le document jouet
+    await jouetRef.update({'note_moyen': moyenne});
   }
-
-  double total = 0;
-  for (final doc in snapshot.docs) {
-    final data = doc.data();
-    total += (data['note'] ?? 0).toDouble();
-  }
-  final moyenne = total / snapshot.docs.length;
-
-  await jouetRef.update({'note_moyen': moyenne});
-}
 
   // ==================================================
   // RÉCUPÉRER LES AVIS
