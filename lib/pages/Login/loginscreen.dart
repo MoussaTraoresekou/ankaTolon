@@ -104,19 +104,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     prefixIcon: Icons.visibility_off_outlined,
                   ),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(8)),
-
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () => context.pushNamed(AppRoutes.changermotdepasse.name),
-                      child: const Text(
-                        'Mot de passe oublié ?',
-                        style: TextStyle(fontSize: 13, color: Color(0xFF0066CC)),
-                      ),
-                    ),
-                  ),
-
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
 
                   // Bouton connexion
