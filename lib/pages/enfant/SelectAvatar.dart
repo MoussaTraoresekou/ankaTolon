@@ -20,18 +20,18 @@ class SelectAvatarScreen extends ConsumerStatefulWidget {
 class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
   // Liste des images d'avatars (remplace les chemins par tes assets)
   final List<String> _avatars = [
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
+    'assets/images/avatars/avatar1.jpg',
+    'assets/images/avatars/avatar2.jpg',
+    'assets/images/avatars/avatar3.jpg',
+    'assets/images/avatars/avatar4.jpg',
+    'assets/images/avatars/avatar5.jpg',
+    'assets/images/avatars/avatar6.jpg',
+    'assets/images/avatars/avatar7.jpg',
+    'assets/images/avatars/avatar8.jpg',
+    'assets/images/avatars/avatar9.jpg',
+    'assets/images/avatars/avatar10.jpg',
+    'assets/images/avatars/avatar11.jpg',
+    'assets/images/avatars/avatar12.Jpg',
   ];
 
   int _selectedAvatarIndex = 1; // Index sélectionné par défaut
