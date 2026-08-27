@@ -111,7 +111,7 @@ class EnfantProfilCard extends StatelessWidget {
   Widget _buildAvatar() {
     if (enfant.avatarUrl != null && enfant.avatarUrl!.isNotEmpty) {
       return ClipOval(
-        child: Image.network(
+        child: Image.asset(
           enfant.avatarUrl!,
           width: 55,
           height: 55,
