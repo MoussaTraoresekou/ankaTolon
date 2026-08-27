@@ -69,13 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Row(
                         children: const [
-                          Text("Bonjour, ", style: TextStyle(fontSize: 22, color: Color(0xFF718096), fontWeight: FontWeight.w500)),
+                          Text("Quiz, ", style: TextStyle(fontSize: 22, color: Color(0xFF718096), fontWeight: FontWeight.w500)),
                           Text("👋", style: TextStyle(fontSize: 22)),
                         ],
                       ),
                       const Text(
-                        "Petit champion !",
-                        style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF1A202C)),
+                        "Petit(e) champion(ne) !",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1A202C)),
                       ),
                     ],
                   ),
@@ -90,8 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
                       ],
                     ),
-                    child: const Center(
-                      child: Text("👦", style: TextStyle(fontSize: 32)),
+                    child: Center(
+                      child: Image.asset("assets/images/avatars/avatar1.png"),
                     ),
                   ),
                 ],
