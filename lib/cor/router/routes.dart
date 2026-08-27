@@ -298,28 +298,6 @@ GoRoute(
       ),
 
       GoRoute(
-        path: '/adminDashboard',
-        name: AppRoutes.adminDashboard.name,
-        builder: (context, state) {
-          return const Scaffold(
-            body: Center(
-              child: Text(
-                'Admin Dashboard',
-              ),
-            ),
-          );
-        },
-      ),
-
-      GoRoute(
-        path: '/JouetsAdmin',
-        name: AppRoutes.JouetsAdmin.name,
-        builder: (context, state) {
-          return const ListeJouetsPage();
-        },
-      ),
-
-      GoRoute(
         path: '/add-jouet-admin',
         name: 'addJouetAdmin',
         builder: (context, state) {
