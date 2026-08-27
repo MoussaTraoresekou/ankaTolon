@@ -23,18 +23,18 @@ class ChoisirAvatarScreen extends ConsumerStatefulWidget {
 
 class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
   final List<String> _avatars = [
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
+    'assets/images/avatars/avatar1.jpg',
+    'assets/images/avatars/avatar2.jpg',
+    'assets/images/avatars/avatar3.jpg',
+    'assets/images/avatars/avatar4.jpg',
+    'assets/images/avatars/avatar5.jpg',
+    'assets/images/avatars/avatar6.jpg',
+    'assets/images/avatars/avatar7.jpg',
+    'assets/images/avatars/avatar8.jpg',
+    'assets/images/avatars/avatar9.jpg',
+    'assets/images/avatars/avatar10.jpg',
+    'assets/images/avatars/avatar11.jpg',
+    'assets/images/avatars/avatar12.Jpg',
   ];
 
   late String _selectedAvatar;
