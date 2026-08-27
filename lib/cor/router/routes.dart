@@ -7,36 +7,53 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
+
 import 'package:tolon/models/enfant/enfant_modal.dart';
-import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/catalogue/catalogue.dart';
+
 import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
 import 'package:tolon/pages/enfant/EditEnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
+
 import 'package:tolon/pages/favoris/favoris_page.dart';
+
 import 'package:tolon/pages/jouets/JouetsListNotes.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
 import 'package:tolon/pages/jouets/jouet_form.dart';
+import 'package:tolon/pages/jouets/rediger_avis.dart';
+
 import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
-import 'package:tolon/pages/panier/checkout_page.dart';
+
 import 'package:tolon/pages/panier/panier_page.dart';
+import 'package:tolon/pages/panier/checkout_page.dart';
 import 'package:tolon/pages/panier/success_page.dart';
+import 'package:tolon/pages/parent/reunitialiser_mot_de_passe.dart';
+
 import 'package:tolon/pages/profil/profil_page.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
 
-import 'package:tolon/pages/panier/panier_page.dart';
-import 'package:tolon/pages/panier/checkout_page.dart';
-import 'package:tolon/pages/panier/success_page.dart';
-import 'package:tolon/pages/jouets/rediger_avis.dart';
-
-import 'package:tolon/pages/catalogue/catalogue.dart';
+import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
+import 'package:tolon/pages/JouetsAdmin/Listes/liste_jouet.dart';
+import 'package:tolon/pages/JouetsAdmin/Edit/ModifierJouet.dart';
+import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/Admins/admin_Bottom_NavigationBar.dart';
+import 'package:tolon/pages/Admins/admin_dashboard.dart';
+import 'package:tolon/pages/Admins/admin_profi.dart';
+import 'package:tolon/pages/Admins/ajout_defis.dart';
+import 'package:tolon/pages/Admins/ajout_tutos.dart';
+import 'package:tolon/pages/Admins/commande_detail.dart';
+import 'package:tolon/pages/Admins/commande_liste.dart';
+import 'package:tolon/pages/JouetsAdmin/Listes/liste_jouet.dart';
+import 'package:tolon/pages/Admins/liste_tutos.dart';
+import 'package:tolon/pages/Admins/utilisateur_detail.dart';
+import 'package:tolon/pages/Admins/utilisateur_liste.dart';
 
 part 'routes.g.dart';
 
@@ -45,7 +62,7 @@ enum AppRoutes {
   mesenfants,
   addEnfantAvatar,
   jouetDetail,
-  redigerAvis, // AJOUT
+  redigerAvis,
   addjouet,
   addEnfant,
   splash,
@@ -67,6 +84,21 @@ enum AppRoutes {
   editEnfant,
   choisirAvatar,
   jouetList,
+  JouetsAdmin,
+  modifierJouet,
+  changermotdepasse,
+  admincommandeDetail,
+  adminutilisateurDetail,
+  adminutilisateurListe,
+  admincommandeListe,
+  adminjouets,
+  admindefis,
+  admintutoriels,
+  adminajoutjouets,
+  adminajoututoriels,
+  adminajoutdefis,
+  adminprofile,
+  addJouetAdmin
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -84,13 +116,25 @@ GoRouter appRouter(Ref ref) {
 
   return GoRouter(
     initialLocation: '/splash',
+
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
+
+    refreshListenable: GoRouterRefreshStream(
+      firebaseAuth.authStateChanges(),
+    ),
+
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      final publicRoutes = ['/splash', '/onboarding', '/login', '/register'];
+      final publicRoutes = [
+        '/splash',
+        '/onboarding',
+        '/login',
+        '/register',
+        '/forgotPassword'
+      ];
+
       final isPublic = publicRoutes.contains(currentLoc);
 
       if (user == null) {
@@ -102,10 +146,19 @@ GoRouter appRouter(Ref ref) {
       }
 
       String? role;
+
       Future<String?> getRole() async {
-        if (role != null) return role;
-        final doc = await firestore.collection('users').doc(user.uid).get();
+        if (role != null) {
+          return role;
+        }
+
+        final doc = await firestore
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
         role = doc.data()?['type'] as String?;
+
         return role;
       }
 
@@ -113,17 +166,38 @@ GoRouter appRouter(Ref ref) {
           currentLoc == '/onboarding' ||
           currentLoc == '/login') {
         final r = await getRole();
+
         if (r == 'admin') {
           return '/adminDashboard';
         }
+
         if (r == 'parent') {
           return '/home';
         }
+
         return '/login';
       }
 
       if (currentLoc == '/adminDashboard') {
-        if (await getRole() != 'admin') return '/home';
+        if (await getRole() != 'admin') {
+          return '/home';
+        }
+
+        return null;
+      }
+
+      final adminRoutes = [
+        '/adminDashboard',
+        '/JouetsAdmin',
+        '/addjouet',
+        '/modifierJouet',
+      ];
+
+      if (adminRoutes.contains(currentLoc)) {
+        if (await getRole() != 'admin') {
+          return '/home';
+        }
+
         return null;
       }
 
@@ -131,166 +205,403 @@ GoRouter appRouter(Ref ref) {
         '/home',
         '/catalogue',
         '/cart',
+        '/checkout',
+        '/success',
         '/orders',
         '/favorites',
         '/profile',
+        '/addEnfant',
+        '/listEnfants',
+        '/selectAvatar',
+        '/enfant-profil',
+        '/edit-enfant-profil',
+        '/choisir-avatar',
+        '/jeux-list',
+        '/detailJouet',
+        '/redigerAvis',
       ];
+
       if (parentRoutes.contains(currentLoc)) {
-        if (await getRole() != 'parent') return '/adminDashboard';
+        if (await getRole() != 'parent') {
+          return '/adminDashboard';
+        }
+
         return null;
       }
 
       return null;
     },
+
     routes: [
+
       GoRoute(
         path: '/splash',
         name: AppRoutes.splash.name,
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) {
+          return const SplashScreen();
+        },
       ),
+
       GoRoute(
         path: '/onboarding',
         name: AppRoutes.onboarding.name,
-        builder: (context, state) => const OnboardingScreen(),
+        builder: (context, state) {
+          return const OnboardingScreen();
+        },
       ),
+
       GoRoute(
         path: '/login',
         name: AppRoutes.login.name,
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) {
+          return const LoginScreen();
+        },
       ),
+
       GoRoute(
         path: '/register',
         name: AppRoutes.register.name,
-        builder: (context, state) => const RegisterScreen(),
+        builder: (context, state) {
+          return const RegisterScreen();
+        },
       ),
+
       GoRoute(
         path: '/home',
         name: AppRoutes.home.name,
-        builder: (context, state) => const AppBottomNavigationBar(),
+        builder: (context, state) {
+          return const AppBottomNavigationBar();
+        },
       ),
+
       GoRoute(
         path: '/addEnfant',
         name: AppRoutes.addEnfant.name,
-        builder: (context, state) => const AddEnfantScreen(),
+        builder: (context, state) {
+          return const AddEnfantScreen();
+        },
       ),
+
       GoRoute(
         path: '/addjouet',
         name: AppRoutes.addjouet.name,
-        builder: (context, state) => const JouetForm(),
+        builder: (context, state) {
+          return const JouetForm();
+        },
       ),
-     GoRoute(
-  path: '/detailJouet',
-  name: AppRoutes.jouetDetail.name,
-  builder: (context, state) {
-    final jouet = state.extra as JouetModel;
 
-    return Jouetdetail(
-      jouet: jouet,
-    );
-  },
-),
+      GoRoute(
+        path: '/detailJouet',
+        name: AppRoutes.jouetDetail.name,
+        builder: (context, state) {
+          final jouet = state.extra as JouetModel;
 
-GoRoute(
-  path: '/redigerAvis',
-  name: AppRoutes.redigerAvis.name,
-  builder: (context, state) {
-    final extra = state.extra;
+          return Jouetdetail(
+            jouet: jouet,
+          );
+        },
+      ),
 
-    // Compatibilité : on peut passer un JouetModel seul (ancien)
-    // ou un Map { 'jouet': JouetModel, 'avis': AvisModel? }
-    if (extra is JouetModel) {
-      return RedigerAvisPage(jouet: extra);
-    }
+      GoRoute(
+        path: '/redigerAvis',
+        name: AppRoutes.redigerAvis.name,
+        builder: (context, state) {
+          final jouet = state.extra as JouetModel;
 
-    final map = extra as Map<String, dynamic>;
-    return RedigerAvisPage(
-      jouet: map['jouet'] as JouetModel,
-      avisExistant: map['avis'] as AvisModel?,
-    );
-  },
-),
+          return RedigerAvisPage(
+            jouet: jouet,
+          );
+        },
+      ),
+
       GoRoute(
         path: '/listEnfants',
         name: AppRoutes.listEnfants.name,
-        builder: (context, state) => const EnfantsListScreen(),
+        builder: (context, state) {
+          return const EnfantsListScreen();
+        },
       ),
+
       GoRoute(
         path: '/selectAvatar',
         name: AppRoutes.selectAvatar.name,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
-          return SelectAvatarScreen(dataEnfant: extra);
+
+          return SelectAvatarScreen(
+            dataEnfant: extra,
+          );
         },
       ),
+
       GoRoute(
         path: '/cart',
         name: AppRoutes.cart.name,
-        builder: (context, state) => const PanierPage(),
+        builder: (context, state) {
+          return const PanierPage();
+        },
       ),
+
       GoRoute(
         path: '/checkout',
         name: AppRoutes.checkout.name,
-        builder: (context, state) => const CheckoutPage(),
+        builder: (context, state) {
+          return const CheckoutPage();
+        },
       ),
+
       GoRoute(
         path: '/success',
         name: AppRoutes.success.name,
-        builder: (context, state) => const SuccessPage(),
+        builder: (context, state) {
+          return const SuccessPage();
+        },
       ),
+
       GoRoute(
         path: '/catalogue',
         name: AppRoutes.catalogue.name,
-        builder: (context, state) => const CataloguePage(),
+        builder: (context, state) {
+          return const CataloguePage();
+        },
       ),
+
       GoRoute(
         path: '/favorites',
         name: AppRoutes.favorites.name,
-        builder: (context, state) => const FavorisPage(),
+        builder: (context, state) {
+          return const FavorisPage();
+        },
       ),
+
       GoRoute(
         path: '/enfant-profil',
         name: AppRoutes.enfantProfil.name,
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
-          return EnfantProfilScreen(enfant: enfant);
+
+          return EnfantProfilScreen(
+            enfant: enfant,
+          );
         },
       ),
+
       GoRoute(
         path: '/edit-enfant-profil',
         name: AppRoutes.editEnfant.name,
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
-          return EditEnfantProfilScreen(enfant: enfant);
+
+          return EditEnfantProfilScreen(
+            enfant: enfant,
+          );
         },
       ),
+
       GoRoute(
         path: '/choisir-avatar',
         name: AppRoutes.choisirAvatar.name,
         builder: (context, state) {
-          final extraData = state.extra as Map<String, dynamic>?;
-          final enfant = extraData?['enfant'] as EnfantModel?;
+          final extraData =
+          state.extra as Map<String, dynamic>?;
+
+          final enfant =
+          extraData?['enfant'] as EnfantModel?;
+
           final updatedData =
-              extraData?['updatedData'] as Map<String, dynamic>?;
+          extraData?['updatedData']
+          as Map<String, dynamic>?;
 
           if (enfant == null) {
             return const Scaffold(
-              body: Center(child: Text('Erreur : Profil enfant introuvable.')),
+              body: Center(
+                child: Text(
+                  'Erreur : Profil enfant introuvable.',
+                ),
+              ),
             );
           }
 
-          return ChoisirAvatarScreen(enfant: enfant, updatedData: updatedData);
+          return ChoisirAvatarScreen(
+            enfant: enfant,
+            updatedData: updatedData,
+          );
         },
       ),
+
       GoRoute(
         path: '/jeux-list',
         name: AppRoutes.jouetList.name,
-        builder: (context, state) => const JeuxListScreen(),
+        builder: (context, state) {
+          return const JeuxListScreen();
+        },
       ),
+
       GoRoute(
         path: '/profile',
         name: AppRoutes.profile.name,
-        builder: (context, state) => const ProfilPage(),
+        builder: (context, state) {
+          return const ProfilPage();
+        },
       ),
+
+      GoRoute(
+        path: '/adminDashboard',
+        name: AppRoutes.adminDashboard.name,
+        builder: (context, state) {
+          return const Scaffold(
+            body: Center(
+              child: Text(
+                'Admin Dashboard',
+              ),
+            ),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: '/JouetsAdmin',
+        name: AppRoutes.JouetsAdmin.name,
+        builder: (context, state) {
+          return const ListeJouetsPage();
+        },
+      ),
+
+      GoRoute(
+        path: '/add-jouet-admin',
+        name: 'addJouetAdmin',
+        builder: (context, state) {
+          return const AjouterJouetPage();
+        },
+      ),
+      GoRoute(
+  path: '/forgotPassword',
+  name: AppRoutes.changermotdepasse.name,
+  builder: (context, state) => const ForgotPasswordScreen(),
+),
+
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          // Appel de votre layout en vague verte
+          return AdminBottomNav(navigationShell: navigationShell);
+        },
+        branches: [
+          // Onglet Index 0 : Tableau de bord Admin
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/adminDashboard',
+                name: AppRoutes.adminDashboard.name,
+                builder: (context, state) => const AdminDashboard(),
+              ),
+            ],
+          ),
+
+          // Onglet Index 1 : Gestion des Jouets
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-jouets',
+                name: AppRoutes.JouetsAdmin.name,
+                builder: (context, state) {
+                  return const ListeJouetsPage();
+                },
+              ),
+            ],
+          ),
+
+          // Onglet Index 2 : Gestion des Tutoriels Admin
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-tutoriels',
+                name: AppRoutes.admintutoriels.name,
+                builder: (context, state) {
+                  return const ListeTutos();
+                },
+              ),
+            ],
+          ),
+
+          //Onglet Index 3 : Gestion des Défis
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-defis',
+                name: AppRoutes.adminajoutdefis.name,
+                builder: (context, state) {
+                  return const AjoutDefis();
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+
+      
+      GoRoute(
+        path: '/adminDashboard/parent-detail/:userId',
+        name: AppRoutes.adminutilisateurDetail.name,
+        builder: (context, state) {
+          
+          // Extraction de l'ID depuis les paramètres de chemin
+          final userId = state.pathParameters['userId'];
+          return UserDetail(userId: userId!);
+        },
+      ),
+      GoRoute(
+        path: '/adminDashboard/commande-detail/:orderId',
+        name: AppRoutes.admincommandeDetail.name,
+        builder: (context, state) {
+
+          // Extraction de l'ID depuis les paramètres du chemin
+          final orderId = state.pathParameters['orderId'];
+          return CommandeDetail(orderId: orderId!);
+        },
+      ),
+      GoRoute(
+        path: '/adminDashboard/liste-utilisateur',
+        name: AppRoutes.adminutilisateurListe.name,
+        builder: (context, state) {
+          return const ParentsList();
+        },
+      ),
+
+      
+      GoRoute(
+        path: '/adminDashboard/liste-commande',
+        name: AppRoutes.admincommandeListe.name,
+        builder: (context, state) {
+          return const CommandeListe();
+        },
+      ),
+      GoRoute(
+        path: '/admin-tutoriels/ajout-tuto',
+        name: AppRoutes.adminajoututoriels.name,
+        builder: (context, state) {
+          final tutorielAModifier = state.extra as TutorielModel?;
+          return AjoutTuto(tutoriel: tutorielAModifier);
+        },
+      ),
+      GoRoute(
+        path: '/admin/profile',
+        name: AppRoutes.adminprofile.name,
+        builder: (context, state) => const AdminProfil(), // ──> Connecté !
+      ),
+     GoRoute(
+        path: '/add-jouet-admin',
+        name: AppRoutes.addJouetAdmin.name,
+        builder: (context, state) {
+          return const AjouterJouetPage();
+        },
+      ),
+      GoRoute(
+  path: '/forgotPassword',
+  name: AppRoutes.changermotdepasse.name,
+  builder: (context, state) => const ForgotPasswordScreen(),
+),
+
+
     ],
   );
 }
