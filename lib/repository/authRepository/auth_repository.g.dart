@@ -122,3 +122,41 @@ final class CurrentUserProvider extends $FunctionalProvider<User?, User?, User?>
 }
 
 String _$currentUserHash() => r'111e6d786dc20b47d053faef10792cde2a6bf709';
+
+@ProviderFor(userData)
+final userDataProvider = UserDataProvider._();
+
+final class UserDataProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<UserModel?>,
+          UserModel?,
+          Stream<UserModel?>
+        >
+    with $FutureModifier<UserModel?>, $StreamProvider<UserModel?> {
+  UserDataProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userDataProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userDataHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<UserModel?> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<UserModel?> create(Ref ref) {
+    return userData(ref);
+  }
+}
+
+String _$userDataHash() => r'd828e4a89c50f3dee1366168192eda0a1f6c4dee';

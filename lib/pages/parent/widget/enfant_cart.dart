@@ -7,14 +7,21 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 class EnfantCart extends StatelessWidget {
   final EnfantModel enfant;
 
-  const EnfantCart({super.key, required this.enfant});
+  const EnfantCart({
+    super.key,
+    required this.enfant,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: SizeConfig.getProportionateWidth(140),
-      margin: EdgeInsets.only(right: SizeConfig.getProportionateWidth(12)),
-      padding: EdgeInsets.all(SizeConfig.getProportionateWidth(10)),
+      margin: EdgeInsets.only(
+        right: SizeConfig.getProportionateWidth(12),
+      ),
+      padding: EdgeInsets.all(
+        SizeConfig.getProportionateWidth(10),
+      ),
       decoration: BoxDecoration(
         color: AppStyles.onboading13,
         borderRadius: BorderRadius.circular(16),
@@ -28,13 +35,14 @@ class EnfantCart extends StatelessWidget {
               color: Colors.white,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.person,
-              color: Colors.black45,
-              size: SizeConfig.getProportionateWidth(22),
-            ),
+            clipBehavior: Clip.antiAlias,
+            child: _buildAvatar(),
           ),
-          SizedBox(width: SizeConfig.getProportionateWidth(8)),
+
+          SizedBox(
+            width: SizeConfig.getProportionateWidth(8),
+          ),
+
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +57,11 @@ class EnfantCart extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: SizeConfig.getProportionateHeight(3)),
+
+                SizedBox(
+                  height: SizeConfig.getProportionateHeight(3),
+                ),
+
                 Text(
                   _calculerAge(enfant.naissance),
                   style: AppStyles.normalTextStyle.copyWith(
@@ -62,6 +74,56 @@ class EnfantCart extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAvatar() {
+    if (enfant.avatarUrl == null ||
+        enfant.avatarUrl!.trim().isEmpty) {
+      return Icon(
+        Icons.person,
+        color: Colors.black45,
+        size: SizeConfig.getProportionateWidth(22),
+      );
+    }
+
+    return Image.network(
+      enfant.avatarUrl!,
+      fit: BoxFit.cover,
+
+      // Pendant le chargement
+      loadingBuilder: (
+        context,
+        child,
+        loadingProgress,
+      ) {
+        if (loadingProgress == null) {
+          return child;
+        }
+
+        return const Center(
+          child: SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          ),
+        );
+      },
+
+      // Si l'URL est invalide ou l'image ne charge pas
+      errorBuilder: (
+        context,
+        error,
+        stackTrace,
+      ) {
+        return Icon(
+          Icons.person,
+          color: Colors.black45,
+          size: SizeConfig.getProportionateWidth(22),
+        );
+      },
     );
   }
 
