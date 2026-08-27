@@ -31,7 +31,7 @@ class _RedigerAvisPageState
   final AvisRepository _avisRepository =
       AvisRepository();
 
-  int _note = 5;
+  int _note = 0;
 
   bool _isLoading = false;
 
@@ -254,12 +254,13 @@ class _RedigerAvisPageState
 
             Center(
               child: Text(
-                '$_note / 5',
-
-                style: const TextStyle(
+                _note == 0 ? 'Choisissez une note' : '$_note / 5',
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: _note == 0
+                      ? AppStyles.textMuted
+                      : AppStyles.textDark,
                 ),
               ),
             ),
@@ -374,23 +375,13 @@ class _RedigerAvisPageState
     ),
 
     style: ElevatedButton.styleFrom(
-      backgroundColor:
-          AppStyles.primary,
-
-      foregroundColor:
-          Colors.white,
-
+      backgroundColor: const Color.fromRGBO(230, 126, 34, 1),
+      foregroundColor: Colors.white,
       disabledBackgroundColor:
-          AppStyles.primary.withValues(
-        alpha: 0.5,
-      ),
-
+          const Color.fromRGBO(230, 126, 34, 1).withValues(alpha: 0.5),
       elevation: 0,
-
-      shape:
-          RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.circular(14),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
       ),
     ),
   ),
@@ -412,6 +403,17 @@ class _RedigerAvisPageState
   
   // VÉRIFICATION DU COMMENTAIRE
   
+
+  if (_note == 0) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Veuillez sélectionner une note (étoiles).',
+        ),
+      ),
+    );
+    return;
+  }
 
   if (commentaire.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
