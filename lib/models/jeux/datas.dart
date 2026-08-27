@@ -13,19 +13,37 @@ class QuizData {
         QuizQuestion(
           text: "Quel est le plus grand animal terrestre ?",
           options: ["Éléphant", "Girafe", "Rinocéros", "Hippopotame"],
-          optionEmojis: ["🐘", "🦒", "🦏", "🦛"],
+          optionEmojis:
+          [
+            "assets/images/quiz/elephant.png",
+            "assets/images/quiz/giraf.png",
+            "assets/images/quiz/reno.png",
+            "assets/images/quiz/hippoptame.png"
+          ],
           correctAnswerIndex: 0,
         ),
         QuizQuestion(
           text: "Quel oiseau court très vite mais ne sait pas voler ?",
           options: ["Aigle", "Autruche", "Manchot", "Perroquet"],
-          optionEmojis: ["🦅", "🦩", "🐧", "🦜"],
+          optionEmojis:
+          [
+            "assets/images/quiz/aigle.png",
+            "assets/images/quiz/autriche.png",
+            "assets/images/quiz/manchot.png",
+            "assets/images/quiz/perroquet.png"
+          ],
           correctAnswerIndex: 1,
         ),
         QuizQuestion(
           text: "Quel animal marin possède huit bras (tentacules) ?",
           options: ["Dauphin", "Requin", "Pieuvre", "Baleine"],
-          optionEmojis: ["🐬", "🦈", "🐙", "🐳"],
+          optionEmojis:
+          [
+            "assets/images/quiz/dauphin.png",
+            "assets/images/quiz/requin.png",
+            "assets/images/quiz/pieuvre.png",
+            "assets/images/quiz/baleine.png"
+          ],
           correctAnswerIndex: 2,
         ),
       ],
