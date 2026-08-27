@@ -114,15 +114,4 @@ class AuthController extends _$AuthController {
       () => ref.read(authRepositoryProvider).deconnecter(),
     );
   }
-  Future<bool> reinitialiserMotDePasse({required String email}) async {
-  if (email.trim().isEmpty) {
-    state = AsyncError('Veuillez saisir votre adresse email.', StackTrace.current);
-    return false;
-  }
-  state = const AsyncLoading();
-  state = await AsyncValue.guard(
-    () => ref.read(authRepositoryProvider).reinitialiserMotDePasse(email: email.trim()),
-  );
-  return !state.hasError;
-}
 }

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 
 import 'package:tolon/controller/favoris/favoris_controller.dart';
 import 'package:tolon/controller/panier/panier_controller.dart';
@@ -992,6 +994,7 @@ class _JouetdetailState
                   (avisItem) {
                     return _buildReviewCard(
                       avis: avisItem,
+                      jouet: jouet,
                     );
                   },
                 ),
@@ -999,11 +1002,12 @@ class _JouetdetailState
               const SizedBox(height: 5),
 
               // ==================================================
-              // REDIGER UN AVIS
+              // REDIGER / MODIFIER UN AVIS
               // ==================================================
 
               _buildWriteReviewButton(
                 jouet,
+                avis,
               ),
             ],
           );
@@ -1124,213 +1128,213 @@ class _JouetdetailState
   // CARTE AVIS
   // ==========================================================
 
+  String _formatDate(DateTime date) {
+    final d = date.day.toString().padLeft(2, '0');
+    final m = date.month.toString().padLeft(2, '0');
+    final y = date.year.toString();
+    return '$d/$m/$y';
+  }
+
   Widget _buildReviewCard({
     required AvisModel avis,
+    required JouetModel jouet,
   }) {
+    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+    final isMonAvis = currentUserId != null && currentUserId == avis.userId;
+
     return Container(
       width: double.infinity,
-
-      margin:
-          const EdgeInsets.only(
-        bottom: 12,
-      ),
-
-      padding:
-          const EdgeInsets.all(16),
-
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-
-        borderRadius:
-            BorderRadius.circular(20),
-
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Colors.black
-              .withValues(alpha: 0.04),
+          color: isMonAvis
+              ? const Color.fromRGBO(230, 126, 34, 0.35)
+              : Colors.black.withValues(alpha: 0.04),
         ),
       ),
-
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Row(
             children: [
-
-              // ==================================================
-              // AVATAR
-              // ==================================================
-
               CircleAvatar(
                 radius: 21,
-
-                backgroundColor:
-                    AppStyles.primarySoft,
-
+                backgroundColor: AppStyles.primarySoft,
                 child: const Icon(
                   Icons.person,
-                  color:
-                      AppStyles.primary,
+                  color: AppStyles.primary,
                   size: 21,
                 ),
               ),
-
               const SizedBox(width: 10),
-
-              // ==================================================
-              // UTILISATEUR
-              // ==================================================
-
               Expanded(
-                child: FutureBuilder<
-                    DocumentSnapshot<
-                        Map<String,
-                            dynamic>>>(
-                  future:
-                      FirebaseFirestore
-                          .instance
-                          .collection(
-                              'users')
-                          .doc(
-                              avis.userId)
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      future: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(avis.userId)
                           .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Text(
+                            'Chargement...',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        }
 
-                  builder:
-                      (
-                    context,
-                    snapshot,
-                  ) {
+                        final data = snapshot.data?.data();
+                        if (data == null) {
+                          return Text(
+                            isMonAvis ? 'Vous' : 'Utilisateur',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        }
 
-                    if (snapshot
-                            .connectionState ==
-                        ConnectionState
-                            .waiting) {
-                      return const Text(
-                        'Chargement...',
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      );
-                    }
+                        final prenom = data['prenom']?.toString().trim() ?? '';
+                        final nom = data['nom']?.toString().trim() ?? '';
+                        final email = data['email']?.toString().trim() ?? '';
 
-                    final data =
-                        snapshot.data
-                            ?.data();
+                        String nomUtilisateur;
+                        if (prenom.isNotEmpty && nom.isNotEmpty) {
+                          nomUtilisateur = '$prenom $nom';
+                        } else if (prenom.isNotEmpty) {
+                          nomUtilisateur = prenom;
+                        } else if (nom.isNotEmpty) {
+                          nomUtilisateur = nom;
+                        } else if (email.isNotEmpty) {
+                          nomUtilisateur = email;
+                        } else {
+                          nomUtilisateur = isMonAvis ? 'Vous' : 'Utilisateur';
+                        }
 
-                    if (data == null) {
-                      return const Text(
-                        'Utilisateur',
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      );
-                    }
-
-                    final prenom =
-                        data['prenom']
-                                ?.toString()
-                                .trim() ??
-                            '';
-
-                    final nom =
-                        data['nom']
-                                ?.toString()
-                                .trim() ??
-                            '';
-
-                    final email =
-                        data['email']
-                                ?.toString()
-                                .trim() ??
-                            '';
-
-                    String nomUtilisateur;
-
-                    if (prenom.isNotEmpty &&
-                        nom.isNotEmpty) {
-                      nomUtilisateur =
-                          '$prenom $nom';
-                    } else if (
-                        prenom.isNotEmpty) {
-                      nomUtilisateur =
-                          prenom;
-                    } else if (
-                        nom.isNotEmpty) {
-                      nomUtilisateur =
-                          nom;
-                    } else if (
-                        email.isNotEmpty) {
-                      nomUtilisateur =
-                          email;
-                    } else {
-                      nomUtilisateur =
-                          'Utilisateur';
-                    }
-
-                    return Text(
-                      nomUtilisateur,
-
-                      overflow:
-                          TextOverflow.ellipsis,
-
-                      style:
-                          const TextStyle(
-                        fontWeight:
-                            FontWeight.bold,
-                        color:
-                            AppStyles.textDark,
+                        return Text(
+                          isMonAvis ? '$nomUtilisateur (vous)' : nomUtilisateur,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppStyles.textDark,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      _formatDate(avis.date),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppStyles.textMuted,
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
-
-              // ==================================================
-              // NOTE
-              // ==================================================
-
               Row(
-                children:
-                    List.generate(
-                  5,
-                  (index) {
-                    return Icon(
-                      index < avis.note
-                          ? Icons.star
-                          : Icons.star_border,
-
-                      size: 16,
-
-                      color:
-                          const Color(
-                        0xFFFFC400,
-                      ),
-                    );
-                  },
-                ),
+                children: List.generate(5, (index) {
+                  return Icon(
+                    index < avis.note ? Icons.star : Icons.star_border,
+                    size: 16,
+                    color: const Color(0xFFFFC400),
+                  );
+                }),
               ),
             ],
           ),
-
           const SizedBox(height: 12),
-
           Text(
             avis.commentaire,
-
             style: const TextStyle(
               fontSize: 13,
               height: 1.5,
-              color:
-                  AppStyles.textMuted,
+              color: AppStyles.textMuted,
             ),
+          ),
+          if (isMonAvis) ...[
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    context.pushNamed(
+                      AppRoutes.redigerAvis.name,
+                      extra: {
+                        'jouet': jouet,
+                        'avis': avis,
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.edit_outlined, size: 18),
+                  label: const Text('Modifier'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color.fromRGBO(230, 126, 34, 1),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => _confirmerSuppressionAvis(jouet, avis),
+                  icon: const Icon(Icons.delete_outline, size: 18),
+                  label: const Text('Supprimer'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.redAccent,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Future<void> _confirmerSuppressionAvis(
+    JouetModel jouet,
+    AvisModel avis,
+  ) async {
+    final confirmer = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Supprimer l\'avis'),
+        content: const Text(
+          'Voulez-vous vraiment supprimer votre avis ? Cette action est irréversible.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Supprimer'),
           ),
         ],
       ),
     );
+
+    if (confirmer != true || !mounted) return;
+
+    try {
+      await _avisRepository.supprimerAvis(
+        jouetId: jouet.id,
+        avisId: avis.id,
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Votre avis a été supprimé.'),
+          backgroundColor: Color.fromRGBO(230, 126, 34, 1),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la suppression : $e')),
+      );
+    }
   }
 
   // ==========================================================
@@ -1453,42 +1457,64 @@ class _JouetdetailState
 
         _buildWriteReviewButton(
           jouet,
+          const [],
         ),
       ],
     );
   }
 
   // ==========================================================
-  // BOUTON RÉDIGER UN AVIS
+  // BOUTON RÉDIGER / MODIFIER UN AVIS
   // ==========================================================
 
   Widget _buildWriteReviewButton(
     JouetModel jouet,
+    List<AvisModel> avisList,
   ) {
+    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+    AvisModel? monAvis;
+
+    if (currentUserId != null) {
+      for (final a in avisList) {
+        if (a.userId == currentUserId) {
+          monAvis = a;
+          break;
+        }
+      }
+    }
+
+    final dejaNote = monAvis != null;
+
     return SizedBox(
       width: double.infinity,
-
       child: OutlinedButton.icon(
         onPressed: () {
+          if (currentUserId == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Vous devez être connecté pour laisser un avis.'),
+              ),
+            );
+            return;
+          }
 
           context.pushNamed(
             AppRoutes.redigerAvis.name,
-            extra: jouet,
+            extra: {
+              'jouet': jouet,
+              'avis': monAvis, // null = nouveau, sinon = modification
+            },
           );
         },
-
-        icon: const Icon(
-          Icons.edit_outlined,
+        icon: Icon(
+          dejaNote ? Icons.edit_outlined : Icons.rate_review_outlined,
         ),
-
-        label: const Text(
-          'Rédiger un avis',
-          style: TextStyle(
-            fontWeight:
-                FontWeight.w600,
+        label: Text(
+          dejaNote ? 'Modifier mon avis' : 'Rédiger un avis',
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
           ),
         ),
-
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color.fromRGBO(230, 126, 34, 1),
           side: const BorderSide(
