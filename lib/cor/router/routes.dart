@@ -29,6 +29,7 @@ import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/panier/checkout_page.dart';
 import 'package:tolon/pages/panier/panier_page.dart';
 import 'package:tolon/pages/panier/success_page.dart';
+import 'package:tolon/pages/parent/reunitialiser_mot_de_passe.dart';
 import 'package:tolon/pages/profil/profil_page.dart';
 import 'package:tolon/pages/register/register_screen.dart';
 import 'package:tolon/pages/splush/splushScreen.dart';
