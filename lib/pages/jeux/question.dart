@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jeux/datas.dart';
 import 'package:tolon/models/jeux/quiz_models.dart';
 
@@ -15,7 +16,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
   int _currentIndex = 0;
   int? _selectedAnswerIndex;
   bool _isAnswered = false;
-  int _scoreStars = 120;
+  int _scoreStars = 0;
 
   void _checkAnswer(int index) {
     if (_isAnswered) return;
@@ -51,7 +52,8 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("🎉 Super ! 🎉", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF6C5CE7))),
+              const Text("🎉 Super ! 🎉", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,
+                  color: Color(0xFF000000))),
               const SizedBox(height: 16),
               const Text("Tu as terminé ce quiz avec succès !", textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: Colors.grey)),
               const SizedBox(height: 32),
@@ -61,7 +63,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C5CE7),
+                  backgroundColor: const Color(0xFFE67E22),
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -83,6 +85,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
     final List<String> optionLetters = ["A", "B", "C", "D"];
 
     return Scaffold(
+      backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -119,7 +122,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                   value: progress,
                   minHeight: 8,
                   backgroundColor: const Color(0xFFF0EFFF),
-                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF6C5CE7)),
+                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF63B47E)),
                 ),
               ),
               const SizedBox(height: 48),
@@ -142,8 +145,8 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                     final isSelected = _selectedAnswerIndex == index;
 
                     Color cardBgColor = Colors.white;
-                    Color borderColor = isSelected ? const Color(0xFF6C5CE7) : const Color(0xFFF1F5F9);
-                    Color letterBgColor = isSelected ? const Color(0xFF6C5CE7) : const Color(0xFFF8FAFC);
+                    Color borderColor = isSelected ? const Color(0xFF63B47E) : const Color(0xFFF1F5F9);
+                    Color letterBgColor = isSelected ? const Color(0xFF63B47E) : const Color(0xFFF8FAFC);
                     Color letterTextColor = isSelected ? Colors.white : const Color(0xFF64748B);
 
                     if (_isAnswered) {
@@ -200,7 +203,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
               ElevatedButton(
                 onPressed: _isAnswered ? _nextQuestion : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C5CE7),
+                  backgroundColor: const Color(0xFFE67E22),
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: const Color(0xFFE2E8F0),
                   padding: const EdgeInsets.symmetric(vertical: 18),

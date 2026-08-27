@@ -7,7 +7,7 @@ class QuizData {
     QuizTheme(
       id: "animaux",
       title: "Animaux",
-      icon: "🦁",
+      icon: "assets/images/quiz/animaux.png",
       bgColor: Color(0xFFFFF4E5),
       questions: [
         QuizQuestion(
@@ -35,7 +35,7 @@ class QuizData {
     QuizTheme(
       id: "sciences",
       title: "Sciences",
-      icon: "🧪",
+      icon: "assets/images/quiz/science.png",
       bgColor: Color(0xFFE5F6FF),
       questions: [
         QuizQuestion(
@@ -57,7 +57,7 @@ class QuizData {
     QuizTheme(
       id: "geographie",
       title: "Géographie",
-      icon: "🌍",
+      icon: "assets/images/quiz/geographie.png",
       bgColor: Color(0xFFE5FFE9),
       questions: [
         QuizQuestion(
@@ -79,7 +79,7 @@ class QuizData {
     QuizTheme(
       id: "histoire",
       title: "Histoire",
-      icon: "🏛️",
+      icon: "assets/images/quiz/histoire.png",
       bgColor: Color(0xFFF3E5FF),
       questions: [
         QuizQuestion(
@@ -101,7 +101,7 @@ class QuizData {
     QuizTheme(
       id: "maths",
       title: "Maths",
-      icon: "🔢",
+      icon: "assets/images/quiz/math.png",
       bgColor: Color(0xFFFFE5EC),
       questions: [
         QuizQuestion(
@@ -123,7 +123,7 @@ class QuizData {
     QuizTheme(
       id: "sport",
       title: "Sport",
-      icon: "⚽",
+      icon: "assets/images/quiz/sport.png",
       bgColor: Color(0xFFE5FDFB),
       questions: [
         QuizQuestion(

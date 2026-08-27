@@ -41,6 +41,7 @@ enum AppRoutes {
   adminDashboard,
   listEnfants,
   selectAvatar,
+  quiz,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
