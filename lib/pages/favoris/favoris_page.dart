@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/commun_widget/favoris/bouton_favori.dart';
 import 'package:tolon/controller/favoris/favoris_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/repository/favoris/favoris_repository.dart';
 import 'package:tolon/repository/jouets_reposotory/jouet_repository.dart';
@@ -130,7 +131,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
     final idsFavoris = ref.watch(favorisControllerProvider);
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 236, 243, 236),
+      backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -165,10 +166,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       children: [
                         Text(
                           'Mes favoris',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppStyles.titleTextStyle,
                         ),
                         SizedBox(height: 6),
                         Text(
@@ -218,10 +216,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                         const SizedBox(width: 6),
                         Text(
                           '${idsFavoris.length} favoris',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
+                          style: AppStyles.normalTextStyle,
                         ),
                       ],
                     ),
@@ -257,10 +252,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                         children: [
                           const Text(
                             'Trier par : ',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.black54,
-                            ),
+                            style: AppStyles.normalTextStyle,
                           ),
                           Text(
                             _triSelectionne,
@@ -388,10 +380,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                   jouet.nomJouet,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                  ),
+                  style: AppStyles.titleTextStyle,
                 ),
                 const SizedBox(height: 4),
                 Container(
