@@ -27,6 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("dsmmmmmmmmmmm");
     return Scaffold(
       backgroundColor: AppStyles.background,
       body: SafeArea(
@@ -218,6 +219,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               }
 
               final enfant = displayedEnfants[index];
+
               final ageCalculated = _calculerAge(enfant.naissance);
 
               // Récupération uniquement du prénom
@@ -227,7 +229,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               final Color bgColor = _avatarBgColors.isNotEmpty
                   ? _avatarBgColors[index % _avatarBgColors.length]
                   : AppStyles.primarySoft;
+              print("-------------------------------------");
 
+              print(enfant.avatarUrl);
               return Container(
                 margin: const EdgeInsets.only(right: 12),
                 child: _buildChildCard(
@@ -279,6 +283,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     required Color avatarBgColor,
     VoidCallback? onTap, // <- Ajout du callback
   }) {
+    print("££££££££££££££££££££££££££££££££££££££");
+    print(avatarUrl);
     return InkWell(
       onTap: onTap, // <- Gestion du clic
       borderRadius: BorderRadius.circular(16),
@@ -573,7 +579,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     if (favorisIds.isEmpty) {
       return const SizedBox(
-        height: 145,
+        height: 160,
         child: Center(
           child: Text(
             'Aucun favori pour le moment',
@@ -585,14 +591,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return jouetsAsync.when(
       data: (allJouets) {
-        // Filtrer la liste des jeux selon les IDs présents dans favorisIds
         final favoris = allJouets
             .where((jouet) => favorisIds.contains(jouet.id))
             .toList();
 
         if (favoris.isEmpty) {
           return const SizedBox(
-            height: 145,
+            height: 160,
             child: Center(
               child: Text(
                 'Aucun favori trouvé',
@@ -603,7 +608,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
 
         return SizedBox(
-          height: 145,
+          height: 160,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,
@@ -628,7 +633,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         );
       },
       loading: () => const SizedBox(
-        height: 145,
+        height: 160,
         child: Center(
           child: CircularProgressIndicator(color: AppStyles.primary),
         ),
@@ -647,65 +652,94 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        width: 110,
-        padding: const EdgeInsets.all(8),
+        width: 120,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.12),
-              blurRadius: 8,
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 10,
               spreadRadius: 0,
               offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.green.shade50,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: imageUrl != null && imageUrl.isNotEmpty
-                    ? Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const Icon(
-                          Icons.extension,
-                          color: AppStyles.primary,
-                        ),
-                      )
-                    : const Icon(Icons.extension, color: AppStyles.primary),
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 6),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(
-                color: AppStyles.primarySoft,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Text(
-                'Voir plus',
-                style: TextStyle(
-                  fontSize: 9,
-                  color: AppStyles.primary,
-                  fontWeight: FontWeight.bold,
+            // Zone Image fluide prenant tout le haut de la carte
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
                 ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                  child: imageUrl != null && imageUrl.isNotEmpty
+                      ? Image.network(
+                          imageUrl,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => const Center(
+                            child: Icon(
+                              Icons.extension,
+                              color: AppStyles.primary,
+                              size: 28,
+                            ),
+                          ),
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.extension,
+                            color: AppStyles.primary,
+                            size: 28,
+                          ),
+                        ),
+                ),
+              ),
+            ),
+            // Zone Texte et Actions en bas
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              child: Column(
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: AppStyles.textDark,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppStyles.primarySoft,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      'Voir plus',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppStyles.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
