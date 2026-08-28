@@ -205,9 +205,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                         child: InkWell(
                           customBorder: const CircleBorder(),
                           onTap: () => context.push('/cart'),
-                          child: SizedBox(
-                            width: 42,
-                            height: 42,
+                          child:  SizedBox(
+                            width: 40,
+                            height: 40,
                             child: Icon(
                               Icons.shopping_cart_outlined,
                               size: 22,
