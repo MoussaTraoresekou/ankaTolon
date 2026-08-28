@@ -168,7 +168,6 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                   ),
                   onPressed: () {
                     // Action basculer profil actif
-                
                   },
                   child: const Text(
                     'Basculer sur ce profil',
