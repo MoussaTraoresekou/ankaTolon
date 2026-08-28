@@ -32,7 +32,6 @@ class _ActivitesScreenState
         ref.watch(watchCategoriesProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -60,7 +59,7 @@ class _ActivitesScreenState
                       style: AppStyles.headingTextStyle.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
-                        color: Colors.black87,
+                        color: AppStyles.textDark,
                       ),
                     ),
                   ),
@@ -283,7 +282,6 @@ class _ActiviteCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -334,10 +332,10 @@ class _ActiviteCard extends StatelessWidget {
                       maxLines: 2,
                       overflow:
                           TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: AppStyles.textDark,
                       ),
                     ),
 
@@ -348,9 +346,9 @@ class _ActiviteCard extends StatelessWidget {
                       maxLines: 2,
                       overflow:
                           TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontSize: 12,
-                        color: Colors.black54,
+                        color: AppStyles.textDark,
                       ),
                     ),
 

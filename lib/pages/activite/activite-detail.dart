@@ -59,7 +59,6 @@ class ActiviteDetailScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -93,7 +92,6 @@ class ActiviteDetailScreen extends ConsumerWidget {
                     left: 16,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -178,12 +176,12 @@ class ActiviteDetailScreen extends ConsumerWidget {
                         activite.videoUrl!.isNotEmpty) ...[
                       const SizedBox(height: 24),
 
-                      const Text(
+                       Text(
                         'Vidéo',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                        color: AppStyles.textDark,
                         ),
                       ),
 
@@ -274,7 +272,7 @@ class ActiviteDetailScreen extends ConsumerWidget {
         child: Icon(
           Icons.image_outlined,
           size: 60,
-          color: Colors.black26,
+          color: Colors.black26, 
         ),
       ),
     );
@@ -302,10 +300,11 @@ class _InfoItem extends StatelessWidget {
         const SizedBox(width: 6),
         Text(
           text,
-          style: const TextStyle(
+          style:  TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Colors.black54,
+                                    color: AppStyles.textDark,
+
           ),
         ),
       ],
