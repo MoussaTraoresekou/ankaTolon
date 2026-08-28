@@ -11,7 +11,7 @@ class _Page1State extends State<Page1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("page1"),),
+      body: Center(child: Text("page1  qui ascete la coule de changement ok vgf tet"),),
       // bottomNavigationBar: AppBottomNavigationBar(),
     );
   }

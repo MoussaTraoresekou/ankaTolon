@@ -29,10 +29,8 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
     final panierState = ref.watch(panierProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAF8),
 
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF8FAF8),
         elevation: 0,
         title: const Text(
           'Catalogue de jouets',
