@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tolon/cor/app_colors.dart';
 
 class LigneJouetCmd extends StatelessWidget {
+  final String image;
   final String title;
   final int quantity;
   final String price;
 
   const LigneJouetCmd({
+    required this.image,
     required this.title,
     required this.quantity,
     required this.price,
@@ -24,15 +26,20 @@ class LigneJouetCmd extends StatelessWidget {
             width: 60,
             decoration: BoxDecoration(
               color: const Color(0xFFF9FBF9),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(color: const Color(0xFFEEEEEE)),
+              image: image.isNotEmpty
+                  ? DecorationImage(
+                      image: NetworkImage(image),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
-            child: const Icon(
-              Icons.toys_outlined,
-              color: AppColors.textGrey,
-              size: 24,
-            ),
+            child: image.isEmpty
+                ? const Icon(Icons.toys_outlined, color: Colors.grey, size: 30)
+                : null,
           ),
+  
           const SizedBox(width: 14),
           Expanded(
             child: Column(
