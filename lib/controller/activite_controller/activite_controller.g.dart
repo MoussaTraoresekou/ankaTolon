@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_controller.dart';
+part of 'activite_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,33 +9,34 @@ part of 'auth_controller.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(AuthController)
-final authControllerProvider = AuthControllerProvider._();
+@ProviderFor(ActiviteController)
+final activiteControllerProvider = ActiviteControllerProvider._();
 
-final class AuthControllerProvider
-    extends $AsyncNotifierProvider<AuthController, void> {
-  AuthControllerProvider._()
+final class ActiviteControllerProvider
+    extends $AsyncNotifierProvider<ActiviteController, void> {
+  ActiviteControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'authControllerProvider',
+        name: r'activiteControllerProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$authControllerHash();
+  String debugGetCreateSourceHash() => _$activiteControllerHash();
 
   @$internal
   @override
-  AuthController create() => AuthController();
+  ActiviteController create() => ActiviteController();
 }
 
-String _$authControllerHash() => r'174388444501722ccfea4af75c9ea1f2ad46774d';
+String _$activiteControllerHash() =>
+    r'22b264e1bf4f77496df401a6514bff6484591e69';
 
-abstract class _$AuthController extends $AsyncNotifier<void> {
+abstract class _$ActiviteController extends $AsyncNotifier<void> {
   FutureOr<void> build();
   @$mustCallSuper
   @override
