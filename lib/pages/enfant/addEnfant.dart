@@ -37,10 +37,10 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
     final now = DateTime.now();
 
     // 12 ans au plus ancien (ex: né en 2014)
-    final firstDate = DateTime(now.year - 12, now.month, now.day); 
+    final firstDate = DateTime(now.year - 12, now.month, now.day);
 
     // 4 ans au plus récent (ex: né en 2019)
-    final lastDate = DateTime(now.year - 4, now.month, now.day);   
+    final lastDate = DateTime(now.year - 4, now.month, now.day);
 
     // Date par défaut sélectionnée (10 ans par exemple)
     final initialDate = lastDate;
@@ -136,14 +136,14 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                             child: Container(
                               width: 40,
                               height: 40,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFE8F2EE),
+                              decoration: BoxDecoration(
+                                color: AppStyles.boxSurfaceLight,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.arrow_back_ios_new,
                                 size: 18,
-                                color: Colors.black87,
+                                color: AppStyles.textDark,
                               ),
                             ),
                           ),
@@ -152,7 +152,7 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                               'Nouveau profil Enfant',
                               textAlign: TextAlign.center,
                               style: AppStyles.headingTextStyle.copyWith(
-                                color: Colors.black87,
+                                color: AppStyles.textDark,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -203,19 +203,19 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                       SizedBox(height: SizeConfig.getProportionateHeight(16)),
 
                       // Champ Sexe (Dropdown)
-                      const Text(
+                      Text(
                         'Sexe',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black87,
+                          color: AppStyles.textDark,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppStyles.textInverse,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.green.shade300),
                         ),
@@ -239,9 +239,9 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                               ],
                             ),
                             isExpanded: true,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Colors.black87,
+                              color: AppStyles.textDark,
                             ),
                             items: _genres.map((String value) {
                               return DropdownMenuItem<String>(

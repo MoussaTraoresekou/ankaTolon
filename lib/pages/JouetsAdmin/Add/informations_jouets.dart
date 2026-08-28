@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 
 class InformationsJouet extends StatelessWidget {
   final TextEditingController nomController;
@@ -31,11 +32,11 @@ class InformationsJouet extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppStyles.textInverse,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: AppStyles.shadowColor,
             blurRadius: 15,
             spreadRadius: 1,
             offset: const Offset(0, 5),
@@ -45,8 +46,6 @@ class InformationsJouet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,8 +54,7 @@ class InformationsJouet extends StatelessWidget {
                   label: 'Nom du jouet',
                   controller: nomController,
                   validator: (value) {
-                    if (value == null ||
-                        value.trim().isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Veuillez entrer le nom';
                     }
 
@@ -89,28 +87,22 @@ class InformationsJouet extends StatelessWidget {
                         border: OutlineInputBorder(),
                       ),
 
-                      hint: const Text(
-                        'Choisir',
-                      ),
+                      hint: const Text('Choisir'),
 
-                      items: categories.map(
-                            (categorie) {
-                          return DropdownMenuItem<String>(
-                            value: categorie,
-                            child: Text(
-                              categorie,
-                              overflow:
-                              TextOverflow.ellipsis,
-                            ),
-                          );
-                        },
-                      ).toList(),
+                      items: categories.map((categorie) {
+                        return DropdownMenuItem<String>(
+                          value: categorie,
+                          child: Text(
+                            categorie,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      }).toList(),
 
                       onChanged: onCategorieChanged,
 
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return 'Choisissez une catégorie';
                         }
 
@@ -134,13 +126,11 @@ class InformationsJouet extends StatelessWidget {
                   controller: ageMinimumController,
                   type: TextInputType.number,
                   validator: (value) {
-                    if (value == null ||
-                        value.trim().isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Entrez l’âge';
                     }
 
-                    final int? age =
-                    int.tryParse(value.trim());
+                    final int? age = int.tryParse(value.trim());
 
                     if (age == null) {
                       return 'Nombre entier';
@@ -163,13 +153,11 @@ class InformationsJouet extends StatelessWidget {
                   controller: ageMaximumController,
                   type: TextInputType.number,
                   validator: (value) {
-                    if (value == null ||
-                        value.trim().isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Entrez l’âge';
                     }
 
-                    final int? age =
-                    int.tryParse(value.trim());
+                    final int? age = int.tryParse(value.trim());
 
                     if (age == null) {
                       return 'Nombre entier';
@@ -179,13 +167,11 @@ class InformationsJouet extends StatelessWidget {
                       return 'Entre 4 et 12 ans';
                     }
 
-                    final int? ageMinimum =
-                    int.tryParse(
+                    final int? ageMinimum = int.tryParse(
                       ageMinimumController.text.trim(),
                     );
 
-                    if (ageMinimum != null &&
-                        ageMinimum > age) {
+                    if (ageMinimum != null && ageMinimum > age) {
                       return 'Doit être ≥ âge min.';
                     }
 
@@ -205,17 +191,13 @@ class InformationsJouet extends StatelessWidget {
                 child: champTexte(
                   label: 'Prix',
                   controller: prixController,
-                  type: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
+                  type: const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
-                    if (value == null ||
-                        value.trim().isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Entrez le prix';
                     }
 
-                    final double? prix =
-                    double.tryParse(value.trim());
+                    final double? prix = double.tryParse(value.trim());
 
                     if (prix == null) {
                       return 'Nombre invalide';
@@ -238,13 +220,11 @@ class InformationsJouet extends StatelessWidget {
                   controller: stockController,
                   type: TextInputType.number,
                   validator: (value) {
-                    if (value == null ||
-                        value.trim().isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Entrez le stock';
                     }
 
-                    final int? stock =
-                    int.tryParse(value.trim());
+                    final int? stock = int.tryParse(value.trim());
 
                     if (stock == null) {
                       return 'Nombre entier';
@@ -268,8 +248,7 @@ class InformationsJouet extends StatelessWidget {
             controller: descriptionController,
             maxLines: 3,
             validator: (value) {
-              if (value == null ||
-                  value.trim().isEmpty) {
+              if (value == null || value.trim().isEmpty) {
                 return 'Veuillez entrer une description';
               }
 
@@ -293,10 +272,7 @@ class InformationsJouet extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
 
         const SizedBox(height: 8),
@@ -312,23 +288,15 @@ class InformationsJouet extends StatelessWidget {
             enabledBorder: OutlineInputBorder(),
 
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.green,
-                width: 2,
-              ),
+              borderSide: BorderSide(color: Colors.green, width: 2),
             ),
 
             errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.red,
-              ),
+              borderSide: BorderSide(color: Colors.red),
             ),
 
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.red,
-                width: 2,
-              ),
+              borderSide: BorderSide(color: AppStyles.badgeRed, width: 2),
             ),
           ),
 

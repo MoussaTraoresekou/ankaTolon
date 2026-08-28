@@ -176,7 +176,7 @@ class _AdminProfilState extends ConsumerState<AdminProfil> {
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: AppColors.textDark, size: 20),
             filled: !_isEditing,
-            fillColor: const Color(0xFFF1F1F1),
+            fillColor: const Color.fromARGB(255, 245, 136, 136),
             contentPadding: const EdgeInsets.all(16),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(style: BorderStyle.solid, color: AppColors.greenPrimary)),
             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: Color(0xFFECECEC))),

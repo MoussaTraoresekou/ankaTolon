@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tolon/controller/jouetsAdmin/jouets_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 
 import 'package:tolon/pages/JouetsAdmin/Edit/ModifierJouet.dart';
 
@@ -9,34 +10,26 @@ import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
 import 'package:tolon/repository/JouetsAdmin/JouetsRepository.dart';
 
 class ListeJouetsPage extends StatefulWidget {
-  const ListeJouetsPage({
-    super.key,
-  });
+  const ListeJouetsPage({super.key});
 
   @override
-  State<ListeJouetsPage> createState() =>
-      _ListeJouetsPageState();
+  State<ListeJouetsPage> createState() => _ListeJouetsPageState();
 }
 
-class _ListeJouetsPageState
-    extends State<ListeJouetsPage> {
-
+class _ListeJouetsPageState extends State<ListeJouetsPage> {
   late JouetController controller;
 
   bool chargement = true;
 
   String? erreur;
 
-  final TextEditingController rechercheController =
-  TextEditingController();
+  final TextEditingController rechercheController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    controller = JouetController(
-      repository: JouetRepository(),
-    );
+    controller = JouetController(repository: JouetRepository());
 
     chargerJouets();
   }
@@ -77,18 +70,14 @@ class _ListeJouetsPageState
       backgroundColor: const Color(0xFFFAFFFB),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30,
-            vertical: 20,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Column(
             children: [
               Row(
                 children: [
                   Expanded(
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Liste des jouets',
@@ -97,9 +86,7 @@ class _ListeJouetsPageState
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(
-                          height: 5,
-                        ),
+                        const SizedBox(height: 5),
                         Text(
                           'Gérez tous les jouets ajoutés',
                           style: TextStyle(
@@ -121,9 +108,7 @@ class _ListeJouetsPageState
                 ],
               ),
 
-              const SizedBox(
-                height: 12,
-              ),
+              const SizedBox(height: 12),
 
               Row(
                 children: [
@@ -134,31 +119,21 @@ class _ListeJouetsPageState
                         controller: rechercheController,
                         decoration: InputDecoration(
                           hintText: 'Rechercher un jouet',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontSize: 11,
-                            color: Colors.grey,
+                            color: AppStyles.textMuted,
                           ),
-                          prefixIcon: const Icon(
-                            Icons.search,
-                            size: 17,
-                          ),
-                          contentPadding:
-                          const EdgeInsets.symmetric(
+                          prefixIcon: Icon(Icons.search, size: 17),
+                          contentPadding: const EdgeInsets.symmetric(
                             horizontal: 10,
                           ),
                           border: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.circular(6),
-                            borderSide: BorderSide(
-                              color: Colors.grey[300]!,
-                            ),
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.circular(6),
-                            borderSide: BorderSide(
-                              color: Colors.grey[300]!,
-                            ),
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
                           ),
                         ),
                         onChanged: (value) {
@@ -168,9 +143,7 @@ class _ListeJouetsPageState
                     ),
                   ),
 
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
 
                   SizedBox(
                     height: 38,
@@ -179,24 +152,18 @@ class _ListeJouetsPageState
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                            const AjouterJouetPage(),
+                            builder: (context) => const AjouterJouetPage(),
                           ),
                         );
 
                         await chargerJouets();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                        const Color(0xFFE98219),
-                        foregroundColor: Colors.white,
-                        padding:
-                        const EdgeInsets.symmetric(
-                          horizontal: 14,
-                        ),
+                        backgroundColor: const Color(0xFFE98219),
+                        foregroundColor: AppStyles.textInverse,
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                         elevation: 0,
                       ),
@@ -212,13 +179,9 @@ class _ListeJouetsPageState
                 ],
               ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
-              Expanded(
-                child: construireListe(),
-              ),
+              Expanded(child: construireListe()),
             ],
           ),
         ),
@@ -228,67 +191,42 @@ class _ListeJouetsPageState
 
   Widget construireListe() {
     if (chargement) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (erreur != null) {
       return Center(
         child: Column(
-          mainAxisAlignment:
-          MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error,
-              color: Colors.red,
-              size: 40,
-            ),
+            Icon(Icons.error, color: AppStyles.badgeRed, size: 40),
 
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
 
-            Text(
-              erreur!,
-              style: const TextStyle(
-                fontSize: 13,
-              ),
-            ),
+            Text(erreur!, style: const TextStyle(fontSize: 13)),
 
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
 
             ElevatedButton(
               onPressed: chargerJouets,
-              child: const Text(
-                'Réessayer',
-              ),
+              child: const Text('Réessayer'),
             ),
           ],
         ),
       );
     }
 
-    final String texteRecherche =
-    rechercheController.text.toLowerCase();
+    final String texteRecherche = rechercheController.text.toLowerCase();
 
-    final jouetsFiltres =
-    controller.jouets.where((jouet) {
-      return jouet.nom
-          .toLowerCase()
-          .contains(texteRecherche);
+    final jouetsFiltres = controller.jouets.where((jouet) {
+      return jouet.nom.toLowerCase().contains(texteRecherche);
     }).toList();
 
     if (jouetsFiltres.isEmpty) {
       return const Center(
         child: Text(
           'Aucun jouet trouvé',
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 13, color: Colors.grey),
         ),
       );
     }
@@ -296,10 +234,10 @@ class _ListeJouetsPageState
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppStyles.textInverse,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.10),
+            color: AppStyles.shadowColor,
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -319,17 +257,15 @@ class _ListeJouetsPageState
             ),
             child: Row(
               children: [
-                const SizedBox(
-                  width: 65,
-                ),
+                const SizedBox(width: 65),
 
-                const Expanded(
+                Expanded(
                   flex: 2,
                   child: Center(
                     child: Text(
                       'Catégorie',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppStyles.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -337,13 +273,13 @@ class _ListeJouetsPageState
                   ),
                 ),
 
-                const Expanded(
+                Expanded(
                   flex: 2,
                   child: Center(
                     child: Text(
                       'Âge',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppStyles.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -351,13 +287,13 @@ class _ListeJouetsPageState
                   ),
                 ),
 
-                const Expanded(
+                Expanded(
                   flex: 2,
                   child: Center(
                     child: Text(
                       'Prix',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppStyles.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -365,13 +301,13 @@ class _ListeJouetsPageState
                   ),
                 ),
 
-                const SizedBox(
+                SizedBox(
                   width: 80,
                   child: Center(
                     child: Text(
                       'Actions',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppStyles.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -401,11 +337,7 @@ class _ListeJouetsPageState
     return Container(
       height: 85,
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey[200]!,
-          ),
-        ),
+        border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
       ),
       child: Row(
         children: [
@@ -423,9 +355,7 @@ class _ListeJouetsPageState
               child: Text(
                 jouet.categorie,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 11,
-                ),
+                style: const TextStyle(fontSize: 11),
               ),
             ),
           ),
@@ -436,9 +366,7 @@ class _ListeJouetsPageState
               child: Text(
                 '${jouet.ageMinimum}-${jouet.ageMaximum} ans',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 11,
-                ),
+                style: const TextStyle(fontSize: 11),
               ),
             ),
           ),
@@ -460,47 +388,33 @@ class _ListeJouetsPageState
           SizedBox(
             width: 80,
             child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
                   padding: EdgeInsets.zero,
-                  constraints:
-                  const BoxConstraints(),
+                  constraints: const BoxConstraints(),
                   onPressed: () async {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ModifierJouetPage(
-                              jouet: jouet,
-                            ),
+                        builder: (context) => ModifierJouetPage(jouet: jouet),
                       ),
                     );
 
                     await chargerJouets();
                   },
-                  icon: const Icon(
-                    Icons.edit_outlined,
-                    size: 19,
-                  ),
+                  icon: Icon(Icons.edit_outlined, size: 19),
                 ),
 
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
 
                 IconButton(
                   padding: EdgeInsets.zero,
-                  constraints:
-                  const BoxConstraints(),
+                  constraints: const BoxConstraints(),
                   onPressed: () {
                     supprimerJouet(jouet.id);
                   },
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    size: 19,
-                  ),
+                  icon: Icon(Icons.delete_outline, size: 19),
                 ),
               ],
             ),
@@ -514,10 +428,7 @@ class _ListeJouetsPageState
     if (jouet.images.isEmpty) {
       return Container(
         color: Colors.grey[200],
-        child: const Icon(
-          Icons.toys,
-          size: 25,
-        ),
+        child: Icon(Icons.toys, size: 25),
       );
     }
 
@@ -528,14 +439,10 @@ class _ListeJouetsPageState
         width: 45,
         height: 65,
         fit: BoxFit.contain,
-        errorBuilder:
-            (context, error, stackTrace) {
+        errorBuilder: (context, error, stackTrace) {
           return Container(
             color: Colors.grey[200],
-            child: const Icon(
-              Icons.broken_image,
-              size: 25,
-            ),
+            child: Icon(Icons.broken_image, size: 25),
           );
         },
       ),
@@ -556,11 +463,9 @@ class _ListeJouetsPageState
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur : $e'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erreur : $e')));
     }
   }
 

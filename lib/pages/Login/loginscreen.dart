@@ -58,7 +58,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Text(
                     'Connexion',
                     style: AppStyles.headingTextStyle.copyWith(
-                      color: Colors.black87,
+                      color: AppStyles.textDark,
                       fontWeight: FontWeight.w800,
                       fontSize: 30,
                     ),
@@ -77,7 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Text(
                     'Accédez à votre compte',
                     style: AppStyles.titleTextStyle.copyWith(
-                      color: Colors.black87,
+                      color: AppStyles.textDark,
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
                     ),
@@ -104,19 +104,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     prefixIcon: Icons.visibility_off_outlined,
                   ),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(8)),
-
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () => context.pushNamed(AppRoutes.changermotdepasse.name),
-                      child: const Text(
-                        'Mot de passe oublié ?',
-                        style: TextStyle(fontSize: 13, color: Color(0xFF0066CC)),
-                      ),
-                    ),
-                  ),
-
                   SizedBox(height: SizeConfig.getProportionateHeight(24)),
 
                   // Bouton connexion
@@ -139,16 +126,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       children: [
                         TextSpan(
                           text: 'Pas de compte ? ',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: Colors.black87,
+                            color: AppStyles.textDark,
                           ),
                         ),
                         TextSpan(
                           text: "S'inscrire",
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF0066CC),
+                            color: AppStyles.accentBlue,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
                           ),

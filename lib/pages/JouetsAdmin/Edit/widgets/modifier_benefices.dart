@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ModifierBenefices extends StatelessWidget {
-
   final List<TextEditingController> controllers;
 
   final VoidCallback ajouterBenefice;
@@ -17,115 +16,62 @@ class ModifierBenefices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
-
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
 
       children: [
-
         Row(
-
           children: [
-
             const Text(
               'Bénéfices',
 
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
 
             const Spacer(),
 
             // PETIT PLUS À DROITE
-
             IconButton(
+              onPressed: ajouterBenefice,
 
-              onPressed:
-              ajouterBenefice,
+              padding: EdgeInsets.zero,
 
-              padding:
-              EdgeInsets.zero,
+              constraints: const BoxConstraints(),
 
-              constraints:
-              const BoxConstraints(),
-
-              icon: const Icon(
-                Icons.add,
-                size: 20,
-              ),
+              icon: Icon(Icons.add, size: 20),
             ),
           ],
         ),
 
-        const SizedBox(
-          height: 8,
-        ),
+        const SizedBox(height: 8),
 
-
-        for (
-        int i = 0;
-        i < controllers.length;
-        i++
-        )
-
+        for (int i = 0; i < controllers.length; i++)
           Padding(
-
-            padding:
-            const EdgeInsets.only(
-              bottom: 8,
-            ),
+            padding: const EdgeInsets.only(bottom: 8),
 
             child: Row(
-
               children: [
-
-
-
                 Expanded(
-
                   child: TextFormField(
+                    controller: controllers[i],
 
-                    controller:
-                    controllers[i],
+                    decoration: InputDecoration(
+                      labelText: 'Bénéfice ${i + 1}',
 
-                    decoration:
-                    InputDecoration(
-
-                      labelText:
-                      'Bénéfice ${i + 1}',
-
-                      border:
-                      const OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                 ),
 
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
 
                 // supprimer un bénefice
-
-
                 IconButton(
-
                   onPressed: () {
-
                     supprimerBenefice(i);
-
                   },
 
-                  icon: const Icon(
-
-                    Icons.delete_outline,
-
-                    color:
-                    Colors.red,
-                  ),
+                  icon: Icon(Icons.delete_outline, color: Colors.red),
                 ),
               ],
             ),

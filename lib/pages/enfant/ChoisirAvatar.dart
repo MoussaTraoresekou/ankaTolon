@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/controller/enfant/enfant_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 
 import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/repository/enfant/enfant_repository.dart';
@@ -23,18 +24,18 @@ class ChoisirAvatarScreen extends ConsumerStatefulWidget {
 
 class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
   final List<String> _avatars = [
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
+    'assets/images/avatars/avatar1.jpg',
+    'assets/images/avatars/avatar2.jpg',
+    'assets/images/avatars/avatar3.jpg',
+    'assets/images/avatars/avatar4.jpg',
+    'assets/images/avatars/avatar5.jpg',
+    'assets/images/avatars/avatar6.jpg',
+    'assets/images/avatars/avatar7.jpg',
+    'assets/images/avatars/avatar8.jpg',
+    'assets/images/avatars/avatar9.jpg',
+    'assets/images/avatars/avatar10.jpg',
+    'assets/images/avatars/avatar11.jpg',
+    'assets/images/avatars/avatar12.Jpg',
   ];
 
   late String _selectedAvatar;
@@ -73,7 +74,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error.toString()),
-                backgroundColor: Colors.red,
+                backgroundColor: AppStyles.badgeRed,
               ),
             );
           }
@@ -84,7 +85,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la mise à jour : $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppStyles.badgeRed,
           ),
         );
       }
@@ -96,19 +97,19 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FBF9),
+      backgroundColor: AppStyles.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundColor: const Color(0xFFD6EADF),
+            backgroundColor: AppStyles.bgColor,
             child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 18,
-                color: Colors.black87,
+                color: AppStyles.textDark,
               ),
               onPressed: () => context.pop(),
             ),
@@ -121,12 +122,12 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Choisir un avatar',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: AppStyles.textDark,
                 ),
               ),
               const SizedBox(height: 4),
@@ -168,7 +169,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                               borderRadius: BorderRadius.circular(40),
                               border: Border.all(
                                 color: isSelected
-                                    ? const Color(0xFF81C784)
+                                    ? AppStyles.primary
                                     : Colors.transparent,
                                 width: 3,
                               ),
@@ -182,7 +183,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                                 height: double.infinity,
                                 errorBuilder: (_, __, ___) => Container(
                                   color: Colors.grey.shade300,
-                                  child: const Icon(Icons.person, size: 40),
+                                  child: Icon(Icons.person, size: 40),
                                 ),
                               ),
                             ),
@@ -193,13 +194,13 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                               right: 4,
                               child: Container(
                                 padding: const EdgeInsets.all(2),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF81C784),
+                                decoration: BoxDecoration(
+                                  color: AppStyles.primary,
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.check,
-                                  color: Colors.white,
+                                  color: AppStyles.textInverse,
                                   size: 14,
                                 ),
                               ),
@@ -218,14 +219,14 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE8F5E9),
+                  color: AppStyles.boxSurfaceLight,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.lightbulb_outline_rounded,
-                      color: Color(0xFF66BB6A),
+                      color: AppStyles.primary,
                       size: 22,
                     ),
                     const SizedBox(width: 12),
@@ -248,7 +249,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                 height: 54,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE67E22),
+                    backgroundColor: AppStyles.primaryOrange,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -257,12 +258,12 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                   onPressed: _isLoading ? null : _submitForm,
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
+                      : Text(
                           'Terminer',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: AppStyles.textInverse,
                           ),
                         ),
                 ),

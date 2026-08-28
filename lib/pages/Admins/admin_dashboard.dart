@@ -437,7 +437,7 @@ class AdminDashboard extends ConsumerWidget {
 
                 GestureDetector(
                   onTap: () {
-                    //context.go('/admin/add-activity'); // Redirection vers la page d'ajout d'activité
+                    context.pushNamed(AppRoutes.addActivite.name); // Redirection vers la page d'ajout d'activité
                   },
                   child: const QuickActionTile(
                     label: 'Créer une activité',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tolon/controller/jouetsAdmin/jouets_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 
 import 'package:tolon/repository/JouetsAdmin/JouetsRepository.dart';
 
@@ -9,38 +10,28 @@ import 'package:tolon/pages/JouetsAdmin/Add/images_jouet.dart';
 import 'package:tolon/pages/JouetsAdmin/Add/benefices_jouet.dart';
 
 class AjouterJouetPage extends StatefulWidget {
-  const AjouterJouetPage({
-    super.key,
-  });
+  const AjouterJouetPage({super.key});
 
   @override
-  State<AjouterJouetPage> createState() =>
-      _AjouterJouetPageState();
+  State<AjouterJouetPage> createState() => _AjouterJouetPageState();
 }
 
 class _AjouterJouetPageState extends State<AjouterJouetPage> {
   late JouetController controller;
 
-  final GlobalKey<FormState> formKey =
-  GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController nomController =
-  TextEditingController();
+  final TextEditingController nomController = TextEditingController();
 
-  final TextEditingController ageMinimumController =
-  TextEditingController();
+  final TextEditingController ageMinimumController = TextEditingController();
 
-  final TextEditingController ageMaximumController =
-  TextEditingController();
+  final TextEditingController ageMaximumController = TextEditingController();
 
-  final TextEditingController prixController =
-  TextEditingController();
+  final TextEditingController prixController = TextEditingController();
 
-  final TextEditingController stockController =
-  TextEditingController();
+  final TextEditingController stockController = TextEditingController();
 
-  final TextEditingController descriptionController =
-  TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   String? categorieSelectionnee;
 
@@ -54,24 +45,18 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
     'Créatif',
   ];
 
-  List<TextEditingController> beneficesControllers = [
-    TextEditingController(),
-  ];
+  List<TextEditingController> beneficesControllers = [TextEditingController()];
 
   @override
   void initState() {
     super.initState();
 
-    controller = JouetController(
-      repository: JouetRepository(),
-    );
+    controller = JouetController(repository: JouetRepository());
   }
 
   void ajouterChampBenefice() {
     setState(() {
-      beneficesControllers.add(
-        TextEditingController(),
-      );
+      beneficesControllers.add(TextEditingController());
     });
   }
 
@@ -104,52 +89,33 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
     }
 
     if (categorieSelectionnee == null) {
-      afficherMessage(
-        'Veuillez sélectionner une catégorie',
-      );
+      afficherMessage('Veuillez sélectionner une catégorie');
       return;
     }
 
     if (controller.imagesSelectionnees.isEmpty) {
-      afficherMessage(
-        'Veuillez sélectionner au moins une image',
-      );
+      afficherMessage('Veuillez sélectionner au moins une image');
       return;
     }
 
-    final int ageMinimum = int.parse(
-      ageMinimumController.text.trim(),
-    );
+    final int ageMinimum = int.parse(ageMinimumController.text.trim());
 
-    final int ageMaximum = int.parse(
-      ageMaximumController.text.trim(),
-    );
+    final int ageMaximum = int.parse(ageMaximumController.text.trim());
 
-    final double prix = double.parse(
-      prixController.text.trim(),
-    );
+    final double prix = double.parse(prixController.text.trim());
 
-    final int stock = int.parse(
-      stockController.text.trim(),
-    );
+    final int stock = int.parse(stockController.text.trim());
 
     List<String> benefices = [];
 
-    for (
-    TextEditingController beneficeController
-    in beneficesControllers
-    ) {
+    for (TextEditingController beneficeController in beneficesControllers) {
       if (beneficeController.text.trim().isNotEmpty) {
-        benefices.add(
-          beneficeController.text.trim(),
-        );
+        benefices.add(beneficeController.text.trim());
       }
     }
 
     if (benefices.isEmpty) {
-      afficherMessage(
-        'Veuillez ajouter au moins un bénéfice',
-      );
+      afficherMessage('Veuillez ajouter au moins un bénéfice');
       return;
     }
 
@@ -169,9 +135,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
         return;
       }
 
-      afficherMessage(
-        'Jouet ajouté avec succès',
-      );
+      afficherMessage('Jouet ajouté avec succès');
 
       Navigator.pop(context);
     } catch (e) {
@@ -179,18 +143,14 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
         return;
       }
 
-      afficherMessage(
-        'Erreur : $e',
-      );
+      afficherMessage('Erreur : $e');
     }
   }
 
   void afficherMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -200,10 +160,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 18,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
             child: Form(
               key: formKey,
               child: Column(
@@ -214,36 +171,27 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          size: 16,
-                        ),
+                        icon: Icon(Icons.arrow_back_ios, size: 16),
                       ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Expanded(
+                      const SizedBox(width: 5),
+                      Expanded(
                         child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Ajouter un jouet',
                               style: TextStyle(
                                 fontSize: 18,
-                                fontWeight:
-                                FontWeight.bold,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(
-                              height: 4,
-                            ),
+                            SizedBox(height: 4),
                             Text(
                               'Renseignez les informations\n'
-                                  'du nouveau jouet',
+                              'du nouveau jouet',
                               style: TextStyle(
                                 fontSize: 10,
-                                color: Colors.grey,
+                                color: AppStyles.textMuted,
                               ),
                             ),
                           ],
@@ -259,28 +207,23 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                      BorderRadius.circular(10),
+                      color: AppStyles.textInverse,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                          Colors.black.withOpacity(0.15),
+                          color: AppStyles.shadowColor,
                           blurRadius: 7,
                           offset: const Offset(0, 3),
                         ),
                       ],
                     ),
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Informations du jouet',
@@ -289,64 +232,40 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                             fontSize: 16,
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         InformationsJouet(
-                          nomController:
-                          nomController,
-                          ageMinimumController:
-                          ageMinimumController,
-                          ageMaximumController:
-                          ageMaximumController,
-                          prixController:
-                          prixController,
-                          stockController:
-                          stockController,
-                          descriptionController:
-                          descriptionController,
-                          categorieSelectionnee:
-                          categorieSelectionnee,
+                          nomController: nomController,
+                          ageMinimumController: ageMinimumController,
+                          ageMaximumController: ageMaximumController,
+                          prixController: prixController,
+                          stockController: stockController,
+                          descriptionController: descriptionController,
+                          categorieSelectionnee: categorieSelectionnee,
                           categories: categories,
-                          onCategorieChanged:
-                              (value) {
+                          onCategorieChanged: (value) {
                             setState(() {
-                              categorieSelectionnee =
-                                  value;
+                              categorieSelectionnee = value;
                             });
                           },
                         ),
-                        const SizedBox(
-                          height: 12,
-                        ),
+                        const SizedBox(height: 12),
                         ImagesJouet(
-                          images: controller
-                              .imagesSelectionnees,
-                          selectionnerImages:
-                          selectionnerImages,
-                          supprimerImage:
-                          supprimerImage,
+                          images: controller.imagesSelectionnees,
+                          selectionnerImages: selectionnerImages,
+                          supprimerImage: supprimerImage,
                         ),
-                        const SizedBox(
-                          height: 12,
-                        ),
+                        const SizedBox(height: 12),
                         BeneficesJouet(
-                          controllers:
-                          beneficesControllers,
-                          ajouterBenefice:
-                          ajouterChampBenefice,
-                          supprimerBenefice:
-                          supprimerBenefice,
+                          controllers: beneficesControllers,
+                          ajouterBenefice: ajouterChampBenefice,
+                          supprimerBenefice: supprimerBenefice,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 14,
-                  ),
+                  const SizedBox(height: 14),
                   Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
                         width: 120,
@@ -355,9 +274,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Text(
-                            'Annuler',
-                          ),
+                          child: const Text('Annuler'),
                         ),
                       ),
                       SizedBox(
@@ -365,23 +282,16 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                         height: 42,
                         child: ElevatedButton(
                           onPressed: ajouterJouet,
-                          style:
-                          ElevatedButton.styleFrom(
-                            backgroundColor:
-                            const Color(0xFFE98219),
-                            foregroundColor:
-                            Colors.white,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE98219),
+                            foregroundColor: AppStyles.textInverse,
                           ),
-                          child: const Text(
-                            'Ajouter',
-                          ),
+                          child: const Text('Ajouter'),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -400,10 +310,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
     stockController.dispose();
     descriptionController.dispose();
 
-    for (
-    TextEditingController controller
-    in beneficesControllers
-    ) {
+    for (TextEditingController controller in beneficesControllers) {
       controller.dispose();
     }
 
