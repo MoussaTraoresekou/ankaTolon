@@ -597,7 +597,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
 
         return SizedBox(
-          height: 145,
+          height: 170,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,
@@ -659,7 +659,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 50,
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.green.shade50,

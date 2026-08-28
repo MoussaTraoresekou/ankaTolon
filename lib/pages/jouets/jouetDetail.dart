@@ -118,21 +118,23 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         bottom: false,
         child: Column(
           children: [
-            // ========== BARRE DU HAUT ==========
+            // ========== BARRE DU HAUT (hors de l'image) ==========
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+              padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
               child: Row(
                 children: [
                   // Retour
                   Material(
                     color: AppStyles.navbarColor,
                     shape: const CircleBorder(),
+                    elevation: 1,
+                    shadowColor: Colors.black26,
                     child: InkWell(
                       customBorder: const CircleBorder(),
                       onTap: () => context.pop(),
                       child: SizedBox(
-                        width: 40,
-                        height: 40,
+                        width: 42,
+                        height: 42,
                         child: Icon(
                           Icons.arrow_back_ios_new,
                           size: 18,
@@ -148,7 +150,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                       final favorisIds = ref.watch(favorisControllerProvider);
                       final isFavori = favorisIds.contains(jouet.id);
                       return Material(
-                        color: Colors.white.withValues(alpha: 0.9),
+                        color: Colors.white,
                         shape: const CircleBorder(),
                         elevation: 1,
                         shadowColor: Colors.black26,
@@ -166,8 +168,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                                       ? '${jouet.nomJouet} retiré des favoris'
                                       : '${jouet.nomJouet} ajouté aux favoris',
                                 ),
-                                backgroundColor:
-                                    AppStyles.primaryOrange,
+                                backgroundColor: AppStyles.primaryOrange,
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
@@ -177,8 +178,8 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                             );
                           },
                           child: SizedBox(
-                            width: 40,
-                            height: 40,
+                            width: 42,
+                            height: 42,
                             child: Icon(
                               isFavori ? Icons.favorite : Icons.favorite_border,
                               size: 20,
@@ -191,22 +192,25 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                       );
                     },
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 10),
                   // Panier
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
                       Material(
-                        color: Colors.transparent,
+                        color: Colors.white,
+                        shape: const CircleBorder(),
+                        elevation: 1,
+                        shadowColor: Colors.black26,
                         child: InkWell(
                           customBorder: const CircleBorder(),
                           onTap: () => context.push('/cart'),
-                          child: const SizedBox(
-                            width: 40,
-                            height: 40,
+                          child: SizedBox(
+                            width: 42,
+                            height: 42,
                             child: Icon(
                               Icons.shopping_cart_outlined,
-                              size: 24,
+                              size: 22,
                               color: AppStyles.textDark,
                             ),
                           ),
@@ -241,54 +245,56 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               ),
             ),
 
-            // ========== IMAGE PRINCIPALE ==========
+            // ========== IMAGE PLEIN ÉCRAN (centrée) ==========
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: Container(
-                  height: 270,
-                  width: double.infinity,
-                  color: Colors.white.withValues(alpha: 0.35),
-                  child: !hasImages
-                      ? Center(
-                          child: Icon(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: AspectRatio(
+                aspectRatio: 1.15,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(28),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    alignment: Alignment.center,
+                    child: !hasImages
+                        ? Icon(
                             Icons.image_not_supported_outlined,
                             size: 64,
                             color: AppStyles.textMuted,
-                          ),
-                        )
-                      : PageView.builder(
-                          controller: _pageController,
-                          itemCount: jouet.image.length,
-                          onPageChanged: (index) {
-                            setState(() => _selectedImage = index);
-                          },
-                          itemBuilder: (context, index) {
-                            return Image.network(
-                              jouet.image[index],
-                              fit: BoxFit.contain,
-                              width: double.infinity,
-                              height: double.infinity,
-                              errorBuilder: (_, __, ___) => Center(
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  size: 64,
-                                  color: AppStyles.textMuted,
-                                ),
-                              ),
-                              loadingBuilder: (context, child, progress) {
-                                if (progress == null) return child;
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppStyles.primaryOrange,
-                                    strokeWidth: 2.5,
+                          )
+                        : PageView.builder(
+                            controller: _pageController,
+                            itemCount: jouet.image.length,
+                            onPageChanged: (index) {
+                              setState(() => _selectedImage = index);
+                            },
+                            itemBuilder: (context, index) {
+                              return Image.network(
+                                jouet.image[index],
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                                alignment: Alignment.center,
+                                errorBuilder: (_, __, ___) => Center(
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    size: 64,
+                                    color: AppStyles.textMuted,
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                ),
+                                loadingBuilder: (context, child, progress) {
+                                  if (progress == null) return child;
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppStyles.primaryOrange,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                  ),
                 ),
               ),
             ),
