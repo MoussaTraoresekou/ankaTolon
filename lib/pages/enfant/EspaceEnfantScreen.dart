@@ -52,7 +52,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
         await _tenterSortie(context, ref);
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFF9FAF8),
+        backgroundColor: AppStyles.bgColor,
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
@@ -383,7 +383,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFDDEDDF),
+        color: AppStyles.bgColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -422,7 +422,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   'Dessine ton animal préféré en 10 mins',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade700,
+                    color: AppStyles.textMuted,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -453,7 +453,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
             ),
           ),
           Image.asset('assets/images/cadeau.png', height: 70, width: 70),
-          Image.asset(height: 70, width: 70, 'assets/images/cadeau.png'),
+        
         ],
       ),
     );
