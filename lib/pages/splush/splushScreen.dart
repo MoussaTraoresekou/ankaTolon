@@ -34,101 +34,55 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 2200),
     );
 
-    logoSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, -0.8),
-      end: Offset.zero,
-    ).animate(
+    logoSlideAnimation =
+        Tween<Offset>(begin: const Offset(0, -0.8), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: const Interval(0.0, 0.55, curve: Curves.easeOutCubic),
+          ),
+        );
+
+    logoScaleAnimation = Tween<double>(begin: 0.75, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: const Interval(
-          0.0,
-          0.55,
-          curve: Curves.easeOutCubic,
-        ),
+        curve: const Interval(0.0, 0.55, curve: Curves.easeOutBack),
       ),
     );
 
-    logoScaleAnimation = Tween<double>(
-      begin: 0.75,
-      end: 1.0,
-    ).animate(
+    logoFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: const Interval(
-          0.0,
-          0.55,
-          curve: Curves.easeOutBack,
-        ),
+        curve: const Interval(0.0, 0.35, curve: Curves.easeIn),
       ),
     );
 
-    logoFadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
+    titleSlideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: const Interval(0.35, 0.75, curve: Curves.easeOutCubic),
+          ),
+        );
+
+    titleFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: const Interval(
-          0.0,
-          0.35,
-          curve: Curves.easeIn,
-        ),
+        curve: const Interval(0.35, 0.65, curve: Curves.easeIn),
       ),
     );
 
-    titleSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.4),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: const Interval(
-          0.35,
-          0.75,
-          curve: Curves.easeOutCubic,
-        ),
-      ),
-    );
+    subtitleSlideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: const Interval(0.55, 0.95, curve: Curves.easeOutCubic),
+          ),
+        );
 
-    titleFadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
+    subtitleFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: const Interval(
-          0.35,
-          0.65,
-          curve: Curves.easeIn,
-        ),
-      ),
-    );
-
-    subtitleSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: const Interval(
-          0.55,
-          0.95,
-          curve: Curves.easeOutCubic,
-        ),
-      ),
-    );
-
-    subtitleFadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: const Interval(
-          0.55,
-          0.85,
-          curve: Curves.easeIn,
-        ),
+        curve: const Interval(0.55, 0.85, curve: Curves.easeIn),
       ),
     );
 
@@ -141,8 +95,7 @@ class _SplashScreenState extends State<SplashScreen>
     await Future.delayed(const Duration(milliseconds: 2500));
 
     final prefs = await SharedPreferences.getInstance();
-    final bool hasSeenOnboarding =
-        prefs.getBool("hasSeenOnboarding") ?? false;
+    final bool hasSeenOnboarding = prefs.getBool("hasSeenOnboarding") ?? false;
 
     if (!mounted) return;
 
@@ -162,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.onboading13,
+      backgroundColor: AppStyles.primarySoft,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -173,10 +126,7 @@ class _SplashScreenState extends State<SplashScreen>
                 position: logoSlideAnimation,
                 child: ScaleTransition(
                   scale: logoScaleAnimation,
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 150,
-                  ),
+                  child: Image.asset('assets/images/logo.png', width: 150),
                 ),
               ),
             ),

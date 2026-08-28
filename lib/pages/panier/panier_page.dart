@@ -34,7 +34,7 @@ class PanierPage extends ConsumerWidget {
         title: const Text("Mon panier"),
         backgroundColor: AppStyles.bgColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
+          icon: Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
           onPressed: () => context.pop(),
         ),
       ),
@@ -54,7 +54,7 @@ class PanierPage extends ConsumerWidget {
                         margin: const EdgeInsets.only(bottom: 16),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppStyles.textInverse,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
@@ -95,7 +95,7 @@ class PanierPage extends ConsumerWidget {
                                     "4-6 ans", // Statique pour l'exemple, à adapter
                                     style: AppStyles.normalTextStyle.copyWith(
                                       fontSize: 12,
-                                      color: Colors.grey,
+                                      color: AppStyles.textMuted,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -118,7 +118,7 @@ class PanierPage extends ConsumerWidget {
                               child: Row(
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.remove, size: 18),
+                                    icon: Icon(Icons.remove, size: 18),
                                     onPressed: () => ref
                                         .read(panierProvider.notifier)
                                         .decrementItem(item.jouetId),
@@ -128,7 +128,7 @@ class PanierPage extends ConsumerWidget {
                                     style: AppStyles.titleTextStyle,
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.add, size: 18),
+                                    icon: Icon(Icons.add, size: 18),
                                     onPressed: () => ref
                                         .read(panierProvider.notifier)
                                         .incrementItem(item.jouetId),

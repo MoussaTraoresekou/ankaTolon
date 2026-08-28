@@ -5,7 +5,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tolon/cor/router/routes.dart';
-import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/firebase_options.dart';
 
 void main() async {
@@ -36,15 +35,9 @@ class MyApp extends ConsumerWidget {
       routerConfig: router,
 
       // Configuration des thèmes Material Design requis par le sujet
-      themeMode: ThemeMode.system, // Bascule automatique Clair / Sombre
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFFAFBF9),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppStyles.bgColor,
-          iconTheme: IconThemeData(color: Colors.white, size: 28),
-        ),
-      ),
+      themeMode: ThemeMode.system,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
     );
   }
 }

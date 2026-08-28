@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tolon/controller/jouetsAdmin/jouets_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 
 import 'package:tolon/models/JouetsAdmin/jouet_list_model.dart';
 
@@ -13,41 +14,28 @@ import 'package:tolon/pages/JouetsAdmin/Edit/widgets/modifier_benefices.dart';
 class ModifierJouetPage extends StatefulWidget {
   final Jouet jouet;
 
-  const ModifierJouetPage({
-    super.key,
-    required this.jouet,
-  });
+  const ModifierJouetPage({super.key, required this.jouet});
 
   @override
-  State<ModifierJouetPage> createState() =>
-      _ModifierJouetPageState();
+  State<ModifierJouetPage> createState() => _ModifierJouetPageState();
 }
 
-class _ModifierJouetPageState
-    extends State<ModifierJouetPage> {
-
+class _ModifierJouetPageState extends State<ModifierJouetPage> {
   late JouetController controller;
 
-  final GlobalKey<FormState> formKey =
-  GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController nomController =
-  TextEditingController();
+  final TextEditingController nomController = TextEditingController();
 
-  final TextEditingController ageMinimumController =
-  TextEditingController();
+  final TextEditingController ageMinimumController = TextEditingController();
 
-  final TextEditingController ageMaximumController =
-  TextEditingController();
+  final TextEditingController ageMaximumController = TextEditingController();
 
-  final TextEditingController prixController =
-  TextEditingController();
+  final TextEditingController prixController = TextEditingController();
 
-  final TextEditingController stockController =
-  TextEditingController();
+  final TextEditingController stockController = TextEditingController();
 
-  final TextEditingController descriptionController =
-  TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   String? categorieSelectionnee;
 
@@ -69,57 +57,40 @@ class _ModifierJouetPageState
   void initState() {
     super.initState();
 
-    controller = JouetController(
-      repository: JouetRepository(),
-    );
+    controller = JouetController(repository: JouetRepository());
 
     nomController.text = widget.jouet.nom;
 
-    ageMinimumController.text =
-        widget.jouet.ageMinimum.toString();
+    ageMinimumController.text = widget.jouet.ageMinimum.toString();
 
-    ageMaximumController.text =
-        widget.jouet.ageMaximum.toString();
+    ageMaximumController.text = widget.jouet.ageMaximum.toString();
 
-    prixController.text =
-        widget.jouet.prix.toString();
+    prixController.text = widget.jouet.prix.toString();
 
-    stockController.text =
-        widget.jouet.stock.toString();
+    stockController.text = widget.jouet.stock.toString();
 
-    descriptionController.text =
-        widget.jouet.description;
+    descriptionController.text = widget.jouet.description;
 
     if (categories.contains(widget.jouet.categorie)) {
-      categorieSelectionnee =
-          widget.jouet.categorie;
+      categorieSelectionnee = widget.jouet.categorie;
     } else {
       categorieSelectionnee = null;
     }
 
-    anciennesImages =
-    List<String>.from(widget.jouet.images);
+    anciennesImages = List<String>.from(widget.jouet.images);
 
     for (String benefice in widget.jouet.benefices) {
-      beneficesControllers.add(
-        TextEditingController(
-          text: benefice,
-        ),
-      );
+      beneficesControllers.add(TextEditingController(text: benefice));
     }
 
     if (beneficesControllers.isEmpty) {
-      beneficesControllers.add(
-        TextEditingController(),
-      );
+      beneficesControllers.add(TextEditingController());
     }
   }
 
   void ajouterChampBenefice() {
     setState(() {
-      beneficesControllers.add(
-        TextEditingController(),
-      );
+      beneficesControllers.add(TextEditingController());
     });
   }
 
@@ -158,50 +129,29 @@ class _ModifierJouetPageState
     }
 
     if (categorieSelectionnee == null) {
-      afficherMessage(
-        'Veuillez sélectionner une catégorie',
-      );
+      afficherMessage('Veuillez sélectionner une catégorie');
 
       return;
     }
 
-    final int ageMinimum =
-    int.parse(
-      ageMinimumController.text.trim(),
-    );
+    final int ageMinimum = int.parse(ageMinimumController.text.trim());
 
-    final int ageMaximum =
-    int.parse(
-      ageMaximumController.text.trim(),
-    );
+    final int ageMaximum = int.parse(ageMaximumController.text.trim());
 
-    final double prix =
-    double.parse(
-      prixController.text.trim(),
-    );
+    final double prix = double.parse(prixController.text.trim());
 
-    final int stock =
-    int.parse(
-      stockController.text.trim(),
-    );
+    final int stock = int.parse(stockController.text.trim());
 
     List<String> benefices = [];
 
-    for (
-    TextEditingController beneficeController
-    in beneficesControllers
-    ) {
+    for (TextEditingController beneficeController in beneficesControllers) {
       if (beneficeController.text.trim().isNotEmpty) {
-        benefices.add(
-          beneficeController.text.trim(),
-        );
+        benefices.add(beneficeController.text.trim());
       }
     }
 
     if (benefices.isEmpty) {
-      afficherMessage(
-        'Veuillez ajouter au moins un bénéfice',
-      );
+      afficherMessage('Veuillez ajouter au moins un bénéfice');
 
       return;
     }
@@ -215,109 +165,84 @@ class _ModifierJouetPageState
         ageMaximum: ageMaximum,
         prix: prix,
         stock: stock,
-        description:
-        descriptionController.text.trim(),
+        description: descriptionController.text.trim(),
         benefices: benefices,
         anciennesImages: anciennesImages,
-        nouvellesImages:
-        controller.imagesSelectionnees,
+        nouvellesImages: controller.imagesSelectionnees,
       );
 
       if (!mounted) {
         return;
       }
 
-      afficherMessage(
-        'Jouet modifié avec succès',
-      );
+      afficherMessage('Jouet modifié avec succès');
 
       Navigator.pop(context);
-
     } catch (e) {
       if (!mounted) {
         return;
       }
 
-      afficherMessage(
-        'Erreur : $e',
-      );
+      afficherMessage('Erreur : $e');
     }
   }
 
   void afficherMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-      const Color(0xFFFAFFFB),
+      backgroundColor: const Color(0xFFFAFFFB),
 
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 18,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
 
             child: Form(
               key: formKey,
 
               child: Column(
                 children: [
-
                   Row(
                     children: [
-
                       IconButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
 
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          size: 16,
-                        ),
+                        icon: Icon(Icons.arrow_back_ios, size: 16),
                       ),
 
-                      const SizedBox(
-                        width: 5,
-                      ),
+                      const SizedBox(width: 5),
 
-                      const Expanded(
+                      Expanded(
                         child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
 
                           children: [
-
                             Text(
                               'Modifier un jouet',
 
                               style: TextStyle(
                                 fontSize: 18,
-                                fontWeight:
-                                FontWeight.bold,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
 
-                            SizedBox(
-                              height: 4,
-                            ),
+                            SizedBox(height: 4),
 
                             Text(
                               'Modifiez les informations\n'
-                                  'du jouet',
+                              'du jouet',
 
                               style: TextStyle(
                                 fontSize: 10,
-                                color: Colors.grey,
+                                color: AppStyles.textMuted,
                               ),
                             ),
                           ],
@@ -336,139 +261,101 @@ class _ModifierJouetPageState
                     ],
                   ),
 
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
 
                   Container(
                     width: double.infinity,
 
-                    padding:
-                    const EdgeInsets.all(14),
+                    padding: const EdgeInsets.all(14),
 
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppStyles.textInverse,
 
-                      borderRadius:
-                      BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10),
 
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black
-                              .withOpacity(0.15),
+                          color: AppStyles.shadowColor,
 
                           blurRadius: 7,
 
-                          offset:
-                          const Offset(0, 3),
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
 
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
 
                       children: [
-
                         const Text(
                           'Informations du jouet',
 
                           style: TextStyle(
-                            fontWeight:
-                            FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
 
                         ModifierInformations(
-                          nomController:
-                          nomController,
+                          nomController: nomController,
 
-                          ageMinimumController:
-                          ageMinimumController,
+                          ageMinimumController: ageMinimumController,
 
-                          ageMaximumController:
-                          ageMaximumController,
+                          ageMaximumController: ageMaximumController,
 
-                          prixController:
-                          prixController,
+                          prixController: prixController,
 
-                          stockController:
-                          stockController,
+                          stockController: stockController,
 
-                          descriptionController:
-                          descriptionController,
+                          descriptionController: descriptionController,
 
-                          categorieSelectionnee:
-                          categorieSelectionnee,
+                          categorieSelectionnee: categorieSelectionnee,
 
-                          categories:
-                          categories,
+                          categories: categories,
 
-                          onCategorieChanged:
-                              (value) {
+                          onCategorieChanged: (value) {
                             setState(() {
-                              categorieSelectionnee =
-                                  value;
+                              categorieSelectionnee = value;
                             });
                           },
                         ),
 
-                        const SizedBox(
-                          height: 15,
-                        ),
+                        const SizedBox(height: 15),
 
                         ModifierImages(
-                          anciennesImages:
-                          anciennesImages,
+                          anciennesImages: anciennesImages,
 
-                          nouvellesImages:
-                          controller
-                              .imagesSelectionnees,
+                          nouvellesImages: controller.imagesSelectionnees,
 
-                          ajouterImages:
-                          selectionnerImages,
+                          ajouterImages: selectionnerImages,
 
-                          supprimerAncienneImage:
-                          supprimerAncienneImage,
+                          supprimerAncienneImage: supprimerAncienneImage,
 
-                          supprimerNouvelleImage:
-                          supprimerImage,
+                          supprimerNouvelleImage: supprimerImage,
                         ),
 
-                        const SizedBox(
-                          height: 15,
-                        ),
+                        const SizedBox(height: 15),
 
                         ModifierBenefices(
-                          controllers:
-                          beneficesControllers,
+                          controllers: beneficesControllers,
 
-                          ajouterBenefice:
-                          ajouterChampBenefice,
+                          ajouterBenefice: ajouterChampBenefice,
 
-                          supprimerBenefice:
-                          supprimerBenefice,
+                          supprimerBenefice: supprimerBenefice,
                         ),
                       ],
                     ),
                   ),
 
-                  const SizedBox(
-                    height: 14,
-                  ),
+                  const SizedBox(height: 14),
 
                   Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                     children: [
-
                       SizedBox(
                         width: 120,
                         height: 42,
@@ -478,18 +365,13 @@ class _ModifierJouetPageState
                             Navigator.pop(context);
                           },
 
-                          style:
-                          ElevatedButton.styleFrom(
-                            backgroundColor:
-                            const Color(0xFFF0F0F0),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFF0F0F0),
 
-                            foregroundColor:
-                            Colors.black,
+                            foregroundColor: AppStyles.textDark,
 
-                            shape:
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
 
@@ -498,37 +380,28 @@ class _ModifierJouetPageState
 
                             style: TextStyle(
                               fontSize: 16,
-                              fontWeight:
-                              FontWeight.w600,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ),
 
-                      const SizedBox(
-                        width: 35,
-                      ),
+                      const SizedBox(width: 35),
 
                       SizedBox(
                         width: 120,
                         height: 42,
 
                         child: ElevatedButton(
-                          onPressed:
-                          modifierJouet,
+                          onPressed: modifierJouet,
 
-                          style:
-                          ElevatedButton.styleFrom(
-                            backgroundColor:
-                            const Color(0xFFE98219),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE98219),
 
-                            foregroundColor:
-                            Colors.white,
+                            foregroundColor: AppStyles.textInverse,
 
-                            shape:
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
 
@@ -537,8 +410,7 @@ class _ModifierJouetPageState
 
                             style: TextStyle(
                               fontSize: 16,
-                              fontWeight:
-                              FontWeight.w600,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -546,9 +418,7 @@ class _ModifierJouetPageState
                     ],
                   ),
 
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -572,10 +442,7 @@ class _ModifierJouetPageState
 
     descriptionController.dispose();
 
-    for (
-    TextEditingController controller
-    in beneficesControllers
-    ) {
+    for (TextEditingController controller in beneficesControllers) {
       controller.dispose();
     }
 

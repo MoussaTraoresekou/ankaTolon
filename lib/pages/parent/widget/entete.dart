@@ -18,7 +18,7 @@ class Entete extends StatelessWidget {
               height: SizeConfig.getProportionateWidth(48),
 
               decoration: BoxDecoration(
-                color: AppStyles.onboading13,
+                color: AppStyles.primarySoft,
                 shape: BoxShape.circle,
               ),
 
@@ -65,7 +65,7 @@ class Entete extends StatelessWidget {
               icon: Icon(
                 Icons.notifications_none_outlined,
                 size: SizeConfig.getProportionateWidth(28),
-                color: Colors.black87,
+                color: AppStyles.textDark,
               ),
             ),
 
@@ -77,7 +77,7 @@ class Entete extends StatelessWidget {
                 padding: EdgeInsets.all(SizeConfig.getProportionateWidth(4)),
 
                 decoration: const BoxDecoration(
-                  color: Colors.red,
+                  color: AppStyles.badgeRed,
                   shape: BoxShape.circle,
                 ),
 
@@ -85,7 +85,7 @@ class Entete extends StatelessWidget {
                   '10',
 
                   style: AppStyles.normalTextStyle.copyWith(
-                    color: Colors.white,
+                    color: AppStyles.textInverse,
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
                   ),

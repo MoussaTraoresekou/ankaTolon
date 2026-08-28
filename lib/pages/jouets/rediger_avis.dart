@@ -11,11 +11,7 @@ class RedigerAvisPage extends StatefulWidget {
   final JouetModel jouet;
   final AvisModel? avisExistant; // null = nouveau, sinon = modification
 
-  const RedigerAvisPage({
-    super.key,
-    required this.jouet,
-    this.avisExistant,
-  });
+  const RedigerAvisPage({super.key, required this.jouet, this.avisExistant});
 
   @override
   State<RedigerAvisPage> createState() => _RedigerAvisPageState();
@@ -54,10 +50,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
         elevation: 0,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: AppStyles.textDark,
-          ),
+          icon: Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
         ),
         title: Text(
           _isEdition ? 'Modifier mon avis' : 'Rédiger un avis',
@@ -73,7 +66,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
             Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppStyles.textInverse,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
@@ -97,12 +90,12 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                         ? Image.network(
                             widget.jouet.image.first,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => const Icon(
+                            errorBuilder: (_, __, ___) => Icon(
                               Icons.image_not_supported,
-                              color: Colors.grey,
+                              color: AppStyles.textMuted,
                             ),
                           )
-                        : const Icon(Icons.toys, color: Colors.grey),
+                        : Icon(Icons.toys, color: Colors.grey),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -113,7 +106,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                           widget.jouet.nomJouet,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                             color: AppStyles.textDark,
@@ -124,7 +117,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                           _isEdition
                               ? 'Modifiez votre avis'
                               : 'Partagez votre expérience',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             color: AppStyles.primary,
                           ),
@@ -146,10 +139,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
             const SizedBox(height: 8),
             Text(
               'Touchez les étoiles pour noter',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppStyles.textMuted,
-              ),
+              style: TextStyle(fontSize: 13, color: AppStyles.textMuted),
             ),
             const SizedBox(height: 15),
             Center(
@@ -198,7 +188,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                 hintText: 'Partagez votre expérience avec ce jouet...',
                 hintStyle: TextStyle(color: AppStyles.textMuted),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: AppStyles.textInverse,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
                   borderSide: BorderSide.none,
@@ -216,21 +206,21 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
               child: ElevatedButton.icon(
                 onPressed: _isLoading ? null : _publierAvis,
                 icon: _isLoading
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: Colors.white,
+                          color: AppStyles.textInverse,
                         ),
                       )
-                    : Icon(
-                        _isEdition ? Icons.check : Icons.send_outlined,
-                      ),
+                    : Icon(_isEdition ? Icons.check : Icons.send_outlined),
                 label: Text(
                   _isLoading
                       ? (_isEdition ? 'Modification...' : 'Publication...')
-                      : (_isEdition ? 'Enregistrer les modifications' : 'Publier mon avis'),
+                      : (_isEdition
+                            ? 'Enregistrer les modifications'
+                            : 'Publier mon avis'),
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -238,9 +228,13 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(230, 126, 34, 1),
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor:
-                      const Color.fromRGBO(230, 126, 34, 1).withValues(alpha: 0.5),
+                  foregroundColor: AppStyles.textInverse,
+                  disabledBackgroundColor: const Color.fromRGBO(
+                    230,
+                    126,
+                    34,
+                    1,
+                  ).withValues(alpha: 0.5),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -268,9 +262,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
 
     if (commentaire.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Veuillez écrire un commentaire.'),
-        ),
+        const SnackBar(content: Text('Veuillez écrire un commentaire.')),
       );
       return;
     }
@@ -304,7 +296,9 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
 
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Votre avis a été modifié avec succès !')),
+          const SnackBar(
+            content: Text('Votre avis a été modifié avec succès !'),
+          ),
         );
       } else {
         final avis = AvisModel(
@@ -315,14 +309,13 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
           date: DateTime.now(),
         );
 
-        await _avisRepository.ajouterAvis(
-          jouetId: widget.jouet.id,
-          avis: avis,
-        );
+        await _avisRepository.ajouterAvis(jouetId: widget.jouet.id, avis: avis);
 
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Votre avis a été publié avec succès !')),
+          const SnackBar(
+            content: Text('Votre avis a été publié avec succès !'),
+          ),
         );
       }
 
@@ -330,9 +323,9 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
       context.pop();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur : $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erreur : $e')));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);

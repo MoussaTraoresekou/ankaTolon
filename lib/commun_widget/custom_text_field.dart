@@ -39,7 +39,7 @@ class CustomTextField extends StatelessWidget {
           label,
           style: AppStyles.normalTextStyle.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: AppStyles.textDark,
           ),
         ),
 
@@ -52,9 +52,7 @@ class CustomTextField extends StatelessWidget {
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
 
-          style: AppStyles.normalTextStyle.copyWith(
-            color: Colors.black87,
-          ),
+          style: AppStyles.normalTextStyle.copyWith(color: AppStyles.textDark),
 
           decoration: InputDecoration(
             hintText: hintText,
@@ -64,16 +62,13 @@ class CustomTextField extends StatelessWidget {
             ),
 
             prefixIcon: prefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                    color: prefixIconColor ?? Colors.black45,
-                  )
+                ? Icon(prefixIcon, color: prefixIconColor ?? Colors.black45)
                 : null,
 
             suffixIcon: suffixIcon,
 
             filled: true,
-            fillColor: const Color(0xFFFFFFFF),
+            fillColor: AppStyles.textInverse,
 
             contentPadding: const EdgeInsets.symmetric(
               vertical: 14,
@@ -82,10 +77,7 @@ class CustomTextField extends StatelessWidget {
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.black12,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: AppStyles.textMuted, width: 1),
             ),
 
             enabledBorder: OutlineInputBorder(
@@ -98,18 +90,12 @@ class CustomTextField extends StatelessWidget {
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 35, 198, 54),
-                width: 1.5,
-              ),
+              borderSide: BorderSide(color: AppStyles.primary, width: 1.5),
             ),
 
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.redAccent,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: AppStyles.badgeRed, width: 1),
             ),
           ),
         ),
@@ -117,4 +103,3 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-

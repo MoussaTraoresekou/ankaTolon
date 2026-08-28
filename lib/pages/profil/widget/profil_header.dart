@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/auth/user_modal.dart';
 
 class ProfilHeader extends StatelessWidget {
   final UserModel utilisateur;
 
-  const ProfilHeader({
-    super.key,
-    required this.utilisateur,
-  });
+  const ProfilHeader({super.key, required this.utilisateur});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +19,12 @@ class ProfilHeader extends StatelessWidget {
           height: 90,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Color.fromARGB(255, 230, 241, 228), 
+            color: Color.fromARGB(255, 230, 241, 228),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.person,
             size: 55,
-            color: Color.fromARGB(255, 132, 134, 132), 
+            color: Color.fromARGB(255, 132, 134, 132),
           ),
         ),
 
@@ -36,10 +34,10 @@ class ProfilHeader extends StatelessWidget {
         Text(
           '${utilisateur.prenom} ${utilisateur.nom}',
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: AppStyles.textDark,
           ),
         ),
 
@@ -52,7 +50,7 @@ class ProfilHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF7CA982), 
+            color: Color(0xFF7CA982),
           ),
         ),
       ],
