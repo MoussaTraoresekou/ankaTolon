@@ -10,9 +10,6 @@ class AppStyles {
     }
   }
 
-  // ===========================================================================
-  // 1. COULEURS DE BASE (TEXTES & FONDS)
-  // ===========================================================================
   static Color get bgColor =>
       _isDark ? const Color(0xFF121212) : const Color(0xFFFAFFFB);
   static Color get background =>
@@ -26,9 +23,7 @@ class AppStyles {
   static Color get textInverse =>
       _isDark ? const Color(0xFF212121) : Colors.white;
 
-  // ===========================================================================
-  // 2. COULEURS PRIMAIRES & ACCENTS VERTS
-  // ===========================================================================
+  
   static Color get primary =>
       _isDark ? const Color(0xFF7FB685) : const Color(0xFF2D6A4F);
   static Color get primarySoft =>
@@ -40,10 +35,7 @@ class AppStyles {
   static const Color accentBlue = Color(0xFF0066CC);
   static const Color badgeRed = Color(0xFFEF5350);
 
-  // ===========================================================================
-  // 3. SURFACES, BOXES & CARTES
-  // (Uniformisation de E0F0E5, E5F2E8, green.shade300, 81C784, FFEEC1)
-  // ===========================================================================
+  
   static Color get boxSurfaceLight =>
       _isDark ? const Color(0xFF252525) : const Color(0xFFE2F0E7);
   static Color get cardMenuYellow =>
@@ -53,9 +45,7 @@ class AppStyles {
 
   static const Color successGreen = Color(0xFF0AA361);
 
-  // ===========================================================================
-  // 4. ICÔNES, BORDURES & OMBRES
-  // ===========================================================================
+  
   static Color get iconColor =>
       _isDark ? const Color(0xFFB0BEC5) : const Color(0xFF2E4D32);
 
@@ -70,9 +60,7 @@ class AppStyles {
           alpha: 0.12,
         ); // Harmonisé (fusion de 0.18 et 0.04)
 
-  // ===========================================================================
-  // 5. STYLES DE TEXTE DYNAMIQUES
-  // ===========================================================================
+  
   static TextStyle get headingTextStyle => TextStyle(
     fontSize: 20,
     color: textDark,
