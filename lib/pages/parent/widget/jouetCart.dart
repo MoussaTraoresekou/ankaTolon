@@ -30,7 +30,7 @@ class _JouetcartState extends State<Jouetcart> {
         width: SizeConfig.getProportionateWidth(160),
         margin: EdgeInsets.only(right: SizeConfig.getProportionateWidth(14)),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppStyles.textInverse,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(

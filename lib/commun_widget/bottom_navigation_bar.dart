@@ -17,7 +17,12 @@ class AppBottomNavigationBar extends StatefulWidget {
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [HomeScreen(), CataloguePage(), Page1(), ProfilPage()];
+  final List<Widget> _pages = [
+    HomeScreen(),
+    CataloguePage(),
+    Page1(),
+    ProfilPage(),
+  ];
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -34,17 +39,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text(
-                  "Non",
-                  style: TextStyle(color: Colors.black87),
-                ),
+                child: Text("Non", style: TextStyle(color: AppStyles.textDark)),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text(
-                  "Oui",
-                  style: TextStyle(color: Colors.black87),
-                ),
+                child: Text("Oui", style: TextStyle(color: AppStyles.textDark)),
               ),
             ],
           ),

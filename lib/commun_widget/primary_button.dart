@@ -21,7 +21,7 @@ class PrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppStyles.primaryOrange,
-          foregroundColor: Colors.white,
+          foregroundColor: AppStyles.textInverse,
           padding: EdgeInsets.symmetric(
             vertical: SizeConfig.getProportionateHeight(16),
           ),
@@ -31,11 +31,11 @@ class PrimaryButton extends StatelessWidget {
         ),
         onPressed: isLoading ? null : onPressed,
         child: isLoading
-            ? const SizedBox(
+            ? SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: AppStyles.textInverse,
                   strokeWidth: 2,
                 ),
               )

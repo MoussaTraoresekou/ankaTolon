@@ -161,7 +161,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, size: 20),
+                    icon: Icon(Icons.arrow_back_ios, size: 20),
                     onPressed: state.isLoading ? null : () => context.pop(),
                   ),
 
@@ -174,7 +174,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                           style: AppStyles.headingTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
-                            color: Colors.black87,
+                            color: AppStyles.textDark,
                           ),
                         ),
 
@@ -209,7 +209,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                 padding: const EdgeInsets.all(16),
 
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppStyles.textInverse,
 
                   borderRadius: BorderRadius.circular(20),
 
@@ -495,7 +495,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
 
             child: Column(
               children: [
-                const Icon(
+                Icon(
                   Icons.add_photo_alternate_outlined,
                   size: 40,
                   color: Colors.black45,
@@ -574,13 +574,13 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                         height: 26,
 
                         decoration: const BoxDecoration(
-                          color: Colors.red,
+                          color: AppStyles.badgeRed,
                           shape: BoxShape.circle,
                         ),
 
-                        child: const Icon(
+                        child: Icon(
                           Icons.close,
-                          color: Colors.white,
+                          color: AppStyles.textInverse,
                           size: 16,
                         ),
                       ),

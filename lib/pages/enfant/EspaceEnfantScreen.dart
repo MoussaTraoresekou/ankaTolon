@@ -92,14 +92,14 @@ class EspaceEnfantScreen extends ConsumerWidget {
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: AppStyles.textInverse,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.chevron_left,
               size: 24,
-              color: Colors.black87,
+              color: AppStyles.textDark,
             ),
           ),
         ),
@@ -112,7 +112,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                 children: [
                   Text(
                     'Bonjour $prenom !',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppStyles.textDark,
@@ -122,7 +122,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   const Text('👋', style: TextStyle(fontSize: 16)),
                 ],
               ),
-              const Text(
+              Text(
                 'Heureux de vous retrouver',
                 style: TextStyle(fontSize: 12, color: AppStyles.textMuted),
               ),
@@ -135,13 +135,13 @@ class EspaceEnfantScreen extends ConsumerWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: AppStyles.textInverse,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.notifications_none_rounded,
-                color: Colors.grey,
+                color: AppStyles.textMuted,
                 size: 26,
               ),
             ),
@@ -151,15 +151,15 @@ class EspaceEnfantScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppStyles.badgeRed,
                   shape: BoxShape.circle,
                 ),
-                child: const Text(
+                child: Text(
                   '10',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppStyles.textInverse,
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
                   ),
@@ -172,7 +172,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
         // Avatar Enfant
         CircleAvatar(
           radius: 22,
-          backgroundColor: const Color(0xFFFFE0B2),
+          backgroundColor: AppStyles.avatarOrangeBg,
           child: ClipOval(
             child: avatarUrl != null && avatarUrl.isNotEmpty
                 ? (avatarUrl.startsWith('http')
@@ -188,7 +188,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                           height: 44,
                           fit: BoxFit.cover,
                         ))
-                : const Icon(Icons.person, color: Colors.white, size: 26),
+                : Icon(Icons.person, color: AppStyles.textInverse, size: 26),
           ),
         ),
       ],
@@ -227,10 +227,10 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   children: [
                     Text(
                       '$points',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppStyles.textInverse,
                       ),
                     ),
                     const Text(
@@ -259,10 +259,10 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   children: [
                     Text(
                       '$badges',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppStyles.textInverse,
                       ),
                     ),
                     const Text(
@@ -292,13 +292,13 @@ class EspaceEnfantScreen extends ConsumerWidget {
       children: [
         _buildMenuCard(
           title: 'Jeux',
-          bgColor: const Color(0xFFDDEDDF),
+          bgColor: AppStyles.primarySoft,
           image: 'assets/images/jeux.png',
           onTap: () {},
         ),
         _buildMenuCard(
           title: 'Tutoriels',
-          bgColor: const Color(0xFFFFEEC1),
+          bgColor: AppStyles.cardMenuYellow,
           image: 'assets/images/tuto.png',
           onTap: () {
             context.pushNamed(AppRoutes.espaceEnfantTuto.name);
@@ -306,7 +306,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
         ),
         _buildMenuCard(
           title: 'Activités',
-          bgColor: const Color(0xFFFFEEC1),
+          bgColor: AppStyles.cardMenuYellow,
           image: 'assets/images/activity.png',
           onTap: () {
             context.pushNamed(AppRoutes.activite.name);
@@ -314,7 +314,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
         ),
         _buildMenuCard(
           title: 'Progression',
-          bgColor: const Color(0xFFDDEDDF),
+          bgColor: AppStyles.primarySoft,
           image: 'assets/images/progress.png',
           onTap: () {},
         ),
@@ -358,22 +358,18 @@ class EspaceEnfantScreen extends ConsumerWidget {
                 errorBuilder: (_, __, ___) => Icon(
                   iconData ?? Icons.extension,
                   size: 52,
-                  color: iconColor ?? const Color(0xFF2E4D32),
+                  color: iconColor ?? AppStyles.primary,
                 ),
               )
             else if (iconData != null)
-              Icon(
-                iconData,
-                size: 52,
-                color: iconColor ?? const Color(0xFF2E4D32),
-              ),
+              Icon(iconData, size: 52, color: iconColor ?? AppStyles.primary),
             const SizedBox(height: 12),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF2E4D32),
+                color: AppStyles.primary,
               ),
             ),
           ],
@@ -405,23 +401,20 @@ class EspaceEnfantScreen extends ConsumerWidget {
             width: 48,
             height: 48,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => const Icon(
-              Icons.emoji_events_rounded,
-              size: 48,
-              color: Colors.amber,
-            ),
+            errorBuilder: (_, __, ___) =>
+                Icon(Icons.emoji_events_rounded, size: 48, color: Colors.amber),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Défis du jour',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF2B7A4B),
+                    color: AppStyles.primary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -447,12 +440,12 @@ class EspaceEnfantScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Commencer',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppStyles.textInverse,
                     ),
                   ),
                 ),
@@ -460,6 +453,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
             ),
           ),
           Image.asset('assets/images/cadeau.png', height: 70, width: 70),
+          Image.asset(height: 70, width: 70, 'assets/images/cadeau.png'),
         ],
       ),
     );

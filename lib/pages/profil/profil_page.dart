@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/controller/profil/profil_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/pages/profil/widget/bouton_deconnexion.dart';
 import 'package:tolon/pages/profil/widget/enfant_profil_card.dart';
 import 'package:tolon/pages/profil/widget/informations_personnelles.dart';
@@ -30,12 +31,12 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
     final enfantsAsync = ref.watch(enfantsStreamProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FCF8), // Fond vert très clair / cassé
+      backgroundColor: AppStyles.bgColor, // Fond vert très clair / cassé
       body: SafeArea(
         child: profil.chargement
-            ? const Center(
+            ? Center(
                 child: CircularProgressIndicator(
-                  color: Color(0xFFE67E22),
+                  color: AppStyles.primaryOrange,
                 ),
               )
             : SingleChildScrollView(
@@ -47,28 +48,24 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // TITRE CENTRAL
-                    const Text(
+                    Text(
                       'Mon profil',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: AppStyles.textDark,
                       ),
                     ),
 
                     const SizedBox(height: 20),
 
                     if (profil.utilisateur != null)
-                      ProfilHeader(
-                        utilisateur: profil.utilisateur!,
-                      ),
+                      ProfilHeader(utilisateur: profil.utilisateur!),
 
                     const SizedBox(height: 16),
 
-                    ModifierProfilButton(
-                      utilisateur: profil.utilisateur,
-                    ),
+                    ModifierProfilButton(utilisateur: profil.utilisateur),
 
                     const SizedBox(height: 20),
 
@@ -84,7 +81,7 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppStyles.textInverse,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: const Color(0xFFCBE3CE),
@@ -94,16 +91,16 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Mes enfants',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: AppStyles.textDark,
                             ),
                           ),
                           const SizedBox(height: 14),
-                      enfantsAsync.when(
+                          enfantsAsync.when(
                             data: (enfants) {
                               if (enfants.isEmpty) {
                                 return const Center(
@@ -120,11 +117,10 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                                 children: enfants
                                     .map(
                                       (enfant) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: EnfantProfilCard(
-                                          enfant: enfant,
+                                        padding: const EdgeInsets.only(
+                                          bottom: 10,
                                         ),
+                                        child: EnfantProfilCard(enfant: enfant),
                                       ),
                                     )
                                     .toList(),
@@ -134,7 +130,7 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: CircularProgressIndicator(
-                                  color: Color(0xFFE67E22),
+                                  color: AppStyles.primaryOrange,
                                 ),
                               ),
                             ),

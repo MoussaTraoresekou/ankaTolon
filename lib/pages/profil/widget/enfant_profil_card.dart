@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
 
 class EnfantProfilCard extends StatelessWidget {
   final EnfantModel enfant;
 
-  const EnfantProfilCard({
-    super.key,
-    required this.enfant,
-  });
+  const EnfantProfilCard({super.key, required this.enfant});
 
   int _calculerAge(DateTime dateNaissance) {
     final aujourdhui = DateTime.now();
@@ -40,10 +38,10 @@ class EnfantProfilCard extends StatelessWidget {
             children: [
               Text(
                 '${enfant.prenom} ${enfant.nom}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: AppStyles.textDark,
                 ),
               ),
 
@@ -84,7 +82,9 @@ class EnfantProfilCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      sexeTexte.isNotEmpty ? sexeTexte : 'Féminin', // Remplacez 'Féminin' par votre valeur par défaut si besoin
+                      sexeTexte.isNotEmpty
+                          ? sexeTexte
+                          : 'Féminin', // Remplacez 'Féminin' par votre valeur par défaut si besoin
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -99,11 +99,7 @@ class EnfantProfilCard extends StatelessWidget {
         ),
 
         // CHEVRON NAVIGATION
-        const Icon(
-          Icons.chevron_right_rounded,
-          color: Colors.black,
-          size: 24,
-        ),
+        Icon(Icons.chevron_right_rounded, color: AppStyles.textDark, size: 24),
       ],
     );
   }
@@ -131,11 +127,7 @@ class EnfantProfilCard extends StatelessWidget {
         color: Color(0xFFFFE8D2),
         shape: BoxShape.circle,
       ),
-      child: const Icon(
-        Icons.child_care_rounded,
-        size: 32,
-        color: Color(0xFFE67E22),
-      ),
+      child: Icon(Icons.child_care_rounded, size: 32, color: Color(0xFFE67E22)),
     );
   }
 }

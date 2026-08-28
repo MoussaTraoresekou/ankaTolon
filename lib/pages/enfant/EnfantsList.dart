@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
-import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/repository/enfant/enfant_repository.dart';
 
 class EnfantsListScreen extends ConsumerWidget {
@@ -51,7 +50,7 @@ class EnfantsListScreen extends ConsumerWidget {
                         color: Color(0xFFE2F1E4),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.chevron_left,
                         color: AppStyles.textDark,
                         size: 24,
@@ -59,7 +58,7 @@ class EnfantsListScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Text(
+                  Text(
                     'Mes enfants',
                     style: TextStyle(
                       fontSize: 22,
@@ -76,7 +75,7 @@ class EnfantsListScreen extends ConsumerWidget {
                 child: enfantsAsync.when(
                   data: (enfants) {
                     if (enfants.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Text(
                           'Aucun enfant enregistré pour le moment',
                           style: TextStyle(color: AppStyles.textMuted),
@@ -115,7 +114,7 @@ class EnfantsListScreen extends ConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const Center(
+                  loading: () => Center(
                     child: CircularProgressIndicator(color: AppStyles.primary),
                   ),
                   error: (error, stack) => const Center(
@@ -142,12 +141,12 @@ class EnfantsListScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Ajouter un profil enfant',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppStyles.textInverse,
                     ),
                   ),
                 ),
@@ -168,12 +167,9 @@ class EnfantsListScreen extends ConsumerWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppStyles.textInverse,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFF2D6A4F).withValues(alpha: 0.4),
-          width: 1,
-        ),
+        border: Border.all(color: AppStyles.borderColor, width: 1),
       ),
       child: Material(
         color: Colors.transparent,
@@ -195,7 +191,7 @@ class EnfantsListScreen extends ConsumerWidget {
                                   width: 72,
                                   height: 72,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, _, _) => const Icon(
+                                  errorBuilder: (_, _, _) => Icon(
                                     Icons.person,
                                     color: AppStyles.primary,
                                     size: 36,
@@ -206,13 +202,13 @@ class EnfantsListScreen extends ConsumerWidget {
                                   width: 72,
                                   height: 72,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, _, _) => const Icon(
+                                  errorBuilder: (_, _, _) => Icon(
                                     Icons.person,
                                     color: AppStyles.primary,
                                     size: 36,
                                   ),
                                 ))
-                        : const Icon(
+                        : Icon(
                             Icons.person,
                             color: AppStyles.primary,
                             size: 36,
@@ -229,7 +225,7 @@ class EnfantsListScreen extends ConsumerWidget {
                         fullName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AppStyles.textDark,
@@ -247,7 +243,7 @@ class EnfantsListScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           ageText,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: Color(0xFF2D6A4F),
@@ -257,7 +253,7 @@ class EnfantsListScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right, color: AppStyles.textMuted),
+                Icon(Icons.chevron_right, color: AppStyles.textMuted),
               ],
             ),
           ),
