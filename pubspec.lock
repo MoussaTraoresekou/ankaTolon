@@ -304,11 +304,7 @@ packages:
       sha256: a4c1ccfee44c7e75ed80484071a5c142a385345e658fd8bd7c4b5c97e7198f98
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "3.1.13"
-=======
     version: "3.1.8"
->>>>>>> 6fee8183f2071af6f0a1e3768fef04becf182562
   dashed_border:
     dependency: "direct main"
     description:
