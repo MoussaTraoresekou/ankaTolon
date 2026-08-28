@@ -1,49 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tolon/controller/auth/auth_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
+import 'package:tolon/pages/parent/dialog/PasswordVerification.dart';
 
 class EspaceEnfantScreen extends ConsumerWidget {
   final EnfantModel enfant;
 
   const EspaceEnfantScreen({super.key, required this.enfant});
 
+  /// Affiche le dialogue de vérification du mot de passe parent.
+  /// Retourne `true` si le mot de passe est correct, sinon `false`.
+  Future<bool> _demanderMotDePasseParent(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PasswordVerificationDialog(
+        onVerify: (password) async {
+          return await ref
+              .read(authControllerProvider.notifier)
+              .verifierMotDePasse(password);
+        },
+      ),
+    );
+    return result ?? false;
+  }
+
+  /// Gère la tentative de sortie de l'espace enfant
+  Future<void> _tenterSortie(BuildContext context, WidgetRef ref) async {
+    final authentifie = await _demanderMotDePasseParent(context, ref);
+    if (authentifie && context.mounted) {
+      context.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String prenom = enfant.prenom ?? 'Enfant';
     final String? avatarUrl = enfant.avatarUrl;
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9FAF8),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context, prenom, avatarUrl),
-              const SizedBox(height: 24),
-              _buildStatsCard(points: 450, badges: 100),
-              const SizedBox(height: 24),
-              _buildGridMenu(context),
-              const SizedBox(height: 24),
-              _buildDailyChallengeCard(),
-              const SizedBox(height: 20),
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        await _tenterSortie(context, ref);
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF9FAF8),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 16.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context, ref, prenom, avatarUrl),
+                const SizedBox(height: 24),
+                _buildStatsCard(points: 450, badges: 100),
+                const SizedBox(height: 24),
+                _buildGridMenu(context),
+                const SizedBox(height: 24),
+                _buildDailyChallengeCard(),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // Header avec bouton retour, salut, notifications et avatar
-  Widget _buildHeader(BuildContext context, String prenom, String? avatarUrl) {
+  // Header avec bouton retour sécurisé, salut, notifications et avatar
+  Widget _buildHeader(
+    BuildContext context,
+    WidgetRef ref,
+    String prenom,
+    String? avatarUrl,
+  ) {
     return Row(
       children: [
         InkWell(
-          onTap: () => context.pop(),
+          onTap: () => _tenterSortie(context, ref),
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.all(8),
@@ -255,14 +300,16 @@ class EspaceEnfantScreen extends ConsumerWidget {
           title: 'Tutoriels',
           bgColor: AppStyles.cardMenuYellow,
           image: 'assets/images/tuto.png',
-          onTap: () {},
+          onTap: () {
+            context.pushNamed(AppRoutes.espaceEnfantTuto.name);
+          },
         ),
         _buildMenuCard(
           title: 'Activités',
           bgColor: AppStyles.cardMenuYellow,
           image: 'assets/images/activity.png',
           onTap: () {
-              context.pushNamed(AppRoutes.activite.name);
+            context.pushNamed(AppRoutes.activite.name);
           },
         ),
         _buildMenuCard(
@@ -302,7 +349,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Affichage de l'image si elle existe, sinon de l'icône
             if (image != null && image.isNotEmpty)
               Image.asset(
                 image,
@@ -341,22 +387,17 @@ class EspaceEnfantScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color.fromARGB(
-              255,
-              3,
-              3,
-              3,
-            ).withOpacity(0.3), // Ombre discrète
-            blurRadius: 10, // Flou progressif
+            color: const Color.fromARGB(255, 3, 3, 3).withOpacity(0.3),
+            blurRadius: 10,
             spreadRadius: 0,
-            offset: const Offset(0, 4), // Décalage vers le bas
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Row(
         children: [
           Image.asset(
-            'assets/images/defis.png', // Assurez-vous d'avoir l'image dans vos assets
+            'assets/images/defis.png',
             width: 48,
             height: 48,
             fit: BoxFit.contain,
@@ -411,6 +452,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
               ],
             ),
           ),
+          Image.asset('assets/images/cadeau.png', height: 70, width: 70),
           Image.asset(height: 70, width: 70, 'assets/images/cadeau.png'),
         ],
       ),
