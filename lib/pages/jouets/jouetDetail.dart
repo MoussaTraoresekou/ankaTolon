@@ -58,7 +58,7 @@ class _JouetdetailState
     final panier = ref.watch(panierProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8F5),
+      backgroundColor: AppStyles.bgColor,
 
       body: Stack(
         children: [
@@ -155,7 +155,7 @@ class _JouetdetailState
     final hasImages = jouet.image.isNotEmpty;
 
     return Container(
-      color: const Color(0xFFE8F0E9),
+      color: AppStyles.primarySoft,
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -167,7 +167,7 @@ class _JouetdetailState
                 children: [
                   // Retour
                   Material(
-                    color: const Color(0xFF7CB88A),
+                    color: AppStyles.navbarColor,
                     shape: const CircleBorder(),
                     child: InkWell(
                       customBorder: const CircleBorder(),
@@ -209,7 +209,7 @@ class _JouetdetailState
                                       : '${jouet.nomJouet} ajouté aux favoris',
                                 ),
                                 backgroundColor:
-                                    const Color.fromRGBO(230, 126, 34, 1),
+                                    AppStyles.primaryOrange,
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
@@ -251,7 +251,7 @@ class _JouetdetailState
                             child: Icon(
                               Icons.shopping_cart_outlined,
                               size: 24,
-                              color: Color(0xFF3D4A3E),
+                              color: AppStyles.textDark,
                             ),
                           ),
                         ),
@@ -325,7 +325,7 @@ class _JouetdetailState
                                 if (progress == null) return child;
                                 return const Center(
                                   child: CircularProgressIndicator(
-                                    color: Color.fromRGBO(230, 126, 34, 1),
+                                    color: AppStyles.primaryOrange,
                                     strokeWidth: 2.5,
                                   ),
                                 );
@@ -351,7 +351,7 @@ class _JouetdetailState
                     height: 7,
                     decoration: BoxDecoration(
                       color: selected
-                          ? const Color.fromRGBO(230, 126, 34, 1)
+                          ? AppStyles.primaryOrange
                           : Colors.white.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
@@ -395,7 +395,7 @@ class _JouetdetailState
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
                               color: selected
-                                  ? const Color.fromRGBO(230, 126, 34, 1)
+                                  ? AppStyles.primaryOrange
                                   : Colors.white.withValues(alpha: 0.8),
                               width: selected ? 2.5 : 1.5,
                             ),
@@ -773,7 +773,7 @@ class _JouetdetailState
 
       decoration: BoxDecoration(
         color:
-            const Color(0xFFF8FAF7),
+            AppStyles.primarySoft,
 
         borderRadius:
             BorderRadius.circular(
@@ -1087,7 +1087,7 @@ class _JouetdetailState
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isMonAvis
-              ? const Color.fromRGBO(230, 126, 34, 0.35)
+              ? AppStyles.primaryOrange.withValues(alpha: 0.35)
               : Colors.black.withValues(alpha: 0.04),
         ),
       ),
@@ -1207,7 +1207,7 @@ class _JouetdetailState
                   icon: const Icon(Icons.edit_outlined, size: 18),
                   label: const Text('Modifier'),
                   style: TextButton.styleFrom(
-                    foregroundColor: const Color.fromRGBO(230, 126, 34, 1),
+                    foregroundColor: AppStyles.primaryOrange,
                   ),
                 ),
                 TextButton.icon(
@@ -1262,7 +1262,7 @@ class _JouetdetailState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Votre avis a été supprimé.'),
-          backgroundColor: Color.fromRGBO(230, 126, 34, 1),
+          backgroundColor: AppStyles.primaryOrange,
         ),
       );
     } catch (e) {
@@ -1447,9 +1447,9 @@ class _JouetdetailState
           ),
         ),
         style: OutlinedButton.styleFrom(
-          foregroundColor: const Color.fromRGBO(230, 126, 34, 1),
+          foregroundColor: AppStyles.primaryOrange,
           side: const BorderSide(
-            color: Color.fromRGBO(230, 126, 34, 1),
+            color: AppStyles.primaryOrange,
             width: 1.5,
           ),
           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -1586,7 +1586,7 @@ class _JouetdetailState
                         ),
 
                         backgroundColor:
-                            const Color.fromRGBO(230, 126, 34, 1),
+                            AppStyles.primaryOrange,
 
                         behavior:
                             SnackBarBehavior
@@ -1620,7 +1620,7 @@ class _JouetdetailState
                   ),
 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(230, 126, 34, 1),
+                    backgroundColor: AppStyles.primaryOrange,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
