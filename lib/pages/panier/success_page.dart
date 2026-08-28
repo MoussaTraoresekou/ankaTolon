@@ -36,10 +36,7 @@ class SuccessPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: InkWell(
                   onTap: () => context.go('/home'),
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.grey,
-                  ),
+                  child: Icon(Icons.arrow_back_ios_new, color: Colors.grey),
                 ),
               ),
 
@@ -54,18 +51,14 @@ class SuccessPage extends StatelessWidget {
                     color: const Color(0xFF7FB685).withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.check,
-                    color: Color(0xFF7FB685),
-                    size: 50,
-                  ),
+                  child: Icon(Icons.check, color: Color(0xFF7FB685), size: 50),
                 ),
               ),
 
               SizedBox(height: 24),
 
               // Titre
-              const Center(
+              Center(
                 child: Text(
                   "Votre commande a\nbien été enregistrée.",
                   textAlign: TextAlign.center,
@@ -79,7 +72,7 @@ class SuccessPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppStyles.textInverse,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey.shade200),
                 ),
@@ -109,7 +102,7 @@ class SuccessPage extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppStyles.primaryOrange,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppStyles.textInverse,
                     padding: EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -119,7 +112,7 @@ class SuccessPage extends StatelessWidget {
                   child: Text(
                     "Retour au catalogue",
                     style: AppStyles.titleTextStyle.copyWith(
-                      color: Colors.white,
+                      color: AppStyles.textInverse,
                     ),
                   ),
                 ),
@@ -140,7 +133,7 @@ class SuccessPage extends StatelessWidget {
             label,
             style: AppStyles.normalTextStyle.copyWith(
               fontSize: 14,
-              color: Colors.grey,
+              color: AppStyles.textMuted,
             ),
           ),
         ),
@@ -152,7 +145,7 @@ class SuccessPage extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: AppStyles.titleTextStyle.copyWith(
               fontSize: 14,
-              color: isOrange ? AppStyles.primaryOrange : Colors.black87,
+              color: isOrange ? AppStyles.primaryOrange : AppStyles.textDark,
               fontWeight: FontWeight.bold,
             ),
           ),

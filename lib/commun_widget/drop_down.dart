@@ -33,7 +33,7 @@ class CustomDropdown<T> extends StatelessWidget {
           label,
           style: AppStyles.normalTextStyle.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: AppStyles.textDark,
           ),
         ),
 
@@ -46,16 +46,11 @@ class CustomDropdown<T> extends StatelessWidget {
           validator: validator,
           isExpanded: true,
 
-          style: AppStyles.normalTextStyle.copyWith(
-            color: Colors.black87,
-          ),
+          style: AppStyles.normalTextStyle.copyWith(color: AppStyles.textDark),
 
-          icon: const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: Colors.black45,
-          ),
+          icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.black45),
 
-          dropdownColor: Colors.white,
+          dropdownColor: AppStyles.textInverse,
 
           borderRadius: BorderRadius.circular(10),
 
@@ -67,14 +62,11 @@ class CustomDropdown<T> extends StatelessWidget {
             ),
 
             prefixIcon: prefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                    color: prefixIconColor ?? Colors.black45,
-                  )
+                ? Icon(prefixIcon, color: prefixIconColor ?? Colors.black45)
                 : null,
 
             filled: true,
-            fillColor: const Color(0xFFFFFFFF),
+            fillColor: AppStyles.textInverse,
 
             contentPadding: const EdgeInsets.symmetric(
               vertical: 14,
@@ -83,10 +75,7 @@ class CustomDropdown<T> extends StatelessWidget {
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.black12,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: Colors.black12, width: 1),
             ),
 
             enabledBorder: OutlineInputBorder(
@@ -107,16 +96,13 @@ class CustomDropdown<T> extends StatelessWidget {
 
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.redAccent,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: AppStyles.badgeRed, width: 1),
             ),
 
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(
-                color: Colors.redAccent,
+                color: AppStyles.badgeRed,
                 width: 1.5,
               ),
             ),

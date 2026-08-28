@@ -87,10 +87,10 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
         if (_nomController.text.isEmpty &&
             _prenomController.text.isEmpty &&
             _phoneNumberController.text.isEmpty) {
-            _nomController.text = user.nom;
-            _prenomController.text = user.prenom;
-            _phoneNumberController.text = user.phoneNumber;
-        } 
+          _nomController.text = user.nom;
+          _prenomController.text = user.prenom;
+          _phoneNumberController.text = user.phoneNumber;
+        }
 
         return Scaffold(
           backgroundColor: AppStyles.bgColor,
@@ -117,7 +117,7 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
                             'Modifier mon profil',
                             textAlign: TextAlign.center,
                             style: AppStyles.headingTextStyle.copyWith(
-                              color: Colors.black87,
+                              color: AppStyles.textDark,
                               fontWeight: FontWeight.w800,
                               fontSize: 26,
                             ),
@@ -133,10 +133,10 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
                                   color: Color(0xFFE5F1E7),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_back_ios_new_rounded,
                                   size: 16,
-                                  color: Colors.black87,
+                                  color: AppStyles.textDark,
                                 ),
                               ),
                             ),
@@ -153,7 +153,7 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
                           shape: BoxShape.circle,
                           color: Color(0xFFF4F6F5),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.person,
                           size: 50,
                           color: Colors.black26,

@@ -12,7 +12,8 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() =>
+      _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
@@ -69,7 +70,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     Text(
                       'Mot de passe oublié',
                       textAlign: TextAlign.center,
-                      style: AppStyles.headingTextStyle.copyWith(color: Colors.black87),
+                      style: AppStyles.headingTextStyle.copyWith(
+                        color: AppStyles.textDark,
+                      ),
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
@@ -82,10 +85,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             color: Color(0xFFE5F1E7),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.arrow_back_ios_new_rounded,
                             size: 16,
-                            color: Colors.black87,
+                            color: AppStyles.textDark,
                           ),
                         ),
                       ),
@@ -97,7 +100,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 Text(
                   'Entrez votre adresse email, nous vous enverrons un lien pour réinitialiser votre mot de passe.',
                   textAlign: TextAlign.center,
-                  style: AppStyles.normalTextStyle.copyWith(color: Colors.black54),
+                  style: AppStyles.normalTextStyle.copyWith(
+                    color: AppStyles.textMuted,
+                  ),
                 ),
                 SizedBox(height: SizeConfig.getProportionateHeight(28)),
 

@@ -127,8 +127,8 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
           builder: (context) => Scaffold(
             appBar: AppBar(
               title: const Text("Choisir l'adresse de livraison"),
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
+              backgroundColor: AppStyles.textInverse,
+              foregroundColor: AppStyles.textDark,
               elevation: 0,
             ),
             body: FlutterLocationPicker.withConfiguration(
@@ -160,7 +160,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                 zoomInIcon: Icons.add_circle_outline,
                 zoomOutIcon: Icons.remove_circle_outline,
                 locationIcon: Icons.my_location_rounded,
-                zoomButtonsColor: Colors.white,
+                zoomButtonsColor: AppStyles.textInverse,
                 zoomButtonsBackgroundColor: AppStyles.primary,
                 buttonElevation: 8.0,
                 buttonShape: RoundedRectangleBorder(
@@ -171,7 +171,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               markerConfiguration: const MarkerConfiguration(
                 markerIcon: Icon(
                   Icons.location_pin,
-                  color: Colors.red,
+                  color: AppStyles.badgeRed,
                   size: 50,
                 ),
                 animateMarker: true,
@@ -181,7 +181,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                 selectLocationButtonText: 'Confirmer cette position',
                 selectLocationButtonStyle: ElevatedButton.styleFrom(
                   backgroundColor: AppStyles.primary,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppStyles.textInverse,
                 ),
               ),
             ),
@@ -197,7 +197,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
         backgroundColor: AppStyles.bgColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
+          icon: Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
           onPressed: () => context.pop(),
         ),
       ),
@@ -214,7 +214,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppStyles.textInverse,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -268,7 +268,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               // ==========================================
               // SECTION ARTICLES
               // ==========================================
-              const Text("Articles", style: AppStyles.headingTextStyle),
+              Text("Articles", style: AppStyles.headingTextStyle),
               SizedBox(height: 12),
 
               ListView.builder(
@@ -281,7 +281,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                     margin: const EdgeInsets.only(bottom: 10),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppStyles.textInverse,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -315,7 +315,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                                 "Quantité : ${item.quantite}",
                                 style: AppStyles.normalTextStyle.copyWith(
                                   fontSize: 12,
-                                  color: Colors.grey,
+                                  color: AppStyles.textMuted,
                                 ),
                               ),
                             ],
@@ -341,7 +341,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppStyles.textInverse,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -378,7 +378,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
         padding: const EdgeInsets.all(20),
         margin: EdgeInsetsGeometry.only(bottom: 20),
         decoration: const BoxDecoration(
-          // color: Colors.white,
+          // color: AppStyles.textInverse,
           // border: Border(top: BorderSide(color: Color(0xFFEEEEEE), width: 1)),
         ),
         child: PrimaryButton(
@@ -409,7 +409,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                 label,
                 style: AppStyles.normalTextStyle.copyWith(
                   fontSize: 11,
-                  color: Colors.grey,
+                  color: AppStyles.textMuted,
                 ),
               ),
               const SizedBox(height: 2),
@@ -420,14 +420,17 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                   hintText: hintText,
-                  hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
+                  hintStyle: TextStyle(
+                    color: AppStyles.textMuted,
+                    fontSize: 13,
+                  ),
                 ),
                 style: AppStyles.titleTextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),
         ),
-        if (showChevron) const Icon(Icons.chevron_right, color: Colors.grey),
+        if (showChevron) Icon(Icons.chevron_right, color: Colors.grey),
       ],
     );
   }
