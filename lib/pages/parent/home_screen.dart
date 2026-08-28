@@ -573,7 +573,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     if (favorisIds.isEmpty) {
       return const SizedBox(
-        height: 145,
+        height: 170,
         child: Center(
           child: Text(
             'Aucun favori pour le moment',
@@ -592,7 +592,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
         if (favoris.isEmpty) {
           return const SizedBox(
-            height: 145,
+            height: 170,
             child: Center(
               child: Text(
                 'Aucun favori trouvé',
@@ -603,7 +603,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
 
         return SizedBox(
-          height: 145,
+          height: 170,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,
@@ -628,7 +628,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         );
       },
       loading: () => const SizedBox(
-        height: 145,
+        height: 170,
         child: Center(
           child: CircularProgressIndicator(color: AppStyles.primary),
         ),
@@ -665,7 +665,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 50,
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.green.shade50,
