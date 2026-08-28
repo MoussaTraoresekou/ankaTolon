@@ -7,18 +7,23 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
+import 'package:tolon/models/activites/activite_model.dart';
 
 import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
+import 'package:tolon/pages/activite/activite-detail.dart';
+import 'package:tolon/pages/activite/activite_add.dart';
+import 'package:tolon/pages/activite/activite_liste_enfant.dart';
 import 'package:tolon/pages/catalogue/catalogue.dart';
 
 import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
 import 'package:tolon/pages/enfant/EditEnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
+import 'package:tolon/pages/enfant/EspaceEnfantScreen.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
 
@@ -43,12 +48,6 @@ import 'package:tolon/pages/splush/splushScreen.dart';
 
 import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
 import 'package:tolon/pages/JouetsAdmin/Listes/liste_jouet.dart';
-import 'package:tolon/pages/JouetsAdmin/Edit/ModifierJouet.dart';
-
-// =========================
-// PAGES ADMIN AJOUTÉES
-// =========================
-
 import 'package:tolon/pages/Admins/admin_Bottom_NavigationBar.dart';
 import 'package:tolon/pages/Admins/admin_dashboard.dart';
 import 'package:tolon/pages/Admins/admin_profi.dart';
@@ -63,9 +62,6 @@ import 'package:tolon/pages/Admins/utilisateur_liste.dart';
 part 'routes.g.dart';
 
 enum AppRoutes {
-  // =========================
-  // ROUTES EXISTANTES
-  // =========================
   profileEnfant,
   mesenfants,
   addEnfantAvatar,
@@ -95,10 +91,6 @@ enum AppRoutes {
   JouetsAdmin,
   modifierJouet,
   changermotdepasse,
-
-  // =========================
-  // ROUTES ADMIN AJOUTÉES
-  // =========================
   admincommandeDetail,
   adminutilisateurDetail,
   adminutilisateurListe,
@@ -109,7 +101,12 @@ enum AppRoutes {
   adminajoutjouets,
   adminajoututoriels,
   adminajoutdefis,
-  adminprofile,
+  adminprofile, 
+  addJouetAdmin,
+  addActivite,
+  activite,
+  espaceEnfant,
+  detailactive
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -138,10 +135,6 @@ GoRouter appRouter(Ref ref) {
       final user = firebaseAuth.currentUser;
       final currentLoc = state.matchedLocation;
 
-      // =========================
-      // ROUTES PUBLIQUES
-      // =========================
-
       final publicRoutes = [
         '/splash',
         '/onboarding',
@@ -161,10 +154,6 @@ GoRouter appRouter(Ref ref) {
         return null;
       }
 
-      // =========================
-      // RÉCUPÉRATION DU ROLE
-      // =========================
-
       String? role;
 
       Future<String?> getRole() async {
@@ -182,10 +171,6 @@ GoRouter appRouter(Ref ref) {
         return role;
       }
 
-      // =========================
-      // REDIRECTION SPLASH / LOGIN
-      // =========================
-
       if (currentLoc == '/splash' ||
           currentLoc == '/onboarding' ||
           currentLoc == '/login') {
@@ -201,11 +186,6 @@ GoRouter appRouter(Ref ref) {
 
         return '/login';
       }
-
-      // =========================
-      // ADMIN DASHBOARD
-      // =========================
-
       if (currentLoc == '/adminDashboard') {
         if (await getRole() != 'admin') {
           return '/home';
@@ -213,22 +193,12 @@ GoRouter appRouter(Ref ref) {
 
         return null;
       }
-
-      // =========================
-      // ROUTES ADMIN EXISTANTES
-      // =========================
-
       final adminRoutes = [
         '/adminDashboard',
         '/JouetsAdmin',
         '/addjouet',
         '/modifierJouet',
       ];
-
-      // =========================
-      // ROUTES ADMIN AJOUTÉES
-      // =========================
-
       final adminRoutesAdded = [
         '/admin-jouets',
         '/admin-tutoriels',
@@ -257,10 +227,6 @@ GoRouter appRouter(Ref ref) {
 
         return null;
       }
-
-      // =========================
-      // ROUTES PARENT
-      // =========================
 
       final parentRoutes = [
         '/home',
@@ -294,10 +260,6 @@ GoRouter appRouter(Ref ref) {
     },
 
     routes: [
-      // =========================================================
-      // ROUTES EXISTANTES
-      // =========================================================
-
       GoRoute(
         path: '/splash',
         name: AppRoutes.splash.name,
@@ -485,7 +447,6 @@ GoRouter appRouter(Ref ref) {
               ),
             );
           }
-
           return ChoisirAvatarScreen(
             enfant: enfant,
             updatedData: updatedData,
@@ -509,10 +470,6 @@ GoRouter appRouter(Ref ref) {
         },
       ),
 
-      // =========================================================
-      // ADMIN
-      // =========================================================
-
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return AdminBottomNav(
@@ -520,9 +477,7 @@ GoRouter appRouter(Ref ref) {
           );
         },
         branches: [
-          // -----------------------------------------------------
-          // ADMIN : DASHBOARD
-          // -----------------------------------------------------
+         
 
           StatefulShellBranch(
             routes: [
@@ -536,9 +491,6 @@ GoRouter appRouter(Ref ref) {
             ],
           ),
 
-          // -----------------------------------------------------
-          // ADMIN : JOUETS
-          // -----------------------------------------------------
 
           StatefulShellBranch(
             routes: [
@@ -552,10 +504,6 @@ GoRouter appRouter(Ref ref) {
             ],
           ),
 
-          // -----------------------------------------------------
-          // ADMIN : TUTORIELS
-          // -----------------------------------------------------
-
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -567,10 +515,6 @@ GoRouter appRouter(Ref ref) {
               ),
             ],
           ),
-
-          // -----------------------------------------------------
-          // ADMIN : DEFIS
-          // -----------------------------------------------------
 
           StatefulShellBranch(
             routes: [
@@ -585,10 +529,6 @@ GoRouter appRouter(Ref ref) {
           ),
         ],
       ),
-
-      // =========================================================
-      // ANCIENES ROUTES ADMIN CONSERVÉES
-      // =========================================================
 
       GoRoute(
         path: '/adminDashboard/parent-detail/:userId',
@@ -652,10 +592,6 @@ GoRouter appRouter(Ref ref) {
         },
       ),
 
-      // ---------------------------------------------------------
-      // AJOUT JOYET ADMIN
-      // ---------------------------------------------------------
-
       GoRoute(
         path: '/add-jouet-admin',
         name: AppRoutes.addJouetAdmin.name,
@@ -663,11 +599,6 @@ GoRouter appRouter(Ref ref) {
           return const AjouterJouetPage();
         },
       ),
-
-      // =========================================================
-      // MOT DE PASSE OUBLIÉ
-      // =========================================================
-
       GoRoute(
         path: '/forgotPassword',
         name: AppRoutes.changermotdepasse.name,
@@ -675,6 +606,39 @@ GoRouter appRouter(Ref ref) {
           return const ForgotPasswordScreen();
         },
       ),
+      GoRoute(
+        path: '/addActivite',
+        name: AppRoutes.addActivite.name,
+        builder: (context, state) {
+          return const AddActiviteScreen();
+        },
+      ),
+      GoRoute(
+        path: '/activitesListeEnfant',
+        name: AppRoutes.activite.name,
+        builder: (context, state) {
+          return const ActivitesPage();
+        },
+      ),
+      GoRoute(
+        path: '/espaceienfant',
+        name: AppRoutes.espaceEnfant.name,
+        builder: (context, state) {
+                    final enfant = state.extra as EnfantModel;
+
+          return  EspaceEnfantScreen(enfant: enfant,);
+        },
+      ),
+      GoRoute(
+        path: '/detailactive',
+        name: AppRoutes.detailactive.name,
+        builder: (context, state) {
+                    final activite = state.extra as ActiviteModel;
+
+          return  ActiviteDetailScreen(activite: activite,);
+        },
+      )
+      
     ],
   );
 }

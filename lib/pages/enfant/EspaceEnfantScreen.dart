@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
 
@@ -234,7 +235,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
   }
 
   // Grille 2x2 : Jeux, Tutoriels, Activités, Progression
-  // Grille 2x2 : Jeux, Tutoriels, Activités, Progression
+  // Grille 2x2 : Jeux, Tutoriels, Activités, Progress
   Widget _buildGridMenu(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
@@ -260,7 +261,9 @@ class EspaceEnfantScreen extends ConsumerWidget {
           title: 'Activités',
           bgColor: const Color(0xFFFFEEC1),
           image: 'assets/images/activity.png',
-          onTap: () {},
+          onTap: () {
+              context.pushNamed(AppRoutes.activite.name);
+          },
         ),
         _buildMenuCard(
           title: 'Progression',

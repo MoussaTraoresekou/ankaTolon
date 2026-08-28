@@ -167,7 +167,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                     elevation: 0,
                   ),
                   onPressed: () {
-                    // Action basculer profil actif
+                    context.pushNamed(AppRoutes.espaceEnfant.name,extra: _currentEnfant);
                   },
                   child: const Text(
                     'Basculer sur ce profil',
