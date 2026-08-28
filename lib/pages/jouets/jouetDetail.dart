@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+
+import 'package:tolon/controller/favoris/favoris_controller.dart';
 import 'package:tolon/controller/panier/panier_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
@@ -30,6 +33,19 @@ class _JouetdetailState
       AvisRepository();
 
   int _selectedImage = 0;
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   // ==========================================================
   // BUILD
@@ -135,376 +151,311 @@ class _JouetdetailState
     JouetModel jouet,
     int quantity,
   ) {
-    return SizedBox(
-      height: 410,
-      child: Stack(
-        children: [
+    final hasMultipleImages = jouet.image.length > 1;
+    final hasImages = jouet.image.isNotEmpty;
 
-          // ====================================================
-          // IMAGE PRINCIPALE
-          // ====================================================
-
-          Container(
-            height: 355,
-            width: double.infinity,
-
-            decoration: BoxDecoration(
-              color: AppStyles.primarySoft,
-
-              borderRadius:
-                  const BorderRadius.only(
-                bottomLeft:
-                    Radius.circular(40),
-                bottomRight:
-                    Radius.circular(40),
-              ),
-            ),
-
-            child: jouet.image.isEmpty
-                ? const Center(
-                    child: Icon(
-                      Icons
-                          .image_not_supported_outlined,
-                      size: 80,
-                      color: Colors.grey,
-                    ),
-                  )
-                : ClipRRect(
-                    borderRadius:
-                        const BorderRadius.only(
-                      bottomLeft:
-                          Radius.circular(40),
-                      bottomRight:
-                          Radius.circular(40),
-                    ),
-
-                    child: PageView.builder(
-                      itemCount:
-                          jouet.image.length,
-
-                      onPageChanged: (index) {
-                        setState(() {
-                          _selectedImage =
-                              index;
-                        });
-                      },
-
-                      itemBuilder:
-                          (context, index) {
-                        return Image.network(
-                          jouet.image[index],
-
-                          fit: BoxFit.cover,
-
-                          errorBuilder:
-                              (
-                            context,
-                            error,
-                            stackTrace,
-                          ) {
-                            return const Center(
-                              child: Icon(
-                                Icons
-                                    .image_not_supported_outlined,
-                                size: 70,
-                                color:
-                                    Colors.grey,
-                              ),
-                            );
-                          },
-
-                          loadingBuilder:
-                              (
-                            context,
-                            child,
-                            progress,
-                          ) {
-                            if (progress ==
-                                null) {
-                              return child;
-                            }
-
-                            return const Center(
-                              child:
-                                  CircularProgressIndicator(
-                                color:
-                                    AppStyles.primary,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-          ),
-
-          // ====================================================
-          // GRADIENT PAR-DESSUS L'IMAGE
-          // ====================================================
-
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 120,
-
-              decoration:
-                  const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(
-                      0x66000000,
-                    ),
-                    Colors.transparent,
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          // ====================================================
-          // BOUTON RETOUR
-          // ====================================================
-
-          Positioned(
-            top: 48,
-            left: 20,
-
-            child: _buildCircleButton(
-              icon: Icons.arrow_back_ios_new,
-              onTap: () {
-                context.pop();
-              },
-            ),
-          ),
-
-          // ====================================================
-          // FAVORIS
-          // ====================================================
-
-          Positioned(
-            top: 48,
-            right: 70,
-
-            child: _buildCircleButton(
-              icon: Icons.favorite_border,
-              onTap: () {
-                // On pourra connecter
-                // cette action à Firebase
-                // favoris ensuite.
-              },
-            ),
-          ),
-
-          // ====================================================
-          // PANIER
-          // ====================================================
-
-          Positioned(
-            top: 48,
-            right: 20,
-
-            child: Stack(
-              clipBehavior:
-                  Clip.none,
-
-              children: [
-
-                _buildCircleButton(
-                  icon:
-                      Icons.shopping_bag_outlined,
-                  onTap: () {
-                    context.push('/cart');
-                  },
-                ),
-
-                if (quantity > 0)
-                  Positioned(
-                    right: -2,
-                    top: -4,
-
-                    child: Container(
-                      width: 20,
-                      height: 20,
-
-                      decoration:
-                          const BoxDecoration(
-                        color:
-                            AppStyles.badgeRed,
-                        shape:
-                            BoxShape.circle,
-                      ),
-
-                      child: Center(
-                        child: Text(
-                          '$quantity',
-
-                          style:
-                              const TextStyle(
-                            color:
-                                Colors.white,
-                            fontSize: 10,
-                            fontWeight:
-                                FontWeight.bold,
-                          ),
+    return Container(
+      color: const Color(0xFFE8F0E9),
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            // ========== BARRE DU HAUT ==========
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+              child: Row(
+                children: [
+                  // Retour
+                  Material(
+                    color: const Color(0xFF7CB88A),
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: () => context.pop(),
+                      child: const SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 18,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-              ],
-            ),
-          ),
-
-          // ====================================================
-          // MINIATURES
-          // ====================================================
-
-          if (jouet.image.length > 1)
-            Positioned(
-              left: 20,
-              bottom: 15,
-              right: 20,
-
-              child: SizedBox(
-                height: 65,
-
-                child: ListView.separated(
-                  scrollDirection:
-                      Axis.horizontal,
-
-                  itemCount:
-                      jouet.image.length,
-
-                  separatorBuilder:
-                      (_, __) =>
-                          const SizedBox(
-                    width: 10,
-                  ),
-
-                  itemBuilder:
-                      (context, index) {
-
-                    final selected =
-                        _selectedImage ==
-                            index;
-
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedImage =
-                              index;
-                        });
-                      },
-
-                      child: AnimatedContainer(
-                        duration:
-                            const Duration(
-                          milliseconds: 200,
-                        ),
-
-                        width: 65,
-                        height: 65,
-
-                        padding:
-                            const EdgeInsets.all(
-                          3,
-                        ),
-
-                        decoration:
-                            BoxDecoration(
-                          color:
-                              Colors.white,
-
-                          borderRadius:
-                              BorderRadius
-                                  .circular(
-                            14,
-                          ),
-
-                          border: Border.all(
-                            color: selected
-                                ? AppStyles
-                                    .primary
-                                : Colors
-                                    .transparent,
-
-                            width: 2,
-                          ),
-
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors
-                                  .black
-                                  .withValues(
-                                alpha: 0.08,
+                  const Spacer(),
+                  // Favoris
+                  Builder(
+                    builder: (context) {
+                      final favorisIds = ref.watch(favorisControllerProvider);
+                      final isFavori = favorisIds.contains(jouet.id);
+                      return Material(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        shape: const CircleBorder(),
+                        elevation: 1,
+                        shadowColor: Colors.black26,
+                        child: InkWell(
+                          customBorder: const CircleBorder(),
+                          onTap: () {
+                            ref
+                                .read(favorisControllerProvider.notifier)
+                                .toggleFavori(jouet.id);
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  isFavori
+                                      ? '${jouet.nomJouet} retiré des favoris'
+                                      : '${jouet.nomJouet} ajouté aux favoris',
+                                ),
+                                backgroundColor:
+                                    const Color.fromRGBO(230, 126, 34, 1),
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                duration: const Duration(seconds: 2),
                               ),
-                              blurRadius: 8,
+                            );
+                          },
+                          child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Icon(
+                              isFavori
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              size: 20,
+                              color: isFavori
+                                  ? const Color.fromARGB(255, 214, 13, 13)
+                                  : AppStyles.textDark,
                             ),
-                          ],
-                        ),
-
-                        child: ClipRRect(
-                          borderRadius:
-                              BorderRadius
-                                  .circular(
-                            11,
                           ),
-
-                          child:
-                              Image.network(
-                            jouet.image[
-                                index],
-
-                            fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  // Panier
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          customBorder: const CircleBorder(),
+                          onTap: () => context.push('/cart'),
+                          child: const SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Icon(
+                              Icons.shopping_cart_outlined,
+                              size: 24,
+                              color: Color(0xFF3D4A3E),
+                            ),
                           ),
                         ),
                       ),
-                    );
-                  },
+                      if (quantity > 0)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            width: 18,
+                            height: 18,
+                            decoration: const BoxDecoration(
+                              color: AppStyles.badgeRed,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                '$quantity',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // ========== IMAGE PRINCIPALE ==========
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Container(
+                  height: 270,
+                  width: double.infinity,
+                  color: Colors.white.withValues(alpha: 0.35),
+                  child: !hasImages
+                      ? const Center(
+                          child: Icon(
+                            Icons.image_not_supported_outlined,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
+                        )
+                      : PageView.builder(
+                          controller: _pageController,
+                          itemCount: jouet.image.length,
+                          onPageChanged: (index) {
+                            setState(() => _selectedImage = index);
+                          },
+                          itemBuilder: (context, index) {
+                            return Image.network(
+                              jouet.image[index],
+                              fit: BoxFit.contain,
+                              width: double.infinity,
+                              height: double.infinity,
+                              errorBuilder: (_, __, ___) => const Center(
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 64,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color.fromRGBO(230, 126, 34, 1),
+                                    strokeWidth: 2.5,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
                 ),
               ),
             ),
-        ],
+
+            // ========== POINTS INDICATEURS ==========
+            if (hasMultipleImages) ...[
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(jouet.image.length, (index) {
+                  final selected = _selectedImage == index;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    margin: const EdgeInsets.symmetric(horizontal: 3.5),
+                    width: selected ? 18 : 7,
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? const Color.fromRGBO(230, 126, 34, 1)
+                          : Colors.white.withValues(alpha: 0.9),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.10),
+                          blurRadius: 3,
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ),
+            ],
+
+            // ========== MINIATURES ==========
+            if (hasMultipleImages)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+                child: SizedBox(
+                  height: 62,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: jouet.image.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    itemBuilder: (context, index) {
+                      final selected = _selectedImage == index;
+                      return GestureDetector(
+                        onTap: () {
+                          _pageController.animateToPage(
+                            index,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          width: 62,
+                          height: 62,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: selected
+                                  ? const Color.fromRGBO(230, 126, 34, 1)
+                                  : Colors.white.withValues(alpha: 0.8),
+                              width: selected ? 2.5 : 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(
+                                  alpha: selected ? 0.12 : 0.06,
+                                ),
+                                blurRadius: selected ? 8 : 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(3),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              jouet.image[index],
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => const Icon(
+                                Icons.image_not_supported,
+                                size: 20,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
+            else
+              const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }
 
-  // ==========================================================
-  // BOUTON CERCLE
-  // ==========================================================
-
   Widget _buildCircleButton({
     required IconData icon,
     required VoidCallback onTap,
+    Color? iconColor,
   }) {
     return Material(
       color: Colors.white,
       elevation: 4,
-
-      shadowColor:
-          Colors.black.withValues(
-        alpha: 0.15,
-      ),
-
+      shadowColor: Colors.black.withValues(alpha: 0.15),
       shape: const CircleBorder(),
-
       child: InkWell(
         onTap: onTap,
-
-        customBorder:
-            const CircleBorder(),
-
+        customBorder: const CircleBorder(),
         child: SizedBox(
           width: 46,
           height: 46,
-
           child: Icon(
             icon,
             size: 21,
-            color: AppStyles.textDark,
+            color: iconColor ?? AppStyles.textDark,
           ),
         ),
       ),
@@ -979,6 +930,7 @@ class _JouetdetailState
                   (avisItem) {
                     return _buildReviewCard(
                       avis: avisItem,
+                      jouet: jouet,
                     );
                   },
                 ),
@@ -986,11 +938,12 @@ class _JouetdetailState
               const SizedBox(height: 5),
 
               // ==================================================
-              // REDIGER UN AVIS
+              // REDIGER / MODIFIER UN AVIS
               // ==================================================
 
               _buildWriteReviewButton(
                 jouet,
+                avis,
               ),
             ],
           );
@@ -1111,213 +1064,213 @@ class _JouetdetailState
   // CARTE AVIS
   // ==========================================================
 
+  String _formatDate(DateTime date) {
+    final d = date.day.toString().padLeft(2, '0');
+    final m = date.month.toString().padLeft(2, '0');
+    final y = date.year.toString();
+    return '$d/$m/$y';
+  }
+
   Widget _buildReviewCard({
     required AvisModel avis,
+    required JouetModel jouet,
   }) {
+    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+    final isMonAvis = currentUserId != null && currentUserId == avis.userId;
+
     return Container(
       width: double.infinity,
-
-      margin:
-          const EdgeInsets.only(
-        bottom: 12,
-      ),
-
-      padding:
-          const EdgeInsets.all(16),
-
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-
-        borderRadius:
-            BorderRadius.circular(20),
-
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Colors.black
-              .withValues(alpha: 0.04),
+          color: isMonAvis
+              ? const Color.fromRGBO(230, 126, 34, 0.35)
+              : Colors.black.withValues(alpha: 0.04),
         ),
       ),
-
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Row(
             children: [
-
-              // ==================================================
-              // AVATAR
-              // ==================================================
-
               CircleAvatar(
                 radius: 21,
-
-                backgroundColor:
-                    AppStyles.primarySoft,
-
+                backgroundColor: AppStyles.primarySoft,
                 child: const Icon(
                   Icons.person,
-                  color:
-                      AppStyles.primary,
+                  color: AppStyles.primary,
                   size: 21,
                 ),
               ),
-
               const SizedBox(width: 10),
-
-              // ==================================================
-              // UTILISATEUR
-              // ==================================================
-
               Expanded(
-                child: FutureBuilder<
-                    DocumentSnapshot<
-                        Map<String,
-                            dynamic>>>(
-                  future:
-                      FirebaseFirestore
-                          .instance
-                          .collection(
-                              'users')
-                          .doc(
-                              avis.userId)
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      future: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(avis.userId)
                           .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Text(
+                            'Chargement...',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        }
 
-                  builder:
-                      (
-                    context,
-                    snapshot,
-                  ) {
+                        final data = snapshot.data?.data();
+                        if (data == null) {
+                          return Text(
+                            isMonAvis ? 'Vous' : 'Utilisateur',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        }
 
-                    if (snapshot
-                            .connectionState ==
-                        ConnectionState
-                            .waiting) {
-                      return const Text(
-                        'Chargement...',
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      );
-                    }
+                        final prenom = data['prenom']?.toString().trim() ?? '';
+                        final nom = data['nom']?.toString().trim() ?? '';
+                        final email = data['email']?.toString().trim() ?? '';
 
-                    final data =
-                        snapshot.data
-                            ?.data();
+                        String nomUtilisateur;
+                        if (prenom.isNotEmpty && nom.isNotEmpty) {
+                          nomUtilisateur = '$prenom $nom';
+                        } else if (prenom.isNotEmpty) {
+                          nomUtilisateur = prenom;
+                        } else if (nom.isNotEmpty) {
+                          nomUtilisateur = nom;
+                        } else if (email.isNotEmpty) {
+                          nomUtilisateur = email;
+                        } else {
+                          nomUtilisateur = isMonAvis ? 'Vous' : 'Utilisateur';
+                        }
 
-                    if (data == null) {
-                      return const Text(
-                        'Utilisateur',
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      );
-                    }
-
-                    final prenom =
-                        data['prenom']
-                                ?.toString()
-                                .trim() ??
-                            '';
-
-                    final nom =
-                        data['nom']
-                                ?.toString()
-                                .trim() ??
-                            '';
-
-                    final email =
-                        data['email']
-                                ?.toString()
-                                .trim() ??
-                            '';
-
-                    String nomUtilisateur;
-
-                    if (prenom.isNotEmpty &&
-                        nom.isNotEmpty) {
-                      nomUtilisateur =
-                          '$prenom $nom';
-                    } else if (
-                        prenom.isNotEmpty) {
-                      nomUtilisateur =
-                          prenom;
-                    } else if (
-                        nom.isNotEmpty) {
-                      nomUtilisateur =
-                          nom;
-                    } else if (
-                        email.isNotEmpty) {
-                      nomUtilisateur =
-                          email;
-                    } else {
-                      nomUtilisateur =
-                          'Utilisateur';
-                    }
-
-                    return Text(
-                      nomUtilisateur,
-
-                      overflow:
-                          TextOverflow.ellipsis,
-
-                      style:
-                          const TextStyle(
-                        fontWeight:
-                            FontWeight.bold,
-                        color:
-                            AppStyles.textDark,
+                        return Text(
+                          isMonAvis ? '$nomUtilisateur (vous)' : nomUtilisateur,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppStyles.textDark,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      _formatDate(avis.date),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppStyles.textMuted,
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
-
-              // ==================================================
-              // NOTE
-              // ==================================================
-
               Row(
-                children:
-                    List.generate(
-                  5,
-                  (index) {
-                    return Icon(
-                      index < avis.note
-                          ? Icons.star
-                          : Icons.star_border,
-
-                      size: 16,
-
-                      color:
-                          const Color(
-                        0xFFFFC400,
-                      ),
-                    );
-                  },
-                ),
+                children: List.generate(5, (index) {
+                  return Icon(
+                    index < avis.note ? Icons.star : Icons.star_border,
+                    size: 16,
+                    color: const Color(0xFFFFC400),
+                  );
+                }),
               ),
             ],
           ),
-
           const SizedBox(height: 12),
-
           Text(
             avis.commentaire,
-
             style: const TextStyle(
               fontSize: 13,
               height: 1.5,
-              color:
-                  AppStyles.textMuted,
+              color: AppStyles.textMuted,
             ),
+          ),
+          if (isMonAvis) ...[
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    context.pushNamed(
+                      AppRoutes.redigerAvis.name,
+                      extra: {
+                        'jouet': jouet,
+                        'avis': avis,
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.edit_outlined, size: 18),
+                  label: const Text('Modifier'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color.fromRGBO(230, 126, 34, 1),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => _confirmerSuppressionAvis(jouet, avis),
+                  icon: const Icon(Icons.delete_outline, size: 18),
+                  label: const Text('Supprimer'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.redAccent,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Future<void> _confirmerSuppressionAvis(
+    JouetModel jouet,
+    AvisModel avis,
+  ) async {
+    final confirmer = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Supprimer l\'avis'),
+        content: const Text(
+          'Voulez-vous vraiment supprimer votre avis ? Cette action est irréversible.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Supprimer'),
           ),
         ],
       ),
     );
+
+    if (confirmer != true || !mounted) return;
+
+    try {
+      await _avisRepository.supprimerAvis(
+        jouetId: jouet.id,
+        avisId: avis.id,
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Votre avis a été supprimé.'),
+          backgroundColor: Color.fromRGBO(230, 126, 34, 1),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la suppression : $e')),
+      );
+    }
   }
 
   // ==========================================================
@@ -1440,6 +1393,7 @@ class _JouetdetailState
 
         _buildWriteReviewButton(
           jouet,
+          const [],
         ),
       ],
     );
@@ -1451,52 +1405,56 @@ class _JouetdetailState
 
   Widget _buildWriteReviewButton(
     JouetModel jouet,
+    List<AvisModel> avisList,
   ) {
+    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
+    // Si l'utilisateur a déjà un avis, on n'affiche pas le bouton
+    // (la modification se fait via le bouton sur la carte d'avis)
+    if (currentUserId != null) {
+      final dejaNote = avisList.any((a) => a.userId == currentUserId);
+      if (dejaNote) {
+        return const SizedBox.shrink();
+      }
+    }
+
     return SizedBox(
       width: double.infinity,
-
       child: OutlinedButton.icon(
         onPressed: () {
+          if (currentUserId == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Vous devez être connecté pour laisser un avis.'),
+              ),
+            );
+            return;
+          }
 
           context.pushNamed(
             AppRoutes.redigerAvis.name,
-            extra: jouet,
+            extra: {
+              'jouet': jouet,
+              'avis': null,
+            },
           );
         },
-
-        icon: const Icon(
-          Icons.edit_outlined,
-        ),
-
+        icon: const Icon(Icons.rate_review_outlined),
         label: const Text(
           'Rédiger un avis',
           style: TextStyle(
-            fontWeight:
-                FontWeight.w600,
+            fontWeight: FontWeight.w600,
           ),
         ),
-
-        style:
-            OutlinedButton.styleFrom(
-          foregroundColor:
-              AppStyles.primary,
-
+        style: OutlinedButton.styleFrom(
+          foregroundColor: const Color.fromRGBO(230, 126, 34, 1),
           side: const BorderSide(
-            color:
-                AppStyles.primary,
+            color: Color.fromRGBO(230, 126, 34, 1),
+            width: 1.5,
           ),
-
-          padding:
-              const EdgeInsets.symmetric(
-            vertical: 15,
-          ),
-
-          shape:
-              RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(
-              15,
-            ),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
       ),
@@ -1628,7 +1586,7 @@ class _JouetdetailState
                         ),
 
                         backgroundColor:
-                            AppStyles.primary,
+                            const Color.fromRGBO(230, 126, 34, 1),
 
                         behavior:
                             SnackBarBehavior
@@ -1661,22 +1619,12 @@ class _JouetdetailState
                     ),
                   ),
 
-                  style: ElevatedButton
-                      .styleFrom(
-                    backgroundColor:
-                        AppStyles.primary,
-
-                    foregroundColor:
-                        Colors.white,
-
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(230, 126, 34, 1),
+                    foregroundColor: Colors.white,
                     elevation: 0,
-
-                    shape:
-                        RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(
-                        16,
-                      ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                 ),

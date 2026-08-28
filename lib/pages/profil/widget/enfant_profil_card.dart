@@ -4,7 +4,10 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 class EnfantProfilCard extends StatelessWidget {
   final EnfantModel enfant;
 
-  const EnfantProfilCard({super.key, required this.enfant});
+  const EnfantProfilCard({
+    super.key,
+    required this.enfant,
+  });
 
   int _calculerAge(DateTime dateNaissance) {
     final aujourdhui = DateTime.now();
@@ -81,9 +84,7 @@ class EnfantProfilCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      sexeTexte.isNotEmpty
-                          ? sexeTexte
-                          : 'Féminin', // Remplacez 'Féminin' par votre valeur par défaut si besoin
+                      sexeTexte.isNotEmpty ? sexeTexte : 'Féminin', // Remplacez 'Féminin' par votre valeur par défaut si besoin
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -98,7 +99,11 @@ class EnfantProfilCard extends StatelessWidget {
         ),
 
         // CHEVRON NAVIGATION
-        const Icon(Icons.chevron_right_rounded, color: Colors.black, size: 24),
+        const Icon(
+          Icons.chevron_right_rounded,
+          color: Colors.black,
+          size: 24,
+        ),
       ],
     );
   }
@@ -106,7 +111,7 @@ class EnfantProfilCard extends StatelessWidget {
   Widget _buildAvatar() {
     if (enfant.avatarUrl != null && enfant.avatarUrl!.isNotEmpty) {
       return ClipOval(
-        child: Image.asset(
+        child: Image.network(
           enfant.avatarUrl!,
           width: 55,
           height: 55,

@@ -43,6 +43,11 @@ class AuthRepository {
       type: type,
     );
 
+     // On convertit en JSON et on ajoute dynamiquement la date du serveur
+    final Map<String, dynamic> userData = userModel.toJson();
+    userData['date_inscription'] = FieldValue.serverTimestamp(); // Enregistre l'heure précise de l'inscription
+
+
     await _firestore
         .collection('users')
         .doc(cred.user!.uid)
@@ -85,6 +90,7 @@ class AuthRepository {
   await auth.sendPasswordResetEmail(email: email);
 }
 }
+
 
 @riverpod
 AuthRepository authRepository(Ref ref) {
