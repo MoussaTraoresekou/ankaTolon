@@ -11,6 +11,7 @@ class ActiviteModel {
   final int ageMin;
   final int ageMax;
   final DateTime dateCreation;
+  
 
   const ActiviteModel({
     required this.id,

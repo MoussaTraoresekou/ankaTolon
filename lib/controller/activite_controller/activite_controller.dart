@@ -26,7 +26,6 @@ class ActiviteController extends _$ActiviteController {
 
     state = const AsyncLoading();
 
-    // --- SEULE ZONE MODIFIÉE POUR L'IMAGE ---
     state = await AsyncValue.guard(
       () async {
         await ref.read(activiteRepositoryProvider).ajouterActivite(

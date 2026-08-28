@@ -264,6 +264,7 @@ class ActiviteRepository {
   Stream<List<CategorieModel>> watchCategories() {
   return _firestore
       .collection('categories')
+      .where('type', isEqualTo: 'activite')
       .snapshots()
       .map((snapshot) {
     return snapshot.docs.map((doc) {

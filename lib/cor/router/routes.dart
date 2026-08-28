@@ -447,7 +447,6 @@ GoRouter appRouter(Ref ref) {
               ),
             );
           }
-
           return ChoisirAvatarScreen(
             enfant: enfant,
             updatedData: updatedData,
