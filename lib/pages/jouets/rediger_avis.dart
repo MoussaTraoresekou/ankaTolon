@@ -227,14 +227,10 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(230, 126, 34, 1),
-                  foregroundColor: AppStyles.textInverse,
-                  disabledBackgroundColor: const Color.fromRGBO(
-                    230,
-                    126,
-                    34,
-                    1,
-                  ).withValues(alpha: 0.5),
+                  backgroundColor: AppStyles.primaryOrange,
+                  foregroundColor: Colors.textInverse,
+                  disabledBackgroundColor:
+                      AppStyles.primaryOrange.withValues(alpha: 0.5),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
