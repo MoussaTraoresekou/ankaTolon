@@ -15,12 +15,10 @@ extension AsyncValueUi on AsyncValue {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          icon: const Icon(
-            Icons.error,
-            color: Color(0xFF680C07),
-            size: 40,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
+          icon: Icon(Icons.error, color: Color(0xFF680C07), size: 40),
           title: Text(
             message,
             textAlign: TextAlign.center,
@@ -36,16 +34,21 @@ extension AsyncValueUi on AsyncValue {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF680C07),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
+                  child: Text(
                     'Fermer',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppStyles.textInverse,
                       fontFamily: 'Madimi One',
                     ),
                   ),
@@ -58,22 +61,22 @@ extension AsyncValueUi on AsyncValue {
     }
   }
 
-    void showSuccessDialog(BuildContext context, String message, VoidCallback onConfirm) {
+  void showSuccessDialog(
+    BuildContext context,
+    String message,
+    VoidCallback onConfirm,
+  ) {
     showDialog(
       context: context,
       barrierDismissible: false, // Oblige l'utilisateur à cliquer sur le bouton
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        icon: const Icon(
-          Icons.check_circle_outline,
-          color: Colors.green,
-          size: 54,
-        ),
+        icon: Icon(Icons.check_circle_outline, color: Colors.green, size: 54),
         title: Text(
           message,
           textAlign: TextAlign.center,
           style: AppStyles.normalTextStyle.copyWith(
-            color: Colors.black87,
+            color: AppStyles.textDark,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -84,17 +87,22 @@ extension AsyncValueUi on AsyncValue {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(); // Ferme le dialogue
                   onConfirm(); // Déclenche l'action de redirection
                 },
-                child: const Text(
+                child: Text(
                   'Continuer',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppStyles.textInverse,
                     fontFamily: 'Madimi One',
                     fontWeight: FontWeight.bold,
                   ),
@@ -107,8 +115,6 @@ extension AsyncValueUi on AsyncValue {
     );
   }
 
-  
-  
   String _errorMessage(Object? error) {
     if (error is FirebaseAuthException) {
       switch (error.code) {

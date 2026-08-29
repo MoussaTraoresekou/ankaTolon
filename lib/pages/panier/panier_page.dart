@@ -17,12 +17,25 @@ class PanierPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppStyles.bgColor,
+
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xFFF8FAF8),
+      //   elevation: 0,
+      //   title: const Text(
+      //     'Catalogue de jouets',
+      //     style: TextStyle(
+      //       fontSize: 18,
+      //       fontWeight: FontWeight.w700,
+      //       color: Color(0xFF171717),
+      //     ),
+      //   ),
+      // ),
       appBar: AppBar(
         title: const Text("Mon panier"),
         backgroundColor: AppStyles.bgColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(), // Retour fluide
+          icon: Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
+          onPressed: () => context.pop(),
         ),
       ),
       body: panier.items.isEmpty
@@ -41,7 +54,7 @@ class PanierPage extends ConsumerWidget {
                         margin: const EdgeInsets.only(bottom: 16),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppStyles.textInverse,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
@@ -82,7 +95,7 @@ class PanierPage extends ConsumerWidget {
                                     "4-6 ans", // Statique pour l'exemple, à adapter
                                     style: AppStyles.normalTextStyle.copyWith(
                                       fontSize: 12,
-                                      color: Colors.grey,
+                                      color: AppStyles.textMuted,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -105,7 +118,7 @@ class PanierPage extends ConsumerWidget {
                               child: Row(
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.remove, size: 18),
+                                    icon: Icon(Icons.remove, size: 18),
                                     onPressed: () => ref
                                         .read(panierProvider.notifier)
                                         .decrementItem(item.jouetId),
@@ -115,7 +128,7 @@ class PanierPage extends ConsumerWidget {
                                     style: AppStyles.titleTextStyle,
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.add, size: 18),
+                                    icon: Icon(Icons.add, size: 18),
                                     onPressed: () => ref
                                         .read(panierProvider.notifier)
                                         .incrementItem(item.jouetId),
@@ -146,12 +159,12 @@ class PanierPage extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
                       PrimaryButton(
                         label: "Passer commande",
-                        onPressed: () =>
-                            context.push('/checkout'), // Push pour fluidité
+                        onPressed: () => context.push('/checkout'),
                       ),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),

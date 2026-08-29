@@ -73,7 +73,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   Text(
                     'Inscription',
                     style: AppStyles.headingTextStyle.copyWith(
-                      color: Colors.black87,
+                      color: AppStyles.textDark,
                       fontWeight: FontWeight.w800,
                       fontSize: 30,
                     ),
@@ -92,7 +92,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   Text(
                     'Inscrivez-vous sur ankan tolon',
                     style: AppStyles.titleTextStyle.copyWith(
-                      color: Colors.black87,
+                      color: AppStyles.textDark,
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
                     ),
@@ -165,16 +165,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       children: [
                         TextSpan(
                           text: 'Vous avez un compte ? ',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: Colors.black87,
+                            color: AppStyles.textDark,
                           ),
                         ),
                         TextSpan(
                           text: "Se connecter",
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF0066CC),
+                            color: AppStyles.accentBlue,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
                           ),

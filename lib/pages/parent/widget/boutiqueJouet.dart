@@ -29,7 +29,7 @@ class BoutiquejouetSection extends StatelessWidget {
             child: Text(
               'Impossible de charger les jouets.',
               style: AppStyles.normalTextStyle.copyWith(
-                color: Colors.red,
+                color: AppStyles.badgeRed,
                 fontSize: 12,
               ),
             ),

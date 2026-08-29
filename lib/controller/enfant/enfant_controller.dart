@@ -4,7 +4,7 @@ import 'package:tolon/repository/enfant/enfant_repository.dart';
 
 part 'enfant_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class EnfantController extends _$EnfantController {
   @override
   FutureOr<void> build() async {}

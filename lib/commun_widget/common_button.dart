@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/cor/utils/size_config.dart';
+
 class CustomButton extends StatefulWidget {
   const CustomButton({
     super.key,
@@ -23,26 +24,30 @@ class _CustomButtonState extends State<CustomButton> {
     SizeConfig.init(context);
     return InkWell(
       onTap: widget.isLoading ? null : widget.onTap,
-      borderRadius: BorderRadius.circular(10), // Coins arrondis selon notre Figma
+      borderRadius: BorderRadius.circular(
+        10,
+      ), // Coins arrondis selon notre Figma
       child: Container(
         alignment: Alignment.center,
         height: SizeConfig.getProportionateHeight(48),
         width: SizeConfig.screenWidth,
         decoration: BoxDecoration(
-          color: widget.isLoading ? AppStyles.primaryOrange.withValues(alpha: 0.7) : AppStyles.primaryOrange,
+          color: widget.isLoading
+              ? const Color.fromRGBO(230, 126, 34, 1).withValues(alpha: 0.7)
+              : AppStyles.primaryOrange,
           borderRadius: BorderRadius.circular(10),
         ),
         child: widget.isLoading
-            ? const SizedBox(
+            ? SizedBox(
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: AppStyles.textInverse,
                   strokeWidth: 2,
                 ),
               )
             : Text(
-                widget.title, 
+                widget.title,
                 style: AppStyles.titleTextStyle.copyWith(color: Colors.white),
               ),
       ),

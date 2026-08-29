@@ -17,7 +17,7 @@ class Barrenavigation extends ConsumerWidget {
 
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
+      backgroundColor: AppStyles.textInverse,
       selectedItemColor: AppStyles.navbarColor,
       unselectedItemColor: Colors.black38,
       selectedFontSize: 11,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/commun_widget/favoris/bouton_favori.dart';
 import 'package:tolon/controller/catalogue/catalogue_controller.dart';
+import 'package:tolon/controller/panier/panier_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/firebase_options.dart';
 import 'package:tolon/pages/page_to_delete.dart';
@@ -14,24 +16,77 @@ class CataloguePage extends ConsumerStatefulWidget {
   const CataloguePage({super.key});
 
   @override
- ConsumerState<CataloguePage> createState() =>
-      _CataloguePageState();
+  ConsumerState<CataloguePage> createState() => _CataloguePageState();
 }
 
-class _CataloguePageState
-    extends ConsumerState<CataloguePage> {
-
-  final CatalogueController
-  _catalogueController =
-  CatalogueController();
+class _CataloguePageState extends ConsumerState<CataloguePage> {
+  final CatalogueController _catalogueController = CatalogueController();
 
   String selectedAge = 'Tous';
   String searchText = '';
 
   @override
   Widget build(BuildContext context) {
+    final panierState = ref.watch(panierProvider);
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAF8),
+      backgroundColor: AppStyles.bgColor,
+
+      appBar: AppBar(
+        backgroundColor: AppStyles.background,
+        elevation: 0,
+        title: Text(
+          'Catalogue de jouets',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: AppStyles.textDark,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.push('/cart');
+                  },
+                  icon: Icon(
+                    Icons.shopping_cart_outlined,
+                    color: AppStyles.textDark,
+                    size: 27,
+                  ),
+                ),
+                if (panierState.totalQuantity > 0)
+                  Positioned(
+                    right: 2,
+                    top: 0,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: AppStyles.textDark,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${panierState.totalQuantity}',
+                          style: TextStyle(
+                            color: AppStyles.textInverse,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
 
       body: SafeArea(
         child: Column(
@@ -40,29 +95,22 @@ class _CataloguePageState
             // ==================================================
             // TITRE
             // ==================================================
-
-            const Padding(
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 18,
-              ),
-              child: Text(
-                'Catalogue de jouets',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF171717),
-                ),
-              ),
-            ),
-
+            // const Padding(
+            //   padding: EdgeInsets.only(left: 20, right: 20, top: 18),
+            //   child: Text(
+            //     'Catalogue de jouets',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.w700,
+            //       color: Color(0xFF171717),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 15),
 
             // ==================================================
             // BARRE DE RECHERCHE
             // ==================================================
-
             _buildSearchBar(),
 
             const SizedBox(height: 17),
@@ -70,7 +118,6 @@ class _CataloguePageState
             // ==================================================
             // FILTRES ÂGE
             // ==================================================
-
             _buildAgeFilters(),
 
             const SizedBox(height: 24),
@@ -78,7 +125,6 @@ class _CataloguePageState
             // ==================================================
             // LISTE DES JOUETS
             // ==================================================
-
             Expanded(
               child: StreamBuilder<List<JouetModel>>(
                 stream: _catalogueController.getJouets(),
@@ -88,11 +134,10 @@ class _CataloguePageState
                   // CHARGEMENT
                   // ==================================================
 
-                  if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(
-                        color: Color(0xFF0AA361),
+                        color: AppStyles.successGreen,
                       ),
                     );
                   }
@@ -110,7 +155,7 @@ class _CataloguePageState
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Colors.red,
+                            color: AppStyles.badgeRed,
                           ),
                         ),
                       ),
@@ -137,10 +182,7 @@ class _CataloguePageState
                     return const Center(
                       child: Text(
                         'Aucun jouet trouvé',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     );
                   }
@@ -149,9 +191,7 @@ class _CataloguePageState
                   // GRILLE
                   // ==================================================
 
-                  return _buildProductGrid(
-                    filteredJouets,
-                  );
+                  return _buildProductGrid(filteredJouets);
                 },
               ),
             ),
@@ -167,12 +207,9 @@ class _CataloguePageState
     );
   }
 
-  
   Widget _buildSearchBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(
         height: 36,
         child: TextField(
@@ -185,45 +222,32 @@ class _CataloguePageState
           decoration: InputDecoration(
             hintText: 'Rechercher un jouet',
 
-            hintStyle: const TextStyle(
-              fontSize: 12,
-              color: Color(0xFF999999),
-            ),
+            hintStyle: TextStyle(fontSize: 12, color: AppStyles.textMuted),
 
-            prefixIcon: const Icon(
-              Icons.search,
-              size: 21,
-              color: Colors.black,
-            ),
+            prefixIcon: Icon(Icons.search, size: 21, color: AppStyles.textDark),
 
             filled: true,
 
-            fillColor: Colors.white,
+            fillColor: AppStyles.textInverse,
 
             contentPadding: EdgeInsets.zero,
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: const BorderSide(
-                color: Color(0xFFD8D8D8),
-              ),
+              borderSide: BorderSide(color: AppStyles.textMuted),
             ),
 
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: const BorderSide(
-                color: Color(0xFFD8D8D8),
-              ),
+              borderSide: BorderSide(color: AppStyles.textMuted),
             ),
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: const BorderSide(
-                color: Color(0xFF0AA361),
-              ),
+              borderSide: BorderSide(color: AppStyles.primary),
             ),
           ),
         ),
@@ -236,28 +260,19 @@ class _CataloguePageState
   // ==================================================
 
   Widget _buildAgeFilters() {
-    final ages = [
-      'Tous',
-      '4-6 ans',
-      '7-9 ans',
-      '10-12 ans',
-    ];
+    final ages = ['Tous', '4-6 ans', '7-9 ans', '10-12 ans'];
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
 
-      padding: const EdgeInsets.symmetric(
-        horizontal: 35,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 35),
 
       child: Row(
         children: ages.map((age) {
           final selected = selectedAge == age;
 
           return Padding(
-            padding: const EdgeInsets.only(
-              right: 6,
-            ),
+            padding: const EdgeInsets.only(right: 6),
 
             child: GestureDetector(
               onTap: () {
@@ -269,18 +284,14 @@ class _CataloguePageState
               child: Container(
                 height: 33,
 
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 17,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 17),
 
                 decoration: BoxDecoration(
                   color: selected
-                      ? const Color(0xFF0AA361)
-                      : const Color(0xFFE0F0E5),
+                      ? AppStyles.successGreen
+                      : AppStyles.primarySoft,
 
-                  borderRadius: BorderRadius.circular(
-                    20,
-                  ),
+                  borderRadius: BorderRadius.circular(20),
                 ),
 
                 alignment: Alignment.center,
@@ -291,13 +302,11 @@ class _CataloguePageState
                   style: TextStyle(
                     fontSize: 11,
 
-                    fontWeight: selected
-                        ? FontWeight.w500
-                        : FontWeight.w400,
+                    fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
 
                     color: selected
-                        ? Colors.white
-                        : const Color(0xFF222222),
+                        ? AppStyles.textInverse
+                        : AppStyles.textDark,
                   ),
                 ),
               ),
@@ -308,11 +317,7 @@ class _CataloguePageState
     );
   }
 
- 
-
-  List<JouetModel> _filterJouets(
-    List<JouetModel> jouets,
-  ) {
+  List<JouetModel> _filterJouets(List<JouetModel> jouets) {
     return jouets.where((jouet) {
       bool matchesAge = true;
 
@@ -323,21 +328,15 @@ class _CataloguePageState
       if (selectedAge != 'Tous') {
         switch (selectedAge) {
           case '4-6 ans':
-            matchesAge =
-                jouet.ageMin <= 6 &&
-                jouet.ageMax >= 4;
+            matchesAge = jouet.ageMin <= 6 && jouet.ageMax >= 4;
             break;
 
           case '7-9 ans':
-            matchesAge =
-                jouet.ageMin <= 9 &&
-                jouet.ageMax >= 7;
+            matchesAge = jouet.ageMin <= 9 && jouet.ageMax >= 7;
             break;
 
           case '10-12 ans':
-            matchesAge =
-                jouet.ageMin <= 12 &&
-                jouet.ageMax >= 10;
+            matchesAge = jouet.ageMin <= 12 && jouet.ageMax >= 10;
             break;
         }
       }
@@ -346,29 +345,21 @@ class _CataloguePageState
       // RECHERCHE
       // ==================================================
 
-      final matchesSearch = jouet.nomJouet
-          .toLowerCase()
-          .contains(
-            searchText.toLowerCase(),
-          );
+      final matchesSearch = jouet.nomJouet.toLowerCase().contains(
+        searchText.toLowerCase(),
+      );
 
       return matchesAge && matchesSearch;
     }).toList();
   }
 
-  Widget _buildProductGrid(
-    List<JouetModel> jouets,
-  ) {
+  Widget _buildProductGrid(List<JouetModel> jouets) {
     return GridView.builder(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 5,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
 
       itemCount: jouets.length,
 
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
 
         crossAxisSpacing: 20,
@@ -379,40 +370,28 @@ class _CataloguePageState
       ),
 
       itemBuilder: (context, index) {
-        return _buildProductCard(
-          jouets[index],
-        );
+        return _buildProductCard(jouets[index]);
       },
     );
   }
 
- 
+  Widget _buildProductCard(JouetModel jouet) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(10),
 
-  Widget _buildProductCard(
-  JouetModel jouet,
-) {
-  return InkWell(
-    borderRadius: BorderRadius.circular(10),
+      onTap: () {
+        context.pushNamed(AppRoutes.jouetDetail.name, extra: jouet);
+      },
 
-    onTap: () {
-      context.pushNamed(
-        AppRoutes.jouetDetail.name,
-        extra: jouet,
-      );
-    },
-
-    child: Container(
-      
+      child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppStyles.textInverse,
 
           borderRadius: BorderRadius.circular(10),
 
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(
-                alpha: 0.18,
-              ),
+              color: AppStyles.shadowColor,
 
               blurRadius: 5,
 
@@ -428,7 +407,6 @@ class _CataloguePageState
             // ==================================================
             // IMAGE
             // ==================================================
-
             ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
@@ -444,63 +422,46 @@ class _CataloguePageState
 
                         fit: BoxFit.cover,
 
-                        loadingBuilder: (
-                          context,
-                          child,
-                          loadingProgress,
-                        ) {
+                        loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) {
                             return child;
                           }
 
-                          return const Center(
+                          return Center(
                             child: CircularProgressIndicator(
-                              color: Color(0xFF0AA361),
+                              color: AppStyles.successGreen,
                             ),
                           );
                         },
 
-                        errorBuilder: (
-                          context,
-                          error,
-                          stackTrace,
-                        ) {
+                        errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            color: const Color(
-                              0xFFEAF5ED,
-                            ),
+                            color: AppStyles.primarySoft,
 
-                            child: const Icon(
+                            child: Icon(
                               Icons.image_not_supported,
                               size: 40,
-                              color: Colors.grey,
+                              color: AppStyles.textMuted,
                             ),
                           );
                         },
                       )
                     : Container(
-                        color: const Color(
-                          0xFFEAF5ED,
-                        ),
+                        color: AppStyles.primarySoft,
 
-                        child: const Icon(
+                        child: Icon(
                           Icons.image,
                           size: 40,
-                          color: Colors.grey,
+                          color: AppStyles.textMuted,
                         ),
                       ),
               ),
             ),
 
-
-            const SizedBox(
-              height: 3,
-            ),
+            const SizedBox(height: 3),
 
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 4,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
 
               child: Text(
                 jouet.nomJouet,
@@ -511,38 +472,28 @@ class _CataloguePageState
 
                 textAlign: TextAlign.center,
 
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
 
                   fontWeight: FontWeight.w500,
 
-                  color: Colors.black,
+                  color: AppStyles.textDark,
                 ),
               ),
             ),
 
-            const SizedBox(
-              height: 3,
-            ),
+            const SizedBox(height: 3),
 
             // ==================================================
             // ÂGE
             // ==================================================
-
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 2,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
 
               decoration: BoxDecoration(
-                color: const Color(
-                  0xFFE5F2E8,
-                ),
+                color: AppStyles.boxSurfaceLight,
 
-                borderRadius: BorderRadius.circular(
-                  10,
-                ),
+                borderRadius: BorderRadius.circular(10),
               ),
 
               child: Text(
@@ -552,56 +503,29 @@ class _CataloguePageState
 
                 overflow: TextOverflow.ellipsis,
 
-                style: const TextStyle(
-                  fontSize: 9,
-
-                  color: Color(
-                    0xFF4B6A52,
-                  ),
-                ),
+                style: TextStyle(fontSize: 9, color: AppStyles.primary),
               ),
             ),
 
-            const SizedBox(
-              height: 4,
-            ),
+            const SizedBox(height: 4),
 
             // ==================================================
             // NOTE + PRIX + FAVORIS
             // ==================================================
-
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 7,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 7),
 
               child: Row(
                 children: [
                   // NOTE
-                  const Icon(
-                    Icons.star,
-                    color: Color(
-                      0xFFFFC400,
-                    ),
-                    size: 16,
-                  ),
+                  Icon(Icons.star, color: Color(0xFFFFC400), size: 16),
 
-                  const SizedBox(
-                    width: 2,
-                  ),
+                  const SizedBox(width: 2),
 
                   Text(
-                    jouet.noteMoyen.toStringAsFixed(
-                      1,
-                    ),
+                    jouet.noteMoyen.toStringAsFixed(1),
 
-                    style: const TextStyle(
-                      fontSize: 10,
-
-                      color: Color(
-                        0xFF777777,
-                      ),
-                    ),
+                    style: TextStyle(fontSize: 10, color: AppStyles.textMuted),
                   ),
 
                   const Spacer(),
@@ -613,34 +537,28 @@ class _CataloguePageState
 
                       maxLines: 1,
 
-                      overflow:
-                          TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
 
-                      textAlign:
-                          TextAlign.right,
+                      textAlign: TextAlign.right,
 
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 10,
 
-                        fontWeight:
-                            FontWeight.w500,
+                        fontWeight: FontWeight.w500,
 
-                        color: Colors.black,
+                        color: AppStyles.textDark,
                       ),
                     ),
                   ),
 
-                  const SizedBox(
-                    width: 2,
-                  ),
+                  const SizedBox(width: 2),
 
-                 BoutonFavori(jouetId: jouet.id),              ],
+                  BoutonFavori(jouetId: jouet.id),
+                ],
+              ),
             ),
-          ),
 
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 5),
           ],
         ),
       ),
@@ -659,9 +577,7 @@ Future<void> main() async {
   // FIREBASE
   // ==========================================================
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // ==========================================================
   // SUPABASE
@@ -669,18 +585,12 @@ Future<void> main() async {
 
   await Supabase.initialize(
     url: 'https://zoagjvcjrolrrlhdkhob.supabase.co',
-    anonKey:
-        'sb_publishable_KDK3Dxx_1XfarmHK1CI5YA_c4aRncjy',
+    anonKey: 'sb_publishable_KDK3Dxx_1XfarmHK1CI5YA_c4aRncjy',
   );
 
   // ==========================================================
   // APPLICATION
   // ==========================================================
 
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Page1(),
-    ),
-  );
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Page1()));
 }

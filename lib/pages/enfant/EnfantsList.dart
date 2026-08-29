@@ -50,7 +50,7 @@ class EnfantsListScreen extends ConsumerWidget {
                         color: Color(0xFFE2F1E4),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.chevron_left,
                         color: AppStyles.textDark,
                         size: 24,
@@ -58,7 +58,7 @@ class EnfantsListScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Text(
+                  Text(
                     'Mes enfants',
                     style: TextStyle(
                       fontSize: 22,
@@ -75,7 +75,7 @@ class EnfantsListScreen extends ConsumerWidget {
                 child: enfantsAsync.when(
                   data: (enfants) {
                     if (enfants.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Text(
                           'Aucun enfant enregistré pour le moment',
                           style: TextStyle(color: AppStyles.textMuted),
@@ -104,11 +104,17 @@ class EnfantsListScreen extends ConsumerWidget {
                           '$ageCalculated ans',
                           enfant.avatarUrl,
                           avatarBgColor: bgColor,
+                          onTap: () {
+                            context.pushNamed(
+                              AppRoutes.enfantProfil.name,
+                              extra: enfant,
+                            );
+                          },
                         );
                       },
                     );
                   },
-                  loading: () => const Center(
+                  loading: () => Center(
                     child: CircularProgressIndicator(color: AppStyles.primary),
                   ),
                   error: (error, stack) => const Center(
@@ -129,20 +135,18 @@ class EnfantsListScreen extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () => context.pushNamed(AppRoutes.addEnfant.name),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(
-                      0xFFE07A28,
-                    ), // Orange de la maquette
+                    backgroundColor: const Color(0xFFE07A28),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Ajouter un profil enfant',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppStyles.textInverse,
                     ),
                   ),
                 ),
@@ -159,81 +163,101 @@ class EnfantsListScreen extends ConsumerWidget {
     String ageText,
     String? avatarUrl, {
     required Color avatarBgColor,
+    required VoidCallback onTap,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppStyles.textInverse,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFF2D6A4F).withValues(alpha: 0.4), // Bordure verte fine
-          width: 1,
-        ),
+        border: Border.all(color: AppStyles.borderColor, width: 1),
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 36,
-            backgroundColor: avatarBgColor,
-            child: ClipOval(
-              child: avatarUrl != null && avatarUrl.isNotEmpty
-                  ? Image.asset(
-                      avatarUrl,
-                      width: 72,
-                      height: 72,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => const Icon(
-                        Icons.person,
-                        color: AppStyles.primary,
-                        size: 36,
-                      ),
-                    )
-                  : const Icon(
-                      Icons.person,
-                      color: AppStyles.primary,
-                      size: 36,
-                    ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
               children: [
-                Text(
-                  fullName,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppStyles.textDark,
+                CircleAvatar(
+                  radius: 36,
+                  backgroundColor: avatarBgColor,
+                  child: ClipOval(
+                    child: avatarUrl != null && avatarUrl.isNotEmpty
+                        ? (avatarUrl.startsWith('http')
+                              ? Image.network(
+                                  avatarUrl,
+                                  width: 72,
+                                  height: 72,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, _, _) => Icon(
+                                    Icons.person,
+                                    color: AppStyles.primary,
+                                    size: 36,
+                                  ),
+                                )
+                              : Image.asset(
+                                  avatarUrl,
+                                  width: 72,
+                                  height: 72,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, _, _) => Icon(
+                                    Icons.person,
+                                    color: AppStyles.primary,
+                                    size: 36,
+                                  ),
+                                ))
+                        : Icon(
+                            Icons.person,
+                            color: AppStyles.primary,
+                            size: 36,
+                          ),
                   ),
                 ),
-                const SizedBox(height: 6),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE2F1E4),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    ageText,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF2D6A4F),
-                    ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        fullName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppStyles.textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE2F1E4),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          ageText,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF2D6A4F),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                Icon(Icons.chevron_right, color: AppStyles.textMuted),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
