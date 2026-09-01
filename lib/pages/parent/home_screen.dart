@@ -46,8 +46,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               _buildChildrenList(),
               const SizedBox(height: 24),
               _buildSectionTitle(
-                'Jeux les plus notés',
-                'Voir tous les jeux',
+                'jouets les plus notés',
+                'Voir tous les jouets',
                 onTap: () {
                   context.pushNamed(AppRoutes.jouetList.name);
                 },

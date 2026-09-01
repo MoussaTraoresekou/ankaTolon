@@ -140,7 +140,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                   ),
                   _buildStatCard(
                     context,
-                    value: '${_currentEnfant.activitesRealisees ?? 32}',
+                    value: '${_currentEnfant.activitesRealisees.length}',
                     label: 'Activités',
                     imagePath: 'assets/images/activite.png',
                   ),
