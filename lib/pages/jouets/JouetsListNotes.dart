@@ -117,7 +117,7 @@ class JeuxListScreen extends ConsumerWidget {
   }
 
   Widget _buildJeuItemCard({
-    required context,
+    required BuildContext context,
     required String title,
     required double note,
     List<String>? images,

@@ -413,7 +413,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     required IconData icon,
     required String title,
     required String subtitle,
-    required context,
+    required BuildContext context,
   }) {
     return Row(
       children: [
@@ -513,7 +513,10 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     );
   }
 
-  Widget _buildVideoPicker({required bool isLoading, required context}) {
+  Widget _buildVideoPicker({
+    required bool isLoading,
+    required BuildContext context,
+  }) {
     if (_selectedVideo != null) {
       return Container(
         padding: const EdgeInsets.all(14),
@@ -654,7 +657,10 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     );
   }
 
-  Widget _buildSubmitButton({required bool isLoading, required context}) {
+  Widget _buildSubmitButton({
+    required bool isLoading,
+    required BuildContext context,
+  }) {
     return SizedBox(
       width: double.infinity,
       height: 54,

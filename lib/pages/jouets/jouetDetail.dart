@@ -130,7 +130,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                       final favorisIds = ref.watch(favorisControllerProvider);
                       final isFavori = favorisIds.contains(jouet.id);
                       return Material(
-                        color: Colors.white,
+                        color: context.textInverse,
                         shape: const CircleBorder(),
                         elevation: 1,
                         shadowColor: Colors.black26,
@@ -164,7 +164,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                               isFavori ? Icons.favorite : Icons.favorite_border,
                               size: 20,
                               color: isFavori
-                                  ? const Color.fromARGB(255, 214, 13, 13)
+                                  ? context.badgeRed
                                   : context.textDark,
                             ),
                           ),
@@ -178,7 +178,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                     clipBehavior: Clip.none,
                     children: [
                       Material(
-                        color: Colors.white,
+                        color: context.textInverse,
                         shape: const CircleBorder(),
                         elevation: 1,
                         shadowColor: Colors.black26,
@@ -399,6 +399,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       ),
     );
   }
+
   // INFORMATIONS PRODUIT
   Widget _buildProductInformation(JouetModel jouet) {
     return Padding(
@@ -695,6 +696,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       ),
     );
   }
+
   // RÉSUMÉ NOTE
   Widget _buildRatingSummary(double moyenne, int nombreAvis) {
     return Container(
@@ -764,6 +766,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       ),
     );
   }
+
   // CARTE AVIS
   String _formatDate(DateTime date) {
     final d = date.day.toString().padLeft(2, '0');
@@ -961,6 +964,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       );
     }
   }
+
   // AUCUN AVIS
   Widget _buildEmptyReviews() {
     return Container(

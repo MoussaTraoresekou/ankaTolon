@@ -39,10 +39,10 @@ class ActiviteCard extends StatelessWidget {
                         width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return _imagePlaceholder(context);
+                          return _imagePlaceholder(context: context);
                         },
                       )
-                    : _imagePlaceholder(context),
+                    : _imagePlaceholder(context: context),
               ),
             ),
 
@@ -115,7 +115,7 @@ class ActiviteCard extends StatelessWidget {
     );
   }
 
-  Widget _imagePlaceholder(context) {
+  Widget _imagePlaceholder({required BuildContext context}) {
     return Container(
       width: double.infinity,
       color: context.boxSurfaceLight,

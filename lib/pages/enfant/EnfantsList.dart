@@ -160,7 +160,7 @@ class EnfantsListScreen extends ConsumerWidget {
   }
 
   Widget _buildEnfantItemCard(
-    context,
+    BuildContext context,
     String fullName,
     String ageText,
     String? avatarUrl, {
