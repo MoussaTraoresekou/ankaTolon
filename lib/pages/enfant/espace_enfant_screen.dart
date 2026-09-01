@@ -419,7 +419,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: context.primary,
+                    color: context.primaryOrange,
                   ),
                 ),
                 const SizedBox(height: 2),
