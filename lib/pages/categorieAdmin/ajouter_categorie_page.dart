@@ -15,19 +15,18 @@ class AjouterCategoriePage extends StatefulWidget {
 class _AjouterCategoriePageState
     extends State<AjouterCategoriePage> {
 
-  // Controller
   final CategorieController controller =
   CategorieController();
 
-  // Controller du champ nom
   final TextEditingController nomController =
   TextEditingController();
 
   final GlobalKey<FormState> formKey =
   GlobalKey<FormState>();
 
-  // ajout d'une categorie
+  String? typeSelectionne;
 
+  // Ajouter une catégorie
   Future<void> ajouterCategorie() async {
 
     if (!formKey.currentState!.validate()) {
@@ -38,6 +37,7 @@ class _AjouterCategoriePageState
 
       await controller.ajouterCategorie(
         nomController.text.trim(),
+        typeSelectionne!,
       );
 
       if (!mounted) {
@@ -52,7 +52,6 @@ class _AjouterCategoriePageState
         ),
       );
 
-      // redirection vers la liste
       Navigator.pop(context);
 
     } catch (e) {
@@ -93,6 +92,10 @@ class _AjouterCategoriePageState
               child: Column(
                 children: [
 
+                  // =========================
+                  // HEADER
+                  // =========================
+
                   Row(
                     children: [
 
@@ -111,7 +114,6 @@ class _AjouterCategoriePageState
                         width: 5,
                       ),
 
-                      // Titre
                       const Expanded(
                         child: Column(
                           crossAxisAlignment:
@@ -146,7 +148,6 @@ class _AjouterCategoriePageState
                         ),
                       ),
 
-                      // Image
                       SizedBox(
                         width: 100,
                         height: 75,
@@ -163,7 +164,9 @@ class _AjouterCategoriePageState
                     height: 8,
                   ),
 
-
+                  // =========================
+                  // FORMULAIRE
+                  // =========================
 
                   Container(
                     width: double.infinity,
@@ -202,7 +205,6 @@ class _AjouterCategoriePageState
                           style: TextStyle(
                             fontWeight:
                             FontWeight.bold,
-
                             fontSize: 16,
                           ),
                         ),
@@ -210,6 +212,10 @@ class _AjouterCategoriePageState
                         const SizedBox(
                           height: 15,
                         ),
+
+                        // =========================
+                        // NOM
+                        // =========================
 
                         TextFormField(
                           controller:
@@ -221,7 +227,7 @@ class _AjouterCategoriePageState
                             'Nom de la catégorie',
 
                             hintText:
-                            'Exemple : Éducatif',
+                            'Exemple : Motricité',
 
                             border:
                             OutlineInputBorder(),
@@ -239,6 +245,65 @@ class _AjouterCategoriePageState
                             return null;
                           },
                         ),
+
+                        const SizedBox(
+                          height: 15,
+                        ),
+
+                        // =========================
+                        // TYPE
+                        // =========================
+
+                        DropdownButtonFormField<String>(
+                          value: typeSelectionne,
+
+                          decoration:
+                          const InputDecoration(
+                            labelText: 'Type',
+
+                            border:
+                            OutlineInputBorder(),
+                          ),
+
+                          items: const [
+
+                            DropdownMenuItem(
+                              value: 'Activité',
+
+                              child: Text(
+                                'Activité',
+                              ),
+                            ),
+
+                            DropdownMenuItem(
+                              value: 'Quiz',
+
+                              child: Text(
+                                'Quiz',
+                              ),
+                            ),
+                          ],
+
+                          onChanged: (value) {
+
+                            setState(() {
+                              typeSelectionne =
+                                  value;
+                            });
+                          },
+
+                          validator: (value) {
+
+                            if (value == null ||
+                                value.isEmpty) {
+
+                              return
+                                'Veuillez choisir le type';
+                            }
+
+                            return null;
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -247,7 +312,9 @@ class _AjouterCategoriePageState
                     height: 14,
                   ),
 
-
+                  // =========================
+                  // BOUTONS
+                  // =========================
 
                   Row(
                     mainAxisAlignment:
@@ -282,7 +349,8 @@ class _AjouterCategoriePageState
                           ElevatedButton.styleFrom(
                             backgroundColor:
                             const Color(
-                                0xFFE98219),
+                              0xFFE98219,
+                            ),
 
                             foregroundColor:
                             Colors.white,
@@ -308,9 +376,9 @@ class _AjouterCategoriePageState
     );
   }
 
-
   @override
   void dispose() {
+
     nomController.dispose();
 
     super.dispose();

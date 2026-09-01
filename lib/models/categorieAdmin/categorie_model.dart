@@ -1,16 +1,19 @@
 class Categorie {
   String id;
   String nom;
+  String type;
 
   Categorie({
     required this.id,
     required this.nom,
+    required this.type,
   });
 
   // Transformer l'objet en données Firebase
   Map<String, dynamic> toMap() {
     return {
       'nom': nom,
+      'type': type,
     };
   }
 
@@ -22,6 +25,7 @@ class Categorie {
     return Categorie(
       id: documentId,
       nom: map['nom'] ?? '',
+      type: map['type'] ?? '',
     );
   }
 }

@@ -16,7 +16,9 @@ class CategoriePage extends StatefulWidget {
       _CategoriePageState();
 }
 
-class _CategoriePageState extends State<CategoriePage> {
+class _CategoriePageState
+    extends State<CategoriePage> {
+
   final CategorieController controller =
   CategorieController();
 
@@ -31,8 +33,11 @@ class _CategoriePageState extends State<CategoriePage> {
     afficherCategories();
   }
 
+  // Afficher les catégories
   Future<void> afficherCategories() async {
+
     try {
+
       List<Categorie> resultat =
       await controller.afficherCategories();
 
@@ -44,7 +49,9 @@ class _CategoriePageState extends State<CategoriePage> {
         categories = resultat;
         chargement = false;
       });
+
     } catch (e) {
+
       if (!mounted) {
         return;
       }
@@ -59,10 +66,13 @@ class _CategoriePageState extends State<CategoriePage> {
     }
   }
 
+  // Supprimer une catégorie
   Future<void> supprimerCategorie(
       Categorie categorie,
       ) async {
+
     try {
+
       await controller.supprimerCategorie(
         categorie.id,
       );
@@ -76,7 +86,9 @@ class _CategoriePageState extends State<CategoriePage> {
       afficherMessage(
         'Catégorie supprimée avec succès',
       );
+
     } catch (e) {
+
       if (!mounted) {
         return;
       }
@@ -87,32 +99,49 @@ class _CategoriePageState extends State<CategoriePage> {
     }
   }
 
-  void afficherMessage(String message) {
+  // Message
+  void afficherMessage(
+      String message,
+      ) {
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFFFB),
+      backgroundColor:
+      const Color(0xFFFAFFFB),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 40,
             vertical: 18,
           ),
+
           child: Column(
             children: [
+
+              // =========================
+              // HEADER
+              // =========================
+
               Row(
                 children: [
+
                   IconButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
+
                     icon: const Icon(
                       Icons.arrow_back_ios,
                       size: 16,
@@ -127,12 +156,16 @@ class _CategoriePageState extends State<CategoriePage> {
                     child: Column(
                       crossAxisAlignment:
                       CrossAxisAlignment.start,
+
                       children: [
+
                         Text(
                           'Catégories',
+
                           style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontWeight:
+                            FontWeight.bold,
                           ),
                         ),
 
@@ -142,6 +175,7 @@ class _CategoriePageState extends State<CategoriePage> {
 
                         Text(
                           'Gérez les catégories de vos jouets',
+
                           style: TextStyle(
                             fontSize: 10,
                             color: Colors.grey,
@@ -151,31 +185,40 @@ class _CategoriePageState extends State<CategoriePage> {
                     ),
                   ),
 
+                  // Ajouter
                   ElevatedButton.icon(
                     onPressed: () {
+
                       Navigator.push(
                         context,
+
                         MaterialPageRoute(
                           builder: (context) =>
                           const AjouterCategoriePage(),
                         ),
+
                       ).then((value) {
                         afficherCategories();
                       });
                     },
+
                     icon: const Icon(
                       Icons.add,
                       size: 18,
                     ),
+
                     label: const Text(
                       'Ajouter',
                     ),
+
                     style:
                     ElevatedButton.styleFrom(
                       backgroundColor:
                       const Color(0xFFE98219),
+
                       foregroundColor:
                       Colors.white,
+
                       padding:
                       const EdgeInsets.symmetric(
                         horizontal: 15,
@@ -190,31 +233,45 @@ class _CategoriePageState extends State<CategoriePage> {
                 height: 20,
               ),
 
+              // =========================
+              // LISTE
+              // =========================
+
               Expanded(
                 child: Container(
                   width: double.infinity,
+
                   padding:
                   const EdgeInsets.all(18),
+
                   decoration: BoxDecoration(
                     color: Colors.white,
+
                     borderRadius:
                     BorderRadius.circular(12),
+
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black
                             .withOpacity(0.10),
+
                         blurRadius: 6,
+
                         offset:
                         const Offset(0, 2),
                       ),
                     ],
                   ),
+
                   child: Column(
                     crossAxisAlignment:
                     CrossAxisAlignment.start,
+
                     children: [
+
                       Row(
                         children: [
+
                           const Icon(
                             Icons.category_outlined,
                             size: 20,
@@ -226,14 +283,13 @@ class _CategoriePageState extends State<CategoriePage> {
 
                           const Text(
                             'Liste des catégories',
+
                             style: TextStyle(
                               fontWeight:
                               FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
-
-                          const Spacer(),
                         ],
                       ),
 
@@ -241,25 +297,39 @@ class _CategoriePageState extends State<CategoriePage> {
                         height: 15,
                       ),
 
+                      // =========================
+                      // CHARGEMENT
+                      // =========================
+
                       if (chargement)
+
                         const Expanded(
                           child: Center(
                             child:
                             CircularProgressIndicator(),
                           ),
                         )
+
+                      // =========================
+                      // AUCUNE CATEGORIE
+                      // =========================
+
                       else if (categories.isEmpty)
+
                         const Expanded(
                           child: Center(
                             child: Column(
                               mainAxisAlignment:
-                              MainAxisAlignment
-                                  .center,
+                              MainAxisAlignment.center,
+
                               children: [
+
                                 Icon(
                                   Icons
                                       .category_outlined,
+
                                   size: 50,
+
                                   color: Colors.grey,
                                 ),
 
@@ -269,9 +339,11 @@ class _CategoriePageState extends State<CategoriePage> {
 
                                 Text(
                                   'Aucune catégorie',
+
                                   style: TextStyle(
                                     color:
                                     Colors.grey,
+
                                     fontSize: 14,
                                   ),
                                 ),
@@ -279,37 +351,52 @@ class _CategoriePageState extends State<CategoriePage> {
                             ),
                           ),
                         )
+
+                      // =========================
+                      // LISTE
+                      // =========================
+
                       else
+
                         Expanded(
                           child:
                           ListView.builder(
+
                             itemCount:
                             categories.length,
+
                             itemBuilder:
                                 (context, index) {
+
                               Categorie categorie =
                               categories[index];
 
                               return Container(
+
                                 margin:
                                 const EdgeInsets
                                     .only(
                                   bottom: 10,
                                 ),
+
                                 padding:
                                 const EdgeInsets
                                     .all(12),
+
                                 decoration:
                                 BoxDecoration(
+
                                   color:
                                   const Color(
                                     0xFFFAFFFB,
                                   ),
+
                                   borderRadius:
                                   BorderRadius
                                       .circular(
                                     10,
                                   ),
+
                                   border:
                                   Border.all(
                                     color: Colors.grey
@@ -318,33 +405,43 @@ class _CategoriePageState extends State<CategoriePage> {
                                     ),
                                   ),
                                 ),
+
                                 child: Row(
                                   children: [
+
+                                    // Numéro
                                     Container(
                                       width: 38,
                                       height: 38,
+
                                       alignment:
                                       Alignment
                                           .center,
+
                                       decoration:
                                       BoxDecoration(
+
                                         color:
                                         const Color(
                                           0xFFFFF0E0,
                                         ),
+
                                         borderRadius:
                                         BorderRadius
                                             .circular(
                                           8,
                                         ),
                                       ),
+
                                       child: Text(
                                         '${index + 1}',
+
                                         style:
                                         const TextStyle(
                                           fontWeight:
                                           FontWeight
                                               .bold,
+
                                           color:
                                           Color(
                                             0xFFE98219,
@@ -357,19 +454,24 @@ class _CategoriePageState extends State<CategoriePage> {
                                       width: 12,
                                     ),
 
+                                    // Informations
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment
                                             .start,
+
                                         children: [
+
                                           Text(
                                             categorie
                                                 .nom,
+
                                             style:
                                             const TextStyle(
                                               fontSize:
                                               15,
+
                                               fontWeight:
                                               FontWeight
                                                   .bold,
@@ -381,11 +483,31 @@ class _CategoriePageState extends State<CategoriePage> {
                                           ),
 
                                           Text(
-                                            'ID : ${categorie.id}',
+                                            'Type : ${categorie.type}',
+
                                             style:
                                             const TextStyle(
                                               fontSize:
                                               11,
+
+                                              color:
+                                              Colors
+                                                  .grey,
+                                            ),
+                                          ),
+
+                                          const SizedBox(
+                                            height: 3,
+                                          ),
+
+                                          Text(
+                                            'ID : ${categorie.id}',
+
+                                            style:
+                                            const TextStyle(
+                                              fontSize:
+                                              11,
+
                                               color:
                                               Colors
                                                   .grey,
@@ -395,10 +517,13 @@ class _CategoriePageState extends State<CategoriePage> {
                                       ),
                                     ),
 
+                                    // Modifier
                                     IconButton(
                                       onPressed: () {
+
                                         Navigator.push(
                                           context,
+
                                           MaterialPageRoute(
                                             builder:
                                                 (context) =>
@@ -407,28 +532,35 @@ class _CategoriePageState extends State<CategoriePage> {
                                                   categorie,
                                                 ),
                                           ),
+
                                         ).then((value) {
                                           afficherCategories();
                                         });
                                       },
+
                                       icon:
                                       const Icon(
                                         Icons
                                             .edit_outlined,
+
                                         size: 20,
                                       ),
                                     ),
 
+                                    // Supprimer
                                     IconButton(
                                       onPressed: () {
+
                                         supprimerCategorie(
                                           categorie,
                                         );
                                       },
+
                                       icon:
                                       const Icon(
                                         Icons
                                             .delete_outline,
+
                                         size: 20,
                                       ),
                                     ),

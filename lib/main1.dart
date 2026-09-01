@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tolon/pages/DefisAdmin/ajout_defi_page.dart';
+import 'package:tolon/pages/DefisAdmin/liste_defis_page.dart';
+import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
 import 'package:tolon/pages/categorieAdmin/categorie.dart';
 
 import 'firebase_options.dart';
@@ -25,7 +28,7 @@ class MonApplication extends StatelessWidget {
 
       title: 'CRUD Catégories',
 
-      home: const CategoriePage(),
+      home: const ListeDefisPage(),
     );
   }
 }

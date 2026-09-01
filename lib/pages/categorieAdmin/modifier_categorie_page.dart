@@ -28,17 +28,23 @@ class _ModifierCategoriePageState
 
   late TextEditingController nomController;
 
+  String? typeSelectionne;
+
   @override
   void initState() {
     super.initState();
 
-    // preremplissage du champ avec ses propre info
+    // Remplir le nom existant
     nomController = TextEditingController(
       text: widget.categorie.nom,
     );
+
+    // Remplir le type existant
+    typeSelectionne =
+        widget.categorie.type;
   }
 
-
+  // Modifier
   Future<void> modifierCategorie() async {
 
     if (!formKey.currentState!.validate()) {
@@ -50,6 +56,7 @@ class _ModifierCategoriePageState
       await controller.modifierCategorie(
         widget.categorie.id,
         nomController.text.trim(),
+        typeSelectionne!,
       );
 
       if (!mounted) {
@@ -84,6 +91,7 @@ class _ModifierCategoriePageState
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor:
       const Color(0xFFFAFFFB),
@@ -102,6 +110,10 @@ class _ModifierCategoriePageState
 
               child: Column(
                 children: [
+
+                  // =========================
+                  // HEADER
+                  // =========================
 
                   Row(
                     children: [
@@ -171,6 +183,9 @@ class _ModifierCategoriePageState
                     height: 8,
                   ),
 
+                  // =========================
+                  // FORMULAIRE
+                  // =========================
 
                   Container(
                     width: double.infinity,
@@ -217,6 +232,9 @@ class _ModifierCategoriePageState
                           height: 15,
                         ),
 
+                        // =========================
+                        // ID
+                        // =========================
 
                         const Text(
                           'ID de la catégorie',
@@ -257,7 +275,9 @@ class _ModifierCategoriePageState
                           height: 15,
                         ),
 
-
+                        // =========================
+                        // NOM
+                        // =========================
 
                         TextFormField(
                           controller:
@@ -269,7 +289,7 @@ class _ModifierCategoriePageState
                             'Nom de la catégorie',
 
                             hintText:
-                            'Exemple : Éducatif',
+                            'Exemple : Motricité',
 
                             border:
                             OutlineInputBorder(),
@@ -287,6 +307,65 @@ class _ModifierCategoriePageState
                             return null;
                           },
                         ),
+
+                        const SizedBox(
+                          height: 15,
+                        ),
+
+                        // =========================
+                        // TYPE
+                        // =========================
+
+                        DropdownButtonFormField<String>(
+                          value: typeSelectionne,
+
+                          decoration:
+                          const InputDecoration(
+                            labelText: 'Type',
+
+                            border:
+                            OutlineInputBorder(),
+                          ),
+
+                          items: const [
+
+                            DropdownMenuItem(
+                              value: 'Activité',
+
+                              child: Text(
+                                'Activité',
+                              ),
+                            ),
+
+                            DropdownMenuItem(
+                              value: 'Quiz',
+
+                              child: Text(
+                                'Quiz',
+                              ),
+                            ),
+                          ],
+
+                          onChanged: (value) {
+
+                            setState(() {
+                              typeSelectionne =
+                                  value;
+                            });
+                          },
+
+                          validator: (value) {
+
+                            if (value == null ||
+                                value.isEmpty) {
+
+                              return
+                                'Veuillez choisir le type';
+                            }
+
+                            return null;
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -295,7 +374,9 @@ class _ModifierCategoriePageState
                     height: 14,
                   ),
 
-
+                  // =========================
+                  // BOUTONS
+                  // =========================
 
                   Row(
                     mainAxisAlignment:
@@ -330,7 +411,8 @@ class _ModifierCategoriePageState
                           ElevatedButton.styleFrom(
                             backgroundColor:
                             const Color(
-                                0xFFE98219),
+                              0xFFE98219,
+                            ),
 
                             foregroundColor:
                             Colors.white,
@@ -358,6 +440,7 @@ class _ModifierCategoriePageState
 
   @override
   void dispose() {
+
     nomController.dispose();
 
     super.dispose();

@@ -6,10 +6,14 @@ class CategorieController {
   CategorieRepository();
 
   // ajout
-  Future<void> ajouterCategorie(String nom) async {
+  Future<void> ajouterCategorie(
+      String nom,
+      String type,
+      ) async {
     Categorie categorie = Categorie(
       id: '',
       nom: nom,
+      type: type,
     );
 
     await repository.ajouterCategorie(categorie);
@@ -24,15 +28,15 @@ class CategorieController {
   Future<void> modifierCategorie(
       String id,
       String nouveauNom,
+      String nouveauType,
       ) async {
     Categorie categorie = Categorie(
       id: id,
       nom: nouveauNom,
+      type: nouveauType,
     );
 
-    await repository.modifierCategorie(
-      categorie,
-    );
+    await repository.modifierCategorie(categorie);
   }
 
   // suppression
