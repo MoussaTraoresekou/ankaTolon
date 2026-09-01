@@ -192,7 +192,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
   }
 
   // Carte verte : Points et Badges
-  Widget _buildStatsCard({required int points, required int badges, context}) {
+  Widget _buildStatsCard({required int points, required int badges, required BuildContext context}) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       decoration: BoxDecoration(
@@ -329,7 +329,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
     IconData? iconData,
     Color? iconColor,
     required VoidCallback onTap,
-    required context,
+    required BuildContext context,
   }) {
     return InkWell(
       onTap: onTap,
@@ -380,7 +380,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
   }
 
   // Section Défis du jour
-  Widget _buildDailyChallengeCard(context) {
+  Widget _buildDailyChallengeCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -415,7 +415,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: context.primary,
+                    color: context.primaryOrange,
                   ),
                 ),
                 const SizedBox(height: 2),
