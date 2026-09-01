@@ -77,13 +77,13 @@ class EnfantController extends _$EnfantController {
       avatarUrl: avatarUrl,
       points: 0,
       niveau: 1,
-      activitesRealisees: 0,
+      activitesRealisees: const [],
       defisRealises: const [],
       tutosTelecharges: const [],
     );
+
     state = const AsyncLoading();
 
-    // Appel Repository
     state = await AsyncValue.guard(
       () => ref.read(enfantRepositoryProvider).ajouterEnfant(enfant),
     );

@@ -87,23 +87,19 @@ class ActiviteController extends _$ActiviteController {
     return !state.hasError;
   }
 
-  /*
   Future<bool> marquerCommeTerminee({
     required String parentUid,
     required String enfantId,
+    required String activiteId,
   }) async {
     state = const AsyncLoading();
-
     state = await AsyncValue.guard(
-      () => ref
-          .read(enfantRepositoryProvider)
-          .incrementerActivitesRealisees(
+      () => ref.read(activiteRepositoryProvider).ajouterActiviteRealisee(
             parentUid: parentUid,
             enfantId: enfantId,
+            activiteId: activiteId,
           ),
     );
-
     return !state.hasError;
   }
-  */
 }
