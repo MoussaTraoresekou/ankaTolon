@@ -14,7 +14,7 @@ class TitreSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: AppStyles.titleTextStyle.copyWith(
+          style: context.titleTextStyle.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -29,9 +29,9 @@ class TitreSection extends StatelessWidget {
           ),
           child: Text(
             'Voir tout',
-            style: AppStyles.normalTextStyle.copyWith(
+            style: context.normalTextStyle.copyWith(
               fontSize: 13,
-              color: AppStyles.navbarColor,
+              color: context.navbarColor,
               fontWeight: FontWeight.w600,
             ),
           ),

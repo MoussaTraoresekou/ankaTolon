@@ -37,7 +37,7 @@ class ProfilHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: AppStyles.textDark,
+            color: context.textDark,
           ),
         ),
 

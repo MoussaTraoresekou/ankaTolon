@@ -47,7 +47,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     final panier = ref.watch(panierProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
 
       body: Stack(
         children: [
@@ -93,7 +93,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     final hasImages = jouet.image.isNotEmpty;
 
     return Container(
-      color: AppStyles.primarySoft,
+      color: context.primarySoft,
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -105,7 +105,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                 children: [
                   // Retour
                   Material(
-                    color: AppStyles.navbarColor,
+                    color: context.navbarColor,
                     shape: const CircleBorder(),
                     elevation: 1,
                     shadowColor: Colors.black26,
@@ -118,7 +118,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                         child: Icon(
                           Icons.arrow_back_ios_new,
                           size: 18,
-                          color: AppStyles.textInverse,
+                          color: context.textInverse,
                         ),
                       ),
                     ),
@@ -148,7 +148,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                                       ? '${jouet.nomJouet} retiré des favoris'
                                       : '${jouet.nomJouet} ajouté aux favoris',
                                 ),
-                                backgroundColor: AppStyles.primaryOrange,
+                                backgroundColor: context.primaryOrange,
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
@@ -165,7 +165,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                               size: 20,
                               color: isFavori
                                   ? const Color.fromARGB(255, 214, 13, 13)
-                                  : AppStyles.textDark,
+                                  : context.textDark,
                             ),
                           ),
                         ),
@@ -191,7 +191,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                             child: Icon(
                               Icons.shopping_cart_outlined,
                               size: 22,
-                              color: AppStyles.textDark,
+                              color: context.textDark,
                             ),
                           ),
                         ),
@@ -203,15 +203,15 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                           child: Container(
                             width: 18,
                             height: 18,
-                            decoration: const BoxDecoration(
-                              color: AppStyles.badgeRed,
+                            decoration: BoxDecoration(
+                              color: context.badgeRed,
                               shape: BoxShape.circle,
                             ),
                             child: Center(
                               child: Text(
                                 '$quantity',
                                 style: TextStyle(
-                                  color: AppStyles.textInverse,
+                                  color: context.textInverse,
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -240,7 +240,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                         ? Icon(
                             Icons.image_not_supported_outlined,
                             size: 64,
-                            color: AppStyles.textMuted,
+                            color: context.textMuted,
                           )
                         : PageView.builder(
                             controller: _pageController,
@@ -259,14 +259,14 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                                   child: Icon(
                                     Icons.image_not_supported_outlined,
                                     size: 64,
-                                    color: AppStyles.textMuted,
+                                    color: context.textMuted,
                                   ),
                                 ),
                                 loadingBuilder: (context, child, progress) {
                                   if (progress == null) return child;
-                                  return const Center(
+                                  return Center(
                                     child: CircularProgressIndicator(
-                                      color: AppStyles.primaryOrange,
+                                      color: context.primaryOrange,
                                       strokeWidth: 2.5,
                                     ),
                                   );
@@ -293,7 +293,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                     height: 7,
                     decoration: BoxDecoration(
                       color: selected
-                          ? AppStyles.primaryOrange
+                          ? context.primaryOrange
                           : Colors.white.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
@@ -333,11 +333,11 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                           width: 62,
                           height: 62,
                           decoration: BoxDecoration(
-                            color: AppStyles.textInverse,
+                            color: context.textInverse,
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
                               color: selected
-                                  ? AppStyles.primaryOrange
+                                  ? context.primaryOrange
                                   : Colors.white.withValues(alpha: 0.8),
                               width: selected ? 2.5 : 1.5,
                             ),
@@ -360,7 +360,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                               errorBuilder: (_, __, ___) => Icon(
                                 Icons.image_not_supported,
                                 size: 20,
-                                color: AppStyles.textMuted,
+                                color: context.textMuted,
                               ),
                             ),
                           ),
@@ -384,7 +384,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     Color? iconColor,
   }) {
     return Material(
-      color: AppStyles.textInverse,
+      color: context.textInverse,
       elevation: 4,
       shadowColor: Colors.black.withValues(alpha: 0.15),
       shape: const CircleBorder(),
@@ -394,7 +394,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         child: SizedBox(
           width: 46,
           height: 46,
-          child: Icon(icon, size: 21, color: iconColor ?? AppStyles.textDark),
+          child: Icon(icon, size: 21, color: iconColor ?? context.textDark),
         ),
       ),
     );
@@ -413,7 +413,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
 
             decoration: BoxDecoration(
-              color: AppStyles.primarySoft,
+              color: context.primarySoft,
 
               borderRadius: BorderRadius.circular(20),
             ),
@@ -422,7 +422,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               '${jouet.ageMin} - ${jouet.ageMax} ans',
 
               style: TextStyle(
-                color: AppStyles.primary,
+                color: context.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
@@ -439,7 +439,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               fontFamily: 'Quicksand',
               fontSize: 28,
               fontWeight: FontWeight.w700,
-              color: AppStyles.textDark,
+              color: context.textDark,
               height: 1.15,
             ),
           ),
@@ -463,7 +463,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   fontFamily: 'Quicksand',
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
-                  color: AppStyles.primary,
+                  color: context.primary,
                 ),
               ),
 
@@ -477,7 +477,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: AppStyles.textMuted,
+                    color: context.textMuted,
                   ),
                 ),
               ),
@@ -504,7 +504,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         padding: const EdgeInsets.all(20),
 
         decoration: BoxDecoration(
-          color: AppStyles.textInverse,
+          color: context.textInverse,
 
           borderRadius: BorderRadius.circular(24),
 
@@ -526,7 +526,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             // TITRE
             Row(
               children: [
-                Icon(Icons.auto_awesome, color: AppStyles.primary, size: 22),
+                Icon(Icons.auto_awesome, color: context.primary, size: 22),
 
                 SizedBox(width: 8),
 
@@ -536,7 +536,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                     fontFamily: 'Quicksand',
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
-                    color: AppStyles.textDark,
+                    color: context.textDark,
                   ),
                 ),
               ],
@@ -553,7 +553,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               style: TextStyle(
                 fontSize: 14,
                 height: 1.7,
-                color: AppStyles.textMuted,
+                color: context.textMuted,
               ),
             ),
             // BENEFICES
@@ -566,7 +566,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   fontFamily: 'Quicksand',
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
 
@@ -592,7 +592,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       padding: const EdgeInsets.all(13),
 
       decoration: BoxDecoration(
-        color: AppStyles.primarySoft,
+        color: context.primarySoft,
 
         borderRadius: BorderRadius.circular(15),
       ),
@@ -606,11 +606,11 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             height: 30,
 
             decoration: BoxDecoration(
-              color: AppStyles.primarySoft,
+              color: context.primarySoft,
               shape: BoxShape.circle,
             ),
 
-            child: Icon(Icons.check, size: 17, color: AppStyles.primary),
+            child: Icon(Icons.check, size: 17, color: context.primary),
           ),
 
           const SizedBox(width: 10),
@@ -622,7 +622,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               style: TextStyle(
                 fontSize: 13,
                 height: 1.4,
-                color: AppStyles.textDark,
+                color: context.textDark,
               ),
             ),
           ),
@@ -669,7 +669,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   fontFamily: 'Quicksand',
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
 
@@ -703,7 +703,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       padding: const EdgeInsets.all(20),
 
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
 
         borderRadius: BorderRadius.circular(22),
 
@@ -722,7 +722,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   fontFamily: 'Quicksand',
                   fontSize: 34,
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
 
@@ -743,7 +743,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               Text(
                 '$nombreAvis avis',
 
-                style: TextStyle(fontSize: 12, color: AppStyles.textMuted),
+                style: TextStyle(fontSize: 12, color: context.textMuted),
               ),
             ],
           ),
@@ -756,7 +756,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               style: TextStyle(
                 fontSize: 13,
                 height: 1.5,
-                color: AppStyles.textMuted,
+                color: context.textMuted,
               ),
             ),
           ),
@@ -784,11 +784,11 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isMonAvis
-              ? AppStyles.primaryOrange.withValues(alpha: 0.35)
+              ? context.primaryOrange.withValues(alpha: 0.35)
               : Colors.black.withValues(alpha: 0.04),
         ),
       ),
@@ -799,8 +799,8 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             children: [
               CircleAvatar(
                 radius: 21,
-                backgroundColor: AppStyles.primarySoft,
-                child: Icon(Icons.person, color: AppStyles.primary, size: 21),
+                backgroundColor: context.primarySoft,
+                child: Icon(Icons.person, color: context.primary, size: 21),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -851,7 +851,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppStyles.textDark,
+                            color: context.textDark,
                           ),
                         );
                       },
@@ -859,10 +859,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                     const SizedBox(height: 2),
                     Text(
                       _formatDate(avis.date),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppStyles.textMuted,
-                      ),
+                      style: TextStyle(fontSize: 12, color: context.textMuted),
                     ),
                   ],
                 ),
@@ -884,7 +881,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             style: TextStyle(
               fontSize: 13,
               height: 1.5,
-              color: AppStyles.textMuted,
+              color: context.textMuted,
             ),
           ),
           if (isMonAvis) ...[
@@ -902,7 +899,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   icon: Icon(Icons.edit_outlined, size: 18),
                   label: const Text('Modifier'),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppStyles.primaryOrange,
+                    foregroundColor: context.primaryOrange,
                   ),
                 ),
                 TextButton.icon(
@@ -910,7 +907,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   icon: Icon(Icons.delete_outline, size: 18),
                   label: const Text('Supprimer'),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppStyles.badgeRed,
+                    foregroundColor: context.badgeRed,
                   ),
                 ),
               ],
@@ -952,9 +949,9 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       await _avisRepository.supprimerAvis(jouetId: jouet.id, avisId: avis.id);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Votre avis a été supprimé.'),
-          backgroundColor: AppStyles.primaryOrange,
+          backgroundColor: context.primaryOrange,
         ),
       );
     } catch (e) {
@@ -972,7 +969,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
 
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
 
         borderRadius: BorderRadius.circular(20),
       ),
@@ -988,7 +985,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: AppStyles.textDark,
+              color: context.textDark,
             ),
           ),
 
@@ -998,7 +995,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             'Soyez le premier parent à partager votre expérience.',
             textAlign: TextAlign.center,
 
-            style: TextStyle(fontSize: 13, color: AppStyles.textMuted),
+            style: TextStyle(fontSize: 13, color: context.textMuted),
           ),
         ],
       ),
@@ -1010,7 +1007,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 40),
 
-      child: Center(child: CircularProgressIndicator(color: AppStyles.primary)),
+      child: Center(child: CircularProgressIndicator(color: context.primary)),
     );
   }
 
@@ -1035,7 +1032,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
         Text(
           'Impossible de charger les avis.',
-          style: TextStyle(color: AppStyles.textMuted),
+          style: TextStyle(color: context.textMuted),
         ),
 
         const SizedBox(height: 15),
@@ -1083,11 +1080,8 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppStyles.primaryOrange,
-          side: const BorderSide(
-            color: AppStyles.primaryOrange,
-            width: 1.5,
-          ),
+          foregroundColor: context.primaryOrange,
+          side: BorderSide(color: context.primaryOrange, width: 1.5),
           padding: const EdgeInsets.symmetric(vertical: 15),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -1103,7 +1097,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
 
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
 
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(25),
@@ -1135,7 +1129,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               children: [
                 Text(
                   'Prix',
-                  style: TextStyle(fontSize: 11, color: AppStyles.textMuted),
+                  style: TextStyle(fontSize: 11, color: context.textMuted),
                 ),
 
                 const SizedBox(height: 2),
@@ -1147,7 +1141,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                     fontFamily: 'Quicksand',
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
-                    color: AppStyles.textDark,
+                    color: context.textDark,
                   ),
                 ),
               ],
@@ -1169,8 +1163,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                       SnackBar(
                         content: Text('${jouet.nomJouet} ajouté au panier'),
 
-                        backgroundColor:
-                            AppStyles.primaryOrange,
+                        backgroundColor: context.primaryOrange,
 
                         behavior: SnackBarBehavior.floating,
 
@@ -1189,8 +1182,8 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   ),
 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppStyles.primaryOrange,
-                    foregroundColor: AppStyles.textInverse,
+                    backgroundColor: context.primaryOrange,
+                    foregroundColor: context.textInverse,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),

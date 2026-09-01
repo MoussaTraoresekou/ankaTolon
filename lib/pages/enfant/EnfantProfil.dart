@@ -38,7 +38,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
     final ageCalculated = _calculerAge(_currentEnfant.naissance);
 
     return Scaffold(
-      backgroundColor: AppStyles.background,
+      backgroundColor: context.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -50,7 +50,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 18,
-                color: AppStyles.textDark,
+                color: context.textDark,
               ),
               onPressed: () => context.pop(),
             ),
@@ -59,14 +59,14 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
         title: Text(
           'Profil',
           style: TextStyle(
-            color: AppStyles.textDark,
+            color: context.textDark,
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit_outlined, color: AppStyles.textDark),
+            icon: Icon(Icons.edit_outlined, color: context.textDark),
             onPressed: () async {
               final EnfantModel? enfantModifie = await context
                   .pushNamed<EnfantModel>(
@@ -111,7 +111,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
               const SizedBox(height: 4),
@@ -161,7 +161,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                 height: 54,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE67E22),
+                    backgroundColor: context.primaryOrange,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -178,7 +178,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppStyles.textInverse,
+                      color: context.textInverse,
                     ),
                   ),
                 ),
@@ -203,7 +203,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
       width: cardWidth,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -241,7 +241,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
             label,
             style: TextStyle(
               fontSize: 14,
-              color: AppStyles.textMuted,
+              color: context.textMuted,
               fontWeight: FontWeight.w500,
             ),
           ),

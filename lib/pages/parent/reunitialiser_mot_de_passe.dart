@@ -51,7 +51,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final state = ref.watch(authControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -70,8 +70,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     Text(
                       'Mot de passe oublié',
                       textAlign: TextAlign.center,
-                      style: AppStyles.headingTextStyle.copyWith(
-                        color: AppStyles.textDark,
+                      style: context.headingTextStyle.copyWith(
+                        color: context.textDark,
                       ),
                     ),
                     Align(
@@ -88,7 +88,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                           child: Icon(
                             Icons.arrow_back_ios_new_rounded,
                             size: 16,
-                            color: AppStyles.textDark,
+                            color: context.textDark,
                           ),
                         ),
                       ),
@@ -100,8 +100,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 Text(
                   'Entrez votre adresse email, nous vous enverrons un lien pour réinitialiser votre mot de passe.',
                   textAlign: TextAlign.center,
-                  style: AppStyles.normalTextStyle.copyWith(
-                    color: AppStyles.textMuted,
+                  style: context.normalTextStyle.copyWith(
+                    color: context.textMuted,
                   ),
                 ),
                 SizedBox(height: SizeConfig.getProportionateHeight(28)),

@@ -121,7 +121,7 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
                           hintText: 'Rechercher un jouet',
                           hintStyle: TextStyle(
                             fontSize: 11,
-                            color: AppStyles.textMuted,
+                            color: context.textMuted,
                           ),
                           prefixIcon: Icon(Icons.search, size: 17),
                           contentPadding: const EdgeInsets.symmetric(
@@ -160,7 +160,7 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFE98219),
-                        foregroundColor: AppStyles.textInverse,
+                        foregroundColor: context.textInverse,
                         padding: const EdgeInsets.symmetric(horizontal: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),
@@ -199,7 +199,7 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error, color: AppStyles.badgeRed, size: 40),
+            Icon(Icons.error, color: context.badgeRed, size: 40),
 
             const SizedBox(height: 10),
 
@@ -234,10 +234,10 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         boxShadow: [
           BoxShadow(
-            color: AppStyles.shadowColor,
+            color: context.shadowColor,
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -265,7 +265,7 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
                     child: Text(
                       'Catégorie',
                       style: TextStyle(
-                        color: AppStyles.textInverse,
+                        color: context.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -279,7 +279,7 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
                     child: Text(
                       'Âge',
                       style: TextStyle(
-                        color: AppStyles.textInverse,
+                        color: context.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -293,7 +293,7 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
                     child: Text(
                       'Prix',
                       style: TextStyle(
-                        color: AppStyles.textInverse,
+                        color: context.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -307,7 +307,7 @@ class _ListeJouetsPageState extends State<ListeJouetsPage> {
                     child: Text(
                       'Actions',
                       style: TextStyle(
-                        color: AppStyles.textInverse,
+                        color: context.textInverse,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),

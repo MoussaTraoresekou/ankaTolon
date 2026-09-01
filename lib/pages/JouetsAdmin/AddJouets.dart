@@ -191,7 +191,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                               'du nouveau jouet',
                               style: TextStyle(
                                 fontSize: 10,
-                                color: AppStyles.textMuted,
+                                color: context.textMuted,
                               ),
                             ),
                           ],
@@ -212,11 +212,11 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: AppStyles.textInverse,
+                      color: context.textInverse,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: AppStyles.shadowColor,
+                          color: context.shadowColor,
                           blurRadius: 7,
                           offset: const Offset(0, 3),
                         ),
@@ -284,7 +284,7 @@ class _AjouterJouetPageState extends State<AjouterJouetPage> {
                           onPressed: ajouterJouet,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFE98219),
-                            foregroundColor: AppStyles.textInverse,
+                            foregroundColor: context.textInverse,
                           ),
                           child: const Text('Ajouter'),
                         ),

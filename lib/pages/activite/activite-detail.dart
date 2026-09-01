@@ -25,16 +25,14 @@ class ActiviteDetailScreen extends ConsumerStatefulWidget {
       _ActiviteDetailScreenState();
 }
 
-class _ActiviteDetailScreenState
-    extends ConsumerState<ActiviteDetailScreen> {
+class _ActiviteDetailScreenState extends ConsumerState<ActiviteDetailScreen> {
   bool _activiteTerminee = false;
 
   @override
   void initState() {
     super.initState();
 
-    _activiteTerminee =
-        widget.enfantModel.activitesRealisees.any(
+    _activiteTerminee = widget.enfantModel.activitesRealisees.any(
       (item) => item['activite_id'] == widget.activite.id,
     );
   }
@@ -65,13 +63,9 @@ class _ActiviteDetailScreenState
         _activiteTerminee = true;
       });
 
-      state.showSuccessDialog(
-        context,
-        'Activité terminée avec succès !',
-        () {
-          context.pop();
-        },
-      );
+      state.showSuccessDialog(context, 'Activité terminée avec succès !', () {
+        context.pop();
+      });
     } else {
       state.showErrorDialog(context);
     }
@@ -87,7 +81,7 @@ class _ActiviteDetailScreenState
     final state = ref.watch(activiteControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -104,15 +98,15 @@ class _ActiviteDetailScreenState
                             thumbnailUrl: widget.activite.image,
                           )
                         : (widget.activite.image != null &&
-                                widget.activite.image!.isNotEmpty
-                            ? Image.network(
-                                widget.activite.image!,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return _imagePlaceholder();
-                                },
-                              )
-                            : _imagePlaceholder()),
+                                  widget.activite.image!.isNotEmpty
+                              ? Image.network(
+                                  widget.activite.image!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return _imagePlaceholder();
+                                  },
+                                )
+                              : _imagePlaceholder()),
                   ),
 
                   Positioned(
@@ -120,13 +114,10 @@ class _ActiviteDetailScreenState
                     left: 16,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppStyles.bgColor,
+                        color: context.bgColor,
                         shape: BoxShape.circle,
                         boxShadow: [
-                          BoxShadow(
-                            color: AppStyles.shadowColor,
-                            blurRadius: 8,
-                          ),
+                          BoxShadow(color: context.shadowColor, blurRadius: 8),
                         ],
                       ),
                       child: IconButton(
@@ -136,7 +127,7 @@ class _ActiviteDetailScreenState
                         icon: Icon(
                           Icons.arrow_back_ios_new,
                           size: 20,
-                          color: AppStyles.textDark,
+                          color: context.textDark,
                         ),
                       ),
                     ),
@@ -151,10 +142,10 @@ class _ActiviteDetailScreenState
                   children: [
                     Text(
                       widget.activite.titre,
-                      style: AppStyles.headingTextStyle.copyWith(
+                      style: context.headingTextStyle.copyWith(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                       ),
                     ),
 
@@ -164,8 +155,7 @@ class _ActiviteDetailScreenState
                       children: [
                         _InfoItem(
                           icon: Icons.timer_outlined,
-                          text:
-                              '${widget.activite.dureeMinutes} min',
+                          text: '${widget.activite.dureeMinutes} min',
                         ),
 
                         const SizedBox(width: 20),
@@ -185,7 +175,7 @@ class _ActiviteDetailScreenState
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                       ),
                     ),
 
@@ -196,7 +186,7 @@ class _ActiviteDetailScreenState
                       style: TextStyle(
                         fontSize: 15,
                         height: 1.6,
-                        color: AppStyles.textMuted,
+                        color: context.textMuted,
                       ),
                     ),
 
@@ -227,13 +217,13 @@ class _ActiviteDetailScreenState
                           state.isLoading
                               ? 'Enregistrement...'
                               : _activiteTerminee
-                                  ? 'Activité déjà terminée'
-                                  : 'Marquer comme terminée',
+                              ? 'Activité déjà terminée'
+                              : 'Marquer comme terminée',
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _activiteTerminee
                               ? Colors.grey
-                              : AppStyles.primaryOrange,
+                              : context.primaryOrange,
                           foregroundColor: Colors.white,
                           disabledBackgroundColor: Colors.grey,
                           disabledForegroundColor: Colors.white,
@@ -262,23 +252,16 @@ class _ActiviteDetailScreenState
 
   Widget _imagePlaceholder() {
     return Container(
-      color: AppStyles.boxSurfaceLight,
+      color: context.boxSurfaceLight,
       child: Center(
-        child: Icon(
-          Icons.image_outlined,
-          size: 60,
-          color: AppStyles.textMuted,
-        ),
+        child: Icon(Icons.image_outlined, size: 60, color: context.textMuted),
       ),
     );
   }
 }
 
 class _InfoItem extends StatelessWidget {
-  const _InfoItem({
-    required this.icon,
-    required this.text,
-  });
+  const _InfoItem({required this.icon, required this.text});
 
   final IconData icon;
   final String text;
@@ -287,18 +270,14 @@ class _InfoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: AppStyles.primaryOrange,
-        ),
+        Icon(icon, size: 20, color: context.primaryOrange),
         const SizedBox(width: 6),
         Text(
           text,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppStyles.textDark,
+            color: context.textDark,
           ),
         ),
       ],

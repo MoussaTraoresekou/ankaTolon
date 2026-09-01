@@ -13,12 +13,9 @@ class InformationsPersonnelles extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFFCBE3CE), // Bordure verte fine
-          width: 1,
-        ),
+        border: Border.all(color: context.borderColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +25,7 @@ class InformationsPersonnelles extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppStyles.textDark,
+              color: context.textDark,
             ),
           ),
 
@@ -89,7 +86,7 @@ class _InformationItem extends StatelessWidget {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.normal,
-            color: AppStyles.textDark,
+            color: context.textDark,
           ),
         ),
 
@@ -100,7 +97,7 @@ class _InformationItem extends StatelessWidget {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.normal, // non gras
-            color: AppStyles.textDark,
+            color: context.textDark,
           ),
         ),
       ],

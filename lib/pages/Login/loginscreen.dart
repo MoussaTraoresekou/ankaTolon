@@ -39,7 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -57,8 +57,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   // Titre
                   Text(
                     'Connexion',
-                    style: AppStyles.headingTextStyle.copyWith(
-                      color: AppStyles.textDark,
+                    style: context.headingTextStyle.copyWith(
+                      color: context.textDark,
                       fontWeight: FontWeight.w800,
                       fontSize: 30,
                     ),
@@ -76,8 +76,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   Text(
                     'Accédez à votre compte',
-                    style: AppStyles.titleTextStyle.copyWith(
-                      color: AppStyles.textDark,
+                    style: context.titleTextStyle.copyWith(
+                      color: context.textDark,
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
                     ),
@@ -128,14 +128,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           text: 'Pas de compte ? ',
                           style: TextStyle(
                             fontSize: 14,
-                            color: AppStyles.textDark,
+                            color: context.textDark,
                           ),
                         ),
                         TextSpan(
                           text: "S'inscrire",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: AppStyles.accentBlue,
+                            color: context.accentBlue,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
                           ),

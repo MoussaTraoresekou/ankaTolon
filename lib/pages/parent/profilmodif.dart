@@ -68,18 +68,18 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (error, stackTrace) => Scaffold(
-        backgroundColor: AppStyles.bgColor,
+        backgroundColor: context.bgColor,
         body: Center(
           child: Text(
             'Impossible de récupérer vos informations.',
-            style: AppStyles.normalTextStyle,
+            style: context.normalTextStyle,
           ),
         ),
       ),
       data: (user) {
         if (user == null) {
           return Scaffold(
-            backgroundColor: AppStyles.bgColor,
+            backgroundColor: context.bgColor,
             body: const Center(child: Text('Aucun utilisateur connecté.')),
           );
         }
@@ -93,7 +93,7 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
         }
 
         return Scaffold(
-          backgroundColor: AppStyles.bgColor,
+          backgroundColor: context.bgColor,
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.fromLTRB(
@@ -116,8 +116,8 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
                           Text(
                             'Modifier mon profil',
                             textAlign: TextAlign.center,
-                            style: AppStyles.headingTextStyle.copyWith(
-                              color: AppStyles.textDark,
+                            style: context.headingTextStyle.copyWith(
+                              color: context.textDark,
                               fontWeight: FontWeight.w800,
                               fontSize: 26,
                             ),
@@ -136,7 +136,7 @@ class _ModifierProfilParentState extends ConsumerState<ModifierProfilParent> {
                                 child: Icon(
                                   Icons.arrow_back_ios_new_rounded,
                                   size: 16,
-                                  color: AppStyles.textDark,
+                                  color: context.textDark,
                                 ),
                               ),
                             ),

@@ -22,7 +22,7 @@ class SuccessPage extends StatelessWidget {
     final formattedDate = DateFormat('d MMMM, HH\'h\'').format(dateEstimee);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16),
@@ -62,7 +62,7 @@ class SuccessPage extends StatelessWidget {
                 child: Text(
                   "Votre commande a\nbien été enregistrée.",
                   textAlign: TextAlign.center,
-                  style: AppStyles.headingTextStyle,
+                  style: context.headingTextStyle,
                 ),
               ),
 
@@ -72,7 +72,7 @@ class SuccessPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppStyles.textInverse,
+                  color: context.textInverse,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey.shade200),
                 ),
@@ -82,14 +82,20 @@ class SuccessPage extends StatelessWidget {
                       "Lieu de livraison",
                       adresse,
                       isOrange: true,
+                      context: context,
                     ),
                     const Divider(height: 24),
                     _buildSuccessRow(
                       "Date de livraison estimée",
                       formattedDate,
+                      context: context,
                     ),
                     const Divider(height: 24),
-                    _buildSuccessRow("Montant à payer", montantFormatted),
+                    _buildSuccessRow(
+                      "Montant à payer",
+                      montantFormatted,
+                      context: context,
+                    ),
                   ],
                 ),
               ),
@@ -101,8 +107,8 @@ class SuccessPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppStyles.primaryOrange,
-                    foregroundColor: AppStyles.textInverse,
+                    backgroundColor: context.primaryOrange,
+                    foregroundColor: context.textInverse,
                     padding: EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -111,8 +117,8 @@ class SuccessPage extends StatelessWidget {
                   onPressed: () => context.go('/home'),
                   child: Text(
                     "Retour au catalogue",
-                    style: AppStyles.titleTextStyle.copyWith(
-                      color: AppStyles.textInverse,
+                    style: context.titleTextStyle.copyWith(
+                      color: context.textInverse,
                     ),
                   ),
                 ),
@@ -125,15 +131,20 @@ class SuccessPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSuccessRow(String label, String value, {bool isOrange = false}) {
+  Widget _buildSuccessRow(
+    String label,
+    String value, {
+    bool isOrange = false,
+    context,
+  }) {
     return Row(
       children: [
         Expanded(
           child: Text(
             label,
-            style: AppStyles.normalTextStyle.copyWith(
+            style: context.normalTextStyle.copyWith(
               fontSize: 14,
-              color: AppStyles.textMuted,
+              color: context.textMuted,
             ),
           ),
         ),
@@ -143,9 +154,9 @@ class SuccessPage extends StatelessWidget {
             value,
             textAlign: TextAlign.right,
             overflow: TextOverflow.ellipsis,
-            style: AppStyles.titleTextStyle.copyWith(
+            style: context.titleTextStyle.copyWith(
               fontSize: 14,
-              color: isOrange ? AppStyles.primaryOrange : AppStyles.textDark,
+              color: isOrange ? context.primaryOrange : context.textDark,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -3,11 +3,7 @@ import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:video_player/video_player.dart';
 
 class ActiviteVideo extends StatefulWidget {
-  const ActiviteVideo({
-    super.key,
-    required this.videoUrl,
-    this.thumbnailUrl,
-  });
+  const ActiviteVideo({super.key, required this.videoUrl, this.thumbnailUrl});
 
   final String videoUrl;
   final String? thumbnailUrl;
@@ -30,8 +26,9 @@ class _ActiviteVideoState extends State<ActiviteVideo> {
   Future<void> _demarrerLecture() async {
     setState(() => _isLoading = true);
 
-    final controller =
-        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+    final controller = VideoPlayerController.networkUrl(
+      Uri.parse(widget.videoUrl),
+    );
     await controller.initialize();
     await controller.play();
 
@@ -69,10 +66,10 @@ class _ActiviteVideoState extends State<ActiviteVideo> {
                     widget.thumbnailUrl!,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) =>
-                        Container(color: AppStyles.boxSurfaceLight),
+                        Container(color: context.boxSurfaceLight),
                   )
                 else
-                  Container(color: AppStyles.boxSurfaceLight),
+                  Container(color: context.boxSurfaceLight),
 
                 Container(color: Colors.black.withValues(alpha: 0.25)),
 
