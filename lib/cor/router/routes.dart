@@ -10,6 +10,7 @@ import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/models/activites/activite_model.dart';
 
 import 'package:tolon/models/enfant/enfant_modal.dart';
+import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
 
@@ -332,10 +333,29 @@ GoRouter appRouter(Ref ref) {
         path: '/redigerAvis',
         name: AppRoutes.redigerAvis.name,
         builder: (context, state) {
-          final jouet = state.extra as JouetModel;
+          final extra = state.extra;
 
-          return RedigerAvisPage(
-            jouet: jouet,
+          // Ancien format : JouetModel seul
+          if (extra is JouetModel) {
+            return RedigerAvisPage(jouet: extra);
+          }
+
+          // Nouveau format : Map { 'jouet': JouetModel, 'avis': AvisModel? }
+          if (extra is Map) {
+            final jouet = extra['jouet'];
+            if (jouet is! JouetModel) {
+              throw Exception(
+                'redigerAvis: jouet manquant ou invalide dans extra',
+              );
+            }
+            return RedigerAvisPage(
+              jouet: jouet,
+              avisExistant: extra['avis'] as AvisModel?,
+            );
+          }
+
+          throw Exception(
+            'redigerAvis: extra invalide (attendu JouetModel ou Map)',
           );
         },
       ),

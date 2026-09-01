@@ -199,11 +199,12 @@ class CommandeDetail extends ConsumerWidget {
                             final Map<String, dynamic> toy = item;
 
                             return LigneJouetCmd(
-                              title: toy['nom_jouet'] ?? toy['name'] ?? 'Jouet Éveil',
+                              title:
+                                  toy['nom_jouet'] ?? toy['name'] ?? 'Jouet Éveil',
                               quantity: toy['quantite'] ?? 1,
-                              price: toy['prix_unitaire'] != null? "${toy['prix_unitaire']} F CFA" : "0 F CFA",
-                              image: toy['image']?.toString() ?? '',
-
+                              price: toy['prix_unitaire'] != null
+                                  ? "${toy['prix_unitaire']} F CFA"
+                                  : "0 F CFA",
                             );
                           }).toList(),
                         ),

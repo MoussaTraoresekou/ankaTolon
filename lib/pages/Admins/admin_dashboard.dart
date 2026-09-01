@@ -90,6 +90,7 @@ class AdminDashboard extends ConsumerWidget {
           ),
            GestureDetector(
         onTap: () {
+          // Clic sur la photo de profil : Redirection vers l'onglet Profil du ShellRoute
           context.pushNamed(AppRoutes.adminprofile.name); 
         },
         child: const Padding(
