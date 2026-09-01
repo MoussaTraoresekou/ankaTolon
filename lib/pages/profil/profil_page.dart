@@ -31,13 +31,11 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
     final enfantsAsync = ref.watch(enfantsStreamProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor, // Fond vert très clair / cassé
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: profil.chargement
             ? Center(
-                child: CircularProgressIndicator(
-                  color: AppStyles.primaryOrange,
-                ),
+                child: CircularProgressIndicator(color: context.primaryOrange),
               )
             : SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
@@ -54,7 +52,7 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                       ),
                     ),
 
@@ -81,10 +79,10 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppStyles.textInverse,
+                        color: context.textInverse,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: const Color(0xFFCBE3CE),
+                          color: context.borderColor,
                           width: 1,
                         ),
                       ),
@@ -96,7 +94,7 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: AppStyles.textDark,
+                              color: context.textDark,
                             ),
                           ),
                           const SizedBox(height: 14),
@@ -126,11 +124,11 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                                     .toList(),
                               );
                             },
-                            loading: () => const Center(
+                            loading: () => Center(
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: CircularProgressIndicator(
-                                  color: AppStyles.primaryOrange,
+                                  color: context.primaryOrange,
                                 ),
                               ),
                             ),
@@ -138,6 +136,99 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                               'Erreur de chargement : $err',
                               style: const TextStyle(color: Colors.red),
                             ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // thème
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: context.textInverse,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: context.borderColor,
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Thème',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: context.textDark,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Consumer(
+                            builder: (context, ref, child) {
+                              final currentThemeMode = ref.watch(
+                                themeModeProvider,
+                              );
+
+                              return SizedBox(
+                                width: double.infinity,
+                                child: SegmentedButton<ThemeMode>(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStateProperty.resolveWith<Color>((
+                                          states,
+                                        ) {
+                                          if (states.contains(
+                                            WidgetState.selected,
+                                          )) {
+                                            return context.primarySoft;
+                                          }
+                                          return Colors.transparent;
+                                        }),
+                                    foregroundColor:
+                                        WidgetStateProperty.resolveWith<Color>((
+                                          states,
+                                        ) {
+                                          return context.textDark;
+                                        }),
+                                  ),
+                                  segments: const [
+                                    ButtonSegment(
+                                      value: ThemeMode.light,
+                                      label: Text('Jour'),
+                                      icon: Icon(
+                                        Icons.wb_sunny_outlined,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    ButtonSegment(
+                                      value: ThemeMode.dark,
+                                      label: Text('Nuit'),
+                                      icon: Icon(
+                                        Icons.nightlight_round,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    ButtonSegment(
+                                      value: ThemeMode.system,
+                                      label: Text('Auto'),
+                                      icon: Icon(Icons.smartphone, size: 18),
+                                    ),
+                                  ],
+                                  selected: {currentThemeMode},
+                                  onSelectionChanged:
+                                      (Set<ThemeMode> newSelection) {
+                                        ref
+                                            .read(themeModeProvider.notifier)
+                                            .state = newSelection
+                                            .first;
+                                      },
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),

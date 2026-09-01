@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tolon/controller/profil/profil_controller.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/firebase_options.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Écoute dynamique de la configuration de votre GoRouter
     final router = ref.watch(appRouterProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
       title: 'Ankan Tolon - Éveil Enfant',
@@ -35,7 +37,7 @@ class MyApp extends ConsumerWidget {
       routerConfig: router,
 
       // Configuration des thèmes Material Design requis par le sujet
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
     );

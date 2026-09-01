@@ -74,7 +74,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error.toString()),
-                backgroundColor: AppStyles.badgeRed,
+                backgroundColor: context.badgeRed,
               ),
             );
           }
@@ -85,7 +85,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la mise à jour : $e'),
-            backgroundColor: AppStyles.badgeRed,
+            backgroundColor: context.badgeRed,
           ),
         );
       }
@@ -97,19 +97,19 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.background,
+      backgroundColor: context.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundColor: AppStyles.bgColor,
+            backgroundColor: context.bgColor,
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 18,
-                color: AppStyles.textDark,
+                color: context.textDark,
               ),
               onPressed: () => context.pop(),
             ),
@@ -127,7 +127,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
               const SizedBox(height: 4),
@@ -169,7 +169,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                               borderRadius: BorderRadius.circular(40),
                               border: Border.all(
                                 color: isSelected
-                                    ? AppStyles.primary
+                                    ? context.primary
                                     : Colors.transparent,
                                 width: 3,
                               ),
@@ -195,12 +195,12 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(2),
                                 decoration: BoxDecoration(
-                                  color: AppStyles.primary,
+                                  color: context.primary,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
                                   Icons.check,
-                                  color: AppStyles.textInverse,
+                                  color: context.textInverse,
                                   size: 14,
                                 ),
                               ),
@@ -219,14 +219,14 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: AppStyles.boxSurfaceLight,
+                  color: context.boxSurfaceLight,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Row(
                   children: [
                     Icon(
                       Icons.lightbulb_outline_rounded,
-                      color: AppStyles.primary,
+                      color: context.primary,
                       size: 22,
                     ),
                     const SizedBox(width: 12),
@@ -249,7 +249,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                 height: 54,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppStyles.primaryOrange,
+                    backgroundColor: context.primaryOrange,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -263,7 +263,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: AppStyles.textInverse,
+                            color: context.textInverse,
                           ),
                         ),
                 ),

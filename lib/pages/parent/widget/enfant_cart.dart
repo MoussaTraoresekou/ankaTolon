@@ -16,7 +16,7 @@ class EnfantCart extends StatelessWidget {
       margin: EdgeInsets.only(right: SizeConfig.getProportionateWidth(12)),
       padding: EdgeInsets.all(SizeConfig.getProportionateWidth(10)),
       decoration: BoxDecoration(
-        color: AppStyles.primarySoft,
+        color: context.primarySoft,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -25,7 +25,7 @@ class EnfantCart extends StatelessWidget {
             width: SizeConfig.getProportionateWidth(40),
             height: SizeConfig.getProportionateWidth(40),
             decoration: BoxDecoration(
-              color: AppStyles.textInverse,
+              color: context.textInverse,
               shape: BoxShape.circle,
             ),
             clipBehavior: Clip.antiAlias,
@@ -43,7 +43,7 @@ class EnfantCart extends StatelessWidget {
                   '${enfant.prenom} ${enfant.nom}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppStyles.normalTextStyle.copyWith(
+                  style: context.normalTextStyle.copyWith(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                   ),
@@ -53,7 +53,7 @@ class EnfantCart extends StatelessWidget {
 
                 Text(
                   _calculerAge(enfant.naissance),
-                  style: AppStyles.normalTextStyle.copyWith(
+                  style: context.normalTextStyle.copyWith(
                     fontSize: 11,
                     color: Colors.black45,
                   ),

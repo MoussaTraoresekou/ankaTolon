@@ -70,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.primarySoft,
+      backgroundColor: context.primarySoft,
       body: Stack(
         children: [
           // =========================
@@ -83,7 +83,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             itemBuilder: (context, index) {
               return Container(
                 // Deuxième page = FAFFFB
-                color: index == 1 ? AppStyles.bgColor : AppStyles.primarySoft,
+                color: index == 1 ? context.bgColor : context.primarySoft,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -96,8 +96,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     Text(
                       pages[index]["title"]!,
                       textAlign: TextAlign.center,
-                      style: AppStyles.headingTextStyle.copyWith(
-                        color: AppStyles.textDark,
+                      style: context.headingTextStyle.copyWith(
+                        color: context.textDark,
                       ),
                     ),
 
@@ -109,8 +109,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Text(
                         pages[index]["description"]!,
                         textAlign: TextAlign.center,
-                        style: AppStyles.normalTextStyle.copyWith(
-                          color: AppStyles.textMuted,
+                        style: context.normalTextStyle.copyWith(
+                          color: context.textMuted,
                         ),
                       ),
                     ),
@@ -131,8 +131,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onTap: skip,
                     child: Text(
                       "Passer",
-                      style: AppStyles.normalTextStyle.copyWith(
-                        color: AppStyles.textMuted,
+                      style: context.normalTextStyle.copyWith(
+                        color: context.textMuted,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -158,7 +158,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: currenpage == index
-                        ? AppStyles.primaryOrange
+                        ? context.primaryOrange
                         : Colors.grey.withValues(alpha: 0.5),
                   ),
                 ),

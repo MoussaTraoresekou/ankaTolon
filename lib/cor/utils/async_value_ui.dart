@@ -22,7 +22,7 @@ extension AsyncValueUi on AsyncValue {
           title: Text(
             message,
             textAlign: TextAlign.center,
-            style: AppStyles.normalTextStyle.copyWith(
+            style: context.normalTextStyle.copyWith(
               color: const Color(0xFF680C07),
               fontWeight: FontWeight.bold,
             ),
@@ -48,7 +48,7 @@ extension AsyncValueUi on AsyncValue {
                   child: Text(
                     'Fermer',
                     style: TextStyle(
-                      color: AppStyles.textInverse,
+                      color: context.textInverse,
                       fontFamily: 'Madimi One',
                     ),
                   ),
@@ -75,8 +75,8 @@ extension AsyncValueUi on AsyncValue {
         title: Text(
           message,
           textAlign: TextAlign.center,
-          style: AppStyles.normalTextStyle.copyWith(
-            color: AppStyles.textDark,
+          style: context.normalTextStyle.copyWith(
+            color: context.textDark,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -102,7 +102,7 @@ extension AsyncValueUi on AsyncValue {
                 child: Text(
                   'Continuer',
                   style: TextStyle(
-                    color: AppStyles.textInverse,
+                    color: context.textInverse,
                     fontFamily: 'Madimi One',
                     fontWeight: FontWeight.bold,
                   ),

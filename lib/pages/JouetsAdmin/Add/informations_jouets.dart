@@ -32,11 +32,11 @@ class InformationsJouet extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppStyles.shadowColor,
+            color: context.shadowColor,
             blurRadius: 15,
             spreadRadius: 1,
             offset: const Offset(0, 5),
@@ -51,6 +51,7 @@ class InformationsJouet extends StatelessWidget {
             children: [
               Expanded(
                 child: champTexte(
+                  context: context,
                   label: 'Nom du jouet',
                   controller: nomController,
                   validator: (value) {
@@ -122,6 +123,7 @@ class InformationsJouet extends StatelessWidget {
             children: [
               Expanded(
                 child: champTexte(
+                  context: context,
                   label: 'Age minimum',
                   controller: ageMinimumController,
                   type: TextInputType.number,
@@ -149,6 +151,7 @@ class InformationsJouet extends StatelessWidget {
 
               Expanded(
                 child: champTexte(
+                  context: context,
                   label: 'Age maximum',
                   controller: ageMaximumController,
                   type: TextInputType.number,
@@ -189,6 +192,7 @@ class InformationsJouet extends StatelessWidget {
             children: [
               Expanded(
                 child: champTexte(
+                  context: context,
                   label: 'Prix',
                   controller: prixController,
                   type: const TextInputType.numberWithOptions(decimal: true),
@@ -216,6 +220,7 @@ class InformationsJouet extends StatelessWidget {
 
               Expanded(
                 child: champTexte(
+                  context: context,
                   label: 'Stock',
                   controller: stockController,
                   type: TextInputType.number,
@@ -244,6 +249,7 @@ class InformationsJouet extends StatelessWidget {
           const SizedBox(height: 15),
 
           champTexte(
+            context: context,
             label: 'Description',
             controller: descriptionController,
             maxLines: 3,
@@ -261,6 +267,7 @@ class InformationsJouet extends StatelessWidget {
   }
 
   Widget champTexte({
+    required BuildContext context,
     required String label,
     required TextEditingController controller,
     TextInputType type = TextInputType.text,
@@ -282,7 +289,7 @@ class InformationsJouet extends StatelessWidget {
           keyboardType: type,
           maxLines: maxLines,
 
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             border: OutlineInputBorder(),
 
             enabledBorder: OutlineInputBorder(),
@@ -296,7 +303,7 @@ class InformationsJouet extends StatelessWidget {
             ),
 
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppStyles.badgeRed, width: 2),
+              borderSide: BorderSide(color: context.badgeRed, width: 2),
             ),
           ),
 
