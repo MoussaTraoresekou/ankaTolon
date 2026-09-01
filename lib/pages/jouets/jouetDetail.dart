@@ -166,8 +166,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                                       ? '${jouet.nomJouet} retiré des favoris'
                                       : '${jouet.nomJouet} ajouté aux favoris',
                                 ),
-                                backgroundColor:
-                                    AppStyles.primaryOrange,
+                                backgroundColor: AppStyles.primaryOrange,
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
@@ -201,7 +200,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                         child: InkWell(
                           customBorder: const CircleBorder(),
                           onTap: () => context.push('/cart'),
-                          child: const SizedBox(
+                          child: SizedBox(
                             width: 40,
                             height: 40,
                             child: Icon(
@@ -1163,10 +1162,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         ),
         style: OutlinedButton.styleFrom(
           foregroundColor: AppStyles.primaryOrange,
-          side: const BorderSide(
-            color: AppStyles.primaryOrange,
-            width: 1.5,
-          ),
+          side: const BorderSide(color: AppStyles.primaryOrange, width: 1.5),
           padding: const EdgeInsets.symmetric(vertical: 15),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -1256,8 +1252,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                       SnackBar(
                         content: Text('${jouet.nomJouet} ajouté au panier'),
 
-                        backgroundColor:
-                            AppStyles.primaryOrange,
+                        backgroundColor: AppStyles.primaryOrange,
 
                         behavior: SnackBarBehavior.floating,
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
 import 'package:tolon/repository/adminRepository/tutoriel_repository.dart';
+import 'package:go_router/go_router.dart';
 
 class EspaceEnfantTutoScreen extends ConsumerStatefulWidget {
   const EspaceEnfantTutoScreen({super.key});
@@ -135,40 +137,56 @@ class _EspaceEnfantTutoScreenState
   }
 }
 
-// ----------------- CARTE DU TUTORIEL (SÉCURISÉE) -----------------
+// ----------------- CARTE DU TUTORIEL ENRICHI -----------------
 class _TutorielItemCard extends StatelessWidget {
   final TutorielModel tutoriel;
   final Color primaryGreen;
 
   const _TutorielItemCard({required this.tutoriel, required this.primaryGreen});
 
+  void _navigateToDetail(BuildContext context) {
+    context.pushNamed(AppRoutes.TutorielDetail.name, extra: tutoriel);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Protection contre les valeurs nulles provenant de Firebase
     final String imageUrl = tutoriel.imageVideoUrl ?? '';
     final String categoryText =
         (tutoriel.categorieId != null && tutoriel.categorieId!.isNotEmpty)
         ? tutoriel.categorieId!
-        : 'Dessins';
+        : 'Général';
+    final String descriptionText = tutoriel.description ?? '';
+    final String ageText = (tutoriel.ageMin != null && tutoriel.ageMax != null)
+        ? '${tutoriel.ageMin} - ${tutoriel.ageMax} ans'
+        : 'Tous âges';
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16.0),
-      height: 120,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: primaryGreen.withOpacity(0.5), width: 1.5),
-      ),
-      child: Row(
-        children: [
-          // Image / Vignette à gauche
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ClipRRect(
+    return GestureDetector(
+      onTap: () => _navigateToDetail(context),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16.0),
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: primaryGreen.withOpacity(0.4), width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image / Vignette à gauche
+            ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: SizedBox(
                 width: 100,
-                height: double.infinity,
+                height: 100,
                 child: imageUrl.isNotEmpty
                     ? Image.network(
                         imageUrl,
@@ -184,73 +202,115 @@ class _TutorielItemCard extends StatelessWidget {
                       ),
               ),
             ),
-          ),
+            const SizedBox(width: 12),
 
-          // Titre et Badge de catégorie
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
+            // Section centrale : Titre, Description, Badges
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     tutoriel.titre,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
-                      height: 1.2,
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF0F4EC),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      categoryText,
+                  const SizedBox(height: 4),
+                  if (descriptionText.isNotEmpty)
+                    Text(
+                      descriptionText,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                        height: 1.2,
                       ),
                     ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 4,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF3E0),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.child_care,
+                              size: 14,
+                              color: Color(0xFFE87A1E),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              ageText,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: Color(0xFFE87A1E),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF0F4EC),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          categoryText,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey.shade700,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
 
-          // Bouton de lecture vert circulaire
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: InkWell(
-              onTap: () {
-                // Insérer ici la logique de lecture vidéo
-              },
-              child: Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: primaryGreen,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.play_arrow_rounded,
-                  color: Colors.white,
-                  size: 32,
+            // Bouton Play vert à droite
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: primaryGreen,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

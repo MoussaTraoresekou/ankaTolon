@@ -60,6 +60,7 @@ import 'package:tolon/pages/Admins/commande_liste.dart';
 import 'package:tolon/pages/Admins/liste_tutos.dart';
 import 'package:tolon/pages/Admins/utilisateur_detail.dart';
 import 'package:tolon/pages/Admins/utilisateur_liste.dart';
+import 'package:tolon/pages/tutoriels/TutorielDetail.dart';
 
 part 'routes.g.dart';
 
@@ -110,6 +111,7 @@ enum AppRoutes {
   espaceEnfant,
   detailactive,
   espaceEnfantTuto,
+  TutorielDetail,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -615,6 +617,14 @@ GoRouter appRouter(Ref ref) {
         path: '/espace-enfant-tutos',
         name: AppRoutes.espaceEnfantTuto.name,
         builder: (context, state) => const EspaceEnfantTutoScreen(),
+      ),
+      GoRoute(
+        path: '/tutoriel-detail',
+        name: AppRoutes.TutorielDetail.name,
+        builder: (context, state) {
+          final tutoriel = state.extra as TutorielModel;
+          return TutorielDetailScreen(tutoriel: tutoriel);
+        },
       ),
     ],
   );
