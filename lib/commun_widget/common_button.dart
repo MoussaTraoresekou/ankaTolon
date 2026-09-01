@@ -34,7 +34,7 @@ class _CustomButtonState extends State<CustomButton> {
         decoration: BoxDecoration(
           color: widget.isLoading
               ? const Color.fromRGBO(230, 126, 34, 1).withValues(alpha: 0.7)
-              : AppStyles.primaryOrange,
+              : context.primaryOrange,
           borderRadius: BorderRadius.circular(10),
         ),
         child: widget.isLoading
@@ -42,13 +42,13 @@ class _CustomButtonState extends State<CustomButton> {
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
-                  color: AppStyles.textInverse,
+                  color: context.textInverse,
                   strokeWidth: 2,
                 ),
               )
             : Text(
                 widget.title,
-                style: AppStyles.titleTextStyle.copyWith(color: Colors.white),
+                style: context.titleTextStyle.copyWith(color: Colors.white),
               ),
       ),
     );

@@ -25,7 +25,7 @@ class CategorieFilter extends StatelessWidget {
       ),
       error: (error, stackTrace) => Text(
         'Impossible de charger les catégories.',
-        style: TextStyle(color: AppStyles.textMuted),
+        style: TextStyle(color: context.textMuted),
       ),
       data: (categories) {
         return SizedBox(

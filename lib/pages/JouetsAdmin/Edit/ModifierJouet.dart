@@ -242,7 +242,7 @@ class _ModifierJouetPageState extends State<ModifierJouetPage> {
 
                               style: TextStyle(
                                 fontSize: 10,
-                                color: AppStyles.textMuted,
+                                color: context.textMuted,
                               ),
                             ),
                           ],
@@ -269,13 +269,13 @@ class _ModifierJouetPageState extends State<ModifierJouetPage> {
                     padding: const EdgeInsets.all(14),
 
                     decoration: BoxDecoration(
-                      color: AppStyles.textInverse,
+                      color: context.textInverse,
 
                       borderRadius: BorderRadius.circular(10),
 
                       boxShadow: [
                         BoxShadow(
-                          color: AppStyles.shadowColor,
+                          color: context.shadowColor,
 
                           blurRadius: 7,
 
@@ -368,7 +368,7 @@ class _ModifierJouetPageState extends State<ModifierJouetPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFF0F0F0),
 
-                            foregroundColor: AppStyles.textDark,
+                            foregroundColor: context.textDark,
 
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -398,7 +398,7 @@ class _ModifierJouetPageState extends State<ModifierJouetPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFE98219),
 
-                            foregroundColor: AppStyles.textInverse,
+                            foregroundColor: context.textInverse,
 
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),

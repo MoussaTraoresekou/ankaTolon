@@ -16,10 +16,16 @@ class AjoutDefis extends StatelessWidget {
           children: [
             const Text(
               'Gestion des Défis',
-              style: TextStyle(fontFamily: 'Quicksand', fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textDark),
+              style: TextStyle(
+                fontFamily: 'Quicksand',
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
+              ),
             ),
             const SizedBox(height: 16),
             CardDetailCmd(
+              context: context,
               title: 'Créer un nouveau défi éveil',
               icon: Icons.workspace_premium_outlined,
               child: Column(
@@ -28,16 +34,26 @@ class AjoutDefis extends StatelessWidget {
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Titre du défi',
-                      labelStyle: const TextStyle(fontFamily: 'Quicksand', fontSize: 13),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      labelStyle: const TextStyle(
+                        fontFamily: 'Quicksand',
+                        fontSize: 13,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Points XP à gagner',
-                      labelStyle: const TextStyle(fontFamily: 'Quicksand', fontSize: 13),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      labelStyle: const TextStyle(
+                        fontFamily: 'Quicksand',
+                        fontSize: 13,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                     keyboardType: TextInputType.number,
                   ),
@@ -49,14 +65,25 @@ class AjoutDefis extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.greenPrimary,
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Défi simulé créé avec succès ! 🎉'), backgroundColor: AppColors.greenPrimary),
+                          const SnackBar(
+                            content: Text('Défi simulé créé avec succès ! 🎉'),
+                            backgroundColor: AppColors.greenPrimary,
+                          ),
                         );
                       },
-                      child: const Text('Publier le Défi', style: TextStyle(fontFamily: 'Quicksand', fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Publier le Défi',
+                        style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],

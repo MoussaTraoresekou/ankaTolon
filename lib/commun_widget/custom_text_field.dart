@@ -37,9 +37,9 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppStyles.normalTextStyle.copyWith(
+          style: context.normalTextStyle.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppStyles.textDark,
+            color: context.textDark,
           ),
         ),
 
@@ -52,14 +52,12 @@ class CustomTextField extends StatelessWidget {
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
 
-          style: AppStyles.normalTextStyle.copyWith(color: AppStyles.textDark),
+          style: context.normalTextStyle.copyWith(color: context.textDark),
 
           decoration: InputDecoration(
             hintText: hintText,
 
-            hintStyle: AppStyles.normalTextStyle.copyWith(
-              color: Colors.black38,
-            ),
+            hintStyle: context.normalTextStyle.copyWith(color: Colors.black38),
 
             prefixIcon: prefixIcon != null
                 ? Icon(prefixIcon, color: prefixIconColor ?? Colors.black45)
@@ -68,7 +66,7 @@ class CustomTextField extends StatelessWidget {
             suffixIcon: suffixIcon,
 
             filled: true,
-            fillColor: AppStyles.textInverse,
+            fillColor: context.textInverse,
 
             contentPadding: const EdgeInsets.symmetric(
               vertical: 14,
@@ -77,7 +75,7 @@ class CustomTextField extends StatelessWidget {
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: AppStyles.textMuted, width: 1),
+              borderSide: BorderSide(color: context.textMuted, width: 1),
             ),
 
             enabledBorder: OutlineInputBorder(
@@ -90,12 +88,12 @@ class CustomTextField extends StatelessWidget {
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: AppStyles.primary, width: 1.5),
+              borderSide: BorderSide(color: context.primary, width: 1.5),
             ),
 
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: AppStyles.badgeRed, width: 1),
+              borderSide: const BorderSide(color: Color(0xFFEF5350), width: 1),
             ),
           ),
         ),

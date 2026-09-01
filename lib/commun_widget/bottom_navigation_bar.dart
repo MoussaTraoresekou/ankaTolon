@@ -39,11 +39,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text("Non", style: TextStyle(color: AppStyles.textDark)),
+                child: Text("Non", style: TextStyle(color: context.textDark)),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text("Oui", style: TextStyle(color: AppStyles.textDark)),
+                child: Text("Oui", style: TextStyle(color: context.textDark)),
               ),
             ],
           ),
@@ -59,9 +59,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         bottomNavigationBar: CurvedNavigationBar(
           height: 60,
           index: _selectedIndex,
-          color: AppStyles.navbarColor,
+          color: context.navbarColor,
           backgroundColor: Colors.transparent,
-          buttonBackgroundColor: AppStyles.navbarColor,
+          buttonBackgroundColor: context.navbarColor,
 
           items: [
             Icon(Icons.home, size: 25, color: Colors.white),

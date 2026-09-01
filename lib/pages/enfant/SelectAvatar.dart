@@ -68,7 +68,7 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
     final state = ref.watch(enfantControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -92,7 +92,7 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                   child: Icon(
                     Icons.arrow_back_ios_new,
                     size: 18,
-                    color: AppStyles.textDark,
+                    color: context.textDark,
                   ),
                 ),
               ),
@@ -105,7 +105,7 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
               const SizedBox(height: 4),
@@ -176,13 +176,13 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(2),
                                 decoration: BoxDecoration(
-                                  color: AppStyles.borderSelected,
+                                  color: context.borderSelected,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
                                   Icons.check,
                                   size: 14,
-                                  color: AppStyles.textInverse,
+                                  color: context.textInverse,
                                 ),
                               ),
                             ),
@@ -208,7 +208,7 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                   children: [
                     Icon(
                       Icons.lightbulb_outline,
-                      color: AppStyles.borderSelected,
+                      color: context.borderSelected,
                       size: 22,
                     ),
                     const SizedBox(width: 12),

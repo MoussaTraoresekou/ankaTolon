@@ -6,6 +6,7 @@ class CardDetailCmd extends StatelessWidget {
   final Widget child;
 
   const CardDetailCmd({
+    required context,
     required this.title,
     this.icon,
     required this.child,
