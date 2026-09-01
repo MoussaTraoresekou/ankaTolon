@@ -1,10 +1,10 @@
 class CategorieModel {
-  final String id;
+  final String? id;
   final String nom;
   final String type;
 
   const CategorieModel({
-    required this.id,
+     this.id,
     required this.nom,
     required this.type
   });
@@ -29,6 +29,7 @@ class CategorieModel {
 
   CategorieModel copyWith({
     String? nom,
+    String ? type
   }) {
     return CategorieModel(
       id: id,

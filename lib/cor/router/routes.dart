@@ -330,16 +330,27 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final extra = state.extra;
 
-          // Compatibilité : JouetModel seul (ancien)
-          // ou Map { 'jouet': JouetModel, 'avis': AvisModel? }
+          // Ancien format : JouetModel seul
           if (extra is JouetModel) {
             return RedigerAvisPage(jouet: extra);
           }
 
-          final map = extra as Map<String, dynamic>;
-          return RedigerAvisPage(
-            jouet: map['jouet'] as JouetModel,
-            avisExistant: map['avis'] as AvisModel?,
+          // Nouveau format : Map { 'jouet': JouetModel, 'avis': AvisModel? }
+          if (extra is Map) {
+            final jouet = extra['jouet'];
+            if (jouet is! JouetModel) {
+              throw Exception(
+                'redigerAvis: jouet manquant ou invalide dans extra',
+              );
+            }
+            return RedigerAvisPage(
+              jouet: jouet,
+              avisExistant: extra['avis'] as AvisModel?,
+            );
+          }
+
+          throw Exception(
+            'redigerAvis: extra invalide (attendu JouetModel ou Map)',
           );
         },
       ),
@@ -592,7 +603,8 @@ GoRouter appRouter(Ref ref) {
         path: '/activitesListeEnfant',
         name: AppRoutes.activite.name,
         builder: (context, state) {
-          return const ActivitesPage();
+          final enfant = state.extra as EnfantModel;
+          return ActivitesPage(enfant: enfant);
         },
       ),
       GoRoute(
@@ -600,24 +612,28 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.espaceEnfant.name,
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
-
           return EspaceEnfantScreen(enfant: enfant);
         },
       ),
       GoRoute(
-        path: '/detailactive',
         name: AppRoutes.detailactive.name,
+        path: '/detailactive',
         builder: (context, state) {
-          final activite = state.extra as ActiviteModel;
+          final data = state.extra as Map<String, dynamic>;
 
-          return ActiviteDetailScreen(activite: activite);
+          final activite = data['activite'] as ActiviteModel;
+          final enfant = data['enfant'] as EnfantModel;
+
+          return ActiviteDetailScreen(activite: activite, enfantModel: enfant);
         },
       ),
+
       GoRoute(
-        path: '/espace-enfant-tutos',
+        path: '/tutoriels',
         name: AppRoutes.espaceEnfantTuto.name,
         builder: (context, state) => const EspaceEnfantTutoScreen(),
       ),
+
       GoRoute(
         path: '/tutoriel-detail',
         name: AppRoutes.TutorielDetail.name,

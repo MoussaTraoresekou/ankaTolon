@@ -214,43 +214,157 @@ final class WatchActivitesProvider
 
 String _$watchActivitesHash() => r'9b16e911346c9489d7cc7acaa3a62115c60e1386';
 
-@ProviderFor(watchCategories)
-final watchCategoriesProvider = WatchCategoriesProvider._();
+@ProviderFor(activitesParAge)
+final activitesParAgeProvider = ActivitesParAgeFamily._();
 
-final class WatchCategoriesProvider
+final class ActivitesParAgeProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<CategorieModel>>,
-          List<CategorieModel>,
-          Stream<List<CategorieModel>>
+          AsyncValue<List<ActiviteModel>>,
+          List<ActiviteModel>,
+          FutureOr<List<ActiviteModel>>
         >
     with
-        $FutureModifier<List<CategorieModel>>,
-        $StreamProvider<List<CategorieModel>> {
-  WatchCategoriesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'watchCategoriesProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+        $FutureModifier<List<ActiviteModel>>,
+        $FutureProvider<List<ActiviteModel>> {
+  ActivitesParAgeProvider._({
+    required ActivitesParAgeFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'activitesParAgeProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
-  String debugGetCreateSourceHash() => _$watchCategoriesHash();
+  String debugGetCreateSourceHash() => _$activitesParAgeHash();
+
+  @override
+  String toString() {
+    return r'activitesParAgeProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
-  $StreamProviderElement<List<CategorieModel>> $createElement(
+  $FutureProviderElement<List<ActiviteModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<ActiviteModel>> create(Ref ref) {
+    final argument = this.argument as int;
+    return activitesParAge(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ActivitesParAgeProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$activitesParAgeHash() => r'8eada15ff63d2a08de3e0c2f48b0955a7716962a';
+
+final class ActivitesParAgeFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<ActiviteModel>>, int> {
+  ActivitesParAgeFamily._()
+    : super(
+        retry: null,
+        name: r'activitesParAgeProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  ActivitesParAgeProvider call(int age) =>
+      ActivitesParAgeProvider._(argument: age, from: this);
+
+  @override
+  String toString() => r'activitesParAgeProvider';
+}
+
+@ProviderFor(activitesParAgeStream)
+final activitesParAgeStreamProvider = ActivitesParAgeStreamFamily._();
+
+final class ActivitesParAgeStreamProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ActiviteModel>>,
+          List<ActiviteModel>,
+          Stream<List<ActiviteModel>>
+        >
+    with
+        $FutureModifier<List<ActiviteModel>>,
+        $StreamProvider<List<ActiviteModel>> {
+  ActivitesParAgeStreamProvider._({
+    required ActivitesParAgeStreamFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'activitesParAgeStreamProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$activitesParAgeStreamHash();
+
+  @override
+  String toString() {
+    return r'activitesParAgeStreamProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<ActiviteModel>> $createElement(
     $ProviderPointer pointer,
   ) => $StreamProviderElement(pointer);
 
   @override
-  Stream<List<CategorieModel>> create(Ref ref) {
-    return watchCategories(ref);
+  Stream<List<ActiviteModel>> create(Ref ref) {
+    final argument = this.argument as int;
+    return activitesParAgeStream(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ActivitesParAgeStreamProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
   }
 }
 
-String _$watchCategoriesHash() => r'1a47dc6766482799b535665ad68209b0853a11de';
+String _$activitesParAgeStreamHash() =>
+    r'cec8fcead3d28c9be44191ccc2ab173d1c7a6b48';
+
+final class ActivitesParAgeStreamFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<ActiviteModel>>, int> {
+  ActivitesParAgeStreamFamily._()
+    : super(
+        retry: null,
+        name: r'activitesParAgeStreamProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  ActivitesParAgeStreamProvider call(int age) =>
+      ActivitesParAgeStreamProvider._(argument: age, from: this);
+
+  @override
+  String toString() => r'activitesParAgeStreamProvider';
+}

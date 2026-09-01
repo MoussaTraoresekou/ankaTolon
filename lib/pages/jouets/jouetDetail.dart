@@ -38,10 +38,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     _pageController.dispose();
     super.dispose();
   }
-
-  // ==========================================================
   // BUILD
-  // ==========================================================
 
   @override
   Widget build(BuildContext context) {
@@ -54,45 +51,31 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
       body: Stack(
         children: [
-          // ====================================================
           // CONTENU PRINCIPAL
-          // ====================================================
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
 
             slivers: [
-              // ==================================================
               // GALERIE
-              // ==================================================
               SliverToBoxAdapter(
                 child: _buildProductHeader(jouet, panier.totalQuantity),
               ),
 
-              // ==================================================
               // INFORMATIONS PRODUIT
-              // ==================================================
               SliverToBoxAdapter(child: _buildProductInformation(jouet)),
 
-              // ==================================================
               // DESCRIPTION / BENEFICES
-              // ==================================================
               SliverToBoxAdapter(child: _buildDetailsSection(jouet)),
 
-              // ==================================================
               // AVIS
-              // ==================================================
               SliverToBoxAdapter(child: _buildReviewsSection(jouet)),
 
-              // ==================================================
               // ESPACE POUR LA BARRE DU BAS
-              // ==================================================
               const SliverToBoxAdapter(child: SizedBox(height: 130)),
             ],
           ),
 
-          // ====================================================
           // BARRE D'ACHAT FIXE
-          // ====================================================
           Positioned(
             left: 0,
             right: 0,
@@ -104,10 +87,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // HEADER / GALERIE
-  // ==========================================================
-
   Widget _buildProductHeader(JouetModel jouet, int quantity) {
     final hasMultipleImages = jouet.image.length > 1;
     final hasImages = jouet.image.isNotEmpty;
@@ -118,21 +98,23 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         bottom: false,
         child: Column(
           children: [
-            // ========== BARRE DU HAUT ==========
+            // BARRE DU HAUT (hors de l'image)
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+              padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
               child: Row(
                 children: [
                   // Retour
                   Material(
                     color: AppStyles.navbarColor,
                     shape: const CircleBorder(),
+                    elevation: 1,
+                    shadowColor: Colors.black26,
                     child: InkWell(
                       customBorder: const CircleBorder(),
                       onTap: () => context.pop(),
                       child: SizedBox(
-                        width: 40,
-                        height: 40,
+                        width: 42,
+                        height: 42,
                         child: Icon(
                           Icons.arrow_back_ios_new,
                           size: 18,
@@ -148,7 +130,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                       final favorisIds = ref.watch(favorisControllerProvider);
                       final isFavori = favorisIds.contains(jouet.id);
                       return Material(
-                        color: Colors.white.withValues(alpha: 0.9),
+                        color: Colors.white,
                         shape: const CircleBorder(),
                         elevation: 1,
                         shadowColor: Colors.black26,
@@ -176,8 +158,8 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                             );
                           },
                           child: SizedBox(
-                            width: 40,
-                            height: 40,
+                            width: 42,
+                            height: 42,
                             child: Icon(
                               isFavori ? Icons.favorite : Icons.favorite_border,
                               size: 20,
@@ -190,22 +172,25 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                       );
                     },
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 10),
                   // Panier
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
                       Material(
-                        color: Colors.transparent,
+                        color: Colors.white,
+                        shape: const CircleBorder(),
+                        elevation: 1,
+                        shadowColor: Colors.black26,
                         child: InkWell(
                           customBorder: const CircleBorder(),
                           onTap: () => context.push('/cart'),
                           child: SizedBox(
-                            width: 40,
-                            height: 40,
+                            width: 42,
+                            height: 42,
                             child: Icon(
                               Icons.shopping_cart_outlined,
-                              size: 24,
+                              size: 22,
                               color: AppStyles.textDark,
                             ),
                           ),
@@ -240,59 +225,61 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               ),
             ),
 
-            // ========== IMAGE PRINCIPALE ==========
+            // IMAGE PLEIN ÉCRAN (centrée)
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: Container(
-                  height: 270,
-                  width: double.infinity,
-                  color: Colors.white.withValues(alpha: 0.35),
-                  child: !hasImages
-                      ? Center(
-                          child: Icon(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: AspectRatio(
+                aspectRatio: 1.15,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(28),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    alignment: Alignment.center,
+                    child: !hasImages
+                        ? Icon(
                             Icons.image_not_supported_outlined,
                             size: 64,
                             color: AppStyles.textMuted,
-                          ),
-                        )
-                      : PageView.builder(
-                          controller: _pageController,
-                          itemCount: jouet.image.length,
-                          onPageChanged: (index) {
-                            setState(() => _selectedImage = index);
-                          },
-                          itemBuilder: (context, index) {
-                            return Image.network(
-                              jouet.image[index],
-                              fit: BoxFit.contain,
-                              width: double.infinity,
-                              height: double.infinity,
-                              errorBuilder: (_, __, ___) => Center(
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  size: 64,
-                                  color: AppStyles.textMuted,
-                                ),
-                              ),
-                              loadingBuilder: (context, child, progress) {
-                                if (progress == null) return child;
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppStyles.primaryOrange,
-                                    strokeWidth: 2.5,
+                          )
+                        : PageView.builder(
+                            controller: _pageController,
+                            itemCount: jouet.image.length,
+                            onPageChanged: (index) {
+                              setState(() => _selectedImage = index);
+                            },
+                            itemBuilder: (context, index) {
+                              return Image.network(
+                                jouet.image[index],
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                                alignment: Alignment.center,
+                                errorBuilder: (_, __, ___) => Center(
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    size: 64,
+                                    color: AppStyles.textMuted,
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                ),
+                                loadingBuilder: (context, child, progress) {
+                                  if (progress == null) return child;
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppStyles.primaryOrange,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                  ),
                 ),
               ),
             ),
 
-            // ========== POINTS INDICATEURS ==========
+            //POINTS INDICATEURS
             if (hasMultipleImages) ...[
               const SizedBox(height: 12),
               Row(
@@ -321,7 +308,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               ),
             ],
 
-            // ========== MINIATURES ==========
+            //MINIATURES
             if (hasMultipleImages)
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
@@ -413,10 +400,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // INFORMATIONS PRODUIT
-  // ==========================================================
-
   Widget _buildProductInformation(JouetModel jouet) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
@@ -425,9 +409,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
         crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
-          // ====================================================
           // BADGE AGE
-          // ====================================================
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
 
@@ -450,9 +432,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
           const SizedBox(height: 12),
 
-          // ====================================================
           // NOM
-          // ====================================================
           Text(
             jouet.nomJouet,
 
@@ -467,16 +447,12 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
           const SizedBox(height: 12),
 
-          // ====================================================
           // NOTE
-          // ====================================================
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           ),
 
-          // ====================================================
           // PRIX
-          // ====================================================
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
 
@@ -511,19 +487,14 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
           const SizedBox(height: 20),
 
-          // ====================================================
           // SÉPARATEUR
-          // ====================================================
           Container(height: 1, color: Colors.black.withValues(alpha: 0.06)),
         ],
       ),
     );
   }
 
-  // ==========================================================
   // DESCRIPTION / BENEFICES
-  // ==========================================================
-
   Widget _buildDetailsSection(JouetModel jouet) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
@@ -553,9 +524,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            // ==================================================
             // TITRE
-            // ==================================================
             Row(
               children: [
                 Icon(Icons.auto_awesome, color: AppStyles.primary, size: 22),
@@ -576,9 +545,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
             const SizedBox(height: 18),
 
-            // ==================================================
             // DESCRIPTION
-            // ==================================================
             Text(
               jouet.description.isNotEmpty
                   ? jouet.description
@@ -590,10 +557,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                 color: AppStyles.textMuted,
               ),
             ),
-
-            // ==================================================
             // BENEFICES
-            // ==================================================
             if (jouet.benefices.isNotEmpty) ...[
               const SizedBox(height: 25),
 
@@ -619,10 +583,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // BENEFICE
-  // ==========================================================
-
   Widget _buildBenefitItem(String text) {
     return Container(
       width: double.infinity,
@@ -671,10 +632,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // AVIS
-  // ==========================================================
-
   Widget _buildReviewsSection(JouetModel jouet) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
@@ -705,9 +663,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-              // ==================================================
               // TITRE
-              // ==================================================
               Text(
                 'Avis des parents',
                 style: TextStyle(
@@ -719,17 +675,11 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
               ),
 
               const SizedBox(height: 15),
-
-              // ==================================================
               // RÉSUMÉ NOTE
-              // ==================================================
               _buildRatingSummary(moyenne, avis.length),
 
               const SizedBox(height: 20),
-
-              // ==================================================
               // AVIS
-              // ==================================================
               if (avis.isEmpty)
                 _buildEmptyReviews()
               else
@@ -738,10 +688,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                 }),
 
               const SizedBox(height: 5),
-
-              // ==================================================
               // REDIGER / MODIFIER UN AVIS
-              // ==================================================
               _buildWriteReviewButton(jouet, avis),
             ],
           );
@@ -750,10 +697,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // RÉSUMÉ NOTE
-  // ==========================================================
-
   Widget _buildRatingSummary(double moyenne, int nombreAvis) {
     return Container(
       width: double.infinity,
@@ -770,9 +714,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
       child: Row(
         children: [
-          // ==================================================
           // NOTE
-          // ==================================================
           Column(
             children: [
               Text(
@@ -809,10 +751,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
           ),
 
           const SizedBox(width: 25),
-
-          // ==================================================
           // TEXTE
-          // ==================================================
           Expanded(
             child: Text(
               'Les parents partagent leur expérience pour vous aider à choisir les meilleurs jeux pour vos enfants.',
@@ -828,10 +767,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // CARTE AVIS
-  // ==========================================================
-
   String _formatDate(DateTime date) {
     final d = date.day.toString().padLeft(2, '0');
     final m = date.month.toString().padLeft(2, '0');
@@ -1032,10 +968,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     }
   }
 
-  // ==========================================================
   // AUCUN AVIS
-  // ==========================================================
-
   Widget _buildEmptyReviews() {
     return Container(
       width: double.infinity,
@@ -1076,10 +1009,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // CHARGEMENT AVIS
-  // ==========================================================
-
   Widget _buildReviewsLoading() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 40),
@@ -1088,9 +1018,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // ERREUR AVIS
-  // ==========================================================
 
   Widget _buildReviewsError(JouetModel jouet) {
     return Column(
@@ -1121,9 +1049,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // BOUTON RÉDIGER UN AVIS
-  // ==========================================================
 
   Widget _buildWriteReviewButton(JouetModel jouet, List<AvisModel> avisList) {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
@@ -1172,10 +1098,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  // ==========================================================
   // BARRE ACHAT
-  // ==========================================================
-
   Widget _buildBottomPurchaseBar(JouetModel jouet) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
@@ -1204,9 +1127,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
 
         child: Row(
           children: [
-            // ==================================================
             // PRIX
-            // ==================================================
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -1234,10 +1155,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
             ),
 
             const SizedBox(width: 15),
-
-            // ==================================================
             // BOUTON
-            // ==================================================
             Expanded(
               child: SizedBox(
                 height: 54,
