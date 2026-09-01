@@ -160,6 +160,8 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                 zoomInIcon: Icons.add_circle_outline,
                 zoomOutIcon: Icons.remove_circle_outline,
                 locationIcon: Icons.my_location_rounded,
+                locationButtonsColor: context.textInverse,
+                locationButtonBackgroundColor: context.primary,
                 zoomButtonsColor: context.textInverse,
                 zoomButtonsBackgroundColor: context.primary,
                 buttonElevation: 8.0,
