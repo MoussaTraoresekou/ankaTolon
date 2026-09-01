@@ -309,7 +309,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
           bgColor: AppStyles.cardMenuYellow,
           image: 'assets/images/activity.png',
           onTap: () {
-            context.pushNamed(AppRoutes.activite.name);
+            context.pushNamed(AppRoutes.activite.name,extra: enfant);
           },
         ),
         _buildMenuCard(

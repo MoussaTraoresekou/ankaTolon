@@ -49,14 +49,10 @@ class ActiviteRepository {
     }).toList();
   }
 
-  Future<String> _uploadImage(
-    File image,
-    String activiteId,
-  ) async {
+  Future<String> _uploadImage(File image, String activiteId) async {
     final extension = image.path.split('.').last.toLowerCase();
 
-    final filePath =
-        'activites/$activiteId/image.$extension';
+    final filePath = 'activites/$activiteId/image.$extension';
 
     String contentType;
 
@@ -75,28 +71,21 @@ class ActiviteRepository {
         contentType = 'image/jpeg';
     }
 
-    await _supabase.storage.from(_bucket).upload(
-      filePath,
-      image,
-      fileOptions: FileOptions(
-        upsert: true,
-        contentType: contentType,
-      ),
-    );
-
-    return _supabase.storage
+    await _supabase.storage
         .from(_bucket)
-        .getPublicUrl(filePath);
+        .upload(
+          filePath,
+          image,
+          fileOptions: FileOptions(upsert: true, contentType: contentType),
+        );
+
+    return _supabase.storage.from(_bucket).getPublicUrl(filePath);
   }
 
-  Future<String> _uploadVideo(
-    File video,
-    String activiteId,
-  ) async {
+  Future<String> _uploadVideo(File video, String activiteId) async {
     final extension = video.path.split('.').last.toLowerCase();
 
-    final filePath =
-        'videos/$activiteId/video.$extension';
+    final filePath = 'videos/$activiteId/video.$extension';
 
     String contentType;
 
@@ -114,18 +103,15 @@ class ActiviteRepository {
         contentType = 'video/mp4';
     }
 
-    await _supabase.storage.from(_bucket).upload(
-      filePath,
-      video,
-      fileOptions: FileOptions(
-        upsert: true,
-        contentType: contentType,
-      ),
-    );
-
-    return _supabase.storage
+    await _supabase.storage
         .from(_bucket)
-        .getPublicUrl(filePath);
+        .upload(
+          filePath,
+          video,
+          fileOptions: FileOptions(upsert: true, contentType: contentType),
+        );
+
+    return _supabase.storage.from(_bucket).getPublicUrl(filePath);
   }
 
   Future<ActiviteModel> ajouterActivite(
@@ -139,17 +125,11 @@ class ActiviteRepository {
     String? videoUrl;
 
     if (image != null) {
-      imageUrl = await _uploadImage(
-        image,
-        doc.id,
-      );
+      imageUrl = await _uploadImage(image, doc.id);
     }
 
     if (video != null) {
-      videoUrl = await _uploadVideo(
-        video,
-        doc.id,
-      );
+      videoUrl = await _uploadVideo(video, doc.id);
     }
 
     final nouvelleActivite = ActiviteModel(
@@ -165,9 +145,7 @@ class ActiviteRepository {
       dateCreation: activite.dateCreation,
     );
 
-    await doc.set(
-      nouvelleActivite.toJson(),
-    );
+    await doc.set(nouvelleActivite.toJson());
 
     return nouvelleActivite;
   }
@@ -181,17 +159,11 @@ class ActiviteRepository {
     String? videoUrl = activite.videoUrl;
 
     if (image != null) {
-      imageUrl = await _uploadImage(
-        image,
-        activite.id,
-      );
+      imageUrl = await _uploadImage(image, activite.id);
     }
 
     if (video != null) {
-      videoUrl = await _uploadVideo(
-        video,
-        activite.id,
-      );
+      videoUrl = await _uploadVideo(video, activite.id);
     }
 
     final activiteModifiee = ActiviteModel(
@@ -209,78 +181,129 @@ class ActiviteRepository {
 
     await _activitesCollection
         .doc(activite.id)
-        .update(
-          activiteModifiee.toJson(),
-        );
+        .update(activiteModifiee.toJson());
   }
 
-  Future<void> supprimerActivite(
-    String id,
-  ) async {
+  Future<void> supprimerActivite(String id) async {
     try {
       final files = await _supabase.storage
           .from(_bucket)
-          .list(
-            path: 'activites/$id',
-          );
+          .list(path: 'activites/$id');
 
       if (files.isNotEmpty) {
         final paths = files
-            .map(
-              (file) =>
-                  'activites/$id/${file.name}',
-            )
+            .map((file) => 'activites/$id/${file.name}')
             .toList();
 
-        await _supabase.storage
-            .from(_bucket)
-            .remove(paths);
+        await _supabase.storage.from(_bucket).remove(paths);
       }
 
-      await _supabase.storage
-          .from(_bucket)
-          .remove([
-        'activites/$id',
-      ]);
+      await _supabase.storage.from(_bucket).remove(['activites/$id']);
     } catch (_) {}
 
-    await _activitesCollection
-        .doc(id)
-        .delete();
+    await _activitesCollection.doc(id).delete();
   }
 
   Stream<List<ActiviteModel>> watchActivites() {
-    return _activitesCollection
-        .snapshots()
-        .map((snapshot) {
+    return _activitesCollection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
-        return ActiviteModel.fromJson(
-          doc.data(),
-          doc.id,
-        );
+        return ActiviteModel.fromJson(doc.data(), doc.id);
       }).toList();
     });
   }
+
   Stream<List<CategorieModel>> watchCategories() {
-  return _firestore
-      .collection('categories')
-      .where('type', isEqualTo: 'activite')
+    return _firestore
+        .collection('categories')
+        .where('type', isEqualTo: 'activite')
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) {
+            return CategorieModel.fromJson(doc.data(), doc.id);
+          }).toList();
+        });
+  }
+
+  Future<void> ajouterActiviteRealisee({
+  required String parentUid,
+  required String enfantId,
+  required String activiteId,
+}) async {
+  final enfantRef = _firestore
+      .collection('users')
+      .doc(parentUid)
+      .collection('enfants')
+      .doc(enfantId);
+
+  final snapshot = await enfantRef.get();
+
+  if (!snapshot.exists) {
+    throw Exception('Enfant introuvable.');
+  }
+
+  final data = snapshot.data() ?? {};
+
+  final activitesRealisees =
+      List<Map<String, dynamic>>.from(
+    data['activites_realisees'] ?? [],
+  );
+
+  final dejaRealisee = activitesRealisees.any(
+    (item) => item['activite_id'] == activiteId,
+  );
+
+  if (dejaRealisee) {
+    return;
+  }
+
+  await enfantRef.update({
+    'activites_realisees': FieldValue.arrayUnion([
+      {
+        'activite_id': activiteId,
+        'date': Timestamp.now(),
+      },
+    ]),
+  });
+}
+Future<List<ActiviteModel>> getActivitesParAge(int age) async {
+  final snapshot = await _activitesCollection
+      .where('ageMin', isLessThanOrEqualTo: age)
+      .where('ageMax', isGreaterThanOrEqualTo: age)
+      .get();
+
+  return snapshot.docs.map((doc) {
+    return ActiviteModel.fromJson(
+      doc.data(),
+      doc.id,
+    );
+  }).toList();
+}
+Stream<List<ActiviteModel>> watchActivitesParAge(
+  int age,
+) {
+  return _activitesCollection
+      .where(
+        'age_min',
+        isLessThanOrEqualTo: age,
+      )
+      .where(
+        'age_max',
+        isGreaterThanOrEqualTo: age,
+      )
       .snapshots()
       .map((snapshot) {
-    return snapshot.docs.map((doc) {
-      return CategorieModel.fromJson(
-        doc.data(),
-        doc.id,
-      );
-    }).toList();
-  });
+        return snapshot.docs.map((doc) {
+          return ActiviteModel.fromJson(
+            doc.data(),
+            doc.id,
+          );
+        }).toList();
+      });
 }
 }
 
 @riverpod
-ActiviteRepository activiteRepository(
-  Ref ref,
-) {
+ActiviteRepository activiteRepository(Ref ref) {
   return ActiviteRepository(
     FirebaseFirestore.instance,
     Supabase.instance.client,
@@ -288,38 +311,44 @@ ActiviteRepository activiteRepository(
 }
 
 @riverpod
-Future<List<ActiviteModel>> activites(
-  Ref ref,
-) async {
-  final repository =
-      ref.watch(activiteRepositoryProvider);
+Future<List<ActiviteModel>> activites(Ref ref) async {
+  final repository = ref.watch(activiteRepositoryProvider);
 
   return repository.getActivites();
 }
 
 @riverpod
-Future<ActiviteModel?> activiteById(
-  Ref ref,
-  String id,
-) async {
-  final repository =
-      ref.watch(activiteRepositoryProvider);
+Future<ActiviteModel?> activiteById(Ref ref, String id) async {
+  final repository = ref.watch(activiteRepositoryProvider);
 
   return repository.getActiviteById(id);
 }
 
 @riverpod
-Stream<List<ActiviteModel>> watchActivites(
-  Ref ref,
-) {
-  final repository =
-      ref.watch(activiteRepositoryProvider);
+Stream<List<ActiviteModel>> watchActivites(Ref ref) {
+  final repository = ref.watch(activiteRepositoryProvider);
 
   return repository.watchActivites();
 }
 @riverpod
-Stream<List<CategorieModel>> watchCategories(Ref ref) {
-  final repository = ref.watch(activiteRepositoryProvider);
+Future<List<ActiviteModel>> activitesParAge(
+  Ref ref,
+  int age,
+) async {
+  final repository = ref.watch(
+    activiteRepositoryProvider,
+  );
 
-  return repository.watchCategories();
+  return repository.getActivitesParAge(age);
+}
+@riverpod
+Stream<List<ActiviteModel>> activitesParAgeStream(
+  Ref ref,
+  int age,
+) {
+  final repository = ref.watch(
+    activiteRepositoryProvider,
+  );
+
+  return repository.watchActivitesParAge(age);
 }

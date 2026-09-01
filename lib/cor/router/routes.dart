@@ -617,27 +617,33 @@ GoRouter appRouter(Ref ref) {
         path: '/activitesListeEnfant',
         name: AppRoutes.activite.name,
         builder: (context, state) {
-          return const ActivitesPage();
+           final enfant = state.extra as EnfantModel;
+          return  ActivitesPage(enfant: enfant,);
         },
       ),
       GoRoute(
         path: '/espaceienfant',
         name: AppRoutes.espaceEnfant.name,
         builder: (context, state) {
-                    final enfant = state.extra as EnfantModel;
-
-          return  EspaceEnfantScreen(enfant: enfant,);
+        final enfant = state.extra as EnfantModel;
+        return  EspaceEnfantScreen(enfant: enfant,);
         },
       ),
       GoRoute(
-        path: '/detailactive',
-        name: AppRoutes.detailactive.name,
-        builder: (context, state) {
-                    final activite = state.extra as ActiviteModel;
+          name: AppRoutes.detailactive.name,
+          path: '/detailactive',
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>;
 
-          return  ActiviteDetailScreen(activite: activite,);
-        },
-      )
+            final activite = data['activite'] as ActiviteModel;
+            final enfant = data['enfant'] as EnfantModel;
+
+            return ActiviteDetailScreen(
+              activite: activite,
+              enfantModel: enfant,
+    );
+  },
+),
       
     ],
   );
