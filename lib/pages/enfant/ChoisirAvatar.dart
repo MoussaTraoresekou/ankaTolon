@@ -35,7 +35,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
     'assets/images/avatars/avatar9.jpg',
     'assets/images/avatars/avatar10.jpg',
     'assets/images/avatars/avatar11.jpg',
-    'assets/images/avatars/avatar11.Jpg',
+    'assets/images/avatars/avatar12.jpg',
   ];
 
   late String _selectedAvatar;
