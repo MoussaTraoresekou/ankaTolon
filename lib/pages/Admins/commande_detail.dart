@@ -158,9 +158,7 @@ class CommandeDetail extends ConsumerWidget {
                       LigneInfoCmd(
                         icon: Icons.location_on_outlined,
                         label: 'Adresse',
-                        value: orderData.adresse.length > 25
-                            ? '${orderData.adresse.substring(0, 25)}...'
-                            : orderData.adresse,
+                        value: orderData.adresse,
                       ),
                       LigneInfoCmd(
                         icon: Icons.access_time,
