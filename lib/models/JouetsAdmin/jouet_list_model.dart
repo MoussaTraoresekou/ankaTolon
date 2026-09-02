@@ -1,21 +1,23 @@
 class Jouet {
-  String id;
-  String nom;
-  String categorie;
-  int ageMinimum;
-  int ageMaximum;
-  double prix;
-  int stock;
-  String description;
-  List<String> benefices;
-  List<String> images;
+  final String id;
+  final String nom;
+  final String categorieId;
 
-  double noteMoyen;
+  final int ageMinimum;
+  final int ageMaximum;
+
+  final double prix;
+  final int stock;
+
+  final String description;
+
+  final List<String> benefices;
+  final List<String> images;
 
   Jouet({
     required this.id,
     required this.nom,
-    required this.categorie,
+    required this.categorieId,
     required this.ageMinimum,
     required this.ageMaximum,
     required this.prix,
@@ -23,7 +25,5 @@ class Jouet {
     required this.description,
     required this.benefices,
     required this.images,
-
-    this.noteMoyen = 0,
   });
 }
