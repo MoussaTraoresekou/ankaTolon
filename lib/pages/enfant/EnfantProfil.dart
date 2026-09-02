@@ -45,7 +45,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundColor: const Color(0xFFD6EADF),
+            backgroundColor: context.primarySoft,
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new,
@@ -106,8 +106,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
 
               // Nom et prénom
               Text(
-                '${_currentEnfant.prenom ?? ''} ${_currentEnfant.nom ?? ''}'
-                    .trim(),
+                '${_currentEnfant.prenom} ${_currentEnfant.nom}'.trim(),
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -119,10 +118,10 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
               // Âge
               Text(
                 '$ageCalculated ans',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF7CB342),
+                  color: context.primary,
                 ),
               ),
               const SizedBox(height: 32),
@@ -134,7 +133,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                 children: [
                   _buildStatCard(
                     context,
-                    value: '${_currentEnfant.defisRealises?.length ?? 14}',
+                    value: '${_currentEnfant.defisRealises.length}',
                     label: 'Défis',
                     imagePath: 'assets/images/defi.png',
                   ),
@@ -146,7 +145,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                   ),
                   _buildStatCard(
                     context,
-                    value: '${_currentEnfant.niveau ?? 4}',
+                    value: '${_currentEnfant.niveau}',
                     label: 'Noobzer',
                     imagePath: 'assets/images/badge.png',
                   ),
