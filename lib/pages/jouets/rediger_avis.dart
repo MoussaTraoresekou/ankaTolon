@@ -62,7 +62,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // JOUET 
+            // ========== JOUET ==========
             Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -131,7 +131,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
 
             const SizedBox(height: 28),
 
-            // NOTE
+            // ========== NOTE ==========
             Text(
               'Quelle note donnez-vous à ce jouet ?',
               style: context.headingTextStyle.copyWith(fontSize: 16),
@@ -174,7 +174,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
 
             const SizedBox(height: 30),
 
-            // COMMENTAIRE
+            // ========== COMMENTAIRE ==========
             Text(
               'Votre commentaire',
               style: context.headingTextStyle.copyWith(fontSize: 16),
@@ -199,7 +199,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
 
             const SizedBox(height: 24),
 
-            // BOUTON
+            // ========== BOUTON ==========
             SizedBox(
               width: double.infinity,
               height: 52,
