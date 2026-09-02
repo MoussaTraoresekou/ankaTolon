@@ -14,14 +14,13 @@ import 'package:tolon/cor/utils/async_value_ui.dart';
 import 'package:tolon/cor/utils/size_config.dart';
 import 'package:tolon/models/activites/activite_model.dart';
 import 'package:tolon/models/categorie/categorie_model.dart';
-import 'package:tolon/repository/activite_repository/activite_repository.dart';
+import 'package:tolon/repository/categorie_repo/category_repository.dart';
 
 class AddActiviteScreen extends ConsumerStatefulWidget {
   const AddActiviteScreen({super.key});
 
   @override
-  ConsumerState<AddActiviteScreen> createState() =>
-      _AddActiviteScreenState();
+  ConsumerState<AddActiviteScreen> createState() => _AddActiviteScreenState();
 }
 
 class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
@@ -54,9 +53,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
       imageQuality: 80,
     );
 
-    if (image == null) {
-      return;
-    }
+    if (image == null) return;
 
     setState(() {
       _selectedImage = image;
@@ -64,13 +61,9 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
   }
 
   Future<void> _pickVideo() async {
-    final video = await _picker.pickVideo(
-      source: ImageSource.gallery,
-    );
+    final video = await _picker.pickVideo(source: ImageSource.gallery);
 
-    if (video == null) {
-      return;
-    }
+    if (video == null) return;
 
     setState(() {
       _selectedVideo = video;
@@ -97,16 +90,13 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
       categorieId: _categorieSelectionnee == null
           ? null
           : FirebaseFirestore.instance
-              .collection('categories')
-              .doc(_categorieSelectionnee!.id),
+                .collection('categories')
+                .doc(_categorieSelectionnee!.id),
       image: null,
       videoUrl: null,
-      dureeMinutes:
-          int.tryParse(_dureeController.text.trim()) ?? 0,
-      ageMin:
-          int.tryParse(_ageMinController.text.trim()) ?? 0,
-      ageMax:
-          int.tryParse(_ageMaxController.text.trim()) ?? 0,
+      dureeMinutes: int.tryParse(_dureeController.text.trim()) ?? 0,
+      ageMin: int.tryParse(_ageMinController.text.trim()) ?? 0,
+      ageMax: int.tryParse(_ageMaxController.text.trim()) ?? 0,
       dateCreation: DateTime.now(),
     );
 
@@ -120,26 +110,16 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
 
     final succes = await ref
         .read(activiteControllerProvider.notifier)
-        .ajouterActivite(
-          activite,
-          image: imageFile,
-          video: videoFile,
-        );
+        .ajouterActivite(activite, image: imageFile, video: videoFile);
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     final state = ref.read(activiteControllerProvider);
 
     if (succes) {
-      state.showSuccessDialog(
-        context,
-        'Activité ajoutée avec succès !',
-        () {
-          context.pop();
-        },
-      );
+      state.showSuccessDialog(context, 'Activité ajoutée avec succès !', () {
+        context.pop();
+      });
     } else {
       state.showErrorDialog(context);
     }
@@ -151,156 +131,92 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
 
     final state = ref.watch(activiteControllerProvider);
 
-    final categoriesAsync = ref.watch(
-      watchCategoriesProvider,
-    );
+    final categoriesAsync = ref.watch(listeCategoryByTypeProvider('activite'));
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            SizeConfig.getProportionateWidth(16),
-            SizeConfig.getProportionateHeight(30),
-            SizeConfig.getProportionateWidth(16),
-            SizeConfig.getProportionateHeight(30),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                    ),
-                    onPressed: state.isLoading
-                        ? null
-                        : () => context.pop(),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Ajouter une activité',
-                          style:
-                              AppStyles.headingTextStyle.copyWith(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          'Renseignez les informations de l’activité',
-                          style: TextStyle(
-                            color: Colors.black45,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+        child: Column(
+          children: [
+            _buildHeader(isLoading: state.isLoading),
 
-              SizedBox(
-                height:
-                    SizeConfig.getProportionateHeight(20),
-              ),
-
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color:
-                          Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.fromLTRB(
+                  SizeConfig.getProportionateWidth(20),
+                  8,
+                  SizeConfig.getProportionateWidth(20),
+                  30,
                 ),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Informations de l’activité',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
+                    _buildIntro(),
 
-                    const Divider(
-                      color: Colors.black12,
-                    ),
+                    const SizedBox(height: 28),
 
-                    const SizedBox(height: 12),
-
-                    CustomTextField(
-                      label: 'Titre',
-                      hintText:
-                          'Ex : Peinture avec les doigts',
-                      controller: _titreController,
-                      prefixIcon: Icons.title,
+                    _buildSectionTitle(
+                      icon: Icons.info_outline_rounded,
+                      title: 'Informations générales',
+                      subtitle: 'Présentez votre activité',
+                      context: context,
                     ),
 
                     const SizedBox(height: 16),
+
+                    CustomTextField(
+                      label: 'Titre de l’activité',
+                      hintText: 'Ex : Peinture avec les doigts',
+                      controller: _titreController,
+                      prefixIcon: Icons.title_rounded,
+                    ),
+
+                    const SizedBox(height: 18),
 
                     CustomTextField(
                       label: 'Description',
-                      hintText:
-                          'Entrez une description détaillée...',
+                      hintText: 'Décrivez l’activité en quelques mots...',
                       controller: _descriptionController,
-                      prefixIcon:
-                          Icons.description_outlined,
+                      prefixIcon: Icons.notes_rounded,
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 18),
 
                     categoriesAsync.when(
-                      loading: () =>
-                          const LinearProgressIndicator(),
-
-                      error: (error, stackTrace) =>
-                          const Text(
-                        'Erreur lors du chargement des catégories.',
-                        style: TextStyle(
-                          color: Colors.red,
+                      loading: () => Container(
+                        height: 55,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: context.boxSurfaceLight,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: context.primaryOrange,
+                          ),
                         ),
                       ),
-
+                      error: (error, stackTrace) => _buildErrorMessage(context),
                       data: (categories) {
                         if (categories.isEmpty) {
-                          return const Text(
-                            'Aucune catégorie disponible.',
-                            style: TextStyle(
-                              color: Colors.black45,
-                            ),
-                          );
+                          return _buildEmptyCategoryMessage();
                         }
 
                         return CustomDropdown<CategorieModel>(
                           label: 'Catégorie',
-                          hintText:
-                              'Choisir une catégorie',
+                          hintText: 'Choisir une catégorie',
                           value: _categorieSelectionnee,
-                          prefixIcon:
-                              Icons.category_outlined,
+                          prefixIcon: Icons.category_rounded,
                           items: categories.map((categorie) {
-                            return DropdownMenuItem<
-                                CategorieModel>(
+                            return DropdownMenuItem<CategorieModel>(
                               value: categorie,
                               child: Text(
                                 categorie.nom,
+                                style: TextStyle(color: context.textDark),
                               ),
                             );
                           }).toList(),
@@ -308,12 +224,20 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                               ? null
                               : (value) {
                                   setState(() {
-                                    _categorieSelectionnee =
-                                        value;
+                                    _categorieSelectionnee = value;
                                   });
                                 },
                         );
                       },
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    _buildSectionTitle(
+                      icon: Icons.tune_rounded,
+                      title: 'Paramètres',
+                      subtitle: 'Définissez l’âge et la durée',
+                      context: context,
                     ),
 
                     const SizedBox(height: 16),
@@ -324,126 +248,393 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                           child: CustomTextField(
                             label: 'Âge minimum',
                             hintText: 'Ex : 3',
-                            controller:
-                                _ageMinController,
-                            keyboardType:
-                                TextInputType.number,
-                            prefixIcon:
-                                Icons.child_care,
+                            controller: _ageMinController,
+                            keyboardType: TextInputType.number,
+                            prefixIcon: Icons.child_care_rounded,
                           ),
                         ),
-
-                        const SizedBox(width: 16),
-
+                        const SizedBox(width: 14),
                         Expanded(
                           child: CustomTextField(
                             label: 'Âge maximum',
                             hintText: 'Ex : 6',
-                            controller:
-                                _ageMaxController,
-                            keyboardType:
-                                TextInputType.number,
-                            prefixIcon:
-                                Icons.child_friendly,
+                            controller: _ageMaxController,
+                            keyboardType: TextInputType.number,
+                            prefixIcon: Icons.child_friendly_rounded,
                           ),
                         ),
                       ],
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 18),
 
                     CustomTextField(
-                      label: 'Durée en minutes',
-                      hintText: 'Ex : 30',
+                      label: 'Durée',
+                      hintText: 'Ex : 30 minutes',
                       controller: _dureeController,
-                      keyboardType:
-                          TextInputType.number,
-                      prefixIcon:
-                          Icons.timer_outlined,
+                      keyboardType: TextInputType.number,
+                      prefixIcon: Icons.timer_outlined,
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
 
-                    _buildImageSection(
+                    _buildSectionTitle(
+                      icon: Icons.perm_media_outlined,
+                      title: 'Médias',
+                      subtitle: 'Ajoutez une image et une vidéo',
+                      context: context,
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    _buildImagePicker(isLoading: state.isLoading),
+
+                    const SizedBox(height: 14),
+
+                    _buildVideoPicker(
                       isLoading: state.isLoading,
+                      context: context,
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 32),
 
-                    _buildVideoSection(
+                    _buildSubmitButton(
                       isLoading: state.isLoading,
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: state.isLoading
-                            ? null
-                            : _ajouterActivite,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              AppStyles.primaryOrange,
-                          padding:
-                              const EdgeInsets.symmetric(
-                            vertical: 15,
-                          ),
-                          shape:
-                              RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: state.isLoading
-                            ? const SizedBox(
-                                width: 22,
-                                height: 22,
-                                child:
-                                    CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : const Text(
-                                'Ajouter l’activité',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight:
-                                      FontWeight.bold,
-                                ),
-                              ),
-                      ),
+                      context: context,
                     ),
 
                     const SizedBox(height: 12),
 
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: state.isLoading
-                            ? null
-                            : () => context.pop(),
-                        style:
-                            OutlinedButton.styleFrom(
-                          padding:
-                              const EdgeInsets.symmetric(
-                            vertical: 15,
-                          ),
-                          shape:
-                              RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(10),
-                          ),
-                        ),
-                        child:
-                            const Text('Annuler'),
+                    _buildCancelButton(isLoading: state.isLoading),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader({required bool isLoading}) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 10, 20, 8),
+      child: Row(
+        children: [
+          Material(
+            color: context.boxSurfaceLight,
+            shape: const CircleBorder(),
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: isLoading ? null : () => context.pop(),
+              child: Padding(
+                padding: const EdgeInsets.all(11),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 19,
+                  color: context.textDark,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 14),
+
+          Expanded(
+            child: Text(
+              'Nouvelle activité',
+              style: context.headingTextStyle.copyWith(
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: context.primarySoft,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.auto_awesome_rounded,
+              size: 20,
+              color: context.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIntro() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: context.primarySoft,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: context.primary,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Icon(
+              Icons.lightbulb_outline_rounded,
+              color: context.textInverse,
+              size: 25,
+            ),
+          ),
+
+          const SizedBox(width: 14),
+
+          Expanded(
+            child: Text(
+              'Créez une activité amusante et adaptée aux enfants.',
+              style: TextStyle(
+                fontSize: 14,
+                height: 1.4,
+                fontWeight: FontWeight.w600,
+                color: context.textDark,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required BuildContext context,
+  }) {
+    return Row(
+      children: [
+        Container(
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: context.avatarOrangeBg,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: context.primaryOrange, size: 20),
+        ),
+
+        const SizedBox(width: 11),
+
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                color: context.textDark,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              subtitle,
+              style: TextStyle(fontSize: 12, color: context.textMuted),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImagePicker({required bool isLoading}) {
+    if (_selectedImage != null) {
+      return Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Image.file(
+              File(_selectedImage!.path),
+              width: double.infinity,
+              height: 210,
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          Positioned(
+            left: 12,
+            bottom: 12,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.55),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.check_circle_rounded,
+                    color: Colors.white,
+                    size: 17,
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    'Image sélectionnée',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 10,
+            right: 10,
+            child: _buildRemoveButton(onTap: isLoading ? null : _removeImage),
+          ),
+        ],
+      );
+    }
+
+    return _buildMediaEmptyCard(
+      icon: Icons.add_photo_alternate_outlined,
+      title: 'Ajouter une image',
+      subtitle: 'Une belle image pour présenter l’activité',
+      onTap: isLoading ? null : _pickImage,
+    );
+  }
+
+  Widget _buildVideoPicker({
+    required bool isLoading,
+    required BuildContext context,
+  }) {
+    if (_selectedVideo != null) {
+      return Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: context.boxSurfaceLight,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: context.borderColor),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: context.avatarOrangeBg,
+                borderRadius: BorderRadius.circular(13),
+              ),
+              child: Icon(
+                Icons.video_file_rounded,
+                color: context.primaryOrange,
+                size: 25,
+              ),
+            ),
+
+            const SizedBox(width: 12),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Vidéo sélectionnée',
+                    style: TextStyle(
+                      color: context.textDark,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    _selectedVideo!.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: context.textMuted, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+
+            _buildRemoveButton(onTap: isLoading ? null : _removeVideo),
+          ],
+        ),
+      );
+    }
+
+    return _buildMediaEmptyCard(
+      icon: Icons.video_library_outlined,
+      title: 'Ajouter une vidéo',
+      subtitle: 'Montrez comment réaliser l’activité',
+      onTap: isLoading ? null : _pickVideo,
+    );
+  }
+
+  Widget _buildMediaEmptyCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback? onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: context.boxSurfaceLight,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: context.borderColor),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: context.primarySoft,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Icon(icon, color: context.primary, size: 27),
+              ),
+
+              const SizedBox(width: 14),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: context.textDark,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: TextStyle(color: context.textMuted, fontSize: 12),
                     ),
                   ],
                 ),
               ),
+
+              Icon(Icons.chevron_right_rounded, color: context.textMuted),
             ],
           ),
         ),
@@ -451,206 +642,118 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     );
   }
 
-  Widget _buildImageSection({
-    required bool isLoading,
-  }) {
-    return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Image de l’activité',
-          style: AppStyles.normalTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
+  Widget _buildRemoveButton({required VoidCallback? onTap}) {
+    return Material(
+      color: Colors.black.withValues(alpha: 0.55),
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: const Padding(
+          padding: EdgeInsets.all(8),
+          child: Icon(Icons.close_rounded, color: Colors.white, size: 18),
         ),
-
-        const SizedBox(height: 8),
-
-        if (_selectedImage == null)
-          GestureDetector(
-            onTap:
-                isLoading ? null : _pickImage,
-            child: Container(
-              width: double.infinity,
-              padding:
-                  const EdgeInsets.symmetric(
-                vertical: 25,
-              ),
-              decoration: BoxDecoration(
-                color:
-                    const Color(0xFFF9F9F6),
-                borderRadius:
-                    BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.black12,
-                ),
-              ),
-              child: const Column(
-                children: [
-                  Icon(
-                    Icons
-                        .add_photo_alternate_outlined,
-                    size: 40,
-                    color: Colors.black45,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Sélectionner une image',
-                    style: TextStyle(
-                      fontWeight:
-                          FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        else
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(10),
-                child: Image.file(
-                  File(_selectedImage!.path),
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-              Positioned(
-                top: 8,
-                right: 8,
-                child: GestureDetector(
-                  onTap: isLoading
-                      ? null
-                      : _removeImage,
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration:
-                        const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-      ],
+      ),
     );
   }
 
-  Widget _buildVideoSection({
+  Widget _buildSubmitButton({
     required bool isLoading,
+    required BuildContext context,
   }) {
-    return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Vidéo de l’activité',
-          style: AppStyles.normalTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+    return SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: ElevatedButton(
+        onPressed: isLoading ? null : _ajouterActivite,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: context.primaryOrange,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: context.textMuted.withValues(alpha: 0.35),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
-
-        const SizedBox(height: 8),
-
-        if (_selectedVideo == null)
-          GestureDetector(
-            onTap:
-                isLoading ? null : _pickVideo,
-            child: Container(
-              width: double.infinity,
-              padding:
-                  const EdgeInsets.symmetric(
-                vertical: 25,
-              ),
-              decoration: BoxDecoration(
-                color:
-                    const Color(0xFFF9F9F6),
-                borderRadius:
-                    BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.black12,
+        child: isLoading
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: Colors.white,
                 ),
-              ),
-              child: const Column(
+              )
+            : const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons
-                        .video_library_outlined,
-                    size: 40,
-                    color: Colors.black45,
-                  ),
-                  SizedBox(height: 8),
+                  Icon(Icons.add_rounded, size: 21),
+                  SizedBox(width: 8),
                   Text(
-                    'Sélectionner une vidéo',
-                    style: TextStyle(
-                      fontWeight:
-                          FontWeight.w600,
-                    ),
+                    'Créer l’activité',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-            ),
-          )
-        else
-          Container(
-            padding:
-                const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 10,
-            ),
-            decoration: BoxDecoration(
-              color:
-                  const Color(0xFFF9F9F6),
-              borderRadius:
-                  BorderRadius.circular(10),
-              border: Border.all(
-                color: Colors.black12,
-              ),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.video_file_outlined,
-                  size: 32,
-                ),
+      ),
+    );
+  }
 
-                const SizedBox(width: 10),
+  Widget _buildCancelButton({required bool isLoading}) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: TextButton(
+        onPressed: isLoading ? null : () => context.pop(),
+        style: TextButton.styleFrom(
+          foregroundColor: context.textMuted,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        child: const Text(
+          'Annuler',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
+  }
 
-                Expanded(
-                  child: Text(
-                    _selectedVideo!.name,
-                    maxLines: 1,
-                    overflow:
-                        TextOverflow.ellipsis,
-                  ),
-                ),
-
-                IconButton(
-                  onPressed: isLoading
-                      ? null
-                      : _removeVideo,
-                  icon:
-                      const Icon(Icons.close),
-                ),
-              ],
+  Widget _buildErrorMessage(context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(13),
+      decoration: BoxDecoration(
+        color: context.badgeRed.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.error_outline_rounded, color: context.badgeRed, size: 20),
+          const SizedBox(width: 9),
+          Expanded(
+            child: Text(
+              'Erreur lors du chargement des catégories.',
+              style: TextStyle(color: context.badgeRed, fontSize: 12),
             ),
           ),
-      ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyCategoryMessage() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(13),
+      decoration: BoxDecoration(
+        color: context.boxSurfaceLight,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        'Aucune catégorie disponible.',
+        style: TextStyle(color: context.textMuted, fontSize: 13),
+      ),
     );
   }
 }

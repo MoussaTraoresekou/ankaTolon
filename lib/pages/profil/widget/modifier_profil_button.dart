@@ -23,7 +23,7 @@ class ModifierProfilButton extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppStyles.textInverse,
+      backgroundColor: context.textInverse,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -50,7 +50,7 @@ class ModifierProfilButton extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Profil mis à jour avec succès !'),
-                      backgroundColor: AppStyles.primary,
+                      backgroundColor: context.primary,
                     ),
                   );
                 }
@@ -60,7 +60,7 @@ class ModifierProfilButton extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Erreur lors de la mise à jour : $e'),
-                      backgroundColor: AppStyles.badgeRed,
+                      backgroundColor: context.badgeRed,
                     ),
                   );
                 }
@@ -89,7 +89,7 @@ class ModifierProfilButton extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: AppStyles.textDark,
+                              color: context.textDark,
                             ),
                           ),
                           IconButton(
@@ -123,7 +123,7 @@ class ModifierProfilButton extends StatelessWidget {
                         label: 'Téléphone',
                         hintText: '+223 00 00 00 00',
                         keyboardType: TextInputType.phone,
-                        prefixIconColor: AppStyles.badgeRed,
+                        prefixIconColor: context.badgeRed,
                         controller: phoneController,
                         prefixIcon: Icons.phone_outlined,
                       ),
@@ -138,7 +138,7 @@ class ModifierProfilButton extends StatelessWidget {
                               ? null
                               : enregistrerModifications,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppStyles.primaryOrange,
+                            backgroundColor: context.primaryOrange,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
@@ -148,7 +148,7 @@ class ModifierProfilButton extends StatelessWidget {
                                   height: 24,
                                   width: 24,
                                   child: CircularProgressIndicator(
-                                    color: AppStyles.textInverse,
+                                    color: context.textInverse,
                                     strokeWidth: 2,
                                   ),
                                 )
@@ -156,7 +156,7 @@ class ModifierProfilButton extends StatelessWidget {
                                   'Enregistrer',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: AppStyles.textInverse,
+                                    color: context.textInverse,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -188,8 +188,8 @@ class ModifierProfilButton extends StatelessWidget {
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppStyles.primaryOrange,
-          side: const BorderSide(color: AppStyles.primaryOrange, width: 1.5),
+          foregroundColor: context.primaryOrange,
+          side: BorderSide(color: context.primaryOrange, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),

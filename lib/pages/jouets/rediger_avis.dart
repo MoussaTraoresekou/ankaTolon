@@ -44,17 +44,17 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       appBar: AppBar(
-        backgroundColor: AppStyles.bgColor,
+        backgroundColor: context.bgColor,
         elevation: 0,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
+          icon: Icon(Icons.arrow_back_ios_new, color: context.textDark),
         ),
         title: Text(
           _isEdition ? 'Modifier mon avis' : 'Rédiger un avis',
-          style: AppStyles.titleTextStyle,
+          style: context.titleTextStyle,
         ),
       ),
       body: SingleChildScrollView(
@@ -66,7 +66,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
             Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: AppStyles.textInverse,
+                color: context.textInverse,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
@@ -82,7 +82,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                     width: 70,
                     height: 70,
                     decoration: BoxDecoration(
-                      color: AppStyles.primarySoft,
+                      color: context.primarySoft,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     clipBehavior: Clip.antiAlias,
@@ -92,7 +92,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) => Icon(
                               Icons.image_not_supported,
-                              color: AppStyles.textMuted,
+                              color: context.textMuted,
                             ),
                           )
                         : Icon(Icons.toys, color: Colors.grey),
@@ -109,7 +109,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
-                            color: AppStyles.textDark,
+                            color: context.textDark,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -119,7 +119,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                               : 'Partagez votre expérience',
                           style: TextStyle(
                             fontSize: 13,
-                            color: AppStyles.primary,
+                            color: context.primary,
                           ),
                         ),
                       ],
@@ -134,12 +134,12 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
             // ========== NOTE ==========
             Text(
               'Quelle note donnez-vous à ce jouet ?',
-              style: AppStyles.headingTextStyle.copyWith(fontSize: 16),
+              style: context.headingTextStyle.copyWith(fontSize: 16),
             ),
             const SizedBox(height: 8),
             Text(
               'Touchez les étoiles pour noter',
-              style: TextStyle(fontSize: 13, color: AppStyles.textMuted),
+              style: TextStyle(fontSize: 13, color: context.textMuted),
             ),
             const SizedBox(height: 15),
             Center(
@@ -167,7 +167,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: _note == 0 ? AppStyles.textMuted : AppStyles.textDark,
+                  color: _note == 0 ? context.textMuted : context.textDark,
                 ),
               ),
             ),
@@ -177,7 +177,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
             // ========== COMMENTAIRE ==========
             Text(
               'Votre commentaire',
-              style: AppStyles.headingTextStyle.copyWith(fontSize: 16),
+              style: context.headingTextStyle.copyWith(fontSize: 16),
             ),
             const SizedBox(height: 10),
             TextField(
@@ -186,9 +186,9 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
               maxLength: 500,
               decoration: InputDecoration(
                 hintText: 'Partagez votre expérience avec ce jouet...',
-                hintStyle: TextStyle(color: AppStyles.textMuted),
+                hintStyle: TextStyle(color: context.textMuted),
                 filled: true,
-                fillColor: AppStyles.textInverse,
+                fillColor: context.textInverse,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
                   borderSide: BorderSide.none,
@@ -211,7 +211,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: AppStyles.textInverse,
+                          color: context.textInverse,
                         ),
                       )
                     : Icon(_isEdition ? Icons.check : Icons.send_outlined),
@@ -227,10 +227,11 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppStyles.primaryOrange,
-                  foregroundColor: AppStyles.textInverse,
-                  disabledBackgroundColor:
-                      AppStyles.primaryOrange.withValues(alpha: 0.5),
+                  backgroundColor: context.primaryOrange,
+                  foregroundColor: context.textInverse,
+                  disabledBackgroundColor: context.primaryOrange.withValues(
+                    alpha: 0.5,
+                  ),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),

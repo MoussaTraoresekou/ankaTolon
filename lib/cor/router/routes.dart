@@ -10,8 +10,10 @@ import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
 import 'package:tolon/models/activites/activite_model.dart';
 
 import 'package:tolon/models/enfant/enfant_modal.dart';
+import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/DefisAdmin/liste_defis_page.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/activite/activite-detail.dart';
@@ -23,9 +25,10 @@ import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
 import 'package:tolon/pages/enfant/EditEnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
-import 'package:tolon/pages/enfant/EspaceEnfantScreen.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
+import 'package:tolon/pages/enfant/espace_enfant_screen.dart';
+import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 
 import 'package:tolon/pages/favoris/favoris_page.dart';
 
@@ -58,6 +61,7 @@ import 'package:tolon/pages/Admins/commande_liste.dart';
 import 'package:tolon/pages/Admins/liste_tutos.dart';
 import 'package:tolon/pages/Admins/utilisateur_detail.dart';
 import 'package:tolon/pages/Admins/utilisateur_liste.dart';
+import 'package:tolon/pages/tutoriels/TutorielDetail.dart';
 
 part 'routes.g.dart';
 
@@ -101,12 +105,14 @@ enum AppRoutes {
   adminajoutjouets,
   adminajoututoriels,
   adminajoutdefis,
-  adminprofile, 
+  adminprofile,
   addJouetAdmin,
   addActivite,
   activite,
   espaceEnfant,
-  detailactive, espaceEnfantTuto
+  detailactive,
+  espaceEnfantTuto,
+  TutorielDetail,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -127,9 +133,7 @@ GoRouter appRouter(Ref ref) {
 
     debugLogDiagnostics: true,
 
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
 
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
@@ -161,10 +165,7 @@ GoRouter appRouter(Ref ref) {
           return role;
         }
 
-        final doc = await firestore
-            .collection('users')
-            .doc(user.uid)
-            .get();
+        final doc = await firestore.collection('users').doc(user.uid).get();
 
         role = doc.data()?['type'] as String?;
 
@@ -215,9 +216,7 @@ GoRouter appRouter(Ref ref) {
       final isAdminRoute =
           adminRoutes.contains(currentLoc) ||
           adminRoutesAdded.any(
-            (route) =>
-                currentLoc == route ||
-                currentLoc.startsWith('$route/'),
+            (route) => currentLoc == route || currentLoc.startsWith('$route/'),
           );
 
       if (isAdminRoute) {
@@ -322,9 +321,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final jouet = state.extra as JouetModel;
 
-          return Jouetdetail(
-            jouet: jouet,
-          );
+          return Jouetdetail(jouet: jouet);
         },
       ),
 
@@ -332,10 +329,29 @@ GoRouter appRouter(Ref ref) {
         path: '/redigerAvis',
         name: AppRoutes.redigerAvis.name,
         builder: (context, state) {
-          final jouet = state.extra as JouetModel;
+          final extra = state.extra;
 
-          return RedigerAvisPage(
-            jouet: jouet,
+          // Ancien format : JouetModel seul
+          if (extra is JouetModel) {
+            return RedigerAvisPage(jouet: extra);
+          }
+
+          // Nouveau format : Map { 'jouet': JouetModel, 'avis': AvisModel? }
+          if (extra is Map) {
+            final jouet = extra['jouet'];
+            if (jouet is! JouetModel) {
+              throw Exception(
+                'redigerAvis: jouet manquant ou invalide dans extra',
+              );
+            }
+            return RedigerAvisPage(
+              jouet: jouet,
+              avisExistant: extra['avis'] as AvisModel?,
+            );
+          }
+
+          throw Exception(
+            'redigerAvis: extra invalide (attendu JouetModel ou Map)',
           );
         },
       ),
@@ -354,9 +370,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
 
-          return SelectAvatarScreen(
-            dataEnfant: extra,
-          );
+          return SelectAvatarScreen(dataEnfant: extra);
         },
       ),
 
@@ -406,9 +420,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
 
-          return EnfantProfilScreen(
-            enfant: enfant,
-          );
+          return EnfantProfilScreen(enfant: enfant);
         },
       ),
 
@@ -418,9 +430,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
 
-          return EditEnfantProfilScreen(
-            enfant: enfant,
-          );
+          return EditEnfantProfilScreen(enfant: enfant);
         },
       ),
 
@@ -428,29 +438,19 @@ GoRouter appRouter(Ref ref) {
         path: '/choisir-avatar',
         name: AppRoutes.choisirAvatar.name,
         builder: (context, state) {
-          final extraData =
-              state.extra as Map<String, dynamic>?;
+          final extraData = state.extra as Map<String, dynamic>?;
 
-          final enfant =
-              extraData?['enfant'] as EnfantModel?;
+          final enfant = extraData?['enfant'] as EnfantModel?;
 
           final updatedData =
-              extraData?['updatedData']
-                  as Map<String, dynamic>?;
+              extraData?['updatedData'] as Map<String, dynamic>?;
 
           if (enfant == null) {
             return const Scaffold(
-              body: Center(
-                child: Text(
-                  'Erreur : Profil enfant introuvable.',
-                ),
-              ),
+              body: Center(child: Text('Erreur : Profil enfant introuvable.')),
             );
           }
-          return ChoisirAvatarScreen(
-            enfant: enfant,
-            updatedData: updatedData,
-          );
+          return ChoisirAvatarScreen(enfant: enfant, updatedData: updatedData);
         },
       ),
 
@@ -472,13 +472,9 @@ GoRouter appRouter(Ref ref) {
 
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return AdminBottomNav(
-            navigationShell: navigationShell,
-          );
+          return AdminBottomNav(navigationShell: navigationShell);
         },
         branches: [
-         
-
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -490,7 +486,6 @@ GoRouter appRouter(Ref ref) {
               ),
             ],
           ),
-
 
           StatefulShellBranch(
             routes: [
@@ -522,7 +517,7 @@ GoRouter appRouter(Ref ref) {
                 path: '/admin-defis',
                 name: AppRoutes.adminajoutdefis.name,
                 builder: (context, state) {
-                  return const AjoutDefis();
+                  return const ListeDefisPage();
                 },
               ),
             ],
@@ -536,9 +531,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final userId = state.pathParameters['userId'];
 
-          return UserDetail(
-            userId: userId!,
-          );
+          return UserDetail(userId: userId!);
         },
       ),
 
@@ -546,12 +539,9 @@ GoRouter appRouter(Ref ref) {
         path: '/adminDashboard/commande-detail/:orderId',
         name: AppRoutes.admincommandeDetail.name,
         builder: (context, state) {
-          final orderId =
-              state.pathParameters['orderId'];
+          final orderId = state.pathParameters['orderId'];
 
-          return CommandeDetail(
-            orderId: orderId!,
-          );
+          return CommandeDetail(orderId: orderId!);
         },
       ),
 
@@ -575,12 +565,9 @@ GoRouter appRouter(Ref ref) {
         path: '/admin-tutoriels/ajout-tuto',
         name: AppRoutes.adminajoututoriels.name,
         builder: (context, state) {
-          final tutorielAModifier =
-              state.extra as TutorielModel?;
+          final tutorielAModifier = state.extra as TutorielModel?;
 
-          return AjoutTuto(
-            tutoriel: tutorielAModifier,
-          );
+          return AjoutTuto(tutoriel: tutorielAModifier);
         },
       ),
 
@@ -617,28 +604,45 @@ GoRouter appRouter(Ref ref) {
         path: '/activitesListeEnfant',
         name: AppRoutes.activite.name,
         builder: (context, state) {
-          return const ActivitesPage();
+          final enfant = state.extra as EnfantModel;
+          return ActivitesPage(enfant: enfant);
         },
       ),
       GoRoute(
         path: '/espaceienfant',
         name: AppRoutes.espaceEnfant.name,
         builder: (context, state) {
-                    final enfant = state.extra as EnfantModel;
-
-          return  EspaceEnfantScreen(enfant: enfant,);
+          final enfant = state.extra as EnfantModel;
+          return EspaceEnfantScreen(enfant: enfant);
         },
       ),
       GoRoute(
-        path: '/detailactive',
         name: AppRoutes.detailactive.name,
+        path: '/detailactive',
         builder: (context, state) {
-                    final activite = state.extra as ActiviteModel;
+          final data = state.extra as Map<String, dynamic>;
 
-          return  ActiviteDetailScreen(activite: activite,);
+          final activite = data['activite'] as ActiviteModel;
+          final enfant = data['enfant'] as EnfantModel;
+
+          return ActiviteDetailScreen(activite: activite, enfantModel: enfant);
         },
-      )
-      
+      ),
+
+      GoRoute(
+        path: '/tutoriels',
+        name: AppRoutes.espaceEnfantTuto.name,
+        builder: (context, state) => const EspaceEnfantTutoScreen(),
+      ),
+
+      GoRoute(
+        path: '/tutoriel-detail',
+        name: AppRoutes.TutorielDetail.name,
+        builder: (context, state) {
+          final tutoriel = state.extra as TutorielModel;
+          return TutorielDetailScreen(tutoriel: tutoriel);
+        },
+      ),
     ],
   );
 }

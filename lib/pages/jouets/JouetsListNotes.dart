@@ -19,7 +19,7 @@ class JeuxListScreen extends ConsumerWidget {
     final jeuxAsync = ref.watch(streamJouetLesplusNotesProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
@@ -41,7 +41,7 @@ class JeuxListScreen extends ConsumerWidget {
                       ),
                       child: Icon(
                         Icons.chevron_left,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                         size: 24,
                       ),
                     ),
@@ -52,7 +52,7 @@ class JeuxListScreen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: AppStyles.textDark,
+                      color: context.textDark,
                     ),
                   ),
                 ],
@@ -67,7 +67,7 @@ class JeuxListScreen extends ConsumerWidget {
                       return Center(
                         child: Text(
                           'Aucun jeu disponible pour le moment',
-                          style: TextStyle(color: AppStyles.textMuted),
+                          style: TextStyle(color: context.textMuted),
                         ),
                       );
                     }
@@ -80,9 +80,10 @@ class JeuxListScreen extends ConsumerWidget {
                         final jeu = jeux[index];
                         final Color bgColor = _iconBgColors.isNotEmpty
                             ? _iconBgColors[index % _iconBgColors.length]
-                            : AppStyles.primarySoft;
+                            : context.primarySoft;
 
                         return _buildJeuItemCard(
+                          context: context,
                           title: jeu.nomJouet ?? 'Jeu sans nom',
                           note: jeu.noteMoyen ?? 5.0,
                           images: jeu.image,
@@ -98,7 +99,7 @@ class JeuxListScreen extends ConsumerWidget {
                     );
                   },
                   loading: () => Center(
-                    child: CircularProgressIndicator(color: AppStyles.primary),
+                    child: CircularProgressIndicator(color: context.primary),
                   ),
                   error: (error, stack) => const Center(
                     child: Text(
@@ -116,6 +117,7 @@ class JeuxListScreen extends ConsumerWidget {
   }
 
   Widget _buildJeuItemCard({
+    required BuildContext context,
     required String title,
     required double note,
     List<String>? images,
@@ -129,9 +131,9 @@ class JeuxListScreen extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppStyles.borderColor, width: 1),
+        border: Border.all(color: context.borderColor, width: 1),
       ),
       child: Material(
         color: Colors.transparent,
@@ -156,7 +158,7 @@ class JeuxListScreen extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                   errorBuilder: (_, _, _) => Icon(
                                     Icons.sports_esports,
-                                    color: AppStyles.primary,
+                                    color: context.primary,
                                     size: 36,
                                   ),
                                 )
@@ -167,13 +169,13 @@ class JeuxListScreen extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                   errorBuilder: (_, _, _) => Icon(
                                     Icons.sports_esports,
-                                    color: AppStyles.primary,
+                                    color: context.primary,
                                     size: 36,
                                   ),
                                 ))
                         : Icon(
                             Icons.sports_esports,
-                            color: AppStyles.primary,
+                            color: context.primary,
                             size: 36,
                           ),
                   ),
@@ -193,7 +195,7 @@ class JeuxListScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: AppStyles.textDark,
+                          color: context.textDark,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -210,7 +212,7 @@ class JeuxListScreen extends ConsumerWidget {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: AppStyles.textDark,
+                              color: context.textDark,
                             ),
                           ),
                         ],
@@ -218,7 +220,7 @@ class JeuxListScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right, color: AppStyles.textMuted),
+                Icon(Icons.chevron_right, color: context.textMuted),
               ],
             ),
           ),

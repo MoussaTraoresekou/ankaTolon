@@ -1,65 +1,87 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:tolon/controller/activite_controller/activite_controller.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
+import 'package:tolon/cor/utils/async_value_ui.dart';
 import 'package:tolon/cor/utils/size_config.dart';
 import 'package:tolon/models/activites/activite_model.dart';
+import 'package:tolon/models/enfant/enfant_modal.dart';
+import 'package:tolon/pages/activite/activite_video.dart';
 
-class ActiviteDetailScreen extends ConsumerWidget {
+class ActiviteDetailScreen extends ConsumerStatefulWidget {
+  final ActiviteModel activite;
+  final EnfantModel enfantModel;
+
   const ActiviteDetailScreen({
     super.key,
     required this.activite,
+    required this.enfantModel,
   });
 
-  final ActiviteModel activite;
+  @override
+  ConsumerState<ActiviteDetailScreen> createState() =>
+      _ActiviteDetailScreenState();
+}
 
-  Future<void> _terminerActivite(
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
-    /*
+class _ActiviteDetailScreenState extends ConsumerState<ActiviteDetailScreen> {
+  bool _activiteTerminee = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _activiteTerminee = widget.enfantModel.activitesRealisees.any(
+      (item) => item['activite_id'] == widget.activite.id,
+    );
+  }
+
+  Future<void> _terminerActivite() async {
+    final parentUid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (parentUid == null) {
+      return;
+    }
+
     final succes = await ref
         .read(activiteControllerProvider.notifier)
         .marquerCommeTerminee(
-          activiteId: activite.id,
+          parentUid: parentUid,
+          enfantId: widget.enfantModel.id,
+          activiteId: widget.activite.id,
         );
-        
 
-    if (!context.mounted) {
+    if (!mounted) {
       return;
     }
 
     final state = ref.read(activiteControllerProvider);
 
     if (succes) {
-      state.showSuccessDialog(
-        context,
-        'Activité terminée avec succès !',
-        () {
-          context.pop();
-        },
-      );
+      setState(() {
+        _activiteTerminee = true;
+      });
+
+      state.showSuccessDialog(context, 'Activité terminée avec succès !', () {
+        context.pop();
+      });
     } else {
       state.showErrorDialog(context);
     }
-    */
   }
 
+  bool get _aUneVideo =>
+      widget.activite.videoUrl != null && widget.activite.videoUrl!.isNotEmpty;
+
   @override
-  Widget build(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
+  Widget build(BuildContext context) {
     SizeConfig.init(context);
 
-    final state = ref.watch(
-      activiteControllerProvider,
-    );
+    final state = ref.watch(activiteControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -69,48 +91,43 @@ class ActiviteDetailScreen extends ConsumerWidget {
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: SizeConfig.getProportionateHeight(
-                      280,
-                    ),
-                    child: activite.image != null &&
-                            activite.image!.isNotEmpty
-                        ? Image.network(
-                            activite.image!,
-                            fit: BoxFit.cover,
-                            errorBuilder:
-                                (
-                                  context,
-                                  error,
-                                  stackTrace,
-                                ) {
-                              return _imagePlaceholder();
-                            },
+                    height: SizeConfig.getProportionateHeight(280),
+                    child: _aUneVideo
+                        ? ActiviteVideo(
+                            videoUrl: widget.activite.videoUrl!,
+                            thumbnailUrl: widget.activite.image,
                           )
-                        : _imagePlaceholder(),
+                        : (widget.activite.image != null &&
+                                  widget.activite.image!.isNotEmpty
+                              ? Image.network(
+                                  widget.activite.image!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return _imagePlaceholder();
+                                  },
+                                )
+                              : _imagePlaceholder()),
                   ),
+
                   Positioned(
                     top: 16,
                     left: 16,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: context.bgColor,
                         shape: BoxShape.circle,
                         boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(
-                              alpha: 0.10,
-                            ),
-                            blurRadius: 8,
-                          ),
+                          BoxShadow(color: context.shadowColor, blurRadius: 8),
                         ],
                       ),
                       child: IconButton(
                         onPressed: () {
                           context.pop();
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.arrow_back_ios_new,
                           size: 20,
+                          color: context.textDark,
                         ),
                       ),
                     ),
@@ -121,16 +138,14 @@ class ActiviteDetailScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      activite.titre,
-                      style:
-                          AppStyles.headingTextStyle.copyWith(
+                      widget.activite.titre,
+                      style: context.headingTextStyle.copyWith(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
-                        color: Colors.black87,
+                        color: context.textDark,
                       ),
                     ),
 
@@ -140,72 +155,40 @@ class ActiviteDetailScreen extends ConsumerWidget {
                       children: [
                         _InfoItem(
                           icon: Icons.timer_outlined,
-                          text:
-                              '${activite.dureeMinutes} min',
+                          text: '${widget.activite.dureeMinutes} min',
                         ),
+
                         const SizedBox(width: 20),
+
                         _InfoItem(
                           icon: Icons.child_care_outlined,
                           text:
-                              '${activite.ageMin}-${activite.ageMax} ans',
+                              '${widget.activite.ageMin}-${widget.activite.ageMax} ans',
                         ),
                       ],
                     ),
 
                     const SizedBox(height: 24),
 
-                    const Text(
+                    Text(
                       'Description',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: context.textDark,
                       ),
                     ),
 
                     const SizedBox(height: 10),
 
                     Text(
-                      activite.description,
-                      style: const TextStyle(
+                      widget.activite.description,
+                      style: TextStyle(
                         fontSize: 15,
                         height: 1.6,
-                        color: Colors.black54,
+                        color: context.textMuted,
                       ),
                     ),
-
-                    if (activite.videoUrl != null &&
-                        activite.videoUrl!.isNotEmpty) ...[
-                      const SizedBox(height: 24),
-
-                      const Text(
-                        'Vidéo',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      Container(
-                        width: double.infinity,
-                        height: 180,
-                        decoration: BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius:
-                              BorderRadius.circular(16),
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.play_circle_fill,
-                            size: 65,
-                            color: Colors.black45,
-                          ),
-                        ),
-                      ),
-                    ],
 
                     const SizedBox(height: 30),
 
@@ -213,40 +196,40 @@ class ActiviteDetailScreen extends ConsumerWidget {
                       width: double.infinity,
                       height: 55,
                       child: ElevatedButton.icon(
-                        onPressed: state.isLoading
+                        onPressed: _activiteTerminee || state.isLoading
                             ? null
-                            : () {
-                                _terminerActivite(
-                                  context,
-                                  ref,
-                                );
-                              },
+                            : _terminerActivite,
                         icon: state.isLoading
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child:
-                                    CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                   color: Colors.white,
                                 ),
                               )
-                            : const Icon(
-                                Icons.check_circle_outline,
+                            : Icon(
+                                _activiteTerminee
+                                    ? Icons.check_circle
+                                    : Icons.check_circle_outline,
                               ),
                         label: Text(
                           state.isLoading
                               ? 'Enregistrement...'
+                              : _activiteTerminee
+                              ? 'Activité déjà terminée'
                               : 'Marquer comme terminée',
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              AppStyles.primaryOrange,
+                          backgroundColor: _activiteTerminee
+                              ? Colors.grey
+                              : context.primaryOrange,
                           foregroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.grey,
+                          disabledForegroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                           textStyle: const TextStyle(
                             fontSize: 15,
@@ -269,23 +252,16 @@ class ActiviteDetailScreen extends ConsumerWidget {
 
   Widget _imagePlaceholder() {
     return Container(
-      color: const Color(0xFFF1F1ED),
-      child: const Center(
-        child: Icon(
-          Icons.image_outlined,
-          size: 60,
-          color: Colors.black26,
-        ),
+      color: context.boxSurfaceLight,
+      child: Center(
+        child: Icon(Icons.image_outlined, size: 60, color: context.textMuted),
       ),
     );
   }
 }
 
 class _InfoItem extends StatelessWidget {
-  const _InfoItem({
-    required this.icon,
-    required this.text,
-  });
+  const _InfoItem({required this.icon, required this.text});
 
   final IconData icon;
   final String text;
@@ -294,22 +270,17 @@ class _InfoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: AppStyles.primaryOrange,
-        ),
+        Icon(icon, size: 20, color: context.primaryOrange),
         const SizedBox(width: 6),
         Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Colors.black54,
+            color: context.textDark,
           ),
         ),
       ],
     );
   }
 }
-

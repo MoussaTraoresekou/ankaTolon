@@ -30,7 +30,7 @@ class CommonContainer extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: AppStyles.normalTextStyle.copyWith(color: AppStyles.textDark),
+          style: context.normalTextStyle.copyWith(color: context.textDark),
         ),
       ),
     );

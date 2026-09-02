@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tolon/controller/profil/profil_controller.dart';
 import 'package:tolon/cor/app_colors.dart';
 import 'package:tolon/cor/router/routes.dart';
-import 'package:tolon/pages/profil/widget/bouton_deconnexion.dart';
 
 class AdminProfil extends ConsumerStatefulWidget {
   const AdminProfil({super.key});
@@ -114,23 +112,11 @@ class _AdminProfilState extends ConsumerState<AdminProfil> {
                   Text(user?.email ?? 'ankatolon@gmail.com', style: const TextStyle(fontSize: 14, color: AppColors.textGrey, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 32),
 
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: AppColors.greenPrimary, style: BorderStyle.solid),
-                      
-                    ),
-                    child: Column(
-                      children: [
-                        _buildField('Prénom', _prenomController, Icons.person_outline),
-                        const SizedBox(height: 16),
-                        _buildField('Nom', _nomController, Icons.abc),
-                        const SizedBox(height: 16),
-                        _buildField('Téléphone', _phoneController, Icons.phone_outlined),
-                      ],
-                    ),
-                  ),
+                  _buildField('Prénom', _prenomController, Icons.person_outline),
+                  const SizedBox(height: 16),
+                  _buildField('Nom', _nomController, Icons.abc),
+                  const SizedBox(height: 16),
+                  _buildField('Téléphone', _phoneController, Icons.phone_outlined),
                   
                   if (_isEditing) ...[
                     const SizedBox(height: 40),
@@ -147,17 +133,7 @@ class _AdminProfilState extends ConsumerState<AdminProfil> {
                         child: const Text('Enregistrer les modifications', style: TextStyle(fontFamily: 'Quicksand', fontWeight: FontWeight.bold)),
                       ),
                     ),
-                  ],
-
-                  SizedBox(height: 50,),
-
-                  BoutonDeconnexion(
-                      onPressed: () async {
-                        await ref
-                            .read(profilControllerProvider.notifier)
-                            .deconnexion();
-                      },
-                    ),
+                  ]
                 ],
               ),
             ),

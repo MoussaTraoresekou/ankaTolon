@@ -71,9 +71,9 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: AppStyles.primary,
-              onPrimary: AppStyles.textInverse,
-              onSurface: AppStyles.textDark,
+              primary: context.primary,
+              onPrimary: context.textInverse,
+              onSurface: context.textDark,
             ),
           ),
           child: child!,
@@ -91,19 +91,19 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.background,
+      backgroundColor: context.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundColor: AppStyles.bgColor,
+            backgroundColor: context.bgColor,
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 18,
-                color: AppStyles.textDark,
+                color: context.textDark,
               ),
               onPressed: () => context.pop(),
             ),
@@ -112,7 +112,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
         title: Text(
           'Modifier un profil Enfant',
           style: TextStyle(
-            color: AppStyles.textDark,
+            color: context.textDark,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
@@ -173,7 +173,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
                   height: 54,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppStyles.primaryOrange,
+                      backgroundColor: context.primaryOrange,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -209,7 +209,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppStyles.textInverse,
+                        color: context.textInverse,
                       ),
                     ),
                   ),
@@ -228,7 +228,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w500,
-        color: AppStyles.textDark,
+        color: context.textDark,
       ),
     );
   }
@@ -244,7 +244,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
       controller: controller,
       readOnly: readOnly,
       onTap: onTap,
-      style: TextStyle(fontSize: 16, color: AppStyles.textDark),
+      style: TextStyle(fontSize: 16, color: context.textDark),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Ce champ est obligatoire';
@@ -256,14 +256,14 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
         hintStyle: TextStyle(color: Colors.grey.shade400),
         prefixIcon: Icon(prefixIcon, color: const Color(0xFF558B2F)),
         filled: true,
-        fillColor: AppStyles.textInverse,
+        fillColor: context.textInverse,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 16.0,
           horizontal: 16.0,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: AppStyles.borderColor, width: 1.2),
+          borderSide: BorderSide(color: context.borderColor, width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -271,11 +271,11 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppStyles.badgeRed, width: 1.2),
+          borderSide: BorderSide(color: context.badgeRed, width: 1.2),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppStyles.badgeRed, width: 1.8),
+          borderSide: BorderSide(color: context.badgeRed, width: 1.8),
         ),
       ),
     );
@@ -284,21 +284,21 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
   Widget _buildDropdownSexe() {
     return DropdownButtonFormField<String>(
       value: _selectedSexe,
-      icon: Icon(Icons.keyboard_arrow_down, color: AppStyles.textDark),
+      icon: Icon(Icons.keyboard_arrow_down, color: context.textDark),
       decoration: InputDecoration(
         prefixIcon: Icon(
           Icons.accessibility_new_rounded,
           color: Color(0xFF558B2F),
         ),
         filled: true,
-        fillColor: AppStyles.textInverse,
+        fillColor: context.textInverse,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 16.0,
           horizontal: 16.0,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: AppStyles.borderColor, width: 1.2),
+          borderSide: BorderSide(color: context.borderColor, width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -310,7 +310,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
           value: value,
           child: Text(
             value,
-            style: TextStyle(fontSize: 16, color: AppStyles.textDark),
+            style: TextStyle(fontSize: 16, color: context.textDark),
           ),
         );
       }).toList(),

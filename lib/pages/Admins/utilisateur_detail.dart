@@ -63,6 +63,7 @@ class UserDetail extends ConsumerWidget {
               children: [
                 // BLOC PARENT (UserModel)
                 CardDetailCmd(
+                  context: context,
                   title: 'Informations parent',
                   icon: Icons.person_outline_rounded,
                   child: Column(
@@ -149,6 +150,7 @@ class UserDetail extends ConsumerWidget {
 
                 // LISTE D'ENFANTS (EnfantModel)
                 CardDetailCmd(
+                  context: context,
                   title: 'Enfants',
                   icon: Icons.child_care_rounded,
                   child: enfantsList.isEmpty
@@ -175,7 +177,6 @@ class UserDetail extends ConsumerWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
                                 // Séparateur discret s'il y a plus d'un enfant
                                 if (index > 0)
                                   const Padding(
@@ -266,7 +267,7 @@ class UserDetail extends ConsumerWidget {
                                                 ),
                                                 child: Text(
                                                   'Niveau ${enfant.niveau}',
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontSize: 11,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE67E22),
@@ -282,7 +283,7 @@ class UserDetail extends ConsumerWidget {
                                 ),
 
                                 const SizedBox(height: 16),
-                                
+
                                 // Informations chiffrées de l'enfant
                                 LigneInfoCmd(
                                   icon: Icons.cake_outlined,

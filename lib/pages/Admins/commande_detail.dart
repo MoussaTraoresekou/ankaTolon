@@ -133,6 +133,7 @@ class CommandeDetail extends ConsumerWidget {
 
                 // BLOC 1 : Informations Générales
                 CardDetailCmd(
+                  context: context,
                   title: 'Informations générales',
                   icon: Icons.info_outline_rounded,
                   child: Column(
@@ -180,6 +181,7 @@ class CommandeDetail extends ConsumerWidget {
 
                 // BLOC 2 : Jouets Commandés
                 CardDetailCmd(
+                  context: context,
                   title: 'Jouets commandés',
                   icon: null,
                   child: orderData.jouets.isEmpty
@@ -203,10 +205,9 @@ class CommandeDetail extends ConsumerWidget {
                                   toy['name'] ??
                                   'Jouet Éveil',
                               quantity: toy['quantite'] ?? 1,
-                              price: toy['prix_unitaire'] != null
-                                  ? "${toy['prix_unitaire']} F CFA"
-                                  : "0 F CFA",
+                              price: toy['prix_unitaire'] != null? "${toy['prix_unitaire']} F CFA" : "0 F CFA",
                               image: toy['image']?.toString() ?? '',
+
                             );
                           }).toList(),
                         ),

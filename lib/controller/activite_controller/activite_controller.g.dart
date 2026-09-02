@@ -34,7 +34,7 @@ final class ActiviteControllerProvider
 }
 
 String _$activiteControllerHash() =>
-    r'22b264e1bf4f77496df401a6514bff6484591e69';
+    r'7f69d3d2cd13238b518ad5e1cbbbbc2d07f5e8c8';
 
 abstract class _$ActiviteController extends $AsyncNotifier<void> {
   FutureOr<void> build();

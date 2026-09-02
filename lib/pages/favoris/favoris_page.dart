@@ -156,7 +156,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       icon: Icon(
                         Icons.arrow_back_ios_new,
                         size: 16,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -248,7 +248,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                         vertical: 7,
                       ),
                       decoration: BoxDecoration(
-                        color: AppStyles.textInverse,
+                        color: context.textInverse,
                         border: Border.all(
                           color: Colors.grey.shade300,
                           width: 1,
@@ -262,22 +262,22 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                             'Trier par : ',
                             style: TextStyle(
                               fontSize: 13,
-                              color: AppStyles.textMuted,
+                              color: context.textMuted,
                             ),
                           ),
                           Text(
                             _triSelectionne,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFFE67E22),
+                              color: context.primaryOrange,
                             ),
                           ),
                           const SizedBox(width: 2),
                           Icon(
                             Icons.keyboard_arrow_down,
                             size: 20,
-                            color: Color(0xFFE67E22),
+                            color: context.primaryOrange,
                           ),
                         ],
                       ),
@@ -290,10 +290,12 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
 
               // LISTE DES JOUETS OU INDICATION VIDE
               if (chargement)
-                const Center(
+                Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 50),
-                    child: CircularProgressIndicator(color: Color(0xFFE67E22)),
+                    child: CircularProgressIndicator(
+                      color: context.primaryOrange,
+                    ),
                   ),
                 )
               else if (jouetsFavoris.isEmpty)
@@ -337,7 +339,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
       child: Row(
         children: [
           if (isSelected) ...[
-            Icon(Icons.check, color: Color(0xFFE67E22), size: 18),
+            Icon(Icons.check, color: context.primaryOrange, size: 18),
             const SizedBox(width: 8),
           ],
           Text(title),
@@ -349,7 +351,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
   Widget _jouetCard(JouetModel jouet) {
     return Container(
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

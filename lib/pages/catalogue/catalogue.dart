@@ -30,17 +30,17 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
     final panierState = ref.watch(panierProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
 
       appBar: AppBar(
-        backgroundColor: AppStyles.background,
+        backgroundColor: context.background,
         elevation: 0,
         title: Text(
           'Catalogue de jouets',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
-            color: AppStyles.textDark,
+            color: context.textDark,
           ),
         ),
         actions: [
@@ -55,7 +55,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                   },
                   icon: Icon(
                     Icons.shopping_cart_outlined,
-                    color: AppStyles.textDark,
+                    color: context.textDark,
                     size: 27,
                   ),
                 ),
@@ -67,14 +67,14 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                       width: 20,
                       height: 20,
                       decoration: BoxDecoration(
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                         shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: Text(
                           '${panierState.totalQuantity}',
                           style: TextStyle(
-                            color: AppStyles.textInverse,
+                            color: context.textInverse,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
@@ -135,9 +135,9 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                   // ==================================================
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
+                    return Center(
                       child: CircularProgressIndicator(
-                        color: AppStyles.successGreen,
+                        color: context.successGreen,
                       ),
                     );
                   }
@@ -153,9 +153,9 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                         child: Text(
                           'Erreur : ${snapshot.error}',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: AppStyles.badgeRed,
+                            color: context.badgeRed,
                           ),
                         ),
                       ),
@@ -222,32 +222,32 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
           decoration: InputDecoration(
             hintText: 'Rechercher un jouet',
 
-            hintStyle: TextStyle(fontSize: 12, color: AppStyles.textMuted),
+            hintStyle: TextStyle(fontSize: 12, color: context.textMuted),
 
-            prefixIcon: Icon(Icons.search, size: 21, color: AppStyles.textDark),
+            prefixIcon: Icon(Icons.search, size: 21, color: context.textDark),
 
             filled: true,
 
-            fillColor: AppStyles.textInverse,
+            fillColor: context.textInverse,
 
             contentPadding: EdgeInsets.zero,
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: BorderSide(color: AppStyles.textMuted),
+              borderSide: BorderSide(color: context.textMuted),
             ),
 
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: BorderSide(color: AppStyles.textMuted),
+              borderSide: BorderSide(color: context.textMuted),
             ),
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: BorderSide(color: AppStyles.primary),
+              borderSide: BorderSide(color: context.primary),
             ),
           ),
         ),
@@ -287,9 +287,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 17),
 
                 decoration: BoxDecoration(
-                  color: selected
-                      ? AppStyles.successGreen
-                      : AppStyles.primarySoft,
+                  color: selected ? context.successGreen : context.primarySoft,
 
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -304,9 +302,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                     fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
 
-                    color: selected
-                        ? AppStyles.textInverse
-                        : AppStyles.textDark,
+                    color: selected ? context.textInverse : context.textDark,
                   ),
                 ),
               ),
@@ -385,13 +381,13 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
       child: Container(
         decoration: BoxDecoration(
-          color: AppStyles.textInverse,
+          color: context.textInverse,
 
           borderRadius: BorderRadius.circular(10),
 
           boxShadow: [
             BoxShadow(
-              color: AppStyles.shadowColor,
+              color: context.shadowColor,
 
               blurRadius: 5,
 
@@ -429,30 +425,30 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                           return Center(
                             child: CircularProgressIndicator(
-                              color: AppStyles.successGreen,
+                              color: context.successGreen,
                             ),
                           );
                         },
 
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            color: AppStyles.primarySoft,
+                            color: context.primarySoft,
 
                             child: Icon(
                               Icons.image_not_supported,
                               size: 40,
-                              color: AppStyles.textMuted,
+                              color: context.textMuted,
                             ),
                           );
                         },
                       )
                     : Container(
-                        color: AppStyles.primarySoft,
+                        color: context.primarySoft,
 
                         child: Icon(
                           Icons.image,
                           size: 40,
-                          color: AppStyles.textMuted,
+                          color: context.textMuted,
                         ),
                       ),
               ),
@@ -477,7 +473,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                   fontWeight: FontWeight.w500,
 
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
             ),
@@ -491,7 +487,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
 
               decoration: BoxDecoration(
-                color: AppStyles.boxSurfaceLight,
+                color: context.boxSurfaceLight,
 
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -503,7 +499,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                 overflow: TextOverflow.ellipsis,
 
-                style: TextStyle(fontSize: 9, color: AppStyles.primary),
+                style: TextStyle(fontSize: 9, color: context.primary),
               ),
             ),
 
@@ -525,7 +521,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                   Text(
                     jouet.noteMoyen.toStringAsFixed(1),
 
-                    style: TextStyle(fontSize: 10, color: AppStyles.textMuted),
+                    style: TextStyle(fontSize: 10, color: context.textMuted),
                   ),
 
                   const Spacer(),
@@ -546,7 +542,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                         fontWeight: FontWeight.w500,
 
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                       ),
                     ),
                   ),

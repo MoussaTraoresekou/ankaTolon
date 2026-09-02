@@ -30,7 +30,7 @@ class ModifierImages extends StatelessWidget {
     required this.supprimerNouvelleImage,
   });
 
-  Widget boutonCroix({required VoidCallback onPressed}) {
+  Widget boutonCroix({context, required VoidCallback onPressed}) {
     return Positioned(
       top: 2,
       right: 2,
@@ -40,7 +40,7 @@ class ModifierImages extends StatelessWidget {
         height: 24,
 
         decoration: BoxDecoration(
-          color: AppStyles.textInverse,
+          color: context.textInverse,
           shape: BoxShape.circle,
         ),
 
@@ -49,7 +49,7 @@ class ModifierImages extends StatelessWidget {
 
           onPressed: onPressed,
 
-          icon: Icon(Icons.close, color: AppStyles.badgeRed, size: 18),
+          icon: Icon(Icons.close, color: context.badgeRed, size: 18),
         ),
       ),
     );
@@ -128,6 +128,7 @@ class ModifierImages extends StatelessWidget {
 
                       // CROIX ROUGE
                       boutonCroix(
+                        context: context,
                         onPressed: () {
                           supprimerAncienneImage(index);
                         },
@@ -209,6 +210,7 @@ class ModifierImages extends StatelessWidget {
                       ),
 
                       boutonCroix(
+                        context: context,
                         onPressed: () {
                           supprimerNouvelleImage(index);
                         },
