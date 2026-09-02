@@ -101,12 +101,14 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                           enfantsAsync.when(
                             data: (enfants) {
                               if (enfants.isEmpty) {
-                                return const Center(
+                                return Center(
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     child: Text(
                                       'Aucun enfant enregistré',
-                                      style: TextStyle(color: Colors.grey),
+                                      style: TextStyle(
+                                        color: context.textMuted,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -118,7 +120,10 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                                         padding: const EdgeInsets.only(
                                           bottom: 10,
                                         ),
-                                        child: EnfantProfilCard(enfant: enfant),
+                                        child: EnfantProfilCard(
+                                          enfant: enfant,
+                                          context: context,
+                                        ),
                                       ),
                                     )
                                     .toList(),

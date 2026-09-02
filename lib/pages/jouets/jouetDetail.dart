@@ -378,28 +378,6 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
     );
   }
 
-  Widget _buildCircleButton({
-    required IconData icon,
-    required VoidCallback onTap,
-    Color? iconColor,
-  }) {
-    return Material(
-      color: context.textInverse,
-      elevation: 4,
-      shadowColor: Colors.black.withValues(alpha: 0.15),
-      shape: const CircleBorder(),
-      child: InkWell(
-        onTap: onTap,
-        customBorder: const CircleBorder(),
-        child: SizedBox(
-          width: 46,
-          height: 46,
-          child: Icon(icon, size: 21, color: iconColor ?? context.textDark),
-        ),
-      ),
-    );
-  }
-
   // INFORMATIONS PRODUIT
   Widget _buildProductInformation(JouetModel jouet) {
     return Padding(

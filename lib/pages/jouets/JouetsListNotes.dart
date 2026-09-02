@@ -84,8 +84,8 @@ class JeuxListScreen extends ConsumerWidget {
 
                         return _buildJeuItemCard(
                           context: context,
-                          title: jeu.nomJouet ?? 'Jeu sans nom',
-                          note: jeu.noteMoyen ?? 5.0,
+                          title: jeu.nomJouet,
+                          note: jeu.noteMoyen,
                           images: jeu.image,
                           bgColor: bgColor,
                           onTap: () {

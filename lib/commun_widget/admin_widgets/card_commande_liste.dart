@@ -19,13 +19,10 @@ class CardCommandeListe extends StatelessWidget {
 
     if (status == 'livree' || status == 'confimée' || status == 'confirmée') {
       statusColor = Colors.green;
-      statusText = 'Confirmée';
+      statusText = 'Livrée';
     } else if (status == 'en preparation' || status == 'en cours') {
       statusColor = Colors.orange;
-      statusText = 'En préparation';
-    } else if (status == 'annuler' || status == 'annulée') {
-      statusColor = Colors.red;
-      statusText = 'Annuler';
+      statusText = 'En cours';
     } else if (status == 'livrer') {
       statusColor = const Color(0xFF81C784); // Vert plus clair de l'image
       statusText = 'Livrer';
@@ -88,16 +85,19 @@ class CardCommandeListe extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
+
                     Text(
                       '${order.montantTotal} FCFA',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppColors.textDark),
                     ),
                     const SizedBox(height: 4),
+
                     Text(
                       statusText,
                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: statusColor),
                     ),
                     const SizedBox(height: 4),
+
                     Text(
                       dateStr,
                       style: const TextStyle(fontSize: 12, color: AppColors.textGrey, fontWeight: FontWeight.w500),

@@ -52,15 +52,17 @@ class CustomTextField extends StatelessWidget {
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
 
-          style: context.normalTextStyle.copyWith(color: context.textDark),
+          style: context.normalTextStyle.copyWith(color: context.textMuted),
 
           decoration: InputDecoration(
             hintText: hintText,
 
-            hintStyle: context.normalTextStyle.copyWith(color: Colors.black38),
+            hintStyle: context.normalTextStyle.copyWith(
+              color: context.textMuted,
+            ),
 
             prefixIcon: prefixIcon != null
-                ? Icon(prefixIcon, color: prefixIconColor ?? Colors.black45)
+                ? Icon(prefixIcon, color: prefixIconColor ?? context.textMuted)
                 : null,
 
             suffixIcon: suffixIcon,
@@ -80,10 +82,7 @@ class CustomTextField extends StatelessWidget {
 
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 187, 245, 194),
-                width: 1,
-              ),
+              borderSide: BorderSide(color: context.primarySoft, width: 1),
             ),
 
             focusedBorder: OutlineInputBorder(

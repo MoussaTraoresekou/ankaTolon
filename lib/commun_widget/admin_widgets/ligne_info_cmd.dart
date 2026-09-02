@@ -31,6 +31,7 @@ class LigneInfoCmd extends StatelessWidget {
             color: iconColor ?? Color(0xFF34713A),
           ),
           const SizedBox(width: 10),
+
           Text(
             label,
             style: const TextStyle(
@@ -39,13 +40,19 @@ class LigneInfoCmd extends StatelessWidget {
               //fontWeight: FontWeight.w500,
             ),
           ),
-          const Spacer(),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 14,
-              //fontWeight: isBold ? FontWeight.bold : FontWeight.w600,
-              color: valueColor ?? AppColors.textNoir,
+         // const Spacer(),
+
+         const SizedBox(width: 20),
+
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                fontSize: 14,
+                //fontWeight: isBold ? FontWeight.bold : FontWeight.w600,
+                color: valueColor ?? AppColors.textNoir,
+              ),
             ),
           ),
         ],
