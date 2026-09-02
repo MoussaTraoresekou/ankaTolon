@@ -13,6 +13,7 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/DefisAdmin/liste_defis_page.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
 import 'package:tolon/pages/activite/activite-detail.dart';
@@ -516,7 +517,7 @@ GoRouter appRouter(Ref ref) {
                 path: '/admin-defis',
                 name: AppRoutes.adminajoutdefis.name,
                 builder: (context, state) {
-                  return const AjoutDefis();
+                  return const ListeDefisPage();
                 },
               ),
             ],
