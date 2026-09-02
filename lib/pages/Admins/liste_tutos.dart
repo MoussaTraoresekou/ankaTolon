@@ -24,7 +24,7 @@ class _ListeTutosState extends ConsumerState<ListeTutos> {
     final tutosAsync = ref.watch(watchTutorielsProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F9F5),
+      backgroundColor: const Color(0xFFF9FBF9),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -13,7 +13,6 @@ class CommandeDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     // On écoute le contrôleur (Provider) qui gère le cache et les états asynchrones
     final orderAsync = ref.watch(orderDetailProvider(orderId));
 
@@ -47,7 +46,6 @@ class CommandeDetail extends ConsumerWidget {
         centerTitle: true,
       ),
       body: orderAsync.when(
-
         // ÉTAT 1 : Chargement
         loading: () => const Center(
           child: CircularProgressIndicator(color: AppColors.greenPrimary),
@@ -83,7 +81,6 @@ class CommandeDetail extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // En-tête : Badge ID et Badge Statut
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,7 +151,9 @@ class CommandeDetail extends ConsumerWidget {
                       LigneInfoCmd(
                         icon: Icons.location_on_outlined,
                         label: 'Adresse',
-                        value: orderData.adresse,
+                        value: orderData.adresse.length > 25
+                            ? '${orderData.adresse.substring(0, 25)}...'
+                            : orderData.adresse,
                       ),
                       LigneInfoCmd(
                         icon: Icons.access_time,
@@ -165,9 +164,9 @@ class CommandeDetail extends ConsumerWidget {
                         valueColor: (orderData.status.toLowerCase() == 'livree')
                             ? Colors.green
                             : Colors.orange,
-                        iconColor:  Colors.orange,
+                        iconColor: Colors.orange,
                       ),
-                      
+
                       LigneInfoCmd(
                         icon: Icons.functions_rounded,
                         label: 'Montant total',
@@ -199,11 +198,15 @@ class CommandeDetail extends ConsumerWidget {
                             final Map<String, dynamic> toy = item;
 
                             return LigneJouetCmd(
-                              title: toy['nom_jouet'] ?? toy['name'] ?? 'Jouet Éveil',
+                              title:
+                                  toy['nom_jouet'] ??
+                                  toy['name'] ??
+                                  'Jouet Éveil',
                               quantity: toy['quantite'] ?? 1,
-                              price: toy['prix_unitaire'] != null? "${toy['prix_unitaire']} F CFA" : "0 F CFA",
+                              price: toy['prix_unitaire'] != null
+                                  ? "${toy['prix_unitaire']} F CFA"
+                                  : "0 F CFA",
                               image: toy['image']?.toString() ?? '',
-
                             );
                           }).toList(),
                         ),
@@ -237,7 +240,6 @@ class CommandeDetail extends ConsumerWidget {
                         ),
                       ),
                       onPressed: () async {
-                        
                         // Modification du statut sur Firestore via la couche Repository
                         await ref
                             .read(detailCommandeRepositoryProvider)

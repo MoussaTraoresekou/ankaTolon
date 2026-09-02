@@ -55,7 +55,7 @@ class AdminDrawer extends ConsumerWidget {
               'Liste des parents',
               style: TextStyle(
                 fontFamily: 'Quicksand',
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.bold,color: AppColors.textDark,
               ),
             ),
             onTap: () {
@@ -73,7 +73,7 @@ class AdminDrawer extends ConsumerWidget {
               'Toutes les commandes',
               style: TextStyle(
                 fontFamily: 'Quicksand',
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.bold,color: AppColors.textDark,
               ),
             ),
             onTap: () {
