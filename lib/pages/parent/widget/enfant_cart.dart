@@ -7,23 +7,16 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 class EnfantCart extends StatelessWidget {
   final EnfantModel enfant;
 
-  const EnfantCart({
-    super.key,
-    required this.enfant,
-  });
+  const EnfantCart({super.key, required this.enfant});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: SizeConfig.getProportionateWidth(140),
-      margin: EdgeInsets.only(
-        right: SizeConfig.getProportionateWidth(12),
-      ),
-      padding: EdgeInsets.all(
-        SizeConfig.getProportionateWidth(10),
-      ),
+      margin: EdgeInsets.only(right: SizeConfig.getProportionateWidth(12)),
+      padding: EdgeInsets.all(SizeConfig.getProportionateWidth(10)),
       decoration: BoxDecoration(
-        color: AppStyles.onboading13,
+        color: context.primarySoft,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -31,17 +24,15 @@ class EnfantCart extends StatelessWidget {
           Container(
             width: SizeConfig.getProportionateWidth(40),
             height: SizeConfig.getProportionateWidth(40),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: context.textInverse,
               shape: BoxShape.circle,
             ),
             clipBehavior: Clip.antiAlias,
             child: _buildAvatar(),
           ),
 
-          SizedBox(
-            width: SizeConfig.getProportionateWidth(8),
-          ),
+          SizedBox(width: SizeConfig.getProportionateWidth(8)),
 
           Expanded(
             child: Column(
@@ -52,19 +43,17 @@ class EnfantCart extends StatelessWidget {
                   '${enfant.prenom} ${enfant.nom}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppStyles.normalTextStyle.copyWith(
+                  style: context.normalTextStyle.copyWith(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                SizedBox(
-                  height: SizeConfig.getProportionateHeight(3),
-                ),
+                SizedBox(height: SizeConfig.getProportionateHeight(3)),
 
                 Text(
                   _calculerAge(enfant.naissance),
-                  style: AppStyles.normalTextStyle.copyWith(
+                  style: context.normalTextStyle.copyWith(
                     fontSize: 11,
                     color: Colors.black45,
                   ),
@@ -78,8 +67,7 @@ class EnfantCart extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    if (enfant.avatarUrl == null ||
-        enfant.avatarUrl!.trim().isEmpty) {
+    if (enfant.avatarUrl == null || enfant.avatarUrl!.trim().isEmpty) {
       return Icon(
         Icons.person,
         color: Colors.black45,
@@ -92,11 +80,7 @@ class EnfantCart extends StatelessWidget {
       fit: BoxFit.cover,
 
       // Pendant le chargement
-      loadingBuilder: (
-        context,
-        child,
-        loadingProgress,
-      ) {
+      loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) {
           return child;
         }
@@ -105,19 +89,13 @@ class EnfantCart extends StatelessWidget {
           child: SizedBox(
             width: 18,
             height: 18,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-            ),
+            child: CircularProgressIndicator(strokeWidth: 2),
           ),
         );
       },
 
       // Si l'URL est invalide ou l'image ne charge pas
-      errorBuilder: (
-        context,
-        error,
-        stackTrace,
-      ) {
+      errorBuilder: (context, error, stackTrace) {
         return Icon(
           Icons.person,
           color: Colors.black45,
