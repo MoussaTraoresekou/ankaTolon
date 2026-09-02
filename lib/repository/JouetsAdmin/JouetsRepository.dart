@@ -74,17 +74,34 @@ class JouetRepository {
 
       Jouet jouet = Jouet(
         id: document.id,
+
         nom: data['nom'] ?? '',
-        categorie: data['categorie'] ?? '',
-        ageMinimum: data['ageMinimum'] ?? 0,
-        ageMaximum: data['ageMaximum'] ?? 0,
-        prix: (data['prix'] ?? 0).toDouble(),
-        stock: data['stock'] ?? 0,
-        description: data['description'] ?? '',
-        benefices: List<String>.from(
+
+        categorieId:
+        data['categorieId'] ?? '',
+
+        ageMinimum:
+        data['ageMinimum'] ?? 0,
+
+        ageMaximum:
+        data['ageMaximum'] ?? 0,
+
+        prix:
+        (data['prix'] ?? 0).toDouble(),
+
+        stock:
+        data['stock'] ?? 0,
+
+        description:
+        data['description'] ?? '',
+
+        benefices:
+        List<String>.from(
           data['benefices'] ?? [],
         ),
-        images: List<String>.from(
+
+        images:
+        List<String>.from(
           data['images'] ?? [],
         ),
       );
@@ -106,7 +123,7 @@ class JouetRepository {
   Future<void> modifierJouet({
     required String id,
     required String nom,
-    required String categorie,
+    required String categorieId,
     required int ageMinimum,
     required int ageMaximum,
     required double prix,
@@ -116,6 +133,7 @@ class JouetRepository {
     required List<String> anciennesImages,
     required List<XFile> nouvellesImages,
   }) async {
+
     List<String> imagesFinales = [];
 
     imagesFinales.addAll(
@@ -147,14 +165,30 @@ class JouetRepository {
 
     await document.update({
       'nom': nom,
-      'categorie': categorie,
-      'ageMinimum': ageMinimum,
-      'ageMaximum': ageMaximum,
-      'prix': prix,
-      'stock': stock,
-      'description': description,
-      'benefices': benefices,
-      'images': imagesFinales,
+
+      'categorieId':
+      categorieId,
+
+      'ageMinimum':
+      ageMinimum,
+
+      'ageMaximum':
+      ageMaximum,
+
+      'prix':
+      prix,
+
+      'stock':
+      stock,
+
+      'description':
+      description,
+
+      'benefices':
+      benefices,
+
+      'images':
+      imagesFinales,
     });
   }
 }

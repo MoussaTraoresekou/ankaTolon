@@ -75,7 +75,7 @@ class _CommandeListeState extends ConsumerState<CommandeListe> {
                     ),
                     selected: isSelected,
                     selectedColor: AppColors.greenPrimary,
-                    backgroundColor: Colors.transparent,
+                   backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(color: isSelected ? Colors.transparent : const Color(0xFFECECEC)),

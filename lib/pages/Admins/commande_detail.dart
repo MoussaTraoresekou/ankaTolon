@@ -152,7 +152,9 @@ class CommandeDetail extends ConsumerWidget {
                       LigneInfoCmd(
                         icon: Icons.location_on_outlined,
                         label: 'Adresse',
-                        value: orderData.adresse,
+                        value: orderData.adresse.length > 25
+                            ? '${orderData.adresse.substring(0, 25)}...'
+                            : orderData.adresse,
                       ),
                       LigneInfoCmd(
                         icon: Icons.access_time,
@@ -203,9 +205,9 @@ class CommandeDetail extends ConsumerWidget {
                                   toy['name'] ??
                                   'Jouet Éveil',
                               quantity: toy['quantite'] ?? 1,
-                              price: toy['prix_unitaire'] != null
-                                  ? "${toy['prix_unitaire']} F CFA"
-                                  : "0 F CFA",
+                              price: toy['prix_unitaire'] != null? "${toy['prix_unitaire']} F CFA" : "0 F CFA",
+                              image: toy['image']?.toString() ?? '',
+
                             );
                           }).toList(),
                         ),

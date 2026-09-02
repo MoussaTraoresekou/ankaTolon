@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/pages/catalogue/catalogue.dart';
+import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 import 'package:tolon/pages/page_to_delete.dart';
 import 'package:tolon/pages/parent/home_screen.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   final List<Widget> _pages = [
     HomeScreen(),
     CataloguePage(),
-    Page1(),
+    EspaceEnfantTutoScreen(),
     ProfilPage(),
   ];
   @override

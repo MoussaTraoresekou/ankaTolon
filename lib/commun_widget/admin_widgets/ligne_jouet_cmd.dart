@@ -10,7 +10,7 @@ class LigneJouetCmd extends StatelessWidget {
     required this.title,
     required this.quantity,
     required this.price,
-    super.key,
+    super.key, required String image,
   });
 
   @override

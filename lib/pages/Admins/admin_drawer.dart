@@ -40,16 +40,36 @@ class AdminDrawer extends ConsumerWidget {
 
           // Options de navigation internes
           ListTile(
-            leading: const Icon(Icons.people_outline_rounded, color: AppColors.greenPrimary, size: 30,),
-            title: const Text('Liste des parents', style: TextStyle(fontFamily: 'Quicksand', fontWeight: FontWeight.bold)),
+            leading: const Icon(
+              Icons.people_outline_rounded,
+              color: AppColors.greenPrimary,
+              size: 30,
+            ),
+            title: const Text(
+              'Liste des parents',
+              style: TextStyle(
+                fontFamily: 'Quicksand',
+                fontWeight: FontWeight.bold,color: AppColors.textDark,
+              ),
+            ),
             onTap: () {
               Navigator.of(context).pop(); // Ferme le drawer
               context.pushNamed(AppRoutes.adminutilisateurListe.name);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.shopping_bag_outlined, color: AppColors.orangeSecondary, size: 30,),
-            title: const Text('Toutes les commandes', style: TextStyle(fontFamily: 'Quicksand', fontWeight: FontWeight.bold)),
+            leading: const Icon(
+              Icons.shopping_bag_outlined,
+              color: AppColors.orangeSecondary,
+              size: 30,
+            ),
+            title: const Text(
+              'Toutes les commandes',
+              style: TextStyle(
+                fontFamily: 'Quicksand',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             onTap: () {
               Navigator.of(context).pop();
               context.pushNamed(AppRoutes.admincommandeListe.name);
