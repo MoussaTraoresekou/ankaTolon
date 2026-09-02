@@ -34,17 +34,14 @@ class _ModifierCategoriePageState
   void initState() {
     super.initState();
 
-    // Remplir le nom existant
     nomController = TextEditingController(
       text: widget.categorie.nom,
     );
 
-    // Remplir le type existant
     typeSelectionne =
         widget.categorie.type;
   }
 
-  // Modifier
   Future<void> modifierCategorie() async {
 
     if (!formKey.currentState!.validate()) {
@@ -111,9 +108,7 @@ class _ModifierCategoriePageState
               child: Column(
                 children: [
 
-                  // =========================
-                  // HEADER
-                  // =========================
+
 
                   Row(
                     children: [
@@ -183,9 +178,7 @@ class _ModifierCategoriePageState
                     height: 8,
                   ),
 
-                  // =========================
-                  // FORMULAIRE
-                  // =========================
+
 
                   Container(
                     width: double.infinity,
@@ -232,9 +225,7 @@ class _ModifierCategoriePageState
                           height: 15,
                         ),
 
-                        // =========================
-                        // ID
-                        // =========================
+
 
                         const Text(
                           'ID de la catégorie',
@@ -275,9 +266,6 @@ class _ModifierCategoriePageState
                           height: 15,
                         ),
 
-                        // =========================
-                        // NOM
-                        // =========================
 
                         TextFormField(
                           controller:
@@ -312,9 +300,7 @@ class _ModifierCategoriePageState
                           height: 15,
                         ),
 
-                        // =========================
-                        // TYPE
-                        // =========================
+
 
                         DropdownButtonFormField<String>(
                           value: typeSelectionne,
@@ -374,9 +360,7 @@ class _ModifierCategoriePageState
                     height: 14,
                   ),
 
-                  // =========================
-                  // BOUTONS
-                  // =========================
+
 
                   Row(
                     mainAxisAlignment:

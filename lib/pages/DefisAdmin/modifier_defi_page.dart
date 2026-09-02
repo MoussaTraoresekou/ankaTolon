@@ -21,16 +21,10 @@ class ModifierDefiPage extends StatefulWidget {
 
 class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
-  // =====================================================
-  // CONTROLLER
-  // =====================================================
 
   final DefiController controller =
   DefiController();
 
-  // =====================================================
-  // CHAMPS
-  // =====================================================
 
   final TextEditingController titreController =
   TextEditingController();
@@ -38,73 +32,52 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
   final TextEditingController descriptionController =
   TextEditingController();
 
-  // =====================================================
-  // DUREE
-  // =====================================================
+
 
   final TextEditingController dureeController =
   TextEditingController();
 
-  // =====================================================
-  // AGE
-  // =====================================================
+
 
   int ageMin = 4;
 
   int ageMax = 12;
 
-  // =====================================================
-  // TACHES
-  // =====================================================
 
   List<Map<String, dynamic>> taches = [];
 
-  // =====================================================
-  // INITIALISATION
-  // =====================================================
+
 
   @override
   void initState() {
     super.initState();
 
-    // -----------------------------------------------------
-    // TITRE
-    // -----------------------------------------------------
+
 
     titreController.text =
         widget.defi.titre;
 
-    // -----------------------------------------------------
-    // DESCRIPTION
-    // -----------------------------------------------------
+
 
     descriptionController.text =
         widget.defi.description;
 
-    // -----------------------------------------------------
-    // AGE MINIMUM
-    // -----------------------------------------------------
+
 
     ageMin =
         widget.defi.ageMin.clamp(4, 12);
 
-    // -----------------------------------------------------
-    // AGE MAXIMUM
-    // -----------------------------------------------------
+
 
     ageMax =
         widget.defi.ageMax.clamp(4, 12);
 
-    // -----------------------------------------------------
-    // DUREE
-    // -----------------------------------------------------
+
 
     dureeController.text =
         widget.defi.dureeValidite.toString();
 
-    // -----------------------------------------------------
-    // ACTIVITES
-    // -----------------------------------------------------
+
 
     for (final activite
     in widget.defi.activites) {
@@ -116,9 +89,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       });
     }
 
-    // -----------------------------------------------------
-    // QUIZ
-    // -----------------------------------------------------
+
 
     for (final quiz
     in widget.defi.quiz) {
@@ -130,9 +101,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       });
     }
 
-    // -----------------------------------------------------
-    // AUCUNE TACHE
-    // -----------------------------------------------------
+
 
     if (taches.isEmpty) {
 
@@ -143,16 +112,10 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       });
     }
 
-    // -----------------------------------------------------
-    // CHARGER LES CATEGORIES
-    // -----------------------------------------------------
 
     controller.chargerCategories();
   }
 
-  // =====================================================
-  // DISPOSE
-  // =====================================================
 
   @override
   void dispose() {
@@ -168,9 +131,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
     super.dispose();
   }
 
-  // =====================================================
-  // MESSAGE
-  // =====================================================
 
   void afficherMessage(String message) {
 
@@ -181,9 +141,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
     );
   }
 
-  // =====================================================
-  // AJOUTER TACHE
-  // =====================================================
+
 
   void ajouterTache() {
 
@@ -197,9 +155,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
     });
   }
 
-  // =====================================================
-  // SUPPRIMER TACHE
-  // =====================================================
+
 
   void supprimerTache(int index) {
 
@@ -207,7 +163,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
       taches.removeAt(index);
 
-      // Garder au moins une tâche
       if (taches.isEmpty) {
 
         taches.add({
@@ -219,15 +174,8 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
     });
   }
 
-  // =====================================================
-  // MODIFIER LE DEFI
-  // =====================================================
 
   Future<void> enregistrerModification() async {
-
-    // ===================================================
-    // VERIFICATION TITRE
-    // ===================================================
 
     if (titreController.text
         .trim()
@@ -240,9 +188,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       return;
     }
 
-    // ===================================================
-    // VERIFICATION DESCRIPTION
-    // ===================================================
+
 
     if (descriptionController.text
         .trim()
@@ -255,9 +201,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       return;
     }
 
-    // ===================================================
-    // VERIFICATION AGE
-    // ===================================================
+
 
     if (ageMin < 4 ||
         ageMin > 12 ||
@@ -280,10 +224,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       return;
     }
 
-    // ===================================================
-    // VERIFICATION DUREE
-    // ===================================================
-
     final int? duree =
     int.tryParse(
       dureeController.text.trim(),
@@ -299,17 +239,13 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       return;
     }
 
-    // ===================================================
-    // LISTES
-    // =====================================================
+
 
     List<TacheDefi> activites = [];
 
     List<TacheDefi> quiz = [];
 
-    // ===================================================
-    // PARCOURIR LES TACHES
-    // ===================================================
+
 
     for (
     int i = 0;
@@ -320,9 +256,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       final tache =
       taches[i];
 
-      // -------------------------------------------------
-      // TYPE
-      // -------------------------------------------------
+
 
       String? type;
 
@@ -332,9 +266,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
             tache['type'].toString();
       }
 
-      // -------------------------------------------------
-      // CATEGORIE
-      // -------------------------------------------------
+
 
       String? categorieId;
 
@@ -344,9 +276,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
             tache['categorie'].toString();
       }
 
-      // -------------------------------------------------
-      // NOMBRE
-      // -------------------------------------------------
+
 
       int nombre =
           int.tryParse(
@@ -356,9 +286,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
           ) ??
               1;
 
-      // -------------------------------------------------
-      // VERIFIER TYPE
-      // -------------------------------------------------
 
       if (type == null ||
           type.isEmpty) {
@@ -370,9 +297,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         return;
       }
 
-      // -------------------------------------------------
-      // VERIFIER CATEGORIE
-      // -------------------------------------------------
+
 
       if (categorieId == null ||
           categorieId.isEmpty) {
@@ -384,9 +309,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         return;
       }
 
-      // -------------------------------------------------
-      // VERIFIER NOMBRE
-      // -------------------------------------------------
 
       if (nombre <= 0) {
 
@@ -397,9 +319,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         return;
       }
 
-      // -------------------------------------------------
-      // CREER TACHE
-      // -------------------------------------------------
+
 
       final nouvelleTache =
       TacheDefi(
@@ -407,9 +327,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         nombre: nombre,
       );
 
-      // -------------------------------------------------
-      // ACTIVITE
-      // -------------------------------------------------
+
 
       if (type == "activité" ||
           type == "activite") {
@@ -419,9 +337,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         );
       }
 
-      // -------------------------------------------------
-      // QUIZ
-      // -------------------------------------------------
+
 
       else if (type == "quiz") {
 
@@ -431,9 +347,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       }
     }
 
-    // ===================================================
-    // CREER LE DEFI MODIFIE
-    // ===================================================
+
 
     final Defi defiModifie =
     Defi(
@@ -464,9 +378,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       quiz,
     );
 
-    // ===================================================
-    // ENREGISTRER DANS FIREBASE
-    // ===================================================
+
 
     try {
 
@@ -478,9 +390,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         return;
       }
 
-      // -------------------------------------------------
-      // ERREUR
-      // -------------------------------------------------
+
 
       if (controller.erreur != null) {
 
@@ -491,9 +401,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         return;
       }
 
-      // -------------------------------------------------
-      // SUCCES
-      // -------------------------------------------------
 
       ScaffoldMessenger.of(context)
           .showSnackBar(
@@ -521,9 +428,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
     }
   }
 
-  // =====================================================
-  // BUILD
-  // =====================================================
+
 
   @override
   Widget build(
@@ -531,16 +436,11 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
     return Scaffold(
 
-      // =================================================
-      // COULEUR DE FOND
-      // =================================================
+
 
       backgroundColor:
       const Color(0xFFF7FAF8),
 
-      // =================================================
-      // APP BAR
-      // =================================================
 
       appBar: AppBar(
 
@@ -577,9 +477,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
         ),
       ),
 
-      // =================================================
-      // BODY
-      // =================================================
 
       body: SafeArea(
 
@@ -590,10 +487,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
           builder:
               (context, child) {
-
-            // ===========================================
-            // CHARGEMENT
-            // ===========================================
 
             if (controller.isLoading &&
                 controller.categories.isEmpty) {
@@ -620,9 +513,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
                 children: [
 
-                  // =====================================
-                  // IMAGE
-                  // =====================================
 
                   Center(
 
@@ -662,9 +552,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                     height: 15,
                   ),
 
-                  // =====================================
-                  // TEXTE INTRODUCTIF
-                  // =====================================
 
                   const Center(
 
@@ -685,9 +572,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                     height: 22,
                   ),
 
-                  // =====================================
-                  // INFORMATIONS DU DEFI
-                  // =====================================
+
 
                   Container(
 
@@ -737,9 +622,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
                       children: [
 
-                        // ---------------------------------
-                        // TITRE SECTION
-                        // ---------------------------------
+
 
                         Row(
 
@@ -816,9 +699,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                           height: 20,
                         ),
 
-                        // ---------------------------------
-                        // TITRE
-                        // ---------------------------------
 
                         const Text(
                           "Titre du défi",
@@ -850,9 +730,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                           height: 18,
                         ),
 
-                        // ---------------------------------
-                        // DESCRIPTION
-                        // ---------------------------------
+
 
                         const Text(
                           "Description du défi",
@@ -885,9 +763,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                           height: 20,
                         ),
 
-                        // ---------------------------------
-                        // AGE
-                        // ---------------------------------
 
                         const Text(
                           "Tranche d'âge",
@@ -924,7 +799,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
                           children: [
 
-                            // AGE MINIMUM
                             Expanded(
 
                               child:
@@ -1190,9 +1064,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                           height: 20,
                         ),
 
-                        // ---------------------------------
-                        // DUREE
-                        // ---------------------------------
 
                         const Text(
                           "Durée de validité",
@@ -1346,9 +1217,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                     height: 20,
                   ),
 
-                  // =====================================
-                  // SECTION TACHES
-                  // =====================================
+
 
                   Container(
 
@@ -1398,9 +1267,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
                       children: [
 
-                        // ---------------------------------
-                        // ENTETE TACHES
-                        // ---------------------------------
 
                         Row(
 
@@ -1551,9 +1417,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                           height: 18,
                         ),
 
-                        // ---------------------------------
-                        // TACHES
-                        // ---------------------------------
 
                         Column(
 
@@ -1611,9 +1474,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
 
                                   children: [
 
-                                    // -----------------
-                                    // NUMERO TACHE
-                                    // -----------------
 
                                     Row(
 
@@ -1690,9 +1550,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                                       height: 12,
                                     ),
 
-                                    // -----------------
-                                    // FORMULAIRE TACHE
-                                    // -----------------
+
 
                                     TacheFormWidget(
 
@@ -1713,7 +1571,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                                       controller
                                           .categories,
 
-                                      // TYPE
                                       onTypeChanged:
                                           (value) {
 
@@ -1729,7 +1586,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                                         });
                                       },
 
-                                      // CATEGORIE
                                       onCategorieChanged:
                                           (value) {
 
@@ -1741,7 +1597,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                                         });
                                       },
 
-                                      // NOMBRE
                                       onNombreChanged:
                                           (value) {
 
@@ -1753,7 +1608,6 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                                         });
                                       },
 
-                                      // SUPPRIMER
                                       onSupprimer:
                                           () {
 
@@ -1775,9 +1629,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                     height: 25,
                   ),
 
-                  // =====================================
-                  // BOUTON MODIFIER
-                  // =====================================
+
 
                   Center(
 
@@ -1865,9 +1717,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                     height: 10,
                   ),
 
-                  // =====================================
-                  // TEXTE EN BAS
-                  // =====================================
+
 
                   const Center(
 

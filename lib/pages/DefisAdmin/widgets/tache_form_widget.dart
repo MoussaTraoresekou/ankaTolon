@@ -35,9 +35,7 @@ class TacheFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // =====================================================
-    // FILTRER LES CATEGORIES SELON LE TYPE
-    // =====================================================
+
 
     List<Categorie> categoriesFiltrees = [];
 
@@ -54,7 +52,6 @@ class TacheFormWidget extends StatelessWidget {
                 .toLowerCase()
                 .trim();
 
-            // ACTIVITE
             if (typeChoisi == "activité" ||
                 typeChoisi == "activite") {
 
@@ -62,7 +59,6 @@ class TacheFormWidget extends StatelessWidget {
                   typeCategorie == "activite";
             }
 
-            // QUIZ
             if (typeChoisi == "quiz") {
 
               return typeCategorie == "quiz";
@@ -73,9 +69,7 @@ class TacheFormWidget extends StatelessWidget {
           }).toList();
     }
 
-    // =====================================================
-    // FORMULAIRE
-    // =====================================================
+
 
     return Container(
 
@@ -118,9 +112,7 @@ class TacheFormWidget extends StatelessWidget {
 
         children: [
 
-          // =================================================
-          // CONTENU
-          // =================================================
+
 
           Expanded(
 
@@ -135,9 +127,7 @@ class TacheFormWidget extends StatelessWidget {
 
                   children: [
 
-                    // =======================================
-                    // TYPE
-                    // =======================================
+
 
                     Expanded(
 
@@ -269,9 +259,6 @@ class TacheFormWidget extends StatelessWidget {
                       5,
                     ),
 
-                    // =======================================
-                    // CATEGORIE
-                    // =======================================
 
                     Expanded(
 
@@ -406,9 +393,7 @@ class TacheFormWidget extends StatelessWidget {
                       5,
                     ),
 
-                    // =======================================
-                    // NOMBRE
-                    // =======================================
+
 
                     SizedBox(
 
@@ -496,9 +481,6 @@ class TacheFormWidget extends StatelessWidget {
             ),
           ),
 
-          // =================================================
-          // BOUTON SUPPRIMER
-          // =================================================
 
           SizedBox(
 
