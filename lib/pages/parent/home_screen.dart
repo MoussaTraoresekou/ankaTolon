@@ -28,7 +28,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyles.background,
+      backgroundColor: context.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -46,8 +46,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               _buildChildrenList(),
               const SizedBox(height: 24),
               _buildSectionTitle(
-                'Jeux les plus notés',
-                'Voir tous les jeux',
+                'jouets les plus notés',
+                'Voir tous les jouets',
                 onTap: () {
                   context.pushNamed(AppRoutes.jouetList.name);
                 },
@@ -85,10 +85,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Text(
                   'Bonjour $userPrenom !',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: AppStyles.textDark,
+                    color: context.textDark,
                   ),
                 ),
                 const SizedBox(width: 6),
@@ -96,9 +96,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
             const SizedBox(height: 4),
-            const Text(
+            Text(
               'Heureux de vous retrouver',
-              style: TextStyle(fontSize: 13, color: AppStyles.textMuted),
+              style: TextStyle(fontSize: 13, color: context.textMuted),
             ),
           ],
         ),
@@ -108,7 +108,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.textInverse,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
@@ -118,9 +118,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.notifications_none_rounded,
-                color: Colors.grey,
+                color: context.textMuted,
                 size: 28,
               ),
             ),
@@ -130,15 +130,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-                decoration: const BoxDecoration(
-                  color: AppStyles.badgeRed,
+                decoration: BoxDecoration(
+                  color: context.badgeRed,
                   shape: BoxShape.circle,
                 ),
-                child: const Text(
+                child: Text(
                   '10',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: context.textInverse,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
@@ -162,15 +162,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
-            color: AppStyles.primarySoft,
+            color: context.primarySoft,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14,
-              color: AppStyles.textDark,
+              color: context.textDark,
             ),
           ),
         ),
@@ -180,17 +180,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               Text(
                 actionText,
-                style: const TextStyle(
-                  color: AppStyles.primary,
+                style: TextStyle(
+                  color: context.primary,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const Icon(
-                Icons.chevron_right,
-                size: 18,
-                color: AppStyles.primary,
-              ),
+              Icon(Icons.chevron_right, size: 18, color: context.primary),
             ],
           ),
         ),
@@ -218,7 +214,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               }
 
               final enfant = displayedEnfants[index];
-
               final ageCalculated = _calculerAge(enfant.naissance);
 
               // Récupération uniquement du prénom
@@ -227,7 +222,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               // Sécurité sur l'accès à la liste de couleurs
               final Color bgColor = _avatarBgColors.isNotEmpty
                   ? _avatarBgColors[index % _avatarBgColors.length]
-                  : AppStyles.primarySoft;
+                  : context.primarySoft;
 
               return Container(
                 margin: const EdgeInsets.only(right: 12),
@@ -249,9 +244,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppStyles.primary),
-        ),
+        loading: () =>
+            Center(child: CircularProgressIndicator(color: context.primary)),
         error: (error, stack) => const Center(
           child: Text(
             'Erreur de chargement des enfants',
@@ -288,11 +282,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         height: 72,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.textInverse,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.12),
+              color: context.shadowColor,
               blurRadius: 8,
               spreadRadius: 0,
               offset: const Offset(0, 4),
@@ -311,13 +305,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         width: 56,
                         height: 56,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const Icon(
+                        errorBuilder: (_, __, ___) => Icon(
                           Icons.person,
                           size: 30,
-                          color: Colors.white,
+                          color: context.textInverse,
                         ),
                       )
-                    : const Icon(Icons.person, size: 30, color: Colors.white),
+                    : Icon(Icons.person, size: 30, color: Colors.white),
               ),
             ),
             const SizedBox(width: 10),
@@ -330,10 +324,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: Color(0xFF2E4D32),
+                      color: context.primary,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -362,7 +356,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         width: 100,
         height: 72,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.textInverse,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.grey.shade300, width: 1.5),
           boxShadow: [
@@ -383,9 +377,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 color: Color(0xFF2D6A4F), // Vert conforme à la maquette
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.add,
-                color: Colors.white,
+                color: context.textInverse,
                 size: 22, // Icône plus grande et bien centrée
               ),
             ),
@@ -414,10 +408,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: jouetsAsync.when(
         data: (jouets) {
           if (jouets.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
                 'Aucun jeu disponible',
-                style: TextStyle(color: AppStyles.textMuted),
+                style: TextStyle(color: context.textMuted),
               ),
             );
           }
@@ -446,9 +440,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppStyles.primary),
-        ),
+        loading: () =>
+            Center(child: CircularProgressIndicator(color: context.primary)),
         error: (error, stack) => const Center(
           child: Text(
             'Erreur lors du chargement des jeux',
@@ -475,7 +468,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Container(
         width: 155,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.textInverse,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
@@ -506,19 +499,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => const Center(
+                          errorBuilder: (_, _, _) => Center(
                             child: Icon(
                               Icons.extension,
                               size: 48,
-                              color: AppStyles.primary,
+                              color: context.primary,
                             ),
                           ),
                         )
-                      : const Center(
+                      : Center(
                           child: Icon(
                             Icons.extension,
                             size: 48,
-                            color: AppStyles.primary,
+                            color: context.primary,
                           ),
                         ),
                 ),
@@ -533,10 +526,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
-                      color: AppStyles.textDark,
+                      color: context.textDark,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -545,7 +538,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.star, color: Colors.amber, size: 16),
+                          Icon(Icons.star, color: Colors.amber, size: 16),
                           const SizedBox(width: 4),
                           Text(
                             rating,
@@ -573,12 +566,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final jouetsAsync = ref.watch(streamJouetLesplusNotesProvider);
 
     if (favorisIds.isEmpty) {
-      return const SizedBox(
-        height: 160,
+      return SizedBox(
+        height: 145,
         child: Center(
           child: Text(
             'Aucun favori pour le moment',
-            style: TextStyle(color: AppStyles.textMuted, fontSize: 13),
+            style: TextStyle(color: context.textMuted, fontSize: 13),
           ),
         ),
       );
@@ -586,24 +579,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return jouetsAsync.when(
       data: (allJouets) {
+        // Filtrer la liste des jeux selon les IDs présents dans favorisIds
         final favoris = allJouets
             .where((jouet) => favorisIds.contains(jouet.id))
             .toList();
 
         if (favoris.isEmpty) {
-          return const SizedBox(
-            height: 160,
+          return SizedBox(
+            height: 145,
             child: Center(
               child: Text(
                 'Aucun favori trouvé',
-                style: TextStyle(color: AppStyles.textMuted, fontSize: 13),
+                style: TextStyle(color: context.textMuted, fontSize: 13),
               ),
             ),
           );
         }
 
         return SizedBox(
-          height: 160,
+          height: 170,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,
@@ -627,11 +621,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         );
       },
-      loading: () => const SizedBox(
-        height: 160,
-        child: Center(
-          child: CircularProgressIndicator(color: AppStyles.primary),
-        ),
+      loading: () => SizedBox(
+        height: 145,
+        child: Center(child: CircularProgressIndicator(color: context.primary)),
       ),
       error: (error, stack) => const SizedBox.shrink(),
     );
@@ -647,94 +639,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        width: 120,
+        width: 110,
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.textInverse,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 10,
+              color: Colors.black.withValues(alpha: 0.12),
+              blurRadius: 8,
               spreadRadius: 0,
               offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Zone Image fluide prenant tout le haut de la carte
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(16),
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(16),
-                  ),
-                  child: imageUrl != null && imageUrl.isNotEmpty
-                      ? Image.network(
-                          imageUrl,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Center(
-                            child: Icon(
-                              Icons.extension,
-                              color: AppStyles.primary,
-                              size: 28,
-                            ),
-                          ),
-                        )
-                      : const Center(
-                          child: Icon(
-                            Icons.extension,
-                            color: AppStyles.primary,
-                            size: 28,
-                          ),
-                        ),
-                ),
+            Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.green.shade50,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: imageUrl != null && imageUrl.isNotEmpty
+                    ? Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Icon(Icons.extension, color: context.primary),
+                      )
+                    : Icon(Icons.extension, color: context.primary),
               ),
             ),
-            // Zone Texte et Actions en bas
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: Column(
-                children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: AppStyles.textDark,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppStyles.primarySoft,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Text(
-                      'Voir plus',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: AppStyles.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 6),
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: context.primarySoft,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Voir plus',
+                style: TextStyle(
+                  fontSize: 9,
+                  color: context.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

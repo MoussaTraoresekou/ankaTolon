@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 
 class BoutonDeconnexion extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const BoutonDeconnexion({
-    super.key,
-    required this.onPressed,
-  });
+  const BoutonDeconnexion({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +14,10 @@ class BoutonDeconnexion extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.white,
-          side: const BorderSide(
-            color: Color(0xFFE67E22), 
-            width: 1.5,
-          ),
+          backgroundColor: context.textInverse,
+          side: BorderSide(color: context.primaryOrange, width: 1.5),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20), 
+            borderRadius: BorderRadius.circular(20),
           ),
           elevation: 0,
         ),
@@ -31,20 +26,20 @@ class BoutonDeconnexion extends StatelessWidget {
             const SizedBox(width: 8),
             Transform.flip(
               flipX: true,
-              child: const Icon(
+              child: Icon(
                 Icons.logout_rounded,
                 size: 24,
-                color: Color(0xFFE67E22),
+                color: context.primaryOrange,
               ),
             ),
             const SizedBox(width: 12),
             // TEXTE ORANGE
-            const Text(
+            Text(
               'Se déconnecter',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFFE67E22),
+                color: context.primaryOrange,
               ),
             ),
           ],

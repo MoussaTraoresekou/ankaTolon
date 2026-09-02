@@ -70,6 +70,7 @@ class UserDetail extends ConsumerWidget {
               children: [
                 // BLOC PARENT (UserModel)
                 CardDetailCmd(
+                  context: context,
                   title: 'Informations parent',
                   icon: Icons.person_outline_rounded,
                   child: Column(
@@ -156,6 +157,7 @@ class UserDetail extends ConsumerWidget {
 
                 // LISTE D'ENFANTS (EnfantModel)
                 CardDetailCmd(
+                  context: context,
                   title: 'Enfants',
                   icon: Icons.child_care_rounded,
                   child: enfantsList.isEmpty
@@ -272,7 +274,7 @@ class UserDetail extends ConsumerWidget {
                                                 ),
                                                 child: Text(
                                                   'Niveau ${enfant.niveau}',
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontSize: 11,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE67E22),

@@ -5,7 +5,6 @@ import 'package:tolon/commun_widget/admin_widgets/liste_card_tutos.dart';
 import 'package:tolon/cor/app_colors.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
-import 'package:tolon/pages/Admins/tuto_detail.dart';
 import 'package:tolon/repository/adminRepository/tutoriel_repository.dart';
 
 class ListeTutos extends ConsumerStatefulWidget {
@@ -24,7 +23,7 @@ class _ListeTutosState extends ConsumerState<ListeTutos> {
     final tutosAsync = ref.watch(watchTutorielsProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F9F5),
+      backgroundColor: const Color(0xFFF9FBF9),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,11 +346,6 @@ class _ListeTutosState extends ConsumerState<ListeTutos> {
                 GestureDetector(
                   onTap: () {
                     // Logique d'ouverture de la vidéo
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => TutoDetail(tutoriel: tuto),
-                      ),
-                    );
                   },
                   child: const Icon(
                     Icons.visibility_outlined,

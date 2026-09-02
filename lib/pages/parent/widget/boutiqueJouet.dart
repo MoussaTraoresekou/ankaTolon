@@ -18,7 +18,7 @@ class BoutiquejouetSection extends StatelessWidget {
         return SizedBox(
           height: SizeConfig.getProportionateHeight(240),
           child: Center(
-            child: CircularProgressIndicator(color: AppStyles.navbarColor),
+            child: CircularProgressIndicator(color: context.navbarColor),
           ),
         );
       },
@@ -28,8 +28,8 @@ class BoutiquejouetSection extends StatelessWidget {
           child: Center(
             child: Text(
               'Impossible de charger les jouets.',
-              style: AppStyles.normalTextStyle.copyWith(
-                color: Colors.red,
+              style: context.normalTextStyle.copyWith(
+                color: context.badgeRed,
                 fontSize: 12,
               ),
             ),
@@ -43,7 +43,7 @@ class BoutiquejouetSection extends StatelessWidget {
             child: Center(
               child: Text(
                 'Aucun jouet disponible.',
-                style: AppStyles.normalTextStyle.copyWith(
+                style: context.normalTextStyle.copyWith(
                   color: Colors.black45,
                   fontSize: 13,
                 ),

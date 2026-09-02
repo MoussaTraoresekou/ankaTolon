@@ -17,18 +17,6 @@ class FormulaireTexteTuto extends StatelessWidget {
     super.key,
   });
 
-  void _afficherAlerte(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message, style: const TextStyle(fontFamily: 'Quicksand', fontWeight: FontWeight.bold)),
-      backgroundColor: AppColors.greenPrimary,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    ),
-  );
-}
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -84,27 +72,7 @@ class FormulaireTexteTuto extends StatelessWidget {
         _buildBottomButtons(
           context,
           labelSuivant: 'Suivant',
-          onPressed: (){
-
-             // VÉRIFICATION STRICTE DES CHAMPS TEXTES
-    if (titreController.text.trim().isEmpty) {
-      _afficherAlerte(context, 'Le titre du tutoriel est obligatoire.');
-      return;
-    }
-    if (ageMinController.text.trim().isEmpty) {
-      _afficherAlerte(context, 'L\'âge minimal est obligatoire.');
-      return;
-    }
-    if (ageMaxController.text.trim().isEmpty) {
-      _afficherAlerte(context, 'L\'âge maximal est obligatoire.');
-      return;
-    }
-    if (descriptionController.text.trim().isEmpty) {
-      _afficherAlerte(context, 'La description est obligatoire.');
-      return;
-    }
-    onSuivant();
-          }
+          onPressed: onSuivant,
         ),
       ],
     );

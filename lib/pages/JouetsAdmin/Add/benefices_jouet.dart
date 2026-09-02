@@ -17,65 +17,47 @@ class BeneficesJouet extends StatelessWidget {
     return Column(
       children: [
         Row(
-          mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
               'Bénéfices / Avantages',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
 
             IconButton(
               onPressed: ajouterBenefice,
-              icon: const Icon(
-                Icons.add_circle,
-              ),
+              icon: Icon(Icons.add_circle),
             ),
           ],
         ),
 
         ListView.builder(
           shrinkWrap: true,
-          physics:
-          const NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
 
           itemCount: controllers.length,
 
           itemBuilder: (context, index) {
             return Padding(
-              padding:
-              const EdgeInsets.only(
-                bottom: 10,
-              ),
+              padding: const EdgeInsets.only(bottom: 10),
 
               child: Row(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
                   Expanded(
                     child: TextFormField(
-                      controller:
-                      controllers[index],
+                      controller: controllers[index],
 
-                      decoration:
-                      InputDecoration(
-                        labelText:
-                        'Bénéfice ${index + 1}',
+                      decoration: InputDecoration(
+                        labelText: 'Bénéfice ${index + 1}',
 
-                        border:
-                        const OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
 
                       validator: (value) {
                         if (index == 0 &&
-                            (value == null ||
-                                value
-                                    .trim()
-                                    .isEmpty)) {
+                            (value == null || value.trim().isEmpty)) {
                           return 'Entrez un bénéfice';
                         }
 
@@ -87,15 +69,10 @@ class BeneficesJouet extends StatelessWidget {
                   if (controllers.length > 1)
                     IconButton(
                       onPressed: () {
-                        supprimerBenefice(
-                          index,
-                        );
+                        supprimerBenefice(index);
                       },
 
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
+                      icon: Icon(Icons.delete, color: Colors.red),
                     ),
                 ],
               ),

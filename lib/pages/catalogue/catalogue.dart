@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/commun_widget/favoris/bouton_favori.dart';
 import 'package:tolon/controller/catalogue/catalogue_controller.dart';
 import 'package:tolon/controller/panier/panier_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/firebase_options.dart';
 import 'package:tolon/pages/page_to_delete.dart';
@@ -29,17 +30,17 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
     final panierState = ref.watch(panierProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAF8),
+      backgroundColor: context.bgColor,
 
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF8FAF8),
+        backgroundColor: context.background,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Catalogue de jouets',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF171717),
+            color: context.textDark,
           ),
         ),
         actions: [
@@ -52,9 +53,9 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                   onPressed: () {
                     context.push('/cart');
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.shopping_cart_outlined,
-                    color: Color(0xFF171717),
+                    color: context.textDark,
                     size: 27,
                   ),
                 ),
@@ -65,15 +66,15 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                     child: Container(
                       width: 20,
                       height: 20,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFE53935),
+                      decoration: BoxDecoration(
+                        color: context.textDark,
                         shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: Text(
                           '${panierState.totalQuantity}',
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: context.textInverse,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
@@ -134,9 +135,9 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                   // ==================================================
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
+                    return Center(
                       child: CircularProgressIndicator(
-                        color: Color(0xFF0AA361),
+                        color: context.successGreen,
                       ),
                     );
                   }
@@ -152,9 +153,9 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                         child: Text(
                           'Erreur : ${snapshot.error}',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: Colors.red,
+                            color: context.badgeRed,
                           ),
                         ),
                       ),
@@ -221,32 +222,32 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
           decoration: InputDecoration(
             hintText: 'Rechercher un jouet',
 
-            hintStyle: const TextStyle(fontSize: 12, color: Color(0xFF999999)),
+            hintStyle: TextStyle(fontSize: 12, color: context.textMuted),
 
-            prefixIcon: const Icon(Icons.search, size: 21, color: Colors.black),
+            prefixIcon: Icon(Icons.search, size: 21, color: context.textDark),
 
             filled: true,
 
-            fillColor: Colors.white,
+            fillColor: context.textInverse,
 
             contentPadding: EdgeInsets.zero,
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: const BorderSide(color: Color(0xFFD8D8D8)),
+              borderSide: BorderSide(color: context.textMuted),
             ),
 
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: const BorderSide(color: Color(0xFFD8D8D8)),
+              borderSide: BorderSide(color: context.textMuted),
             ),
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
-              borderSide: const BorderSide(color: Color(0xFF0AA361)),
+              borderSide: BorderSide(color: context.primary),
             ),
           ),
         ),
@@ -286,9 +287,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 17),
 
                 decoration: BoxDecoration(
-                  color: selected
-                      ? const Color(0xFF0AA361)
-                      : const Color(0xFFE0F0E5),
+                  color: selected ? context.successGreen : context.primarySoft,
 
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -303,7 +302,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                     fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
 
-                    color: selected ? Colors.white : const Color(0xFF222222),
+                    color: selected ? context.textInverse : context.textDark,
                   ),
                 ),
               ),
@@ -382,13 +381,13 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.textInverse,
 
           borderRadius: BorderRadius.circular(10),
 
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.18),
+              color: context.shadowColor,
 
               blurRadius: 5,
 
@@ -424,32 +423,32 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
                             return child;
                           }
 
-                          return const Center(
+                          return Center(
                             child: CircularProgressIndicator(
-                              color: Color(0xFF0AA361),
+                              color: context.successGreen,
                             ),
                           );
                         },
 
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            color: const Color(0xFFEAF5ED),
+                            color: context.primarySoft,
 
-                            child: const Icon(
+                            child: Icon(
                               Icons.image_not_supported,
                               size: 40,
-                              color: Colors.grey,
+                              color: context.textMuted,
                             ),
                           );
                         },
                       )
                     : Container(
-                        color: const Color(0xFFEAF5ED),
+                        color: context.primarySoft,
 
-                        child: const Icon(
+                        child: Icon(
                           Icons.image,
                           size: 40,
-                          color: Colors.grey,
+                          color: context.textMuted,
                         ),
                       ),
               ),
@@ -469,12 +468,12 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                 textAlign: TextAlign.center,
 
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
 
                   fontWeight: FontWeight.w500,
 
-                  color: Colors.black,
+                  color: context.textDark,
                 ),
               ),
             ),
@@ -488,7 +487,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
 
               decoration: BoxDecoration(
-                color: const Color(0xFFE5F2E8),
+                color: context.boxSurfaceLight,
 
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -500,7 +499,7 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                 overflow: TextOverflow.ellipsis,
 
-                style: const TextStyle(fontSize: 9, color: Color(0xFF4B6A52)),
+                style: TextStyle(fontSize: 9, color: context.primary),
               ),
             ),
 
@@ -515,18 +514,14 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
               child: Row(
                 children: [
                   // NOTE
-                  const Icon(Icons.star, color: Color(0xFFFFC400), size: 16),
+                  Icon(Icons.star, color: Color(0xFFFFC400), size: 16),
 
                   const SizedBox(width: 2),
 
                   Text(
                     jouet.noteMoyen.toStringAsFixed(1),
 
-                    style: const TextStyle(
-                      fontSize: 10,
-
-                      color: Color(0xFF777777),
-                    ),
+                    style: TextStyle(fontSize: 10, color: context.textMuted),
                   ),
 
                   const Spacer(),
@@ -542,12 +537,12 @@ class _CataloguePageState extends ConsumerState<CataloguePage> {
 
                       textAlign: TextAlign.right,
 
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 10,
 
                         fontWeight: FontWeight.w500,
 
-                        color: Colors.black,
+                        color: context.textDark,
                       ),
                     ),
                   ),

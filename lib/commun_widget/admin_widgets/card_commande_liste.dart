@@ -12,7 +12,7 @@ class CardCommandeListe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String status = order.status.toLowerCase().trim();
-
+    
     //Détermination de la couleur exacte du statut selon votre maquette
     Color statusColor = Colors.orange;
     String statusText = 'En cours';
@@ -30,30 +30,8 @@ class CardCommandeListe extends StatelessWidget {
 
     // Formatage de la date (Exemple: 12 Aout 2026)
     final dt = order.dateCmd;
-    final List<String> mois = [
-      'Janv',
-      'Févr',
-      'Mars',
-      'Avril',
-      'Mai',
-      'Juin',
-      'Juil',
-      'Aout',
-      'Sept',
-      'Oct',
-      'Nov',
-      'Déc',
-    ];
+    final List<String> mois = ['Janv', 'Févr', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil', 'Aout', 'Sept', 'Oct', 'Nov', 'Déc'];
     final String dateStr = '${dt.day} ${mois[dt.month - 1]} ${dt.year}';
-
-    // recuperer image des jouets
-    String imageJouetUrl = '';
-    if (order.jouets.isNotEmpty) {
-      final Map<String, dynamic> premierJouet = Map<String, dynamic>.from(
-        order.jouets.first,
-      );
-      imageJouetUrl = premierJouet['image']?.toString() ?? '';
-    }
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -90,25 +68,11 @@ class CardCommandeListe extends StatelessWidget {
                   color: const Color(0xFFF9FBF9),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: const Color(0xFFEEEEEE)),
-
-                  image: imageJouetUrl.isNotEmpty
-                      ? DecorationImage(
-                          image: NetworkImage(imageJouetUrl),
-                          fit: BoxFit.cover, 
-                        )
-                      : null,
                 ),
-                child: imageJouetUrl.isEmpty
-                    ? const Icon(
-                        Icons.toys_outlined,
-                        color: AppColors.textGrey,
-                        size: 26,
-                      )
-                    : null,
+                child: const Icon(Icons.toys_outlined, color: AppColors.textGrey, size: 30),
               ),
-
               const SizedBox(width: 16),
-
+              
               // Centre : Détails informatifs
               Expanded(
                 child: Column(
@@ -116,11 +80,7 @@ class CardCommandeListe extends StatelessWidget {
                   children: [
                     Text(
                       'CMD-${order.id.substring(0, order.id.length > 8 ? 8 : order.id.length).toUpperCase()}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textDark,
-                      ),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textDark),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -128,42 +88,26 @@ class CardCommandeListe extends StatelessWidget {
 
                     Text(
                       '${order.montantTotal} FCFA',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textDark,
-                      ),
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppColors.textDark),
                     ),
                     const SizedBox(height: 4),
 
                     Text(
                       statusText,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: statusColor,
-                      ),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: statusColor),
                     ),
                     const SizedBox(height: 4),
 
                     Text(
                       dateStr,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textGrey,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: AppColors.textGrey, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
               ),
-
+              
               // Droite : Petite flèche de navigation
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: AppColors.textDark,
-              ),
+              const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppColors.textDark),
             ],
           ),
         ),

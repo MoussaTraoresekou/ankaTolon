@@ -31,9 +31,9 @@ class CustomDropdown<T> extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppStyles.normalTextStyle.copyWith(
+          style: context.normalTextStyle.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: context.textDark,
           ),
         ),
 
@@ -46,35 +46,25 @@ class CustomDropdown<T> extends StatelessWidget {
           validator: validator,
           isExpanded: true,
 
-          style: AppStyles.normalTextStyle.copyWith(
-            color: Colors.black87,
-          ),
+          style: context.normalTextStyle.copyWith(color: context.textDark),
 
-          icon: const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: Colors.black45,
-          ),
+          icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.black45),
 
-          dropdownColor: Colors.white,
+          dropdownColor: context.textInverse,
 
           borderRadius: BorderRadius.circular(10),
 
           decoration: InputDecoration(
             hintText: hintText,
 
-            hintStyle: AppStyles.normalTextStyle.copyWith(
-              color: Colors.black38,
-            ),
+            hintStyle: context.normalTextStyle.copyWith(color: Colors.black38),
 
             prefixIcon: prefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                    color: prefixIconColor ?? Colors.black45,
-                  )
+                ? Icon(prefixIcon, color: prefixIconColor ?? Colors.black45)
                 : null,
 
             filled: true,
-            fillColor: const Color(0xFFFFFFFF),
+            fillColor: context.textInverse,
 
             contentPadding: const EdgeInsets.symmetric(
               vertical: 14,
@@ -83,10 +73,7 @@ class CustomDropdown<T> extends StatelessWidget {
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.black12,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: Colors.black12, width: 1),
             ),
 
             enabledBorder: OutlineInputBorder(
@@ -107,16 +94,13 @@ class CustomDropdown<T> extends StatelessWidget {
 
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.redAccent,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: Color(0xFFEF5350), width: 1),
             ),
 
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(
-                color: Colors.redAccent,
+                color: Color(0xFFEF5350),
                 width: 1.5,
               ),
             ),

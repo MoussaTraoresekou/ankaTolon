@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/commun_widget/favoris/bouton_favori.dart';
 import 'package:tolon/controller/favoris/favoris_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/repository/favoris/favoris_repository.dart';
 import 'package:tolon/repository/jouets_reposotory/jouet_repository.dart';
@@ -108,13 +109,15 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
 
       case 'Nom A-Z':
         jouetsFavoris.sort(
-          (a, b) => a.nomJouet.toLowerCase().compareTo(b.nomJouet.toLowerCase()),
+          (a, b) =>
+              a.nomJouet.toLowerCase().compareTo(b.nomJouet.toLowerCase()),
         );
         break;
 
       case 'Nom Z-A':
         jouetsFavoris.sort(
-          (a, b) => b.nomJouet.toLowerCase().compareTo(a.nomJouet.toLowerCase()),
+          (a, b) =>
+              b.nomJouet.toLowerCase().compareTo(a.nomJouet.toLowerCase()),
         );
         break;
     }
@@ -150,10 +153,10 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                     ),
                     child: IconButton(
                       padding: EdgeInsets.zero,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back_ios_new,
                         size: 16,
-                        color: Colors.black,
+                        color: context.textDark,
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -210,7 +213,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.favorite,
                           color: Color.fromARGB(255, 174, 8, 8),
                           size: 18,
@@ -245,7 +248,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                         vertical: 7,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: context.textInverse,
                         border: Border.all(
                           color: Colors.grey.shade300,
                           width: 1,
@@ -255,26 +258,26 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
+                          Text(
                             'Trier par : ',
                             style: TextStyle(
                               fontSize: 13,
-                              color: Colors.black54,
+                              color: context.textMuted,
                             ),
                           ),
                           Text(
                             _triSelectionne,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFFE67E22),
+                              color: context.primaryOrange,
                             ),
                           ),
                           const SizedBox(width: 2),
-                          const Icon(
+                          Icon(
                             Icons.keyboard_arrow_down,
                             size: 20,
-                            color: Color(0xFFE67E22),
+                            color: context.primaryOrange,
                           ),
                         ],
                       ),
@@ -287,10 +290,12 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
 
               // LISTE DES JOUETS OU INDICATION VIDE
               if (chargement)
-                const Center(
+                Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 50),
-                    child: CircularProgressIndicator(color: Color(0xFFE67E22)),
+                    child: CircularProgressIndicator(
+                      color: context.primaryOrange,
+                    ),
                   ),
                 )
               else if (jouetsFavoris.isEmpty)
@@ -334,11 +339,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
       child: Row(
         children: [
           if (isSelected) ...[
-            const Icon(
-              Icons.check,
-              color: Color(0xFFE67E22),
-              size: 18,
-            ),
+            Icon(Icons.check, color: context.primaryOrange, size: 18),
             const SizedBox(width: 8),
           ],
           Text(title),
@@ -350,7 +351,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
   Widget _jouetCard(JouetModel jouet) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -414,7 +415,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 14),
+                    Icon(Icons.star, color: Colors.amber, size: 14),
                     const SizedBox(width: 3),
                     Text(
                       jouet.noteMoyen.toStringAsFixed(1),

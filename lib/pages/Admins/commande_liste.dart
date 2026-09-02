@@ -19,7 +19,7 @@ class _CommandeListeState extends ConsumerState<CommandeListe> {
   String selectedFilter = "Toutes"; 
 
   // Liste des catégories d'onglets de votre image
-  final List<String> filters = ["Toutes", "En cours", "Livrer"];
+  final List<String> filters = ["Toutes", "En cours", "Livrer", "Annuler"];
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class _CommandeListeState extends ConsumerState<CommandeListe> {
                     ),
                     selected: isSelected,
                     selectedColor: AppColors.greenPrimary,
-                    backgroundColor: Colors.transparent,
+                   backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(color: isSelected ? Colors.transparent : const Color(0xFFECECEC)),
@@ -134,6 +134,8 @@ class _CommandeListeState extends ConsumerState<CommandeListe> {
                       return s == "en cours" || s == "en preparation";
                     } else if (selectedFilter == "Livrer") {
                       return s == "livrer" || s == "livree" || s == "confimée" || s == "confirmée";
+                    } else if (selectedFilter == "Annuler") {
+                      return s == "annuler" || s == "annulée";
                     }
                     return true;
                   }).toList();

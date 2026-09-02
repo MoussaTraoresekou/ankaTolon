@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/pages/catalogue/catalogue.dart';
+import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 import 'package:tolon/pages/page_to_delete.dart';
 import 'package:tolon/pages/parent/home_screen.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,12 @@ class AppBottomNavigationBar extends StatefulWidget {
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [HomeScreen(), CataloguePage(), Page1(), ProfilPage()];
+  final List<Widget> _pages = [
+    HomeScreen(),
+    CataloguePage(),
+    EspaceEnfantTutoScreen(),
+    ProfilPage(),
+  ];
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -34,17 +40,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text(
-                  "Non",
-                  style: TextStyle(color: Colors.black87),
-                ),
+                child: Text("Non", style: TextStyle(color: context.textDark)),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text(
-                  "Oui",
-                  style: TextStyle(color: Colors.black87),
-                ),
+                child: Text("Oui", style: TextStyle(color: context.textDark)),
               ),
             ],
           ),
@@ -60,9 +60,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         bottomNavigationBar: CurvedNavigationBar(
           height: 60,
           index: _selectedIndex,
-          color: AppStyles.navbarColor,
+          color: context.navbarColor,
           backgroundColor: Colors.transparent,
-          buttonBackgroundColor: AppStyles.navbarColor,
+          buttonBackgroundColor: context.navbarColor,
 
           items: [
             Icon(Icons.home, size: 25, color: Colors.white),

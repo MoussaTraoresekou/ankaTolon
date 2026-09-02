@@ -7,23 +7,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:tolon/commun_widget/bottom_navigation_bar.dart';
 import 'package:tolon/cor/router/gorouterRouterrefreshStream.dart';
-import 'package:tolon/models/admin_model/tutoriel_model.dart';
-import 'package:tolon/pages/Admins/admin_Bottom_NavigationBar.dart';
-import 'package:tolon/pages/Admins/admin_dashboard.dart';
-import 'package:tolon/pages/Admins/admin_profi.dart';
-import 'package:tolon/pages/Admins/ajout_defis.dart';
-import 'package:tolon/pages/Admins/ajout_tutos.dart';
-import 'package:tolon/pages/Admins/commande_detail.dart';
-import 'package:tolon/pages/Admins/commande_liste.dart';
-import 'package:tolon/pages/JouetsAdmin/Listes/liste_jouet.dart';
-import 'package:tolon/pages/Admins/liste_tutos.dart';
-import 'package:tolon/pages/Admins/utilisateur_detail.dart';
-import 'package:tolon/pages/Admins/utilisateur_liste.dart';
+import 'package:tolon/models/activites/activite_model.dart';
 
 import 'package:tolon/models/enfant/enfant_modal.dart';
+import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
+import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/DefisAdmin/liste_defis_page.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
+import 'package:tolon/pages/activite/activite-detail.dart';
+import 'package:tolon/pages/activite/activite_add.dart';
+import 'package:tolon/pages/activite/activite_liste_enfant.dart';
 import 'package:tolon/pages/catalogue/catalogue.dart';
 
 import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
@@ -32,6 +27,8 @@ import 'package:tolon/pages/enfant/EnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
+import 'package:tolon/pages/enfant/espace_enfant_screen.dart';
+import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 
 import 'package:tolon/pages/favoris/favoris_page.dart';
 
@@ -45,6 +42,7 @@ import 'package:tolon/pages/onboarding/onboarding_screnn.dart';
 import 'package:tolon/pages/panier/panier_page.dart';
 import 'package:tolon/pages/panier/checkout_page.dart';
 import 'package:tolon/pages/panier/success_page.dart';
+
 import 'package:tolon/pages/parent/reunitialiser_mot_de_passe.dart';
 
 import 'package:tolon/pages/profil/profil_page.dart';
@@ -53,7 +51,17 @@ import 'package:tolon/pages/splush/splushScreen.dart';
 
 import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
 import 'package:tolon/pages/JouetsAdmin/Listes/liste_jouet.dart';
-import 'package:tolon/pages/JouetsAdmin/Edit/ModifierJouet.dart';
+import 'package:tolon/pages/Admins/admin_Bottom_NavigationBar.dart';
+import 'package:tolon/pages/Admins/admin_dashboard.dart';
+import 'package:tolon/pages/Admins/admin_profi.dart';
+import 'package:tolon/pages/Admins/ajout_defis.dart';
+import 'package:tolon/pages/Admins/ajout_tutos.dart';
+import 'package:tolon/pages/Admins/commande_detail.dart';
+import 'package:tolon/pages/Admins/commande_liste.dart';
+import 'package:tolon/pages/Admins/liste_tutos.dart';
+import 'package:tolon/pages/Admins/utilisateur_detail.dart';
+import 'package:tolon/pages/Admins/utilisateur_liste.dart';
+import 'package:tolon/pages/tutoriels/TutorielDetail.dart';
 
 part 'routes.g.dart';
 
@@ -77,8 +85,16 @@ enum AppRoutes {
   orders,
   favorites,
   profile,
-  adminprofile,
   adminDashboard,
+  listEnfants,
+  selectAvatar,
+  enfantProfil,
+  editEnfant,
+  choisirAvatar,
+  jouetList,
+  JouetsAdmin,
+  modifierJouet,
+  changermotdepasse,
   admincommandeDetail,
   adminutilisateurDetail,
   adminutilisateurListe,
@@ -89,16 +105,14 @@ enum AppRoutes {
   adminajoutjouets,
   adminajoututoriels,
   adminajoutdefis,
-  listEnfants,
-  selectAvatar,
-  enfantProfil,
-  editEnfant,
-  choisirAvatar,
-  jouetList,
-  JouetsAdmin,
+  adminprofile,
   addJouetAdmin,
-  modifierJouet,
-  changermotdepasse
+  addActivite,
+  activite,
+  espaceEnfant,
+  detailactive,
+  espaceEnfantTuto,
+  TutorielDetail,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -119,9 +133,7 @@ GoRouter appRouter(Ref ref) {
 
     debugLogDiagnostics: true,
 
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
 
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
@@ -132,11 +144,12 @@ GoRouter appRouter(Ref ref) {
         '/onboarding',
         '/login',
         '/register',
-        '/forgotPassword'
+        '/forgotPassword',
       ];
 
       final isPublic = publicRoutes.contains(currentLoc);
 
+      // Aucun utilisateur connecté
       if (user == null) {
         return isPublic ? null : '/login';
       }
@@ -152,10 +165,7 @@ GoRouter appRouter(Ref ref) {
           return role;
         }
 
-        final doc = await firestore
-            .collection('users')
-            .doc(user.uid)
-            .get();
+        final doc = await firestore.collection('users').doc(user.uid).get();
 
         role = doc.data()?['type'] as String?;
 
@@ -177,7 +187,6 @@ GoRouter appRouter(Ref ref) {
 
         return '/login';
       }
-
       if (currentLoc == '/adminDashboard') {
         if (await getRole() != 'admin') {
           return '/home';
@@ -185,15 +194,32 @@ GoRouter appRouter(Ref ref) {
 
         return null;
       }
-
       final adminRoutes = [
         '/adminDashboard',
         '/JouetsAdmin',
         '/addjouet',
         '/modifierJouet',
       ];
+      final adminRoutesAdded = [
+        '/admin-jouets',
+        '/admin-tutoriels',
+        '/admin-defis',
+        '/admin/profile',
+        '/adminDashboard/parent-detail',
+        '/adminDashboard/commande-detail',
+        '/adminDashboard/liste-utilisateur',
+        '/adminDashboard/liste-commande',
+        '/admin-tutoriels/ajout-tuto',
+        '/add-jouet-admin',
+      ];
 
-      if (adminRoutes.contains(currentLoc)) {
+      final isAdminRoute =
+          adminRoutes.contains(currentLoc) ||
+          adminRoutesAdded.any(
+            (route) => currentLoc == route || currentLoc.startsWith('$route/'),
+          );
+
+      if (isAdminRoute) {
         if (await getRole() != 'admin') {
           return '/home';
         }
@@ -233,7 +259,6 @@ GoRouter appRouter(Ref ref) {
     },
 
     routes: [
-
       GoRoute(
         path: '/splash',
         name: AppRoutes.splash.name,
@@ -274,140 +299,6 @@ GoRouter appRouter(Ref ref) {
         },
       ),
 
-      // =========================
-      // ADMIN
-      // =========================
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          // Appel de votre layout en vague verte
-          return AdminBottomNav(navigationShell: navigationShell);
-        },
-        branches: [
-          // Onglet Index 0 : Tableau de bord Admin
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/adminDashboard',
-                name: AppRoutes.adminDashboard.name,
-                builder: (context, state) => const AdminDashboard(),
-              ),
-            ],
-          ),
-
-          // Onglet Index 1 : Gestion des Jouets
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/admin-jouets',
-                name: AppRoutes.JouetsAdmin.name,
-                builder: (context, state) {
-                  return const ListeJouetsPage();
-                },
-              ),
-            ],
-          ),
-
-          // Onglet Index 2 : Gestion des Tutoriels Admin
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/admin-tutoriels',
-                name: AppRoutes.admintutoriels.name,
-                builder: (context, state) {
-                  return const ListeTutos();
-                },
-              ),
-            ],
-          ),
-
-          //Onglet Index 3 : Gestion des Défis
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/admin-defis',
-                name: AppRoutes.adminajoutdefis.name,
-                builder: (context, state) {
-                  return const AjoutDefis();
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
-
-      // =========================
-      // ADMIN - DÉTAIL UTILISATEUR
-      // =========================
-      GoRoute(
-        path: '/adminDashboard/parent-detail/:userId',
-        name: AppRoutes.adminutilisateurDetail.name,
-        builder: (context, state) {
-          
-          // Extraction de l'ID depuis les paramètres de chemin
-          final userId = state.pathParameters['userId'];
-          return UserDetail(userId: userId!);
-        },
-      ),
-
-      // =========================
-      // ADMIN - DÉTAIL COMMANDE
-      // =========================
-      GoRoute(
-        path: '/adminDashboard/commande-detail/:orderId',
-        name: AppRoutes.admincommandeDetail.name,
-        builder: (context, state) {
-
-          // Extraction de l'ID depuis les paramètres du chemin
-          final orderId = state.pathParameters['orderId'];
-          return CommandeDetail(orderId: orderId!);
-        },
-      ),
-
-      // =========================
-      // ADMIN - LISTE UTILISATEUR
-      // =========================
-      GoRoute(
-        path: '/adminDashboard/liste-utilisateur',
-        name: AppRoutes.adminutilisateurListe.name,
-        builder: (context, state) {
-          return const ParentsList();
-        },
-      ),
-
-      // =========================
-      // ADMIN - LISTE COMMANDE
-      // =========================
-      GoRoute(
-        path: '/adminDashboard/liste-commande',
-        name: AppRoutes.admincommandeListe.name,
-        builder: (context, state) {
-          return const CommandeListe();
-        },
-      ),
-
-      // =========================
-      // ADMIN - AJOUT_TUTOS
-      // =========================
-      GoRoute(
-        path: '/admin-tutoriels/ajout-tuto',
-        name: AppRoutes.adminajoututoriels.name,
-        builder: (context, state) {
-          final tutorielAModifier = state.extra as TutorielModel?;
-          return AjoutTuto(tutoriel: tutorielAModifier);
-        },
-      ),
-
-      // =========================
-      // ADMIN - PROFIL
-      // =========================
-      GoRoute(
-        path: '/admin/profile',
-        name: AppRoutes.adminprofile.name,
-        builder: (context, state) => const AdminProfil(), // ──> Connecté !
-      ),
-
-
-
       GoRoute(
         path: '/addEnfant',
         name: AppRoutes.addEnfant.name,
@@ -430,9 +321,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final jouet = state.extra as JouetModel;
 
-          return Jouetdetail(
-            jouet: jouet,
-          );
+          return Jouetdetail(jouet: jouet);
         },
       ),
 
@@ -440,10 +329,29 @@ GoRouter appRouter(Ref ref) {
         path: '/redigerAvis',
         name: AppRoutes.redigerAvis.name,
         builder: (context, state) {
-          final jouet = state.extra as JouetModel;
+          final extra = state.extra;
 
-          return RedigerAvisPage(
-            jouet: jouet,
+          // Ancien format : JouetModel seul
+          if (extra is JouetModel) {
+            return RedigerAvisPage(jouet: extra);
+          }
+
+          // Nouveau format : Map { 'jouet': JouetModel, 'avis': AvisModel? }
+          if (extra is Map) {
+            final jouet = extra['jouet'];
+            if (jouet is! JouetModel) {
+              throw Exception(
+                'redigerAvis: jouet manquant ou invalide dans extra',
+              );
+            }
+            return RedigerAvisPage(
+              jouet: jouet,
+              avisExistant: extra['avis'] as AvisModel?,
+            );
+          }
+
+          throw Exception(
+            'redigerAvis: extra invalide (attendu JouetModel ou Map)',
           );
         },
       ),
@@ -462,9 +370,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
 
-          return SelectAvatarScreen(
-            dataEnfant: extra,
-          );
+          return SelectAvatarScreen(dataEnfant: extra);
         },
       ),
 
@@ -514,9 +420,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
 
-          return EnfantProfilScreen(
-            enfant: enfant,
-          );
+          return EnfantProfilScreen(enfant: enfant);
         },
       ),
 
@@ -526,9 +430,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final enfant = state.extra as EnfantModel;
 
-          return EditEnfantProfilScreen(
-            enfant: enfant,
-          );
+          return EditEnfantProfilScreen(enfant: enfant);
         },
       ),
 
@@ -536,30 +438,19 @@ GoRouter appRouter(Ref ref) {
         path: '/choisir-avatar',
         name: AppRoutes.choisirAvatar.name,
         builder: (context, state) {
-          final extraData =
-          state.extra as Map<String, dynamic>?;
+          final extraData = state.extra as Map<String, dynamic>?;
 
-          final enfant =
-          extraData?['enfant'] as EnfantModel?;
+          final enfant = extraData?['enfant'] as EnfantModel?;
 
           final updatedData =
-          extraData?['updatedData']
-          as Map<String, dynamic>?;
+              extraData?['updatedData'] as Map<String, dynamic>?;
 
           if (enfant == null) {
             return const Scaffold(
-              body: Center(
-                child: Text(
-                  'Erreur : Profil enfant introuvable.',
-                ),
-              ),
+              body: Center(child: Text('Erreur : Profil enfant introuvable.')),
             );
           }
-
-          return ChoisirAvatarScreen(
-            enfant: enfant,
-            updatedData: updatedData,
-          );
+          return ChoisirAvatarScreen(enfant: enfant, updatedData: updatedData);
         },
       ),
 
@@ -579,6 +470,114 @@ GoRouter appRouter(Ref ref) {
         },
       ),
 
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AdminBottomNav(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/adminDashboard',
+                name: AppRoutes.adminDashboard.name,
+                builder: (context, state) {
+                  return const AdminDashboard();
+                },
+              ),
+            ],
+          ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-jouets',
+                name: AppRoutes.JouetsAdmin.name,
+                builder: (context, state) {
+                  return const ListeJouetsPage();
+                },
+              ),
+            ],
+          ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-tutoriels',
+                name: AppRoutes.admintutoriels.name,
+                builder: (context, state) {
+                  return const ListeTutos();
+                },
+              ),
+            ],
+          ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/admin-defis',
+                name: AppRoutes.adminajoutdefis.name,
+                builder: (context, state) {
+                  return const ListeDefisPage();
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+
+      GoRoute(
+        path: '/adminDashboard/parent-detail/:userId',
+        name: AppRoutes.adminutilisateurDetail.name,
+        builder: (context, state) {
+          final userId = state.pathParameters['userId'];
+
+          return UserDetail(userId: userId!);
+        },
+      ),
+
+      GoRoute(
+        path: '/adminDashboard/commande-detail/:orderId',
+        name: AppRoutes.admincommandeDetail.name,
+        builder: (context, state) {
+          final orderId = state.pathParameters['orderId'];
+
+          return CommandeDetail(orderId: orderId!);
+        },
+      ),
+
+      GoRoute(
+        path: '/adminDashboard/liste-utilisateur',
+        name: AppRoutes.adminutilisateurListe.name,
+        builder: (context, state) {
+          return const ParentsList();
+        },
+      ),
+
+      GoRoute(
+        path: '/adminDashboard/liste-commande',
+        name: AppRoutes.admincommandeListe.name,
+        builder: (context, state) {
+          return const CommandeListe();
+        },
+      ),
+
+      GoRoute(
+        path: '/admin-tutoriels/ajout-tuto',
+        name: AppRoutes.adminajoututoriels.name,
+        builder: (context, state) {
+          final tutorielAModifier = state.extra as TutorielModel?;
+
+          return AjoutTuto(tutoriel: tutorielAModifier);
+        },
+      ),
+
+      GoRoute(
+        path: '/admin/profile',
+        name: AppRoutes.adminprofile.name,
+        builder: (context, state) {
+          return const AdminProfil();
+        },
+      ),
 
       GoRoute(
         path: '/add-jouet-admin',
@@ -588,12 +587,62 @@ GoRouter appRouter(Ref ref) {
         },
       ),
       GoRoute(
-  path: '/forgotPassword',
-  name: AppRoutes.changermotdepasse.name,
-  builder: (context, state) => const ForgotPasswordScreen(),
-),
+        path: '/forgotPassword',
+        name: AppRoutes.changermotdepasse.name,
+        builder: (context, state) {
+          return const ForgotPasswordScreen();
+        },
+      ),
+      GoRoute(
+        path: '/addActivite',
+        name: AppRoutes.addActivite.name,
+        builder: (context, state) {
+          return const AddActiviteScreen();
+        },
+      ),
+      GoRoute(
+        path: '/activitesListeEnfant',
+        name: AppRoutes.activite.name,
+        builder: (context, state) {
+          final enfant = state.extra as EnfantModel;
+          return ActivitesPage(enfant: enfant);
+        },
+      ),
+      GoRoute(
+        path: '/espaceienfant',
+        name: AppRoutes.espaceEnfant.name,
+        builder: (context, state) {
+          final enfant = state.extra as EnfantModel;
+          return EspaceEnfantScreen(enfant: enfant);
+        },
+      ),
+      GoRoute(
+        name: AppRoutes.detailactive.name,
+        path: '/detailactive',
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
 
+          final activite = data['activite'] as ActiviteModel;
+          final enfant = data['enfant'] as EnfantModel;
 
+          return ActiviteDetailScreen(activite: activite, enfantModel: enfant);
+        },
+      ),
+
+      GoRoute(
+        path: '/tutoriels',
+        name: AppRoutes.espaceEnfantTuto.name,
+        builder: (context, state) => const EspaceEnfantTutoScreen(),
+      ),
+
+      GoRoute(
+        path: '/tutoriel-detail',
+        name: AppRoutes.TutorielDetail.name,
+        builder: (context, state) {
+          final tutoriel = state.extra as TutorielModel;
+          return TutorielDetailScreen(tutoriel: tutoriel);
+        },
+      ),
     ],
   );
 }

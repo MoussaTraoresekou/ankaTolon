@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
 
 class EnfantProfilCard extends StatelessWidget {
@@ -26,7 +27,7 @@ class EnfantProfilCard extends StatelessWidget {
     return Row(
       children: [
         // AVATAR DE L'ENFANT
-        _buildAvatar(),
+        _buildAvatar(context),
 
         const SizedBox(width: 12),
 
@@ -37,10 +38,10 @@ class EnfantProfilCard extends StatelessWidget {
             children: [
               Text(
                 '${enfant.prenom} ${enfant.nom}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: context.textDark,
                 ),
               ),
 
@@ -84,10 +85,10 @@ class EnfantProfilCard extends StatelessWidget {
                       sexeTexte.isNotEmpty
                           ? sexeTexte
                           : 'Féminin', // Remplacez 'Féminin' par votre valeur par défaut si besoin
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFFE67E22),
+                        color: context.primaryOrange,
                       ),
                     ),
                   ),
@@ -98,27 +99,28 @@ class EnfantProfilCard extends StatelessWidget {
         ),
 
         // CHEVRON NAVIGATION
-        const Icon(Icons.chevron_right_rounded, color: Colors.black, size: 24),
+        Icon(Icons.chevron_right_rounded, color: context.textDark, size: 24),
       ],
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(BuildContext context) {
     if (enfant.avatarUrl != null && enfant.avatarUrl!.isNotEmpty) {
       return ClipOval(
-        child: Image.asset(
+        child: Image.network(
           enfant.avatarUrl!,
           width: 55,
           height: 55,
           fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => _avatarParDefaut(),
+          errorBuilder: (context, error, stackTrace) =>
+              _avatarParDefaut(context),
         ),
       );
     }
-    return _avatarParDefaut();
+    return _avatarParDefaut(context);
   }
 
-  Widget _avatarParDefaut() {
+  Widget _avatarParDefaut(BuildContext context) {
     return Container(
       width: 55,
       height: 55,
@@ -126,10 +128,10 @@ class EnfantProfilCard extends StatelessWidget {
         color: Color(0xFFFFE8D2),
         shape: BoxShape.circle,
       ),
-      child: const Icon(
+      child: Icon(
         Icons.child_care_rounded,
         size: 32,
-        color: Color(0xFFE67E22),
+        color: context.primaryOrange,
       ),
     );
   }
