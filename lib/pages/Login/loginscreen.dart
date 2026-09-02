@@ -104,7 +104,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     prefixIcon: Icons.visibility_off_outlined,
                   ),
 
-                  SizedBox(height: SizeConfig.getProportionateHeight(24)),
+                  SizedBox(height: SizeConfig.getProportionateHeight(9)),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        context.pushNamed(AppRoutes.changermotdepasse.name);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
+                        'Mot de passe oublié ?',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: context.accentBlue,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: SizeConfig.getProportionateHeight(10)),
 
                   // Bouton connexion
                   CustomButton(
@@ -120,28 +143,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     isLoading: state.isLoading,
                   ),
                   SizedBox(height: SizeConfig.getProportionateHeight(20)),
-                  SizedBox(height: SizeConfig.getProportionateHeight(20)),
                   RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
                           text: 'Pas de compte ? ',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 10,
                             color: context.textDark,
                           ),
                         ),
                         TextSpan(
                           text: "S'inscrire",
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 10,
                             color: context.accentBlue,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              context.goNamed(AppRoutes.register.name);
+                              context.pushNamed(AppRoutes.register.name);
                             },
                         ),
                       ],
