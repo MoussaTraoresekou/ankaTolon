@@ -16,7 +16,7 @@ class PanierPage extends ConsumerWidget {
     final panier = ref.watch(panierProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
 
       // appBar: AppBar(
       //   backgroundColor: const Color(0xFFF8FAF8),
@@ -32,9 +32,9 @@ class PanierPage extends ConsumerWidget {
       // ),
       appBar: AppBar(
         title: const Text("Mon panier"),
-        backgroundColor: AppStyles.bgColor,
+        backgroundColor: context.bgColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
+          icon: Icon(Icons.arrow_back_ios_new, color: context.textDark),
           onPressed: () => context.pop(),
         ),
       ),
@@ -54,7 +54,7 @@ class PanierPage extends ConsumerWidget {
                         margin: const EdgeInsets.only(bottom: 16),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: AppStyles.textInverse,
+                          color: context.textInverse,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
@@ -86,24 +86,24 @@ class PanierPage extends ConsumerWidget {
                                 children: [
                                   Text(
                                     item.nomJouet,
-                                    style: AppStyles.titleTextStyle,
+                                    style: context.titleTextStyle,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     "4-6 ans", // Statique pour l'exemple, à adapter
-                                    style: AppStyles.normalTextStyle.copyWith(
+                                    style: context.normalTextStyle.copyWith(
                                       fontSize: 12,
-                                      color: AppStyles.textMuted,
+                                      color: context.textMuted,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
                                     "${item.prixUnitaire.toStringAsFixed(0)} FCFA",
-                                    style: AppStyles.headingTextStyle.copyWith(
+                                    style: context.headingTextStyle.copyWith(
                                       fontSize: 16,
-                                      color: AppStyles.primaryOrange,
+                                      color: context.primaryOrange,
                                     ),
                                   ),
                                 ],
@@ -125,7 +125,7 @@ class PanierPage extends ConsumerWidget {
                                   ),
                                   Text(
                                     "${item.quantite}",
-                                    style: AppStyles.titleTextStyle,
+                                    style: context.titleTextStyle,
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.add, size: 18),
@@ -150,10 +150,10 @@ class PanierPage extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Sous-total", style: AppStyles.titleTextStyle),
+                          Text("Sous-total", style: context.titleTextStyle),
                           Text(
                             "${panier.total.toStringAsFixed(0)} FCFA",
-                            style: AppStyles.headingTextStyle.copyWith(
+                            style: context.headingTextStyle.copyWith(
                               fontSize: 18,
                             ),
                           ),

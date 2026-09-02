@@ -30,7 +30,7 @@ class _JouetcartState extends State<Jouetcart> {
         width: SizeConfig.getProportionateWidth(160),
         margin: EdgeInsets.only(right: SizeConfig.getProportionateWidth(14)),
         decoration: BoxDecoration(
-          color: AppStyles.textInverse,
+          color: context.textInverse,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -80,7 +80,7 @@ class _JouetcartState extends State<Jouetcart> {
                     jouet.nomJouet,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppStyles.normalTextStyle.copyWith(
+                    style: context.normalTextStyle.copyWith(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
@@ -106,7 +106,7 @@ class _JouetcartState extends State<Jouetcart> {
                           SizedBox(width: SizeConfig.getProportionateWidth(2)),
                           Text(
                             jouet.noteMoyen.toStringAsFixed(1),
-                            style: AppStyles.normalTextStyle.copyWith(
+                            style: context.normalTextStyle.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),

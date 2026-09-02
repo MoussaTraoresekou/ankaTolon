@@ -24,10 +24,10 @@ import 'package:tolon/pages/enfant/ChoisirAvatar.dart';
 import 'package:tolon/pages/enfant/EditEnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantProfil.dart';
 import 'package:tolon/pages/enfant/EnfantsList.dart';
-import 'package:tolon/pages/enfant/EspaceEnfantScreen.dart';
-import 'package:tolon/pages/enfant/EspaceEnfantTuto.dart';
 import 'package:tolon/pages/enfant/SelectAvatar.dart';
 import 'package:tolon/pages/enfant/addEnfant.dart';
+import 'package:tolon/pages/enfant/espace_enfant_screen.dart';
+import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 
 import 'package:tolon/pages/favoris/favoris_page.dart';
 

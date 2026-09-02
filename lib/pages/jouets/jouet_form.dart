@@ -140,7 +140,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
     final state = ref.watch(jouetControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
 
       body: SafeArea(
         child: SingleChildScrollView(
@@ -171,10 +171,10 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                       children: [
                         Text(
                           'Ajouter un jouet',
-                          style: AppStyles.headingTextStyle.copyWith(
+                          style: context.headingTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
-                            color: AppStyles.textDark,
+                            color: context.textDark,
                           ),
                         ),
 
@@ -209,7 +209,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                 padding: const EdgeInsets.all(16),
 
                 decoration: BoxDecoration(
-                  color: AppStyles.textInverse,
+                  color: context.textInverse,
 
                   borderRadius: BorderRadius.circular(20),
 
@@ -373,9 +373,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
       children: [
         Text(
           'Catégorie',
-          style: AppStyles.normalTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: context.normalTextStyle.copyWith(fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 6),
@@ -467,9 +465,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
       children: [
         Text(
           'Images du jouet',
-          style: AppStyles.normalTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: context.normalTextStyle.copyWith(fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 6),
@@ -573,14 +569,14 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                         width: 26,
                         height: 26,
 
-                        decoration: const BoxDecoration(
-                          color: AppStyles.badgeRed,
+                        decoration: BoxDecoration(
+                          color: context.badgeRed,
                           shape: BoxShape.circle,
                         ),
 
                         child: Icon(
                           Icons.close,
-                          color: AppStyles.textInverse,
+                          color: context.textInverse,
                           size: 16,
                         ),
                       ),

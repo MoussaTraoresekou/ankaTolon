@@ -112,13 +112,13 @@ class ImagesJouet extends StatelessWidget {
                                   height: 25,
 
                                   decoration: BoxDecoration(
-                                    color: AppStyles.badgeRed,
+                                    color: context.badgeRed,
                                     shape: BoxShape.circle,
                                   ),
 
                                   child: Icon(
                                     Icons.close,
-                                    color: AppStyles.textInverse,
+                                    color: context.textInverse,
                                     size: 18,
                                   ),
                                 ),

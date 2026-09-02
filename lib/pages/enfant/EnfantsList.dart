@@ -30,7 +30,7 @@ class EnfantsListScreen extends ConsumerWidget {
     final enfantsAsync = ref.watch(enfantsStreamProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
@@ -52,7 +52,7 @@ class EnfantsListScreen extends ConsumerWidget {
                       ),
                       child: Icon(
                         Icons.chevron_left,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                         size: 24,
                       ),
                     ),
@@ -63,7 +63,7 @@ class EnfantsListScreen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: AppStyles.textDark,
+                      color: context.textDark,
                     ),
                   ),
                 ],
@@ -78,7 +78,7 @@ class EnfantsListScreen extends ConsumerWidget {
                       return Center(
                         child: Text(
                           'Aucun enfant enregistré pour le moment',
-                          style: TextStyle(color: AppStyles.textMuted),
+                          style: TextStyle(color: context.textMuted),
                         ),
                       );
                     }
@@ -97,9 +97,10 @@ class EnfantsListScreen extends ConsumerWidget {
 
                         final Color bgColor = _avatarBgColors.isNotEmpty
                             ? _avatarBgColors[index % _avatarBgColors.length]
-                            : AppStyles.primarySoft;
+                            : context.primarySoft;
 
                         return _buildEnfantItemCard(
+                          context,
                           fullName,
                           '$ageCalculated ans',
                           enfant.avatarUrl,
@@ -115,7 +116,7 @@ class EnfantsListScreen extends ConsumerWidget {
                     );
                   },
                   loading: () => Center(
-                    child: CircularProgressIndicator(color: AppStyles.primary),
+                    child: CircularProgressIndicator(color: context.primary),
                   ),
                   error: (error, stack) => const Center(
                     child: Text(
@@ -146,7 +147,7 @@ class EnfantsListScreen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppStyles.textInverse,
+                      color: context.textInverse,
                     ),
                   ),
                 ),
@@ -159,6 +160,7 @@ class EnfantsListScreen extends ConsumerWidget {
   }
 
   Widget _buildEnfantItemCard(
+    BuildContext context,
     String fullName,
     String ageText,
     String? avatarUrl, {
@@ -167,9 +169,9 @@ class EnfantsListScreen extends ConsumerWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: AppStyles.textInverse,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppStyles.borderColor, width: 1),
+        border: Border.all(color: context.borderColor, width: 1),
       ),
       child: Material(
         color: Colors.transparent,
@@ -193,7 +195,7 @@ class EnfantsListScreen extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                   errorBuilder: (_, _, _) => Icon(
                                     Icons.person,
-                                    color: AppStyles.primary,
+                                    color: context.primary,
                                     size: 36,
                                   ),
                                 )
@@ -204,15 +206,11 @@ class EnfantsListScreen extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                   errorBuilder: (_, _, _) => Icon(
                                     Icons.person,
-                                    color: AppStyles.primary,
+                                    color: context.primary,
                                     size: 36,
                                   ),
                                 ))
-                        : Icon(
-                            Icons.person,
-                            color: AppStyles.primary,
-                            size: 36,
-                          ),
+                        : Icon(Icons.person, color: context.primary, size: 36),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -228,7 +226,7 @@ class EnfantsListScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: AppStyles.textDark,
+                          color: context.textDark,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -253,7 +251,7 @@ class EnfantsListScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right, color: AppStyles.textMuted),
+                Icon(Icons.chevron_right, color: context.textMuted),
               ],
             ),
           ),

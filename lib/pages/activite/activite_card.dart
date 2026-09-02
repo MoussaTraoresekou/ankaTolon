@@ -14,11 +14,11 @@ class ActiviteCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppStyles.boxSurfaceLight,
+          color: context.boxSurfaceLight,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: AppStyles.shadowColor,
+              color: context.shadowColor,
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -39,10 +39,10 @@ class ActiviteCard extends StatelessWidget {
                         width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return _imagePlaceholder();
+                          return _imagePlaceholder(context: context);
                         },
                       )
-                    : _imagePlaceholder(),
+                    : _imagePlaceholder(context: context),
               ),
             ),
 
@@ -60,7 +60,7 @@ class ActiviteCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                       ),
                     ),
 
@@ -70,7 +70,7 @@ class ActiviteCard extends StatelessWidget {
                       activite.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12, color: AppStyles.textMuted),
+                      style: TextStyle(fontSize: 12, color: context.textMuted),
                     ),
 
                     const Spacer(),
@@ -80,7 +80,7 @@ class ActiviteCard extends StatelessWidget {
                         Icon(
                           Icons.timer_outlined,
                           size: 16,
-                          color: AppStyles.textMuted,
+                          color: context.textMuted,
                         ),
 
                         const SizedBox(width: 4),
@@ -89,7 +89,7 @@ class ActiviteCard extends StatelessWidget {
                           '${activite.dureeMinutes} min',
                           style: TextStyle(
                             fontSize: 12,
-                            color: AppStyles.textMuted,
+                            color: context.textMuted,
                           ),
                         ),
 
@@ -100,7 +100,7 @@ class ActiviteCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
-                            color: AppStyles.textMuted,
+                            color: context.textMuted,
                           ),
                         ),
                       ],
@@ -115,12 +115,12 @@ class ActiviteCard extends StatelessWidget {
     );
   }
 
-  Widget _imagePlaceholder() {
+  Widget _imagePlaceholder({required BuildContext context}) {
     return Container(
       width: double.infinity,
-      color: AppStyles.boxSurfaceLight,
+      color: context.boxSurfaceLight,
       child: Center(
-        child: Icon(Icons.image_outlined, size: 45, color: AppStyles.textMuted),
+        child: Icon(Icons.image_outlined, size: 45, color: context.textMuted),
       ),
     );
   }

@@ -14,8 +14,8 @@ class BoutonDeconnexion extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          backgroundColor: AppStyles.textInverse,
-          side: const BorderSide(color: Color(0xFFE67E22), width: 1.5),
+          backgroundColor: context.textInverse,
+          side: BorderSide(color: context.primaryOrange, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -29,17 +29,17 @@ class BoutonDeconnexion extends StatelessWidget {
               child: Icon(
                 Icons.logout_rounded,
                 size: 24,
-                color: Color(0xFFE67E22),
+                color: context.primaryOrange,
               ),
             ),
             const SizedBox(width: 12),
             // TEXTE ORANGE
-            const Text(
+            Text(
               'Se déconnecter',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFFE67E22),
+                color: context.primaryOrange,
               ),
             ),
           ],

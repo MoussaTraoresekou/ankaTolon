@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/cor/router/routes.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
 import 'package:tolon/repository/adminRepository/tutoriel_repository.dart';
 import 'package:go_router/go_router.dart';
@@ -18,20 +19,17 @@ class _EspaceEnfantTutoScreenState
   String _selectedCategory = 'Tous';
   final List<String> _categories = ['Tous', 'Dessins', 'Sciences', 'Cultures'];
 
-  static const Color primaryGreen = Color(0xFF388E52);
-  static const Color bgLight = Color(0xFFF9FCF9);
-
   @override
   Widget build(BuildContext context) {
     final tutorielsAsync = ref.watch(watchTutorielsProvider);
 
     return Scaffold(
-      backgroundColor: bgLight,
+      backgroundColor: context.background,
       appBar: AppBar(
-        backgroundColor: bgLight,
+        backgroundColor: context.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
+          icon: Icon(Icons.arrow_back_ios_new, color: context.textDark),
           onPressed: () => Navigator.maybePop(context),
         ),
       ),
@@ -39,14 +37,14 @@ class _EspaceEnfantTutoScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ----------------- TITRE PRINCIPAL -----------------
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               'Tutoriels',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: context.textDark,
               ),
             ),
           ),
@@ -68,18 +66,20 @@ class _EspaceEnfantTutoScreenState
                     label: Text(
                       category,
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black87,
+                        color: isSelected ? Colors.white : context.textDark,
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
                       ),
                     ),
                     selected: isSelected,
-                    selectedColor: primaryGreen,
-                    backgroundColor: Colors.white,
+                    selectedColor: context.primary,
+                    backgroundColor: context.boxSurfaceLight,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                       side: BorderSide(
-                        color: isSelected ? primaryGreen : Colors.grey.shade300,
+                        color: isSelected
+                            ? context.primary
+                            : context.borderColor.withOpacity(0.5),
                       ),
                     ),
                     onSelected: (selected) {
@@ -104,10 +104,10 @@ class _EspaceEnfantTutoScreenState
                 }).toList();
 
                 if (filteredList.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Text(
                       'Aucun tutoriel disponible.',
-                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                      style: TextStyle(color: context.textMuted, fontSize: 16),
                     ),
                   );
                 }
@@ -119,16 +119,20 @@ class _EspaceEnfantTutoScreenState
                     final tuto = filteredList[index];
                     return _TutorielItemCard(
                       tutoriel: tuto,
-                      primaryGreen: primaryGreen,
+                      primaryGreen: context.primary,
                     );
                   },
                 );
               },
-              loading: () => const Center(
-                child: CircularProgressIndicator(color: primaryGreen),
+              loading: () => Center(
+                child: CircularProgressIndicator(color: context.primary),
               ),
-              error: (err, stack) =>
-                  Center(child: Text('Erreur de chargement : $err')),
+              error: (err, stack) => Center(
+                child: Text(
+                  'Erreur de chargement : $err',
+                  style: TextStyle(color: context.textDark),
+                ),
+              ),
             ),
           ),
         ],
@@ -167,12 +171,15 @@ class _TutorielItemCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16.0),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.boxSurfaceLight,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: primaryGreen.withOpacity(0.4), width: 1.5),
+          border: Border.all(
+            color: context.borderColor.withOpacity(0.6),
+            width: 1.5,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: context.shadowColor,
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -192,13 +199,13 @@ class _TutorielItemCard extends StatelessWidget {
                         imageUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => Container(
-                          color: Colors.grey.shade200,
-                          child: const Icon(Icons.image, color: Colors.grey),
+                          color: context.primarySoft,
+                          child: Icon(Icons.image, color: context.textMuted),
                         ),
                       )
                     : Container(
-                        color: Colors.grey.shade200,
-                        child: const Icon(Icons.image, color: Colors.grey),
+                        color: context.primarySoft,
+                        child: Icon(Icons.image, color: context.textMuted),
                       ),
               ),
             ),
@@ -213,10 +220,10 @@ class _TutorielItemCard extends StatelessWidget {
                     tutoriel.titre,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: context.textDark,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -227,7 +234,7 @@ class _TutorielItemCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.grey.shade600,
+                        color: context.textMuted,
                         height: 1.2,
                       ),
                     ),
@@ -236,50 +243,52 @@ class _TutorielItemCard extends StatelessWidget {
                     spacing: 6,
                     runSpacing: 4,
                     children: [
+                      // Badge Âge
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
                           vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFF3E0),
+                          color: context.avatarOrangeBg,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.child_care,
                               size: 14,
-                              color: Color(0xFFE87A1E),
+                              color: context.primaryOrange,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               ageText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
-                                color: Color(0xFFE87A1E),
+                                color: context.primaryOrange,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
                         ),
                       ),
+                      // Badge Catégorie
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
                           vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF0F4EC),
+                          color: context.primarySoft,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           categoryText,
                           style: TextStyle(
                             fontSize: 11,
-                            color: Colors.grey.shade700,
-                            fontWeight: FontWeight.w500,
+                            color: context.primary,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
@@ -289,11 +298,11 @@ class _TutorielItemCard extends StatelessWidget {
               ),
             ),
 
-            // Bouton Play vert à droite
+            // Bouton Play à droite
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, top: 28.0),
                 child: Container(
                   width: 40,
                   height: 40,

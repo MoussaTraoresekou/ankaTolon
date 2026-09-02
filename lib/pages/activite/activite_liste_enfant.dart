@@ -34,7 +34,7 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
     final categoriesAsync = ref.watch(listeCategoryByTypeProvider('activite'));
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -51,9 +51,9 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
 
               Text(
                 'Catégories',
-                style: AppStyles.normalTextStyle.copyWith(
+                style: context.normalTextStyle.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
 
@@ -82,7 +82,7 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
                       child: Text(
                         'Erreur : $error',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: AppStyles.textDark),
+                        style: TextStyle(color: context.textDark),
                       ),
                     );
                   },
@@ -94,7 +94,10 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
                       return Center(
                         child: Text(
                           'Aucune activité disponible.',
-                          style: TextStyle(color: AppStyles.textMuted, fontSize: 15),
+                          style: TextStyle(
+                            color: context.textMuted,
+                            fontSize: 15,
+                          ),
                         ),
                       );
                     }
@@ -141,17 +144,17 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
       children: [
         IconButton(
           onPressed: () => context.pop(),
-          icon: Icon(Icons.arrow_back_ios, size: 20, color: AppStyles.textDark),
+          icon: Icon(Icons.arrow_back_ios, size: 20, color: context.textDark),
         ),
 
         Expanded(
           child: Text(
             'Activités',
             textAlign: TextAlign.center,
-            style: AppStyles.headingTextStyle.copyWith(
+            style: context.headingTextStyle.copyWith(
               fontSize: 24,
               fontWeight: FontWeight.w800,
-              color: AppStyles.textDark,
+              color: context.textDark,
             ),
           ),
         ),

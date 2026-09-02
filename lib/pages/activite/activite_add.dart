@@ -20,8 +20,7 @@ class AddActiviteScreen extends ConsumerStatefulWidget {
   const AddActiviteScreen({super.key});
 
   @override
-  ConsumerState<AddActiviteScreen> createState() =>
-      _AddActiviteScreenState();
+  ConsumerState<AddActiviteScreen> createState() => _AddActiviteScreenState();
 }
 
 class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
@@ -62,9 +61,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
   }
 
   Future<void> _pickVideo() async {
-    final video = await _picker.pickVideo(
-      source: ImageSource.gallery,
-    );
+    final video = await _picker.pickVideo(source: ImageSource.gallery);
 
     if (video == null) return;
 
@@ -93,8 +90,8 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
       categorieId: _categorieSelectionnee == null
           ? null
           : FirebaseFirestore.instance
-              .collection('categories')
-              .doc(_categorieSelectionnee!.id),
+                .collection('categories')
+                .doc(_categorieSelectionnee!.id),
       image: null,
       videoUrl: null,
       dureeMinutes: int.tryParse(_dureeController.text.trim()) ?? 0,
@@ -103,32 +100,26 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
       dateCreation: DateTime.now(),
     );
 
-    final imageFile =
-        _selectedImage == null ? null : File(_selectedImage!.path);
+    final imageFile = _selectedImage == null
+        ? null
+        : File(_selectedImage!.path);
 
-    final videoFile =
-        _selectedVideo == null ? null : File(_selectedVideo!.path);
+    final videoFile = _selectedVideo == null
+        ? null
+        : File(_selectedVideo!.path);
 
     final succes = await ref
         .read(activiteControllerProvider.notifier)
-        .ajouterActivite(
-          activite,
-          image: imageFile,
-          video: videoFile,
-        );
+        .ajouterActivite(activite, image: imageFile, video: videoFile);
 
     if (!mounted) return;
 
     final state = ref.read(activiteControllerProvider);
 
     if (succes) {
-      state.showSuccessDialog(
-        context,
-        'Activité ajoutée avec succès !',
-        () {
-          context.pop();
-        },
-      );
+      state.showSuccessDialog(context, 'Activité ajoutée avec succès !', () {
+        context.pop();
+      });
     } else {
       state.showErrorDialog(context);
     }
@@ -140,17 +131,14 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
 
     final state = ref.watch(activiteControllerProvider);
 
-    final categoriesAsync =
-        ref.watch(listeCategoryByTypeProvider('activite'));
+    final categoriesAsync = ref.watch(listeCategoryByTypeProvider('activite'));
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(
-              isLoading: state.isLoading,
-            ),
+            _buildHeader(isLoading: state.isLoading),
 
             Expanded(
               child: SingleChildScrollView(
@@ -172,6 +160,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                       icon: Icons.info_outline_rounded,
                       title: 'Informations générales',
                       subtitle: 'Présentez votre activité',
+                      context: context,
                     ),
 
                     const SizedBox(height: 16),
@@ -199,7 +188,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                         height: 55,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: AppStyles.boxSurfaceLight,
+                          color: context.boxSurfaceLight,
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: SizedBox(
@@ -207,11 +196,11 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: AppStyles.primaryOrange,
+                            color: context.primaryOrange,
                           ),
                         ),
                       ),
-                      error: (error, stackTrace) => _buildErrorMessage(),
+                      error: (error, stackTrace) => _buildErrorMessage(context),
                       data: (categories) {
                         if (categories.isEmpty) {
                           return _buildEmptyCategoryMessage();
@@ -227,9 +216,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                               value: categorie,
                               child: Text(
                                 categorie.nom,
-                                style: TextStyle(
-                                  color: AppStyles.textDark,
-                                ),
+                                style: TextStyle(color: context.textDark),
                               ),
                             );
                           }).toList(),
@@ -250,6 +237,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                       icon: Icons.tune_rounded,
                       title: 'Paramètres',
                       subtitle: 'Définissez l’âge et la durée',
+                      context: context,
                     ),
 
                     const SizedBox(height: 16),
@@ -294,31 +282,30 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                       icon: Icons.perm_media_outlined,
                       title: 'Médias',
                       subtitle: 'Ajoutez une image et une vidéo',
+                      context: context,
                     ),
 
                     const SizedBox(height: 16),
 
-                    _buildImagePicker(
-                      isLoading: state.isLoading,
-                    ),
+                    _buildImagePicker(isLoading: state.isLoading),
 
                     const SizedBox(height: 14),
 
                     _buildVideoPicker(
                       isLoading: state.isLoading,
+                      context: context,
                     ),
 
                     const SizedBox(height: 32),
 
                     _buildSubmitButton(
                       isLoading: state.isLoading,
+                      context: context,
                     ),
 
                     const SizedBox(height: 12),
 
-                    _buildCancelButton(
-                      isLoading: state.isLoading,
-                    ),
+                    _buildCancelButton(isLoading: state.isLoading),
                   ],
                 ),
               ),
@@ -329,15 +316,13 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     );
   }
 
-  Widget _buildHeader({
-    required bool isLoading,
-  }) {
+  Widget _buildHeader({required bool isLoading}) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 10, 20, 8),
       child: Row(
         children: [
           Material(
-            color: AppStyles.boxSurfaceLight,
+            color: context.boxSurfaceLight,
             shape: const CircleBorder(),
             child: InkWell(
               customBorder: const CircleBorder(),
@@ -347,7 +332,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                 child: Icon(
                   Icons.arrow_back_ios_new_rounded,
                   size: 19,
-                  color: AppStyles.textDark,
+                  color: context.textDark,
                 ),
               ),
             ),
@@ -358,7 +343,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
           Expanded(
             child: Text(
               'Nouvelle activité',
-              style: AppStyles.headingTextStyle.copyWith(
+              style: context.headingTextStyle.copyWith(
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
               ),
@@ -368,13 +353,13 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppStyles.primarySoft,
+              color: context.primarySoft,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.auto_awesome_rounded,
               size: 20,
-              color: AppStyles.primary,
+              color: context.primary,
             ),
           ),
         ],
@@ -387,7 +372,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppStyles.primarySoft,
+        color: context.primarySoft,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -396,12 +381,12 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppStyles.primary,
+              color: context.primary,
               borderRadius: BorderRadius.circular(15),
             ),
             child: Icon(
               Icons.lightbulb_outline_rounded,
-              color: AppStyles.textInverse,
+              color: context.textInverse,
               size: 25,
             ),
           ),
@@ -415,7 +400,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                 fontSize: 14,
                 height: 1.4,
                 fontWeight: FontWeight.w600,
-                color: AppStyles.textDark,
+                color: context.textDark,
               ),
             ),
           ),
@@ -428,6 +413,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     required IconData icon,
     required String title,
     required String subtitle,
+    required BuildContext context,
   }) {
     return Row(
       children: [
@@ -435,14 +421,10 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
           width: 38,
           height: 38,
           decoration: BoxDecoration(
-            color: AppStyles.avatarOrangeBg,
+            color: context.avatarOrangeBg,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            icon,
-            color: AppStyles.primaryOrange,
-            size: 20,
-          ),
+          child: Icon(icon, color: context.primaryOrange, size: 20),
         ),
 
         const SizedBox(width: 11),
@@ -455,16 +437,13 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
-                color: AppStyles.textDark,
+                color: context.textDark,
               ),
             ),
             const SizedBox(height: 2),
             Text(
               subtitle,
-              style: TextStyle(
-                fontSize: 12,
-                color: AppStyles.textMuted,
-              ),
+              style: TextStyle(fontSize: 12, color: context.textMuted),
             ),
           ],
         ),
@@ -472,9 +451,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     );
   }
 
-  Widget _buildImagePicker({
-    required bool isLoading,
-  }) {
+  Widget _buildImagePicker({required bool isLoading}) {
     if (_selectedImage != null) {
       return Stack(
         children: [
@@ -492,10 +469,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
             left: 12,
             bottom: 12,
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: Colors.black.withValues(alpha: 0.55),
                 borderRadius: BorderRadius.circular(10),
@@ -525,9 +499,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
           Positioned(
             top: 10,
             right: 10,
-            child: _buildRemoveButton(
-              onTap: isLoading ? null : _removeImage,
-            ),
+            child: _buildRemoveButton(onTap: isLoading ? null : _removeImage),
           ),
         ],
       );
@@ -543,16 +515,15 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
 
   Widget _buildVideoPicker({
     required bool isLoading,
+    required BuildContext context,
   }) {
     if (_selectedVideo != null) {
       return Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppStyles.boxSurfaceLight,
+          color: context.boxSurfaceLight,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: AppStyles.borderColor,
-          ),
+          border: Border.all(color: context.borderColor),
         ),
         child: Row(
           children: [
@@ -560,12 +531,12 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AppStyles.avatarOrangeBg,
+                color: context.avatarOrangeBg,
                 borderRadius: BorderRadius.circular(13),
               ),
               child: Icon(
                 Icons.video_file_rounded,
-                color: AppStyles.primaryOrange,
+                color: context.primaryOrange,
                 size: 25,
               ),
             ),
@@ -579,7 +550,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                   Text(
                     'Vidéo sélectionnée',
                     style: TextStyle(
-                      color: AppStyles.textDark,
+                      color: context.textDark,
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
                     ),
@@ -589,18 +560,13 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                     _selectedVideo!.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: AppStyles.textMuted,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: context.textMuted, fontSize: 12),
                   ),
                 ],
               ),
             ),
 
-            _buildRemoveButton(
-              onTap: isLoading ? null : _removeVideo,
-            ),
+            _buildRemoveButton(onTap: isLoading ? null : _removeVideo),
           ],
         ),
       );
@@ -629,11 +595,9 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
           width: double.infinity,
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: AppStyles.boxSurfaceLight,
+            color: context.boxSurfaceLight,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: AppStyles.borderColor,
-            ),
+            border: Border.all(color: context.borderColor),
           ),
           child: Row(
             children: [
@@ -641,14 +605,10 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                 width: 52,
                 height: 52,
                 decoration: BoxDecoration(
-                  color: AppStyles.primarySoft,
+                  color: context.primarySoft,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Icon(
-                  icon,
-                  color: AppStyles.primary,
-                  size: 27,
-                ),
+                child: Icon(icon, color: context.primary, size: 27),
               ),
 
               const SizedBox(width: 14),
@@ -660,7 +620,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                     Text(
                       title,
                       style: TextStyle(
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -668,19 +628,13 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        color: AppStyles.textMuted,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: context.textMuted, fontSize: 12),
                     ),
                   ],
                 ),
               ),
 
-              Icon(
-                Icons.chevron_right_rounded,
-                color: AppStyles.textMuted,
-              ),
+              Icon(Icons.chevron_right_rounded, color: context.textMuted),
             ],
           ),
         ),
@@ -688,9 +642,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     );
   }
 
-  Widget _buildRemoveButton({
-    required VoidCallback? onTap,
-  }) {
+  Widget _buildRemoveButton({required VoidCallback? onTap}) {
     return Material(
       color: Colors.black.withValues(alpha: 0.55),
       shape: const CircleBorder(),
@@ -699,11 +651,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
         onTap: onTap,
         child: const Padding(
           padding: EdgeInsets.all(8),
-          child: Icon(
-            Icons.close_rounded,
-            color: Colors.white,
-            size: 18,
-          ),
+          child: Icon(Icons.close_rounded, color: Colors.white, size: 18),
         ),
       ),
     );
@@ -711,6 +659,7 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
 
   Widget _buildSubmitButton({
     required bool isLoading,
+    required BuildContext context,
   }) {
     return SizedBox(
       width: double.infinity,
@@ -718,10 +667,9 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
       child: ElevatedButton(
         onPressed: isLoading ? null : _ajouterActivite,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppStyles.primaryOrange,
+          backgroundColor: context.primaryOrange,
           foregroundColor: Colors.white,
-          disabledBackgroundColor:
-              AppStyles.textMuted.withValues(alpha: 0.35),
+          disabledBackgroundColor: context.textMuted.withValues(alpha: 0.35),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -739,17 +687,11 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
             : const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.add_rounded,
-                    size: 21,
-                  ),
+                  Icon(Icons.add_rounded, size: 21),
                   SizedBox(width: 8),
                   Text(
                     'Créer l’activité',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -757,54 +699,42 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
     );
   }
 
-  Widget _buildCancelButton({
-    required bool isLoading,
-  }) {
+  Widget _buildCancelButton({required bool isLoading}) {
     return SizedBox(
       width: double.infinity,
       height: 50,
       child: TextButton(
         onPressed: isLoading ? null : () => context.pop(),
         style: TextButton.styleFrom(
-          foregroundColor: AppStyles.textMuted,
+          foregroundColor: context.textMuted,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
         ),
         child: const Text(
           'Annuler',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ),
     );
   }
 
-  Widget _buildErrorMessage() {
+  Widget _buildErrorMessage(context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppStyles.badgeRed.withValues(alpha: 0.1),
+        color: context.badgeRed.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.error_outline_rounded,
-            color: AppStyles.badgeRed,
-            size: 20,
-          ),
+          Icon(Icons.error_outline_rounded, color: context.badgeRed, size: 20),
           const SizedBox(width: 9),
           Expanded(
             child: Text(
               'Erreur lors du chargement des catégories.',
-              style: TextStyle(
-                color: AppStyles.badgeRed,
-                fontSize: 12,
-              ),
+              style: TextStyle(color: context.badgeRed, fontSize: 12),
             ),
           ),
         ],
@@ -817,17 +747,13 @@ class _AddActiviteScreenState extends ConsumerState<AddActiviteScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppStyles.boxSurfaceLight,
+        color: context.boxSurfaceLight,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         'Aucune catégorie disponible.',
-        style: TextStyle(
-          color: AppStyles.textMuted,
-          fontSize: 13,
-        ),
+        style: TextStyle(color: context.textMuted, fontSize: 13),
       ),
     );
   }
 }
-
