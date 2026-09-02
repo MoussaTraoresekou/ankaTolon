@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/cor/app_colors.dart';
 import 'package:tolon/controller/admin_controller/detailUtilisateur_providers.dart';
@@ -19,6 +20,12 @@ class UserDetail extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+
         leading: Padding(
           padding: const EdgeInsets.all(12.0),
           child: CircleAvatar(
@@ -175,7 +182,6 @@ class UserDetail extends ConsumerWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
                                 // Séparateur discret s'il y a plus d'un enfant
                                 if (index > 0)
                                   const Padding(
@@ -282,7 +288,7 @@ class UserDetail extends ConsumerWidget {
                                 ),
 
                                 const SizedBox(height: 16),
-                                
+
                                 // Informations chiffrées de l'enfant
                                 LigneInfoCmd(
                                   icon: Icons.cake_outlined,

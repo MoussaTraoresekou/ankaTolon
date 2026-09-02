@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/controller/profil/profil_controller.dart';
 import 'package:tolon/cor/app_colors.dart';
@@ -69,6 +70,11 @@ class _AdminProfilState extends ConsumerState<AdminProfil> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
        
         // LE BOUTON RETOUR INTELLIGENT
         leading: Padding(
