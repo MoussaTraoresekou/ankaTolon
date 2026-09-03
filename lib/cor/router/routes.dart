@@ -31,6 +31,7 @@ import 'package:tolon/pages/enfant/espace_enfant_screen.dart';
 import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 
 import 'package:tolon/pages/favoris/favoris_page.dart';
+import 'package:tolon/pages/jeux/accueil_jeux.dart';
 import 'package:tolon/pages/jeux/categorie_jeux.dart';
 
 import 'package:tolon/pages/jouets/JouetsListNotes.dart';
@@ -648,7 +649,7 @@ GoRouter appRouter(Ref ref) {
         name: AppRoutes.jeux.name,
         builder: (context, state) {
           //final enfant = state.extra as EnfantModel;
-          return QuizApp();
+          return GamesHomeScreen();
         },
       ),
     ],

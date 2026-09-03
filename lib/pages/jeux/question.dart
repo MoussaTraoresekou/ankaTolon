@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/jeux/datas.dart';
 import 'package:tolon/models/jeux/quiz_models.dart';
+import 'package:tolon/pages/jeux/resultat.dart';
 
 class QuizPlayScreen extends StatefulWidget {
   final QuizTheme theme;
@@ -16,7 +17,9 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
   int _currentIndex = 0;
   int? _selectedAnswerIndex;
   bool _isAnswered = false;
-  int _scoreStars = 0;
+  int _scoreStars = 260;
+  int _correctAnswersCount = 0;
+  int _starsEarnedThisSession = 0;
 
   void _checkAnswer(int index) {
     if (_isAnswered) return;
@@ -25,58 +28,110 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
       _isAnswered = true;
       if (index == widget.theme.questions[_currentIndex].correctAnswerIndex) {
         _scoreStars += 20;
+        _correctAnswersCount++;
+        _starsEarnedThisSession += 20;
       }
     });
   }
 
   void _nextQuestion() {
-    if (_currentIndex < widget.theme.questions.length - 1) {
-      setState(() {
-        _currentIndex++;
-        _selectedAnswerIndex = null;
-        _isAnswered = false;
-      });
-    } else {
-      _showResultDialog();
-    }
-  }
-
-  void _showResultDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text("🎉 Super ! 🎉", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,
-                  color: Color(0xFF000000))),
-              const SizedBox(height: 16),
-              const Text("Tu as terminé ce quiz avec succès !", textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: Colors.grey)),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFE67E22),
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  elevation: 0,
-                ),
-                child: const Text("Génial !", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
-            ],
-          ),
+  if (_currentIndex < widget.theme.questions.length - 1) {
+    setState(() {
+      _currentIndex++;
+      _selectedAnswerIndex = null;
+      _isAnswered = false;
+    });
+  } else {
+    // Ouvre la nouvelle page de résultat
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuizResultScreen(
+          theme: widget.theme,
+          correctAnswersCount: _correctAnswersCount,
+          totalStarsGained: _starsEarnedThisSession,
         ),
       ),
-    );
+    ).then((value) {
+      // Si l'utilisateur clique sur "Rejouer", on réinitialise l'écran
+      if (value == "replay") {
+        setState(() {
+          _currentIndex = 0;
+          _selectedAnswerIndex = null;
+          _isAnswered = false;
+          _correctAnswersCount = 0;
+          _starsEarnedThisSession = 0;
+        });
+      }
+    });
   }
+}
+
+
+  void _showResultDialog() {
+  final int totalQuestions = widget.theme.questions.length;
+  final double successRate = _correctAnswersCount / totalQuestions;
+
+  // Configuration personnalisée selon le score
+  String title;
+  String message;
+  String emoji;
+
+  if (successRate == 1.0) {
+    title = "👑 Parfait ! 👑";
+    message = "Incroyable ! Tu as trouvé toutes les réponses ! Un vrai champion !";
+    emoji = "🏆";
+  } else if (successRate >= 0.5) {
+    title = "🎉 Super ! 🎉";
+    message = "Tu as trouvé $_correctAnswersCount sur $totalQuestions bonnes réponses. Bien joué !";
+    emoji = "⭐️";
+  } else if (_correctAnswersCount > 0) {
+    title = "👍 Pas mal ! 👍";
+    message = "Tu as eu $_correctAnswersCount de juste. Continue d'apprendre pour faire mieux !";
+    emoji = "💪";
+  } else {
+    title = "🙃 Oups... 🙃";
+    message = "Aucune bonne réponse cette fois-ci, mais ne décourage pas ! Réessaie encore !";
+    emoji = "📚";
+  }
+
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(emoji, style: const TextStyle(fontSize: 50)), // Grand emoji de succès
+            const SizedBox(height: 12),
+            Text(title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF000000))),
+            const SizedBox(height: 16),
+            Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 16, color: Colors.grey)),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Ferme le dialogue
+                Navigator.pop(context); // Retourne à l'accueil
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFE67E22),
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                elevation: 0,
+              ),
+              child: const Text("Génial !", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
