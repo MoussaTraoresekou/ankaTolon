@@ -133,7 +133,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
     final idsFavoris = ref.watch(favorisControllerProvider);
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 236, 243, 236),
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -147,8 +147,8 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                   Container(
                     width: 36,
                     height: 36,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 219, 238, 221),
+                    decoration: BoxDecoration(
+                      color: context.primarySoft,
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -162,7 +162,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -178,7 +178,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                           'Retrouvez tous les jouets que vous avez ajoutés à vos favoris',
                           style: TextStyle(
                             fontSize: 13,
-                            color: Color.fromARGB(240, 10, 10, 10),
+                            color: context.textDark,
                             height: 1.3,
                           ),
                         ),
@@ -208,16 +208,12 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 219, 238, 221),
+                      color: context.primarySoft,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.favorite,
-                          color: Color.fromARGB(255, 174, 8, 8),
-                          size: 18,
-                        ),
+                        Icon(Icons.favorite, color: context.badgeRed, size: 18),
                         const SizedBox(width: 6),
                         Text(
                           '${idsFavoris.length} favoris',
@@ -249,10 +245,7 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       ),
                       decoration: BoxDecoration(
                         color: context.textInverse,
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          width: 1,
-                        ),
+                        border: Border.all(color: context.textMuted, width: 1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
