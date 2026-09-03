@@ -390,7 +390,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               style: TextStyle(
                 fontSize: 10,
                 height: 1.1,
-                color: Colors.grey.shade700,
+                color: context.textDark,
                 fontWeight: FontWeight.w500,
               ),
             ),

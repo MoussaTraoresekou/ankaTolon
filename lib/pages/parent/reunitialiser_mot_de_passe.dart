@@ -74,6 +74,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         color: context.textDark,
                       ),
                     ),
+
                     Align(
                       alignment: Alignment.centerLeft,
                       child: GestureDetector(
@@ -81,8 +82,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         child: Container(
                           width: 38,
                           height: 38,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFE5F1E7),
+                          decoration: BoxDecoration(
+                            color: context.primarySoft,
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
@@ -95,7 +96,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: SizeConfig.getProportionateHeight(16)),
+                SizedBox(height: SizeConfig.getProportionateHeight(128)),
 
                 Text(
                   'Entrez votre adresse email, nous vous enverrons un lien pour réinitialiser votre mot de passe.',
@@ -104,7 +105,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     color: context.textMuted,
                   ),
                 ),
-                SizedBox(height: SizeConfig.getProportionateHeight(28)),
+                SizedBox(height: SizeConfig.getProportionateHeight(48)),
 
                 CustomTextField(
                   label: 'Adresse Email',
@@ -113,7 +114,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   controller: _emailController,
                   prefixIcon: Icons.email_outlined,
                 ),
-                SizedBox(height: SizeConfig.getProportionateHeight(28)),
+                SizedBox(height: SizeConfig.getProportionateHeight(32)),
 
                 CustomButton(
                   onTap: _onEnvoyerTap,
