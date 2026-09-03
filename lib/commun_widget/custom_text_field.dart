@@ -37,9 +37,9 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppStyles.normalTextStyle.copyWith(
+          style: context.normalTextStyle.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: context.textDark,
           ),
         ),
 
@@ -52,28 +52,23 @@ class CustomTextField extends StatelessWidget {
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
 
-          style: AppStyles.normalTextStyle.copyWith(
-            color: Colors.black87,
-          ),
+          style: context.normalTextStyle.copyWith(color: context.textMuted),
 
           decoration: InputDecoration(
             hintText: hintText,
 
-            hintStyle: AppStyles.normalTextStyle.copyWith(
-              color: Colors.black38,
+            hintStyle: context.normalTextStyle.copyWith(
+              color: context.textMuted,
             ),
 
             prefixIcon: prefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                    color: prefixIconColor ?? Colors.black45,
-                  )
+                ? Icon(prefixIcon, color: prefixIconColor ?? context.textMuted)
                 : null,
 
             suffixIcon: suffixIcon,
 
             filled: true,
-            fillColor: const Color(0xFFFFFFFF),
+            fillColor: context.textInverse,
 
             contentPadding: const EdgeInsets.symmetric(
               vertical: 14,
@@ -82,34 +77,22 @@ class CustomTextField extends StatelessWidget {
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.black12,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: context.textMuted, width: 1),
             ),
 
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 187, 245, 194),
-                width: 1,
-              ),
+              borderSide: BorderSide(color: context.primarySoft, width: 1),
             ),
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 35, 198, 54),
-                width: 1.5,
-              ),
+              borderSide: BorderSide(color: context.primary, width: 1.5),
             ),
 
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Colors.redAccent,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: Color(0xFFEF5350), width: 1),
             ),
           ),
         ),
@@ -117,4 +100,3 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-

@@ -20,8 +20,8 @@ class PrimaryButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppStyles.primaryOrange,
-          foregroundColor: Colors.white,
+          backgroundColor: context.primaryOrange,
+          foregroundColor: context.textInverse,
           padding: EdgeInsets.symmetric(
             vertical: SizeConfig.getProportionateHeight(16),
           ),
@@ -31,17 +31,17 @@ class PrimaryButton extends StatelessWidget {
         ),
         onPressed: isLoading ? null : onPressed,
         child: isLoading
-            ? const SizedBox(
+            ? SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: context.textInverse,
                   strokeWidth: 2,
                 ),
               )
             : Text(
                 label,
-                style: AppStyles.titleTextStyle.copyWith(color: Colors.white),
+                style: context.titleTextStyle.copyWith(color: Colors.white),
               ),
       ),
     );

@@ -11,14 +11,32 @@ class AuthRepository {
 
   AuthRepository(this.auth);
 
+  /// Vérifie si le mot de passe saisi correspond à l'utilisateur actuellement connecté
+  Future<bool> verifierMotDePasse(String password) async {
+    try {
+      final user = auth.currentUser;
+      if (user != null && user.email != null) {
+        final credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: password,
+        );
+        // Effectue la réauthentification auprès de Firebase
+        await user.reauthenticateWithCredential(credential);
+        return true;
+      }
+      return false;
+    } on FirebaseAuthException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<void> connectionAvecEmailPassword({
     required String email,
     required String password,
   }) async {
-    await auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    await auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   Future<void> createUserWithEmailPasseword({
@@ -43,10 +61,14 @@ class AuthRepository {
       type: type,
     );
 
+    // Conversion en Map et ajout de la date d'inscription du serveur
+    final Map<String, dynamic> userData = userModel.toJson();
+    userData['date_inscription'] = FieldValue.serverTimestamp();
+
     await _firestore
         .collection('users')
         .doc(cred.user!.uid)
-        .set(userModel.toJson());
+        .set(userData); // Correction : enregistre userData avec la date
   }
 
   User? get currentUser => auth.currentUser;
@@ -72,18 +94,16 @@ class AuthRepository {
       'phoneNumber': phoneNumber.trim(),
     };
 
-    await _firestore
-        .collection('users')
-        .doc(user.uid)
-        .update(modifications);
+    await _firestore.collection('users').doc(user.uid).update(modifications);
   }
 
   Future<void> deconnecter() async {
     await auth.signOut();
   }
+
   Future<void> reinitialiserMotDePasse({required String email}) async {
-  await auth.sendPasswordResetEmail(email: email);
-}
+    await auth.sendPasswordResetEmail(email: email);
+  }
 }
 
 @riverpod
@@ -122,9 +142,6 @@ Stream<UserModel?> userData(Ref ref) {
           return null;
         }
 
-        return UserModel.fromJson(
-          doc.data()!,
-          doc.id,
-        );
+        return UserModel.fromJson(doc.data()!, doc.id);
       });
 }

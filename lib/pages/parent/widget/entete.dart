@@ -18,7 +18,7 @@ class Entete extends StatelessWidget {
               height: SizeConfig.getProportionateWidth(48),
 
               decoration: BoxDecoration(
-                color: AppStyles.onboading13,
+                color: context.primarySoft,
                 shape: BoxShape.circle,
               ),
 
@@ -37,7 +37,7 @@ class Entete extends StatelessWidget {
                 Text(
                   'Bonjour 👋',
 
-                  style: AppStyles.titleTextStyle.copyWith(
+                  style: context.titleTextStyle.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -47,7 +47,7 @@ class Entete extends StatelessWidget {
                 Text(
                   'Heureux de vous retrouver',
 
-                  style: AppStyles.normalTextStyle.copyWith(
+                  style: context.normalTextStyle.copyWith(
                     fontSize: 13,
                     color: Colors.black45,
                   ),
@@ -65,7 +65,7 @@ class Entete extends StatelessWidget {
               icon: Icon(
                 Icons.notifications_none_outlined,
                 size: SizeConfig.getProportionateWidth(28),
-                color: Colors.black87,
+                color: context.textDark,
               ),
             ),
 
@@ -76,16 +76,16 @@ class Entete extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(SizeConfig.getProportionateWidth(4)),
 
-                decoration: const BoxDecoration(
-                  color: Colors.red,
+                decoration: BoxDecoration(
+                  color: context.badgeRed,
                   shape: BoxShape.circle,
                 ),
 
                 child: Text(
                   '10',
 
-                  style: AppStyles.normalTextStyle.copyWith(
-                    color: Colors.white,
+                  style: context.normalTextStyle.copyWith(
+                    color: context.textInverse,
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
                   ),

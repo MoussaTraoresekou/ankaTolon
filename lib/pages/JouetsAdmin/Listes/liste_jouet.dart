@@ -1,573 +1,1036 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:tolon/controller/jouetsAdmin/jouets_controller.dart';
-
-import 'package:tolon/pages/JouetsAdmin/Edit/ModifierJouet.dart';
-
-import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
-
+import 'package:tolon/models/JouetsAdmin/jouet_list_model.dart';
 import 'package:tolon/repository/JouetsAdmin/JouetsRepository.dart';
 
-class ListeJouetsPage extends StatefulWidget {
-  const ListeJouetsPage({
-    super.key,
-  });
+import 'package:tolon/pages/JouetsAdmin/AddJouets.dart';
+import 'package:tolon/pages/JouetsAdmin/Edit/ModifierJouet.dart';
 
-  @override
-  State<ListeJouetsPage> createState() =>
-      _ListeJouetsPageState();
+class ListeJouetsPage extends StatefulWidget {
+const ListeJouetsPage({
+super.key,
+});
+
+@override
+State<ListeJouetsPage> createState() =>
+_ListeJouetsPageState();
 }
 
 class _ListeJouetsPageState
-    extends State<ListeJouetsPage> {
+extends State<ListeJouetsPage> {
 
-  late JouetController controller;
+// =====================================================
+// CONTROLLER
+// =====================================================
 
-  bool chargement = true;
+late JouetController controller;
 
-  String? erreur;
+// =====================================================
+// ETAT
+// =====================================================
 
-  final TextEditingController rechercheController =
-  TextEditingController();
+bool chargement = true;
 
-  @override
-  void initState() {
-    super.initState();
+String? erreur;
 
-    controller = JouetController(
-      repository: JouetRepository(),
-    );
+// =====================================================
+// RECHERCHE
+// =====================================================
 
-    chargerJouets();
-  }
+final TextEditingController rechercheController =
+TextEditingController();
 
-  Future<void> chargerJouets() async {
-    try {
-      setState(() {
-        chargement = true;
-        erreur = null;
-      });
+// =====================================================
+// INIT STATE
+// =====================================================
 
-      await controller.chargerJouets();
+@override
+void initState() {
+super.initState();
 
-      if (!mounted) {
-        return;
-      }
+controller = JouetController(
+repository: JouetRepository(),
+);
 
-      setState(() {
-        chargement = false;
-      });
-    } catch (e) {
-      print('ERREUR : $e');
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        chargement = false;
-        erreur = 'Erreur lors du chargement des jouets';
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFAFFFB),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30,
-            vertical: 20,
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Liste des jouets',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Gérez tous les jouets ajoutés',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 100,
-                    height: 80,
-                    child: Image.asset(
-                      'assets/images/JouetHeader.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(
-                height: 12,
-              ),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 38,
-                      child: TextField(
-                        controller: rechercheController,
-                        decoration: InputDecoration(
-                          hintText: 'Rechercher un jouet',
-                          hintStyle: const TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey,
-                          ),
-                          prefixIcon: const Icon(
-                            Icons.search,
-                            size: 17,
-                          ),
-                          contentPadding:
-                          const EdgeInsets.symmetric(
-                            horizontal: 10,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.circular(6),
-                            borderSide: BorderSide(
-                              color: Colors.grey[300]!,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.circular(6),
-                            borderSide: BorderSide(
-                              color: Colors.grey[300]!,
-                            ),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    width: 8,
-                  ),
-
-                  SizedBox(
-                    height: 38,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                            const AjouterJouetPage(),
-                          ),
-                        );
-
-                        await chargerJouets();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                        const Color(0xFFE98219),
-                        foregroundColor: Colors.white,
-                        padding:
-                        const EdgeInsets.symmetric(
-                          horizontal: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(6),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: const Text(
-                        'Ajouter un jouet',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(
-                height: 10,
-              ),
-
-              Expanded(
-                child: construireListe(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget construireListe() {
-    if (chargement) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (erreur != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment:
-          MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.error,
-              color: Colors.red,
-              size: 40,
-            ),
-
-            const SizedBox(
-              height: 10,
-            ),
-
-            Text(
-              erreur!,
-              style: const TextStyle(
-                fontSize: 13,
-              ),
-            ),
-
-            const SizedBox(
-              height: 10,
-            ),
-
-            ElevatedButton(
-              onPressed: chargerJouets,
-              child: const Text(
-                'Réessayer',
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final String texteRecherche =
-    rechercheController.text.toLowerCase();
-
-    final jouetsFiltres =
-    controller.jouets.where((jouet) {
-      return jouet.nom
-          .toLowerCase()
-          .contains(texteRecherche);
-    }).toList();
-
-    if (jouetsFiltres.isEmpty) {
-      return const Center(
-        child: Text(
-          'Aucun jouet trouvé',
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey,
-          ),
-        ),
-      );
-    }
-
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.10),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 38,
-            decoration: const BoxDecoration(
-              color: Color(0xFF7FC28C),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(6),
-                topRight: Radius.circular(6),
-              ),
-            ),
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 65,
-                ),
-
-                const Expanded(
-                  flex: 2,
-                  child: Center(
-                    child: Text(
-                      'Catégorie',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const Expanded(
-                  flex: 2,
-                  child: Center(
-                    child: Text(
-                      'Âge',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const Expanded(
-                  flex: 2,
-                  child: Center(
-                    child: Text(
-                      'Prix',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(
-                  width: 80,
-                  child: Center(
-                    child: Text(
-                      'Actions',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Expanded(
-            child: ListView.builder(
-              itemCount: jouetsFiltres.length,
-              itemBuilder: (context, index) {
-                final jouet = jouetsFiltres[index];
-
-                return construireLigne(jouet);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget construireLigne(dynamic jouet) {
-    return Container(
-      height: 85,
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey[200]!,
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 65,
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: construireImage(jouet),
-            ),
-          ),
-
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Text(
-                jouet.categorie,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 11,
-                ),
-              ),
-            ),
-          ),
-
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Text(
-                '${jouet.ageMinimum}-${jouet.ageMaximum} ans',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 11,
-                ),
-              ),
-            ),
-          ),
-
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Text(
-                '${jouet.prix.toInt()} FCFA',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-
-          SizedBox(
-            width: 80,
-            child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints:
-                  const BoxConstraints(),
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ModifierJouetPage(
-                              jouet: jouet,
-                            ),
-                      ),
-                    );
-
-                    await chargerJouets();
-                  },
-                  icon: const Icon(
-                    Icons.edit_outlined,
-                    size: 19,
-                  ),
-                ),
-
-                const SizedBox(
-                  width: 8,
-                ),
-
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints:
-                  const BoxConstraints(),
-                  onPressed: () {
-                    supprimerJouet(jouet.id);
-                  },
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    size: 19,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget construireImage(dynamic jouet) {
-    if (jouet.images.isEmpty) {
-      return Container(
-        color: Colors.grey[200],
-        child: const Icon(
-          Icons.toys,
-          size: 25,
-        ),
-      );
-    }
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(4),
-      child: Image.network(
-        jouet.images[0],
-        width: 45,
-        height: 65,
-        fit: BoxFit.contain,
-        errorBuilder:
-            (context, error, stackTrace) {
-          return Container(
-            color: Colors.grey[200],
-            child: const Icon(
-              Icons.broken_image,
-              size: 25,
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Future<void> supprimerJouet(String id) async {
-    try {
-      await controller.supprimerJouet(id);
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {});
-    } catch (e) {
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur : $e'),
-        ),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    rechercheController.dispose();
-
-    super.dispose();
-  }
+chargerDonnees();
 }
+
+// =====================================================
+// CHARGER LES DONNEES
+// =====================================================
+
+Future<void> chargerDonnees() async {
+try {
+if (mounted) {
+setState(() {
+chargement = true;
+erreur = null;
+});
+}
+
+await controller.chargerJouets();
+
+if (!mounted) return;
+
+setState(() {
+chargement = false;
+});
+} catch (e) {
+print('ERREUR CHARGEMENT : $e');
+
+if (!mounted) return;
+
+setState(() {
+chargement = false;
+erreur =
+'Erreur lors du chargement des jouets';
+});
+}
+}
+
+// =====================================================
+// BUILD
+// =====================================================
+
+@override
+Widget build(BuildContext context) {
+
+return Scaffold(
+backgroundColor:
+const Color(0xFFFAFFFB),
+
+body: SafeArea(
+child: Padding(
+padding:
+const EdgeInsets.symmetric(
+horizontal: 12,
+vertical: 15,
+),
+
+child: Column(
+children: [
+
+// =================================================
+// HEADER
+// =================================================
+
+Row(
+children: [
+
+Expanded(
+child: Column(
+crossAxisAlignment:
+CrossAxisAlignment.start,
+
+children: [
+
+const Text(
+'Liste des jouets',
+
+style: TextStyle(
+fontSize: 23,
+fontWeight:
+FontWeight.bold,
+),
+),
+
+const SizedBox(
+height: 6,
+),
+
+Text(
+'Gérez tous les jouets ajoutés',
+
+style: TextStyle(
+fontSize: 14,
+color:
+Colors.grey[600],
+),
+),
+],
+),
+),
+
+// =================================================
+// IMAGE HEADER
+// =================================================
+
+SizedBox(
+width: 95,
+height: 78,
+
+child: Image.asset(
+'assets/images/JouetHeader.png',
+fit: BoxFit.contain,
+),
+),
+],
+),
+
+const SizedBox(
+height: 15,
+),
+
+// =================================================
+// RECHERCHE + AJOUTER
+// =================================================
+
+Row(
+children: [
+
+// =================================================
+// RECHERCHE
+// =================================================
+
+Expanded(
+child: SizedBox(
+height: 40,
+
+child: TextField(
+controller:
+rechercheController,
+
+decoration:
+InputDecoration(
+hintText:
+'Rechercher',
+
+hintStyle:
+const TextStyle(
+fontSize: 12,
+),
+
+prefixIcon:
+const Icon(
+Icons.search,
+size: 19,
+),
+
+contentPadding:
+const EdgeInsets.symmetric(
+horizontal: 8,
+),
+
+border:
+OutlineInputBorder(
+borderRadius:
+BorderRadius.circular(7),
+),
+
+enabledBorder:
+OutlineInputBorder(
+borderRadius:
+BorderRadius.circular(7),
+
+borderSide:
+BorderSide(
+color:
+Colors.grey[300]!,
+),
+),
+),
+
+onChanged: (value) {
+setState(() {});
+},
+),
+),
+),
+
+const SizedBox(
+width: 7,
+),
+
+// =================================================
+// AJOUTER
+// =================================================
+
+SizedBox(
+height: 40,
+
+child: ElevatedButton(
+onPressed: () async {
+
+await Navigator.push(
+context,
+
+MaterialPageRoute(
+builder:
+(context) =>
+const AjouterJouetPage(),
+),
+);
+
+await chargerDonnees();
+},
+
+style:
+ElevatedButton.styleFrom(
+backgroundColor:
+const Color(
+0xFFE98219,
+),
+
+foregroundColor:
+Colors.white,
+
+padding:
+const EdgeInsets.symmetric(
+horizontal: 13,
+),
+
+shape:
+RoundedRectangleBorder(
+borderRadius:
+BorderRadius.circular(7),
+),
+),
+
+child: const Text(
+'Ajouter',
+
+style: TextStyle(
+fontSize: 12,
+),
+),
+),
+),
+],
+),
+
+const SizedBox(
+height: 18,
+),
+
+// =================================================
+// LISTE
+// =================================================
+
+Expanded(
+child:
+construireListe(),
+),
+],
+),
+),
+),
+);
+}
+
+// =====================================================
+// LISTE
+// =====================================================
+
+Widget construireListe() {
+
+if (chargement) {
+
+return const Center(
+child:
+CircularProgressIndicator(),
+);
+}
+
+// =====================================================
+// ERREUR
+// =====================================================
+
+if (erreur != null) {
+
+return Center(
+child: Column(
+mainAxisAlignment:
+MainAxisAlignment.center,
+
+children: [
+
+const Icon(
+Icons.error,
+color: Colors.red,
+size: 40,
+),
+
+const SizedBox(
+height: 10,
+),
+
+Text(
+erreur!,
+style:
+const TextStyle(
+fontSize: 13,
+),
+),
+
+const SizedBox(
+height: 10,
+),
+
+ElevatedButton(
+onPressed:
+chargerDonnees,
+
+child:
+const Text(
+'Réessayer',
+),
+),
+],
+),
+);
+}
+
+// =====================================================
+// RECHERCHE
+// =====================================================
+
+final String recherche =
+rechercheController.text
+    .trim()
+    .toLowerCase();
+
+final List<Jouet> jouets =
+controller.jouets.where(
+(jouet) {
+
+return jouet.nom
+    .toLowerCase()
+    .contains(recherche);
+
+},
+).toList();
+
+// =====================================================
+// AUCUN RESULTAT
+// =====================================================
+
+if (jouets.isEmpty) {
+
+return const Center(
+child: Text(
+'Aucun jouet trouvé',
+
+style: TextStyle(
+fontSize: 13,
+color: Colors.grey,
+),
+),
+);
+}
+
+// =====================================================
+// TABLEAU
+// =====================================================
+
+return LayoutBuilder(
+builder: (
+context,
+contraintes,
+) {
+
+final double largeur =
+contraintes.maxWidth;
+
+return Container(
+width: double.infinity,
+
+decoration: BoxDecoration(
+color: Colors.white,
+
+borderRadius:
+BorderRadius.circular(8),
+
+boxShadow: [
+BoxShadow(
+color:
+Colors.black.withOpacity(0.10),
+
+blurRadius: 8,
+
+offset:
+const Offset(0, 3),
+),
+],
+),
+
+child: Column(
+children: [
+
+construireEntete(
+largeur,
+),
+
+Expanded(
+child: ListView.builder(
+itemCount:
+jouets.length,
+
+itemBuilder:
+(context, index) {
+
+return construireLigne(
+jouets[index],
+largeur,
+);
+},
+),
+),
+],
+),
+);
+},
+);
+}
+
+// =====================================================
+// ENTETE DU TABLEAU
+// =====================================================
+
+Widget construireEntete(
+double largeur) {
+
+final bool petitEcran =
+largeur < 450;
+
+return Container(
+height:
+petitEcran ? 40 : 50,
+
+decoration:
+const BoxDecoration(
+color:
+Color(0xFF7FC28C),
+
+borderRadius:
+BorderRadius.only(
+topLeft:
+Radius.circular(8),
+
+topRight:
+Radius.circular(8),
+),
+),
+
+child: Row(
+children: [
+
+// =================================================
+// IMAGE
+// =================================================
+
+SizedBox(
+width:
+petitEcran ? 60 : 120,
+
+child:
+const Center(
+child: Text(''),
+),
+),
+
+// =================================================
+// AGE
+// =================================================
+
+Expanded(
+child: Center(
+child: Text(
+'Âge',
+
+style: TextStyle(
+color:
+Colors.white,
+
+fontSize:
+petitEcran
+? 11
+    : 14,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+),
+),
+
+// =================================================
+// PRIX
+// =================================================
+
+Expanded(
+child: Center(
+child: Text(
+'Prix',
+
+style: TextStyle(
+color:
+Colors.white,
+
+fontSize:
+petitEcran
+? 11
+    : 14,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+),
+),
+
+// =================================================
+// ACTIONS
+// =================================================
+
+SizedBox(
+width:
+petitEcran
+? 78
+    : 120,
+
+child: Padding(
+padding:
+EdgeInsets.only(
+left:
+petitEcran
+? 7
+    : 10,
+),
+
+child: Center(
+child: Text(
+'Actions',
+
+style:
+TextStyle(
+color:
+Colors.white,
+
+fontSize:
+petitEcran
+? 11
+    : 14,
+
+fontWeight:
+FontWeight.bold,
+),
+),
+),
+),
+),
+],
+),
+);
+}
+
+// =====================================================
+// LIGNE
+// =====================================================
+
+Widget construireLigne(
+Jouet jouet,
+double largeur) {
+
+final bool petitEcran =
+largeur < 450;
+
+return Container(
+height:
+petitEcran
+? 82
+    : 110,
+
+decoration:
+BoxDecoration(
+border:
+Border(
+bottom:
+BorderSide(
+color:
+Colors.grey[200]!,
+),
+),
+),
+
+child: Row(
+children: [
+
+// =================================================
+// IMAGE
+// =================================================
+
+SizedBox(
+width:
+petitEcran
+? 60
+    : 120,
+
+child: Center(
+child:
+construireImage(
+jouet,
+petitEcran,
+),
+),
+),
+
+// =================================================
+// AGE
+// =================================================
+
+Expanded(
+child: Center(
+child: Text(
+'${jouet.ageMinimum}-${jouet.ageMaximum} ans',
+
+textAlign:
+TextAlign.center,
+
+style:
+TextStyle(
+fontSize:
+petitEcran
+? 10
+    : 14,
+),
+),
+),
+),
+
+// =================================================
+// PRIX
+// =================================================
+
+Expanded(
+child: Center(
+child: Text(
+'${jouet.prix.toInt()} FCFA',
+
+textAlign:
+TextAlign.center,
+
+maxLines:
+2,
+
+overflow:
+TextOverflow.ellipsis,
+
+style:
+TextStyle(
+fontSize:
+petitEcran
+? 10
+    : 14,
+
+fontWeight:
+FontWeight.w500,
+),
+),
+),
+),
+
+// =================================================
+// ACTIONS
+// =================================================
+
+SizedBox(
+width:
+petitEcran
+? 78
+    : 120,
+
+child: Padding(
+padding:
+EdgeInsets.only(
+left:
+petitEcran
+? 7
+    : 10,
+),
+
+child: Row(
+mainAxisAlignment:
+MainAxisAlignment.center,
+
+mainAxisSize:
+MainAxisSize.min,
+
+children: [
+
+// =================================================
+// MODIFIER
+// =================================================
+
+SizedBox(
+width:
+petitEcran
+? 32
+    : 48,
+
+height:
+petitEcran
+? 32
+    : 48,
+
+child:
+IconButton(
+onPressed:
+() async {
+
+await Navigator.push(
+context,
+
+MaterialPageRoute(
+builder:
+(context) {
+
+return ModifierJouetPage(
+jouet:
+jouet,
+);
+},
+),
+);
+
+await chargerDonnees();
+},
+
+padding:
+EdgeInsets.zero,
+
+icon:
+Icon(
+Icons.edit_outlined,
+
+size:
+petitEcran
+? 18
+    : 23,
+
+color:
+Colors.black87,
+),
+),
+),
+
+// =================================================
+// SUPPRIMER
+// =================================================
+
+SizedBox(
+width:
+petitEcran
+? 32
+    : 48,
+
+height:
+petitEcran
+? 32
+    : 48,
+
+child:
+IconButton(
+onPressed: () {
+
+supprimerJouet(
+jouet.id,
+);
+},
+
+padding:
+EdgeInsets.zero,
+
+icon:
+Icon(
+Icons.delete_outline,
+
+size:
+petitEcran
+? 18
+    : 23,
+
+color:
+Colors.black87,
+),
+),
+),
+],
+),
+),
+),
+],
+),
+);
+}
+
+// =====================================================
+// IMAGE
+// =====================================================
+
+Widget construireImage(
+Jouet jouet,
+bool petitEcran) {
+
+final double largeur =
+petitEcran
+? 48
+    : 75;
+
+final double hauteur =
+petitEcran
+? 60
+    : 85;
+
+// =====================================================
+// PAS D'IMAGE
+// =====================================================
+
+if (jouet.images.isEmpty) {
+
+return Container(
+width:
+largeur,
+
+height:
+hauteur,
+
+decoration:
+BoxDecoration(
+color:
+Colors.grey[200],
+
+borderRadius:
+BorderRadius.circular(6),
+),
+
+child:
+Icon(
+Icons.toys,
+
+size:
+petitEcran
+? 25
+    : 38,
+
+color:
+Colors.grey,
+),
+);
+}
+
+// =====================================================
+// IMAGE
+// =====================================================
+
+return ClipRRect(
+borderRadius:
+BorderRadius.circular(6),
+
+child:
+Image.network(
+jouet.images[0],
+
+width:
+largeur,
+
+height:
+hauteur,
+
+fit:
+BoxFit.contain,
+
+errorBuilder:
+(context, error, stackTrace) {
+
+return Container(
+width:
+largeur,
+
+height:
+hauteur,
+
+decoration:
+BoxDecoration(
+color:
+Colors.grey[200],
+
+borderRadius:
+BorderRadius.circular(6),
+),
+
+child:
+Icon(
+Icons.broken_image,
+
+size:
+petitEcran
+? 25
+    : 38,
+
+color:
+Colors.grey,
+),
+);
+},
+),
+);
+}
+
+// =====================================================
+// SUPPRIMER
+// =====================================================
+
+Future<void> supprimerJouet(
+String id) async {
+
+try {
+
+await controller.supprimerJouet(
+id,
+);
+
+if (!mounted) return;
+
+setState(() {});
+
+ScaffoldMessenger.of(context)
+    .showSnackBar(
+const SnackBar(
+content:
+Text(
+'Jouet supprimé avec succès',
+),
+),
+);
+
+} catch (e) {
+
+if (!mounted) return;
+
+ScaffoldMessenger.of(context)
+    .showSnackBar(
+SnackBar(
+content:
+Text(
+'Erreur : $e',
+),
+),
+);
+}
+}
+
+// =====================================================
+// DISPOSE
+// =====================================================
+
+@override
+void dispose() {
+
+rechercheController.dispose();
+
+super.dispose();
+}
+}
+

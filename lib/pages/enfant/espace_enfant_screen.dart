@@ -1,60 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tolon/controller/auth/auth_controller.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
+import 'package:tolon/pages/parent/dialog/PasswordVerification.dart';
 
 class EspaceEnfantScreen extends ConsumerWidget {
   final EnfantModel enfant;
 
   const EspaceEnfantScreen({super.key, required this.enfant});
 
+  /// Affiche le dialogue de vérification du mot de passe parent.
+  /// Retourne `true` si le mot de passe est correct, sinon `false`.
+  Future<bool> _demanderMotDePasseParent(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PasswordVerificationDialog(
+        onVerify: (password) async {
+          return await ref
+              .read(authControllerProvider.notifier)
+              .verifierMotDePasse(password);
+        },
+      ),
+    );
+    return result ?? false;
+  }
+
+  /// Gère la tentative de sortie de l'espace enfant
+  Future<void> _tenterSortie(BuildContext context, WidgetRef ref) async {
+    final authentifie = await _demanderMotDePasseParent(context, ref);
+    if (authentifie && context.mounted) {
+      context.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String prenom = enfant.prenom ?? 'Enfant';
     final String? avatarUrl = enfant.avatarUrl;
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9FAF8),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context, prenom, avatarUrl),
-              const SizedBox(height: 24),
-              _buildStatsCard(points: 450, badges: 100),
-              const SizedBox(height: 24),
-              _buildGridMenu(context),
-              const SizedBox(height: 24),
-              _buildDailyChallengeCard(),
-              const SizedBox(height: 20),
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        await _tenterSortie(context, ref);
+      },
+      child: Scaffold(
+        backgroundColor: context.bgColor,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 16.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context, ref, prenom, avatarUrl),
+                const SizedBox(height: 24),
+                _buildStatsCard(points: 450, badges: 100, context: context),
+                const SizedBox(height: 24),
+                _buildGridMenu(context),
+                const SizedBox(height: 24),
+                _buildDailyChallengeCard(context: context),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // Header avec bouton retour, salut, notifications et avatar
-  Widget _buildHeader(BuildContext context, String prenom, String? avatarUrl) {
+  // Header avec bouton retour sécurisé, salut, notifications et avatar
+  Widget _buildHeader(
+    BuildContext context,
+    WidgetRef ref,
+    String prenom,
+    String? avatarUrl,
+  ) {
     return Row(
       children: [
         InkWell(
-          onTap: () => context.pop(),
+          onTap: () => _tenterSortie(context, ref),
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: context.textInverse,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.chevron_left,
-              size: 24,
-              color: Colors.black87,
-            ),
+            child: Icon(Icons.chevron_left, size: 24, color: context.textDark),
           ),
         ),
         const SizedBox(width: 12),
@@ -66,19 +108,19 @@ class EspaceEnfantScreen extends ConsumerWidget {
                 children: [
                   Text(
                     'Bonjour $prenom !',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppStyles.textDark,
+                      color: context.textDark,
                     ),
                   ),
                   const SizedBox(width: 4),
                   const Text('👋', style: TextStyle(fontSize: 16)),
                 ],
               ),
-              const Text(
+              Text(
                 'Heureux de vous retrouver',
-                style: TextStyle(fontSize: 12, color: AppStyles.textMuted),
+                style: TextStyle(fontSize: 12, color: context.textMuted),
               ),
             ],
           ),
@@ -89,13 +131,13 @@ class EspaceEnfantScreen extends ConsumerWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: context.textInverse,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.notifications_none_rounded,
-                color: Colors.grey,
+                color: context.textMuted,
                 size: 26,
               ),
             ),
@@ -105,15 +147,15 @@ class EspaceEnfantScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-                decoration: const BoxDecoration(
-                  color: AppStyles.badgeRed,
+                decoration: BoxDecoration(
+                  color: context.badgeRed,
                   shape: BoxShape.circle,
                 ),
-                child: const Text(
+                child: Text(
                   '10',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: context.textInverse,
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
                   ),
@@ -126,7 +168,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
         // Avatar Enfant
         CircleAvatar(
           radius: 22,
-          backgroundColor: const Color(0xFFFFE0B2),
+          backgroundColor: context.avatarOrangeBg,
           child: ClipOval(
             child: avatarUrl != null && avatarUrl.isNotEmpty
                 ? (avatarUrl.startsWith('http')
@@ -142,7 +184,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                           height: 44,
                           fit: BoxFit.cover,
                         ))
-                : const Icon(Icons.person, color: Colors.white, size: 26),
+                : Icon(Icons.person, color: context.textInverse, size: 26),
           ),
         ),
       ],
@@ -150,7 +192,11 @@ class EspaceEnfantScreen extends ConsumerWidget {
   }
 
   // Carte verte : Points et Badges
-  Widget _buildStatsCard({required int points, required int badges}) {
+  Widget _buildStatsCard({
+    required int points,
+    required int badges,
+    required BuildContext context,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       decoration: BoxDecoration(
@@ -181,10 +227,10 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   children: [
                     Text(
                       '$points',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: context.textInverse,
                       ),
                     ),
                     const Text(
@@ -213,10 +259,10 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   children: [
                     Text(
                       '$badges',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: context.textInverse,
                       ),
                     ),
                     const Text(
@@ -234,7 +280,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
   }
 
   // Grille 2x2 : Jeux, Tutoriels, Activités, Progression
-  // Grille 2x2 : Jeux, Tutoriels, Activités, Progression
+  // Grille 2x2 : Jeux, Tutoriels, Activités, Progress
   Widget _buildGridMenu(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
@@ -246,27 +292,35 @@ class EspaceEnfantScreen extends ConsumerWidget {
       children: [
         _buildMenuCard(
           title: 'Jeux',
-          bgColor: const Color(0xFFDDEDDF),
+          bgColor: context.primarySoft,
           image: 'assets/images/jeux.png',
           onTap: () {},
+          context: context,
         ),
         _buildMenuCard(
           title: 'Tutoriels',
-          bgColor: const Color(0xFFFFEEC1),
+          bgColor: context.cardMenuYellow,
           image: 'assets/images/tuto.png',
-          onTap: () {},
+          onTap: () {
+            context.pushNamed(AppRoutes.espaceEnfantTuto.name);
+          },
+          context: context,
         ),
         _buildMenuCard(
           title: 'Activités',
-          bgColor: const Color(0xFFFFEEC1),
+          bgColor: context.cardMenuYellow,
           image: 'assets/images/activity.png',
-          onTap: () {},
+          onTap: () {
+            context.pushNamed(AppRoutes.activite.name, extra: enfant);
+          },
+          context: context,
         ),
         _buildMenuCard(
           title: 'Progression',
-          bgColor: const Color(0xFFDDEDDF),
+          bgColor: context.primarySoft,
           image: 'assets/images/progress.png',
           onTap: () {},
+          context: context,
         ),
       ],
     );
@@ -279,6 +333,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
     IconData? iconData,
     Color? iconColor,
     required VoidCallback onTap,
+    required BuildContext context,
   }) {
     return InkWell(
       onTap: onTap,
@@ -289,7 +344,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 3, 3, 3).withOpacity(0.3),
+              color: const Color.fromARGB(255, 3, 3, 3).withValues(alpha: 0.3),
               blurRadius: 10,
               spreadRadius: 0,
               offset: const Offset(0, 4),
@@ -299,7 +354,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Affichage de l'image si elle existe, sinon de l'icône
             if (image != null && image.isNotEmpty)
               Image.asset(
                 image,
@@ -309,22 +363,18 @@ class EspaceEnfantScreen extends ConsumerWidget {
                 errorBuilder: (_, __, ___) => Icon(
                   iconData ?? Icons.extension,
                   size: 52,
-                  color: iconColor ?? const Color(0xFF2E4D32),
+                  color: iconColor ?? context.primary,
                 ),
               )
             else if (iconData != null)
-              Icon(
-                iconData,
-                size: 52,
-                color: iconColor ?? const Color(0xFF2E4D32),
-              ),
+              Icon(iconData, size: 52, color: iconColor ?? context.primary),
             const SizedBox(height: 12),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF2E4D32),
+                color: context.primary,
               ),
             ),
           ],
@@ -334,50 +384,42 @@ class EspaceEnfantScreen extends ConsumerWidget {
   }
 
   // Section Défis du jour
-  Widget _buildDailyChallengeCard() {
+  Widget _buildDailyChallengeCard({required BuildContext context}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFDDEDDF),
+        color: context.bgColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color.fromARGB(
-              255,
-              3,
-              3,
-              3,
-            ).withOpacity(0.3), // Ombre discrète
-            blurRadius: 10, // Flou progressif
+            color: const Color.fromARGB(255, 3, 3, 3).withValues(alpha: 0.3),
+            blurRadius: 10,
             spreadRadius: 0,
-            offset: const Offset(0, 4), // Décalage vers le bas
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Row(
         children: [
           Image.asset(
-            'assets/images/defis.png', // Assurez-vous d'avoir l'image dans vos assets
+            'assets/images/defis.png',
             width: 48,
             height: 48,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => const Icon(
-              Icons.emoji_events_rounded,
-              size: 48,
-              color: Colors.amber,
-            ),
+            errorBuilder: (_, __, ___) =>
+                Icon(Icons.emoji_events_rounded, size: 48, color: Colors.amber),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Défis du jour',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF2B7A4B),
+                    color: context.primaryOrange,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -385,7 +427,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   'Dessine ton animal préféré en 10 mins',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade700,
+                    color: context.textMuted,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -403,23 +445,19 @@ class EspaceEnfantScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Commencer',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: context.textInverse,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          Image.asset(
-            height: 70,
-            width: 70,
-            'assets/images/cadeau.png', // Assurez-vous d'avoir l'image dans vos assets
-          ),
+          Image.asset('assets/images/cadeau.png', height: 70, width: 70),
         ],
       ),
     );

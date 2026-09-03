@@ -12,7 +12,8 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() =>
+      _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
@@ -50,7 +51,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final state = ref.watch(authControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -69,8 +70,11 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     Text(
                       'Mot de passe oublié',
                       textAlign: TextAlign.center,
-                      style: AppStyles.headingTextStyle.copyWith(color: Colors.black87),
+                      style: context.headingTextStyle.copyWith(
+                        color: context.textDark,
+                      ),
                     ),
+
                     Align(
                       alignment: Alignment.centerLeft,
                       child: GestureDetector(
@@ -78,28 +82,30 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         child: Container(
                           width: 38,
                           height: 38,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFE5F1E7),
+                          decoration: BoxDecoration(
+                            color: context.primarySoft,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.arrow_back_ios_new_rounded,
                             size: 16,
-                            color: Colors.black87,
+                            color: context.textDark,
                           ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: SizeConfig.getProportionateHeight(16)),
+                SizedBox(height: SizeConfig.getProportionateHeight(128)),
 
                 Text(
                   'Entrez votre adresse email, nous vous enverrons un lien pour réinitialiser votre mot de passe.',
                   textAlign: TextAlign.center,
-                  style: AppStyles.normalTextStyle.copyWith(color: Colors.black54),
+                  style: context.normalTextStyle.copyWith(
+                    color: context.textMuted,
+                  ),
                 ),
-                SizedBox(height: SizeConfig.getProportionateHeight(28)),
+                SizedBox(height: SizeConfig.getProportionateHeight(48)),
 
                 CustomTextField(
                   label: 'Adresse Email',
@@ -108,7 +114,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   controller: _emailController,
                   prefixIcon: Icons.email_outlined,
                 ),
-                SizedBox(height: SizeConfig.getProportionateHeight(28)),
+                SizedBox(height: SizeConfig.getProportionateHeight(32)),
 
                 CustomButton(
                   onTap: _onEnvoyerTap,

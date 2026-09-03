@@ -127,8 +127,8 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
           builder: (context) => Scaffold(
             appBar: AppBar(
               title: const Text("Choisir l'adresse de livraison"),
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
+              backgroundColor: context.textInverse,
+              foregroundColor: context.textDark,
               elevation: 0,
             ),
             body: FlutterLocationPicker.withConfiguration(
@@ -160,18 +160,20 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                 zoomInIcon: Icons.add_circle_outline,
                 zoomOutIcon: Icons.remove_circle_outline,
                 locationIcon: Icons.my_location_rounded,
-                zoomButtonsColor: Colors.white,
-                zoomButtonsBackgroundColor: AppStyles.primary,
+                locationButtonsColor: context.textInverse,
+                locationButtonBackgroundColor: context.primary,
+                zoomButtonsColor: context.textInverse,
+                zoomButtonsBackgroundColor: context.primary,
                 buttonElevation: 8.0,
                 buttonShape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
 
-              markerConfiguration: const MarkerConfiguration(
+              markerConfiguration: MarkerConfiguration(
                 markerIcon: Icon(
                   Icons.location_pin,
-                  color: Colors.red,
+                  color: context.badgeRed,
                   size: 50,
                 ),
                 animateMarker: true,
@@ -180,8 +182,8 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               selectButtonConfiguration: SelectButtonConfiguration(
                 selectLocationButtonText: 'Confirmer cette position',
                 selectLocationButtonStyle: ElevatedButton.styleFrom(
-                  backgroundColor: AppStyles.primary,
-                  foregroundColor: Colors.white,
+                  backgroundColor: context.primary,
+                  foregroundColor: context.textInverse,
                 ),
               ),
             ),
@@ -191,13 +193,13 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
     }
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       appBar: AppBar(
         title: const Text("Aperçu de commande"),
-        backgroundColor: AppStyles.bgColor,
+        backgroundColor: context.bgColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppStyles.textDark),
+          icon: Icon(Icons.arrow_back_ios_new, color: context.textDark),
           onPressed: () => context.pop(),
         ),
       ),
@@ -214,7 +216,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.textInverse,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -268,7 +270,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               // ==========================================
               // SECTION ARTICLES
               // ==========================================
-              const Text("Articles", style: AppStyles.headingTextStyle),
+              Text("Articles", style: context.headingTextStyle),
               SizedBox(height: 12),
 
               ListView.builder(
@@ -281,7 +283,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                     margin: const EdgeInsets.only(bottom: 10),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.textInverse,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -306,16 +308,16 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                                 item.nomJouet,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: AppStyles.titleTextStyle.copyWith(
+                                style: context.titleTextStyle.copyWith(
                                   fontSize: 14,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 "Quantité : ${item.quantite}",
-                                style: AppStyles.normalTextStyle.copyWith(
+                                style: context.normalTextStyle.copyWith(
                                   fontSize: 12,
-                                  color: Colors.grey,
+                                  color: context.textMuted,
                                 ),
                               ),
                             ],
@@ -323,9 +325,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                         ),
                         Text(
                           "${(item.prixUnitaire * item.quantite).toStringAsFixed(0)} FCFA",
-                          style: AppStyles.titleTextStyle.copyWith(
-                            fontSize: 14,
-                          ),
+                          style: context.titleTextStyle.copyWith(fontSize: 14),
                         ),
                       ],
                     ),
@@ -341,7 +341,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.textInverse,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -378,7 +378,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
         padding: const EdgeInsets.all(20),
         margin: EdgeInsetsGeometry.only(bottom: 20),
         decoration: const BoxDecoration(
-          // color: Colors.white,
+          // color: context.textInverse,
           // border: Border(top: BorderSide(color: Color(0xFFEEEEEE), width: 1)),
         ),
         child: PrimaryButton(
@@ -399,7 +399,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
   }) {
     return Row(
       children: [
-        Icon(icon, color: AppStyles.primary),
+        Icon(icon, color: context.primary),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -407,9 +407,9 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
             children: [
               Text(
                 label,
-                style: AppStyles.normalTextStyle.copyWith(
+                style: context.normalTextStyle.copyWith(
                   fontSize: 11,
-                  color: Colors.grey,
+                  color: context.textMuted,
                 ),
               ),
               const SizedBox(height: 2),
@@ -420,14 +420,14 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                   hintText: hintText,
-                  hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
+                  hintStyle: TextStyle(color: context.textMuted, fontSize: 13),
                 ),
-                style: AppStyles.titleTextStyle.copyWith(fontSize: 14),
+                style: context.titleTextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),
         ),
-        if (showChevron) const Icon(Icons.chevron_right, color: Colors.grey),
+        if (showChevron) Icon(Icons.chevron_right, color: Colors.grey),
       ],
     );
   }
@@ -439,17 +439,17 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
         Text(
           label,
           style: isBold
-              ? AppStyles.headingTextStyle.copyWith(fontSize: 16)
-              : AppStyles.normalTextStyle.copyWith(color: AppStyles.textMuted),
+              ? context.headingTextStyle.copyWith(fontSize: 16)
+              : context.normalTextStyle.copyWith(color: context.textMuted),
         ),
         Text(
           "${value.toStringAsFixed(0)} FCFA",
           style: isBold
-              ? AppStyles.headingTextStyle.copyWith(
-                  color: AppStyles.primary,
+              ? context.headingTextStyle.copyWith(
+                  color: context.primary,
                   fontSize: 16,
                 )
-              : AppStyles.titleTextStyle.copyWith(fontSize: 14),
+              : context.titleTextStyle.copyWith(fontSize: 14),
         ),
       ],
     );

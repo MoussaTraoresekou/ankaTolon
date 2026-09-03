@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/cor/router/routes.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
 
 class EnfantProfilScreen extends StatefulWidget {
@@ -37,35 +38,35 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
     final ageCalculated = _calculerAge(_currentEnfant.naissance);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FBF9),
+      backgroundColor: context.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundColor: const Color(0xFFD6EADF),
+            backgroundColor: context.primarySoft,
             child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 18,
-                color: Colors.black87,
+                color: context.textDark,
               ),
               onPressed: () => context.pop(),
             ),
           ),
         ),
-        title: const Text(
+        title: Text(
           'Profil',
           style: TextStyle(
-            color: Colors.black,
+            color: context.textDark,
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit_outlined, color: Colors.black87),
+            icon: Icon(Icons.edit_outlined, color: context.textDark),
             onPressed: () async {
               final EnfantModel? enfantModifie = await context
                   .pushNamed<EnfantModel>(
@@ -105,12 +106,11 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
 
               // Nom et prénom
               Text(
-                '${_currentEnfant.prenom ?? ''} ${_currentEnfant.nom ?? ''}'
-                    .trim(),
-                style: const TextStyle(
+                '${_currentEnfant.prenom} ${_currentEnfant.nom}'.trim(),
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: context.textDark,
                 ),
               ),
               const SizedBox(height: 4),
@@ -118,10 +118,10 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
               // Âge
               Text(
                 '$ageCalculated ans',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF7CB342),
+                  color: context.primary,
                 ),
               ),
               const SizedBox(height: 32),
@@ -133,19 +133,19 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                 children: [
                   _buildStatCard(
                     context,
-                    value: '${_currentEnfant.defisRealises?.length ?? 14}',
+                    value: '${_currentEnfant.defisRealises.length}',
                     label: 'Défis',
                     imagePath: 'assets/images/defi.png',
                   ),
                   _buildStatCard(
                     context,
-                    value: '${_currentEnfant.activitesRealisees ?? 32}',
+                    value: '${_currentEnfant.activitesRealisees.length}',
                     label: 'Activités',
                     imagePath: 'assets/images/activite.png',
                   ),
                   _buildStatCard(
                     context,
-                    value: '${_currentEnfant.niveau ?? 4}',
+                    value: '${_currentEnfant.niveau}',
                     label: 'Noobzer',
                     imagePath: 'assets/images/badge.png',
                   ),
@@ -160,7 +160,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                 height: 54,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE67E22),
+                    backgroundColor: context.primaryOrange,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -169,15 +169,15 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                   onPressed: () {
                     context.pushNamed(
                       AppRoutes.espaceEnfant.name,
-                      extra: widget.enfant, // Passe l'objet EnfantModel
+                      extra: _currentEnfant,
                     );
                   },
-                  child: const Text(
+                  child: Text(
                     'Basculer sur ce profil',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: context.textInverse,
                     ),
                   ),
                 ),
@@ -202,7 +202,7 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
       width: cardWidth,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -238,9 +238,9 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Colors.grey,
+              color: context.textMuted,
               fontWeight: FontWeight.w500,
             ),
           ),

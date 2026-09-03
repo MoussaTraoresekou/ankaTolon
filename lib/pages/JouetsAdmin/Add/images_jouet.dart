@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 
 class ImagesJouet extends StatelessWidget {
   final List<XFile> images;
@@ -22,10 +23,7 @@ class ImagesJouet extends StatelessWidget {
       children: [
         const Text(
           'Images du jouet',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
 
         const SizedBox(height: 10),
@@ -37,130 +35,100 @@ class ImagesJouet extends StatelessWidget {
             height: 160,
 
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.green,
-              ),
-              borderRadius:
-              BorderRadius.circular(10),
+              border: Border.all(color: Colors.green),
+              borderRadius: BorderRadius.circular(10),
             ),
 
             child: images.isEmpty
                 ? const Center(
-              child: Text(
-                'Appuyer pour sélectionner\n'
-                    'plusieurs images',
-                textAlign: TextAlign.center,
-              ),
-            )
+                    child: Text(
+                      'Appuyer pour sélectionner\n'
+                      'plusieurs images',
+                      textAlign: TextAlign.center,
+                    ),
+                  )
                 : ListView.builder(
-              scrollDirection:
-              Axis.horizontal,
+                    scrollDirection: Axis.horizontal,
 
-              itemCount: images.length,
+                    itemCount: images.length,
 
-              itemBuilder:
-                  (context, index) {
-                final image = images[index];
+                    itemBuilder: (context, index) {
+                      final image = images[index];
 
-                return Padding(
-                  padding:
-                  const EdgeInsets.all(8),
+                      return Padding(
+                        padding: const EdgeInsets.all(8),
 
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius:
-                        BorderRadius.circular(8),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
 
-                        child:
-                        FutureBuilder<
-                            Uint8List>(
-                          future:
-                          image.readAsBytes(),
+                              child: FutureBuilder<Uint8List>(
+                                future: image.readAsBytes(),
 
-                          builder:
-                              (context, snapshot) {
-                            if (snapshot
-                                .connectionState ==
-                                ConnectionState
-                                    .waiting) {
-                              return Container(
-                                width: 120,
-                                height: 140,
-                                color: Colors
-                                    .grey
-                                    .shade200,
-                                child:
-                                const Center(
-                                  child:
-                                  CircularProgressIndicator(),
-                                ),
-                              );
-                            }
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Container(
+                                      width: 120,
+                                      height: 140,
+                                      color: Colors.grey.shade200,
+                                      child: const Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  }
 
-                            if (snapshot.hasError) {
-                              return Container(
-                                width: 120,
-                                height: 140,
-                                color: Colors
-                                    .grey
-                                    .shade200,
-                                child:
-                                const Icon(
-                                  Icons
-                                      .image_not_supported,
-                                ),
-                              );
-                            }
+                                  if (snapshot.hasError) {
+                                    return Container(
+                                      width: 120,
+                                      height: 140,
+                                      color: Colors.grey.shade200,
+                                      child: Icon(Icons.image_not_supported),
+                                    );
+                                  }
 
-                            return Image.memory(
-                              snapshot.data!,
-                              width: 120,
-                              height: 140,
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ),
-                      ),
-
-                      Positioned(
-                        top: 3,
-                        right: 3,
-
-                        child:
-                        GestureDetector(
-                          onTap: () {
-                            supprimerImage(
-                              index,
-                            );
-                          },
-
-                          child: Container(
-                            width: 25,
-                            height: 25,
-
-                            decoration:
-                            const BoxDecoration(
-                              color: Colors.red,
-                              shape:
-                              BoxShape.circle,
+                                  return Image.memory(
+                                    snapshot.data!,
+                                    width: 120,
+                                    height: 140,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
                             ),
 
-                            child:
-                            const Icon(
-                              Icons.close,
-                              color:
-                              Colors.white,
-                              size: 18,
+                            Positioned(
+                              top: 3,
+                              right: 3,
+
+                              child: GestureDetector(
+                                onTap: () {
+                                  supprimerImage(index);
+                                },
+
+                                child: Container(
+                                  width: 25,
+                                  height: 25,
+
+                                  decoration: BoxDecoration(
+                                    color: context.badgeRed,
+                                    shape: BoxShape.circle,
+                                  ),
+
+                                  child: Icon(
+                                    Icons.close,
+                                    color: context.textInverse,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ),
       ],

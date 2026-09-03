@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tolon/cor/router/routes.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
 
 class EditEnfantProfilScreen extends StatefulWidget {
@@ -28,8 +29,8 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
   @override
   void initState() {
     super.initState();
-    _nomController = TextEditingController(text: widget.enfant.nom ?? '');
-    _prenomController = TextEditingController(text: widget.enfant.prenom ?? '');
+    _nomController = TextEditingController(text: widget.enfant.nom);
+    _prenomController = TextEditingController(text: widget.enfant.prenom);
     _selectedDate = widget.enfant.naissance;
 
     if (_selectedDate != null) {
@@ -42,7 +43,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
 
     // Récupération et normalisation du sexe de l'enfant
     final initialSexe = widget.enfant.sexe;
-    if (initialSexe != null && initialSexe.isNotEmpty) {
+    if (initialSexe.isNotEmpty) {
       _selectedSexe = _sexeOptions.firstWhere(
         (option) => option.toLowerCase() == initialSexe.toLowerCase(),
         orElse: () => 'Garçon',
@@ -69,10 +70,10 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Color(0xFF7CB342),
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
+            colorScheme: ColorScheme.light(
+              primary: context.primary,
+              onPrimary: context.textInverse,
+              onSurface: context.textDark,
             ),
           ),
           child: child!,
@@ -90,28 +91,28 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FBF9),
+      backgroundColor: context.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundColor: const Color(0xFFD6EADF),
+            backgroundColor: context.bgColor,
             child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 18,
-                color: Colors.black87,
+                color: context.textDark,
               ),
               onPressed: () => context.pop(),
             ),
           ),
         ),
-        title: const Text(
+        title: Text(
           'Modifier un profil Enfant',
           style: TextStyle(
-            color: Colors.black,
+            color: context.textDark,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
@@ -172,7 +173,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
                   height: 54,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE67E22),
+                      backgroundColor: context.primaryOrange,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -203,12 +204,12 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
                         }
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       'Suivant',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: context.textInverse,
                       ),
                     ),
                   ),
@@ -224,10 +225,10 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
   Widget _buildLabel(String label) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w500,
-        color: Colors.black87,
+        color: context.textDark,
       ),
     );
   }
@@ -243,7 +244,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
       controller: controller,
       readOnly: readOnly,
       onTap: onTap,
-      style: const TextStyle(fontSize: 16, color: Colors.black87),
+      style: TextStyle(fontSize: 16, color: context.textDark),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Ce champ est obligatoire';
@@ -255,14 +256,14 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
         hintStyle: TextStyle(color: Colors.grey.shade400),
         prefixIcon: Icon(prefixIcon, color: const Color(0xFF558B2F)),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: context.textInverse,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 16.0,
           horizontal: 16.0,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFFA3D9A5), width: 1.2),
+          borderSide: BorderSide(color: context.borderColor, width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -270,11 +271,11 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Colors.redAccent, width: 1.2),
+          borderSide: BorderSide(color: context.badgeRed, width: 1.2),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Colors.redAccent, width: 1.8),
+          borderSide: BorderSide(color: context.badgeRed, width: 1.8),
         ),
       ),
     );
@@ -282,22 +283,22 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
 
   Widget _buildDropdownSexe() {
     return DropdownButtonFormField<String>(
-      value: _selectedSexe,
-      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black87),
+      initialValue: _selectedSexe,
+      icon: Icon(Icons.keyboard_arrow_down, color: context.textDark),
       decoration: InputDecoration(
-        prefixIcon: const Icon(
+        prefixIcon: Icon(
           Icons.accessibility_new_rounded,
           color: Color(0xFF558B2F),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: context.textInverse,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 16.0,
           horizontal: 16.0,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFFA3D9A5), width: 1.2),
+          borderSide: BorderSide(color: context.borderColor, width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -309,7 +310,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
           value: value,
           child: Text(
             value,
-            style: const TextStyle(fontSize: 16, color: Colors.black87),
+            style: TextStyle(fontSize: 16, color: context.textDark),
           ),
         );
       }).toList(),

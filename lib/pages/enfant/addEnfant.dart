@@ -37,10 +37,10 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
     final now = DateTime.now();
 
     // 12 ans au plus ancien (ex: né en 2014)
-    final firstDate = DateTime(now.year - 12, now.month, now.day); 
+    final firstDate = DateTime(now.year - 12, now.month, now.day);
 
     // 4 ans au plus récent (ex: né en 2019)
-    final lastDate = DateTime(now.year - 4, now.month, now.day);   
+    final lastDate = DateTime(now.year - 4, now.month, now.day);
 
     // Date par défaut sélectionnée (10 ans par exemple)
     final initialDate = lastDate;
@@ -107,7 +107,7 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
     final state = ref.watch(enfantControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -136,14 +136,14 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                             child: Container(
                               width: 40,
                               height: 40,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFE8F2EE),
+                              decoration: BoxDecoration(
+                                color: context.boxSurfaceLight,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.arrow_back_ios_new,
                                 size: 18,
-                                color: Colors.black87,
+                                color: context.textDark,
                               ),
                             ),
                           ),
@@ -151,8 +151,8 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                             child: Text(
                               'Nouveau profil Enfant',
                               textAlign: TextAlign.center,
-                              style: AppStyles.headingTextStyle.copyWith(
-                                color: Colors.black87,
+                              style: context.headingTextStyle.copyWith(
+                                color: context.textDark,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -203,19 +203,19 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                       SizedBox(height: SizeConfig.getProportionateHeight(16)),
 
                       // Champ Sexe (Dropdown)
-                      const Text(
+                      Text(
                         'Sexe',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black87,
+                          color: context.textDark,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: context.textInverse,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.green.shade300),
                         ),
@@ -239,9 +239,9 @@ class _AddEnfantScreenState extends ConsumerState<AddEnfantScreen> {
                               ],
                             ),
                             isExpanded: true,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Colors.black87,
+                              color: context.textDark,
                             ),
                             items: _genres.map((String value) {
                               return DropdownMenuItem<String>(

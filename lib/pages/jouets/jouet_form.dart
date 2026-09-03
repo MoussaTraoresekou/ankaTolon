@@ -140,7 +140,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
     final state = ref.watch(jouetControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
 
       body: SafeArea(
         child: SingleChildScrollView(
@@ -161,7 +161,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, size: 20),
+                    icon: Icon(Icons.arrow_back_ios, size: 20),
                     onPressed: state.isLoading ? null : () => context.pop(),
                   ),
 
@@ -171,10 +171,10 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                       children: [
                         Text(
                           'Ajouter un jouet',
-                          style: AppStyles.headingTextStyle.copyWith(
+                          style: context.headingTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
-                            color: Colors.black87,
+                            color: context.textDark,
                           ),
                         ),
 
@@ -209,7 +209,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                 padding: const EdgeInsets.all(16),
 
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.textInverse,
 
                   borderRadius: BorderRadius.circular(20),
 
@@ -373,9 +373,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
       children: [
         Text(
           'Catégorie',
-          style: AppStyles.normalTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: context.normalTextStyle.copyWith(fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 6),
@@ -467,9 +465,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
       children: [
         Text(
           'Images du jouet',
-          style: AppStyles.normalTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: context.normalTextStyle.copyWith(fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 6),
@@ -495,7 +491,7 @@ class _JouetFormState extends ConsumerState<JouetForm> {
 
             child: Column(
               children: [
-                const Icon(
+                Icon(
                   Icons.add_photo_alternate_outlined,
                   size: 40,
                   color: Colors.black45,
@@ -573,14 +569,14 @@ class _JouetFormState extends ConsumerState<JouetForm> {
                         width: 26,
                         height: 26,
 
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
+                        decoration: BoxDecoration(
+                          color: context.badgeRed,
                           shape: BoxShape.circle,
                         ),
 
-                        child: const Icon(
+                        child: Icon(
                           Icons.close,
-                          color: Colors.white,
+                          color: context.textInverse,
                           size: 16,
                         ),
                       ),

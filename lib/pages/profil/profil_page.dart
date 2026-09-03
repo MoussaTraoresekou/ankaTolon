@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/controller/profil/profil_controller.dart';
+import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/pages/profil/widget/bouton_deconnexion.dart';
 import 'package:tolon/pages/profil/widget/enfant_profil_card.dart';
 import 'package:tolon/pages/profil/widget/informations_personnelles.dart';
@@ -30,13 +31,11 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
     final enfantsAsync = ref.watch(enfantsStreamProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FCF8), // Fond vert très clair / cassé
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: profil.chargement
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFFE67E22),
-                ),
+            ? Center(
+                child: CircularProgressIndicator(color: context.primaryOrange),
               )
             : SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
@@ -47,28 +46,24 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // TITRE CENTRAL
-                    const Text(
+                    Text(
                       'Mon profil',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: context.textDark,
                       ),
                     ),
 
                     const SizedBox(height: 20),
 
                     if (profil.utilisateur != null)
-                      ProfilHeader(
-                        utilisateur: profil.utilisateur!,
-                      ),
+                      ProfilHeader(utilisateur: profil.utilisateur!),
 
                     const SizedBox(height: 16),
 
-                    ModifierProfilButton(
-                      utilisateur: profil.utilisateur,
-                    ),
+                    ModifierProfilButton(utilisateur: profil.utilisateur),
 
                     const SizedBox(height: 20),
 
@@ -84,34 +79,36 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: context.textInverse,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: const Color(0xFFCBE3CE),
+                          color: context.borderColor,
                           width: 1,
                         ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Mes enfants',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: context.textDark,
                             ),
                           ),
                           const SizedBox(height: 14),
-                      enfantsAsync.when(
+                          enfantsAsync.when(
                             data: (enfants) {
                               if (enfants.isEmpty) {
-                                return const Center(
+                                return Center(
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     child: Text(
                                       'Aucun enfant enregistré',
-                                      style: TextStyle(color: Colors.grey),
+                                      style: TextStyle(
+                                        color: context.textMuted,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -120,21 +117,23 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                                 children: enfants
                                     .map(
                                       (enfant) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
+                                        padding: const EdgeInsets.only(
+                                          bottom: 10,
+                                        ),
                                         child: EnfantProfilCard(
                                           enfant: enfant,
+                                          context: context,
                                         ),
                                       ),
                                     )
                                     .toList(),
                               );
                             },
-                            loading: () => const Center(
+                            loading: () => Center(
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: CircularProgressIndicator(
-                                  color: Color(0xFFE67E22),
+                                  color: context.primaryOrange,
                                 ),
                               ),
                             ),
@@ -142,6 +141,99 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                               'Erreur de chargement : $err',
                               style: const TextStyle(color: Colors.red),
                             ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // thème
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: context.textInverse,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: context.borderColor,
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Thème',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: context.textDark,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Consumer(
+                            builder: (context, ref, child) {
+                              final currentThemeMode = ref.watch(
+                                themeModeProvider,
+                              );
+
+                              return SizedBox(
+                                width: double.infinity,
+                                child: SegmentedButton<ThemeMode>(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStateProperty.resolveWith<Color>((
+                                          states,
+                                        ) {
+                                          if (states.contains(
+                                            WidgetState.selected,
+                                          )) {
+                                            return context.primarySoft;
+                                          }
+                                          return Colors.transparent;
+                                        }),
+                                    foregroundColor:
+                                        WidgetStateProperty.resolveWith<Color>((
+                                          states,
+                                        ) {
+                                          return context.textDark;
+                                        }),
+                                  ),
+                                  segments: const [
+                                    ButtonSegment(
+                                      value: ThemeMode.light,
+                                      label: Text('Jour'),
+                                      icon: Icon(
+                                        Icons.wb_sunny_outlined,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    ButtonSegment(
+                                      value: ThemeMode.dark,
+                                      label: Text('Nuit'),
+                                      icon: Icon(
+                                        Icons.nightlight_round,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    ButtonSegment(
+                                      value: ThemeMode.system,
+                                      label: Text('Auto'),
+                                      icon: Icon(Icons.smartphone, size: 18),
+                                    ),
+                                  ],
+                                  selected: {currentThemeMode},
+                                  onSelectionChanged:
+                                      (Set<ThemeMode> newSelection) {
+                                        ref
+                                            .read(themeModeProvider.notifier)
+                                            .state = newSelection
+                                            .first;
+                                      },
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),

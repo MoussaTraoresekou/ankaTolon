@@ -20,18 +20,18 @@ class SelectAvatarScreen extends ConsumerStatefulWidget {
 class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
   // Liste des images d'avatars (remplace les chemins par tes assets)
   final List<String> _avatars = [
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar2.png',
-    'assets/images/avatars/avatar1.png',
-    'assets/images/avatars/avatar3.png',
+    'assets/images/avatars/avatar1.jpg',
+    'assets/images/avatars/avatar2.jpg',
+    'assets/images/avatars/avatar3.jpg',
+    'assets/images/avatars/avatar4.jpg',
+    'assets/images/avatars/avatar5.jpg',
+    'assets/images/avatars/avatar6.jpg',
+    'assets/images/avatars/avatar7.jpg',
+    'assets/images/avatars/avatar8.jpg',
+    'assets/images/avatars/avatar9.jpg',
+    'assets/images/avatars/avatar10.jpg',
+    'assets/images/avatars/avatar11.jpg',
+    'assets/images/avatars/avatar12.Jpg',
   ];
 
   int _selectedAvatarIndex = 1; // Index sélectionné par défaut
@@ -68,7 +68,7 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
     final state = ref.watch(enfantControllerProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -89,10 +89,10 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                     color: Color(0xFFE8F2EE),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_back_ios_new,
                     size: 18,
-                    color: Colors.black87,
+                    color: context.textDark,
                   ),
                 ),
               ),
@@ -100,12 +100,12 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
               SizedBox(height: SizeConfig.getProportionateHeight(16)),
 
               // Titre et sous-titre
-              const Text(
+              Text(
                 'Choisir un avatar',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: context.textDark,
                 ),
               ),
               const SizedBox(height: 4),
@@ -158,7 +158,7 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                                   // Widget de fallback si l'image n'est pas encore ajoutée aux assets
                                   return Container(
                                     color: const Color(0xFFE0F2E9),
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.person,
                                       size: 50,
                                       color: Colors.teal,
@@ -175,14 +175,14 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                               right: 2,
                               child: Container(
                                 padding: const EdgeInsets.all(2),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF4CD97B),
+                                decoration: BoxDecoration(
+                                  color: context.borderSelected,
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.check,
                                   size: 14,
-                                  color: Colors.white,
+                                  color: context.textInverse,
                                 ),
                               ),
                             ),
@@ -206,9 +206,9 @@ class _SelectAvatarScreenState extends ConsumerState<SelectAvatarScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.lightbulb_outline,
-                      color: Color(0xFF4CD97B),
+                      color: context.borderSelected,
                       size: 22,
                     ),
                     const SizedBox(width: 12),

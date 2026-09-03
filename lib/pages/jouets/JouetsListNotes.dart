@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
-import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/repository/jouets_reposotory/jouet_repository.dart';
 
 class JeuxListScreen extends ConsumerWidget {
@@ -20,7 +19,7 @@ class JeuxListScreen extends ConsumerWidget {
     final jeuxAsync = ref.watch(streamJouetLesplusNotesProvider);
 
     return Scaffold(
-      backgroundColor: AppStyles.bgColor,
+      backgroundColor: context.bgColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
@@ -40,20 +39,20 @@ class JeuxListScreen extends ConsumerWidget {
                         color: Color(0xFFE2F1E4),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.chevron_left,
-                        color: AppStyles.textDark,
+                        color: context.textDark,
                         size: 24,
                       ),
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Text(
+                  Text(
                     'Jeux les plus notés',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: AppStyles.textDark,
+                      color: context.textDark,
                     ),
                   ),
                 ],
@@ -65,10 +64,10 @@ class JeuxListScreen extends ConsumerWidget {
                 child: jeuxAsync.when(
                   data: (jeux) {
                     if (jeux.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Text(
                           'Aucun jeu disponible pour le moment',
-                          style: TextStyle(color: AppStyles.textMuted),
+                          style: TextStyle(color: context.textMuted),
                         ),
                       );
                     }
@@ -81,11 +80,12 @@ class JeuxListScreen extends ConsumerWidget {
                         final jeu = jeux[index];
                         final Color bgColor = _iconBgColors.isNotEmpty
                             ? _iconBgColors[index % _iconBgColors.length]
-                            : AppStyles.primarySoft;
+                            : context.primarySoft;
 
                         return _buildJeuItemCard(
-                          title: jeu.nomJouet ?? 'Jeu sans nom',
-                          note: jeu.noteMoyen ?? 5.0,
+                          context: context,
+                          title: jeu.nomJouet,
+                          note: jeu.noteMoyen,
                           images: jeu.image,
                           bgColor: bgColor,
                           onTap: () {
@@ -98,8 +98,8 @@ class JeuxListScreen extends ConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: AppStyles.primary),
+                  loading: () => Center(
+                    child: CircularProgressIndicator(color: context.primary),
                   ),
                   error: (error, stack) => const Center(
                     child: Text(
@@ -117,6 +117,7 @@ class JeuxListScreen extends ConsumerWidget {
   }
 
   Widget _buildJeuItemCard({
+    required BuildContext context,
     required String title,
     required double note,
     List<String>? images,
@@ -130,12 +131,9 @@ class JeuxListScreen extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.textInverse,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFF2D6A4F).withValues(alpha: 0.4),
-          width: 1,
-        ),
+        border: Border.all(color: context.borderColor, width: 1),
       ),
       child: Material(
         color: Colors.transparent,
@@ -158,9 +156,9 @@ class JeuxListScreen extends ConsumerWidget {
                                   width: 72,
                                   height: 72,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, _, _) => const Icon(
+                                  errorBuilder: (_, _, _) => Icon(
                                     Icons.sports_esports,
-                                    color: AppStyles.primary,
+                                    color: context.primary,
                                     size: 36,
                                   ),
                                 )
@@ -169,15 +167,15 @@ class JeuxListScreen extends ConsumerWidget {
                                   width: 72,
                                   height: 72,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, _, _) => const Icon(
+                                  errorBuilder: (_, _, _) => Icon(
                                     Icons.sports_esports,
-                                    color: AppStyles.primary,
+                                    color: context.primary,
                                     size: 36,
                                   ),
                                 ))
-                        : const Icon(
+                        : Icon(
                             Icons.sports_esports,
-                            color: AppStyles.primary,
+                            color: context.primary,
                             size: 36,
                           ),
                   ),
@@ -194,16 +192,16 @@ class JeuxListScreen extends ConsumerWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: AppStyles.textDark,
+                          color: context.textDark,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.star_rounded,
                             color: Color(0xFFFFB800),
                             size: 18,
@@ -211,10 +209,10 @@ class JeuxListScreen extends ConsumerWidget {
                           const SizedBox(width: 2),
                           Text(
                             note.toStringAsFixed(1),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: AppStyles.textDark,
+                              color: context.textDark,
                             ),
                           ),
                         ],
@@ -222,7 +220,7 @@ class JeuxListScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right, color: AppStyles.textMuted),
+                Icon(Icons.chevron_right, color: context.textMuted),
               ],
             ),
           ),
