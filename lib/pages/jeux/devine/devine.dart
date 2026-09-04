@@ -198,7 +198,7 @@ class _GuessNumberScreenState extends State<GuessNumberScreen> {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.04),
+                                color: Colors.black.withValues(alpha: 0.04),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -272,7 +272,7 @@ class _GuessNumberScreenState extends State<GuessNumberScreen> {
                               borderRadius: BorderRadius.circular(32),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.045),
+                                  color: Colors.black.withValues(alpha: 0.045),
                                   blurRadius: 25,
                                   offset: const Offset(0, 10),
                                 ),
@@ -313,7 +313,7 @@ class _GuessNumberScreenState extends State<GuessNumberScreen> {
                                     vertical: 16,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: _hintColor.withOpacity(0.08),
+                                    color: _hintColor.withValues(alpha: 0.08),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(

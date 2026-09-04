@@ -253,7 +253,7 @@ class _CategoriePageState
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black
-                            .withOpacity(0.10),
+                            .withValues(alpha: 0.10),
 
                         blurRadius: 6,
 
@@ -400,8 +400,8 @@ class _CategoriePageState
                                   border:
                                   Border.all(
                                     color: Colors.grey
-                                        .withOpacity(
-                                      0.20,
+                                        .withValues(
+                                      alpha: 0.20,
                                     ),
                                   ),
                                 ),

@@ -601,7 +601,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                         BoxShadow(
                           color:
                           Colors.black
-                              .withOpacity(0.04),
+                              .withValues(alpha: 0.04),
 
                           blurRadius:
                           8,
@@ -804,7 +804,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                               child:
                               DropdownButtonFormField<int>(
 
-                                value:
+                                initialValue:
                                 ageMin,
 
                                 decoration:
@@ -936,7 +936,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                               child:
                               DropdownButtonFormField<int>(
 
-                                value:
+                                initialValue:
                                 ageMax,
 
                                 decoration:
@@ -1246,7 +1246,7 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
                         BoxShadow(
                           color:
                           Colors.black
-                              .withOpacity(0.04),
+                              .withValues(alpha: 0.04),
 
                           blurRadius:
                           8,

@@ -177,7 +177,7 @@ class _AjouterCategoriePageState
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black
-                              .withOpacity(0.15),
+                              .withValues(alpha: 0.15),
 
                           blurRadius: 7,
 
@@ -245,7 +245,7 @@ class _AjouterCategoriePageState
 
 
                         DropdownButtonFormField<String>(
-                          value: typeSelectionne,
+                          initialValue: typeSelectionne,
 
                           decoration:
                           const InputDecoration(

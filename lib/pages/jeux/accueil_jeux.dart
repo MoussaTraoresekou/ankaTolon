@@ -295,12 +295,12 @@ class _GameCard extends StatelessWidget {
             color: backgroundColor,
             borderRadius: BorderRadius.circular(28),
             border: Border.all(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.035),
+                color: Colors.black.withValues(alpha: 0.035),
                 blurRadius: 18,
                 offset: const Offset(0, 7),
               ),

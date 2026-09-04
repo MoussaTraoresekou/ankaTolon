@@ -416,7 +416,7 @@ class _ModifierJouetPageState
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black
-                            .withOpacity(0.10),
+                            .withValues(alpha: 0.10),
 
                         blurRadius: 8,
 

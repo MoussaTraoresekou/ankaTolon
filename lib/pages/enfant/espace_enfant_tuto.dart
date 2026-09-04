@@ -79,7 +79,7 @@ class _EspaceEnfantTutoScreenState
                       side: BorderSide(
                         color: isSelected
                             ? context.primary
-                            : context.borderColor.withOpacity(0.5),
+                            : context.borderColor.withValues(alpha: 0.5),
                       ),
                     ),
                     onSelected: (selected) {
@@ -156,11 +156,11 @@ class _TutorielItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final String imageUrl = tutoriel.imageVideoUrl ?? '';
     final String categoryText =
-        (tutoriel.categorieId != null && tutoriel.categorieId!.isNotEmpty)
-        ? tutoriel.categorieId!
+        (tutoriel.categorieId.isNotEmpty)
+        ? tutoriel.categorieId
         : 'Général';
     final String descriptionText = tutoriel.description ?? '';
-    final String ageText = (tutoriel.ageMin != null && tutoriel.ageMax != null)
+    final String ageText = (tutoriel.ageMax != null)
         ? '${tutoriel.ageMin} - ${tutoriel.ageMax} ans'
         : 'Tous âges';
 
@@ -174,7 +174,7 @@ class _TutorielItemCard extends StatelessWidget {
           color: context.boxSurfaceLight,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: context.borderColor.withOpacity(0.6),
+            color: context.borderColor.withValues(alpha: 0.6),
             width: 1.5,
           ),
           boxShadow: [
@@ -198,7 +198,7 @@ class _TutorielItemCard extends StatelessWidget {
                     ? Image.network(
                         imageUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
+                        errorBuilder: (_, _, _) => Container(
                           color: context.primarySoft,
                           child: Icon(Icons.image, color: context.textMuted),
                         ),
