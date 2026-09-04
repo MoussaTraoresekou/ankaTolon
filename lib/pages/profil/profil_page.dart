@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/controller/profil/profil_controller.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
+import 'package:tolon/pages/profil/widget/bouton_commandes.dart';
 import 'package:tolon/pages/profil/widget/bouton_deconnexion.dart';
 import 'package:tolon/pages/profil/widget/enfant_profil_card.dart';
 import 'package:tolon/pages/profil/widget/informations_personnelles.dart';
@@ -144,6 +145,16 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    BoutonMesCommandes(
+                      onPressed: () => {},
+                      // onPressed: () async {
+                      //   await ref
+                      //       .read(profilControllerProvider.notifier)
+                      //       .deconnexion();
+                      // },
                     ),
 
                     const SizedBox(height: 20),

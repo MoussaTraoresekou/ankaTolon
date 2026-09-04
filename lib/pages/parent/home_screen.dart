@@ -300,7 +300,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               backgroundColor: avatarBgColor,
               child: ClipOval(
                 child: avatarUrl != null && avatarUrl.isNotEmpty
-                    ? Image.asset(
+                    ? Image.network(
                         avatarUrl,
                         width: 56,
                         height: 56,
