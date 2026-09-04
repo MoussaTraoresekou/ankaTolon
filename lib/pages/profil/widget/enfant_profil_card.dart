@@ -25,7 +25,6 @@ class EnfantProfilCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final age = _calculerAge(enfant.naissance);
-
     final sexeTexte = enfant.sexe.trim();
 
     return Row(
@@ -75,7 +74,7 @@ class EnfantProfilCard extends StatelessWidget {
 
                   const SizedBox(width: 8),
 
-                  // BADGE SEXE (Affiche 'Non spécifié' si vide dans Firebase)
+                  // BADGE SEXE
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(

@@ -294,7 +294,9 @@ class EspaceEnfantScreen extends ConsumerWidget {
           title: 'Jeux',
           bgColor: context.primarySoft,
           image: 'assets/images/jeux.png',
-          onTap: () {},
+          onTap: () {
+            context.pushNamed(AppRoutes.jeux.name);
+          },
           context: context,
         ),
         _buildMenuCard(
