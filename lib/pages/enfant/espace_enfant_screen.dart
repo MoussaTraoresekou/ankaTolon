@@ -204,7 +204,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color.fromARGB(255, 3, 3, 3).withOpacity(0.3),
+            color: const Color.fromARGB(255, 3, 3, 3).withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -362,7 +362,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                 width: 100,
                 height: 100,
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => Icon(
+                errorBuilder: (_, _, _) => Icon(
                   iconData ?? Icons.extension,
                   size: 52,
                   color: iconColor ?? context.primary,
@@ -408,7 +408,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
             width: 48,
             height: 48,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) =>
+            errorBuilder: (_, _, _) =>
                 Icon(Icons.emoji_events_rounded, size: 48, color: Colors.amber),
           ),
           const SizedBox(width: 12),

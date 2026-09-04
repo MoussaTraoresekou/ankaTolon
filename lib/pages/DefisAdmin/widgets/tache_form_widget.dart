@@ -168,7 +168,7 @@ class TacheFormWidget extends StatelessWidget {
                             child:
                             DropdownButtonFormField<String>(
 
-                              value:
+                              initialValue:
                               type,
 
                               isExpanded:
@@ -299,7 +299,7 @@ class TacheFormWidget extends StatelessWidget {
                             child:
                             DropdownButtonFormField<String>(
 
-                              value:
+                              initialValue:
                               categoriesFiltrees.any(
                                     (c) =>
                                 c.id ==

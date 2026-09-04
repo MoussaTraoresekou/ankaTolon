@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tolon/cor/theme/app_theme.dart';
 
 class Baniere extends StatelessWidget {
   const Baniere({super.key});
@@ -12,8 +11,8 @@ class Baniere extends StatelessWidget {
       decoration: BoxDecoration(
         //color: Color(0x7674A56E),
         gradient: LinearGradient(
-                    colors: [const Color(0x76C2E8BC).withOpacity(0.08), const Color(
-                        0x7642DD2D).withOpacity(0.05)],
+                    colors: [const Color(0x76C2E8BC).withValues(alpha: 0.08), const Color(
+                        0x7642DD2D).withValues(alpha: 0.05)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

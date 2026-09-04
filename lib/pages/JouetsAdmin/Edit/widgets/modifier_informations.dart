@@ -56,7 +56,7 @@ const SizedBox(width: 10),
 
 Expanded(
 child: DropdownButtonFormField<String>(
-value: categories.any(
+initialValue: categories.any(
 (categorie) =>
 categorie.id == categorieIdSelectionnee,
 )

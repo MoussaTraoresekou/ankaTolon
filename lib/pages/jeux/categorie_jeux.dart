@@ -36,7 +36,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
   final List<QuizTheme> _themes = QuizData.themes;
 
   @override
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         border: Border.all(color: const Color(0x7677AF6F), width: .5),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.02),
+                            color: Colors.black.withValues(alpha: 0.02),
                             blurRadius: 12,
                             offset: const Offset(0, 6),
                           ),
