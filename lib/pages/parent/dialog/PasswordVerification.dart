@@ -92,7 +92,7 @@ class _PasswordVerificationDialogState
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -193,7 +193,7 @@ class _PasswordVerificationDialogState
                       onPressed: canSubmit ? _submit : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryOrange,
-                        disabledBackgroundColor: primaryOrange.withOpacity(0.5),
+                        disabledBackgroundColor: primaryOrange.withValues(alpha: 0.5),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),

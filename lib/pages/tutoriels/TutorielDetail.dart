@@ -101,9 +101,8 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final String categoryText =
-        (widget.tutoriel.categorieId != null &&
-            widget.tutoriel.categorieId!.isNotEmpty)
-        ? widget.tutoriel.categorieId!
+        (widget.tutoriel.categorieId.isNotEmpty)
+        ? widget.tutoriel.categorieId
         : 'Dessins';
 
     return Scaffold(
@@ -149,14 +148,13 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
                           aspectRatio: _videoController!.value.aspectRatio,
                           child: VideoPlayer(_videoController!),
                         )
-                      else if (widget.tutoriel.imageVideoUrl != null &&
-                          widget.tutoriel.imageVideoUrl!.isNotEmpty)
+                      else if (widget.tutoriel.imageVideoUrl.isNotEmpty)
                         Image.network(
-                          widget.tutoriel.imageVideoUrl!,
+                          widget.tutoriel.imageVideoUrl,
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
+                          errorBuilder: (_, _, _) => Container(
                             color: context.primarySoft,
                             child: Icon(Icons.image, color: context.textMuted),
                           ),
@@ -169,7 +167,7 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
 
                       // 2. Fond sombre translucide pour accentuer la lisibilité
                       if (_isInitialized && _showControls)
-                        Container(color: Colors.black.withOpacity(0.4)),
+                        Container(color: Colors.black.withValues(alpha: 0.4)),
 
                       // 3. Bouton central Play / Pause
                       if (_isInitialized && _showControls)
@@ -179,11 +177,11 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
                             width: 64,
                             height: 64,
                             decoration: BoxDecoration(
-                              color: context.primary.withOpacity(0.9),
+                              color: context.primary.withValues(alpha: 0.9),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
+                                  color: Colors.black.withValues(alpha: 0.25),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
                                 ),
@@ -215,7 +213,7 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                                 colors: [
-                                  Colors.black.withOpacity(0.8),
+                                  Colors.black.withValues(alpha: 0.8),
                                   Colors.transparent,
                                 ],
                               ),
@@ -253,9 +251,9 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
                                               colors: VideoProgressColors(
                                                 playedColor: context.primary,
                                                 bufferedColor: Colors.white
-                                                    .withOpacity(0.4),
+                                                    .withValues(alpha: 0.4),
                                                 backgroundColor: Colors.white
-                                                    .withOpacity(0.2),
+                                                    .withValues(alpha: 0.2),
                                               ),
                                             ),
                                           ),
@@ -289,7 +287,7 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
                 color: context.cardMenuYellow,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: context.borderColor.withOpacity(0.4),
+                  color: context.borderColor.withValues(alpha: 0.4),
                   width: 1,
                 ),
               ),
@@ -320,7 +318,7 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
                   width: 6,
                   height: 6,
                   decoration: BoxDecoration(
-                    color: context.textMuted.withOpacity(0.5),
+                    color: context.textMuted.withValues(alpha: 0.5),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -338,8 +336,7 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
             const SizedBox(height: 16),
 
             // ----------------- DESCRIPTION -----------------
-            if (widget.tutoriel.description != null &&
-                widget.tutoriel.description!.isNotEmpty) ...[
+            if (widget.tutoriel.description.isNotEmpty) ...[
               Text(
                 'Description',
                 style: TextStyle(
@@ -350,10 +347,10 @@ class _TutorielDetailScreenState extends State<TutorielDetailScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                widget.tutoriel.description!,
+                widget.tutoriel.description,
                 style: TextStyle(
                   fontSize: 15,
-                  color: context.textDark.withOpacity(0.85),
+                  color: context.textDark.withValues(alpha: 0.85),
                   height: 1.5,
                 ),
               ),

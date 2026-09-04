@@ -195,7 +195,7 @@ class _ModifierCategoriePageState
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black
-                              .withOpacity(0.15),
+                              .withValues(alpha: 0.15),
 
                           blurRadius: 7,
 
@@ -303,7 +303,7 @@ class _ModifierCategoriePageState
 
 
                         DropdownButtonFormField<String>(
-                          value: typeSelectionne,
+                          initialValue: typeSelectionne,
 
                           decoration:
                           const InputDecoration(

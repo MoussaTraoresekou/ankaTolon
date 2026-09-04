@@ -53,7 +53,7 @@ const SizedBox(width: 15),
 
 Expanded(
 child: DropdownButtonFormField<String>(
-value: categorieIdSelectionnee,
+initialValue: categorieIdSelectionnee,
 decoration: const InputDecoration(
 labelText: 'Catégorie',
 border: OutlineInputBorder(),

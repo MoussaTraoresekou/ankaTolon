@@ -90,7 +90,7 @@ class _RedigerAvisPageState extends State<RedigerAvisPage> {
                         ? Image.network(
                             widget.jouet.image.first,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => Icon(
+                            errorBuilder: (_, _, _) => Icon(
                               Icons.image_not_supported,
                               color: context.textMuted,
                             ),

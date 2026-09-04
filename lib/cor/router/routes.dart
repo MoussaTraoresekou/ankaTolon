@@ -32,7 +32,6 @@ import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 
 import 'package:tolon/pages/favoris/favoris_page.dart';
 import 'package:tolon/pages/jeux/accueil_jeux.dart';
-import 'package:tolon/pages/jeux/categorie_jeux.dart';
 
 import 'package:tolon/pages/jouets/JouetsListNotes.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
-import 'package:tolon/models/jeux/datas.dart';
 import 'package:tolon/models/jeux/quiz_models.dart';
 import 'package:tolon/pages/jeux/resultat.dart';
 
@@ -195,7 +194,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                 child: ListView.separated(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: currentQuestion.options.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 16),
+                  separatorBuilder: (_, _) => const SizedBox(height: 16),
                   itemBuilder: (context, index) {
                     final isSelected = _selectedAnswerIndex == index;
 
