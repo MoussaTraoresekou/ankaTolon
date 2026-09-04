@@ -168,7 +168,10 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                       children: [
                         Text(
                           'Mes favoris',
-                          style: AppStyles.titleTextStyle,
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(height: 6),
                         Text(
@@ -186,8 +189,8 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                     padding: const EdgeInsets.only(top: 25),
                     child: Image.asset(
                       'assets/images/imageHours.png',
-                      width: 110,
-                      height: 110,
+                      width: 100,
+                      height: 100,
                     ),
                   ),
                 ],
@@ -214,7 +217,10 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                         const SizedBox(width: 6),
                         Text(
                           '${idsFavoris.length} favoris',
-                          style: AppStyles.normalTextStyle,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
                         ),
                       ],
                     ),
@@ -376,7 +382,10 @@ class _FavorisPageState extends ConsumerState<FavorisPage> {
                   jouet.nomJouet,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppStyles.titleTextStyle,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Container(
