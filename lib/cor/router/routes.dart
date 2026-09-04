@@ -112,6 +112,7 @@ enum AppRoutes {
   detailactive,
   espaceEnfantTuto,
   TutorielDetail,
+  TutorielParents,
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -637,6 +638,14 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: '/tutoriel-detail',
         name: AppRoutes.TutorielDetail.name,
+        builder: (context, state) {
+          final tutoriel = state.extra as TutorielModel;
+          return TutorielDetailScreen(tutoriel: tutoriel);
+        },
+      ),
+      GoRoute(
+        path: '/tutoriel-parents',
+        name: AppRoutes.TutorielParents.name,
         builder: (context, state) {
           final tutoriel = state.extra as TutorielModel;
           return TutorielDetailScreen(tutoriel: tutoriel);
