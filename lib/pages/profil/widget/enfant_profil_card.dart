@@ -104,6 +104,8 @@ class EnfantProfilCard extends StatelessWidget {
 
   Widget _buildAvatar(BuildContext context) {
     if (enfant.avatarUrl != null && enfant.avatarUrl!.isNotEmpty) {
+      print('***********************');
+      print(enfant.avatarUrl);
       return ClipOval(
         child: Image.network(
           enfant.avatarUrl!,
