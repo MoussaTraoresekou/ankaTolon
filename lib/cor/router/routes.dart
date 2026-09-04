@@ -113,6 +113,8 @@ enum AppRoutes {
   espaceEnfant,
   detailactive,
   espaceEnfantTuto,
+  TutorielDetail,
+  TutorielParents,
   TutorielDetail, jeux,
 }
 
