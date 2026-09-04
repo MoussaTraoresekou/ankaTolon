@@ -5,11 +5,13 @@ class LigneJouetCmd extends StatelessWidget {
   final String title;
   final int quantity;
   final String price;
+  final String image;
 
   const LigneJouetCmd({
     required this.title,
     required this.quantity,
     required this.price,
+    required this.image,
     super.key,
   });
 
@@ -26,11 +28,10 @@ class LigneJouetCmd extends StatelessWidget {
               color: const Color(0xFFF9FBF9),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: const Color(0xFFEEEEEE)),
-            ),
-            child: const Icon(
-              Icons.toys_outlined,
-              color: AppColors.textGrey,
-              size: 24,
+              image: DecorationImage(
+                image: NetworkImage(image),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           const SizedBox(width: 14),

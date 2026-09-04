@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:tolon/cor/app_colors.dart';
@@ -63,6 +64,17 @@ class _AjoutTutoState extends ConsumerState<AjoutTuto> {
 
   // L'AIGUILLAGE PARFAIT ENTRE AJOUT ET MODIFICATION
   Future<void> _soumettreFormulaire() async {
+    //VÉRIFICATION DES FICHIERS (Uniquement en mode création)
+    if (widget.tutoriel == null) {
+      if (_videoFile == null) {
+        _afficherAlerte('Veuillez sélectionner un fichier vidéo MP4.');
+        return;
+      }
+      if (_imageFile == null) {
+        _afficherAlerte('Veuillez sélectionner une image de couverture.');
+        return;
+      }
+    }
     setState(() => _isLoading = true);
 
     try {
@@ -149,6 +161,13 @@ class _AjoutTutoState extends ConsumerState<AjoutTuto> {
     }
   }
 
+  // Fonctions d'aide pour alléger le code
+  void _afficherAlerte(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), backgroundColor: AppColors.greenPrimary),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isEdition = widget.tutoriel != null;
@@ -158,6 +177,12 @@ class _AjoutTutoState extends ConsumerState<AjoutTuto> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
