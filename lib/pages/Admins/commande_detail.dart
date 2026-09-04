@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tolon/cor/app_colors.dart';
 import 'package:tolon/commun_widget/admin_widgets/card_detail_cmd.dart';
 import 'package:tolon/commun_widget/admin_widgets/ligne_info_cmd.dart';
@@ -21,6 +22,11 @@ class CommandeDetail extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
         leading: Padding(
           padding: const EdgeInsets.all(12.0),
           child: CircleAvatar(
@@ -152,9 +158,7 @@ class CommandeDetail extends ConsumerWidget {
                       LigneInfoCmd(
                         icon: Icons.location_on_outlined,
                         label: 'Adresse',
-                        value: orderData.adresse.length > 25
-                            ? '${orderData.adresse.substring(0, 25)}...'
-                            : orderData.adresse,
+                        value: orderData.adresse,
                       ),
                       LigneInfoCmd(
                         icon: Icons.access_time,

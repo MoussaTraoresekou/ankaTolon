@@ -54,7 +54,6 @@ import 'package:tolon/pages/JouetsAdmin/Listes/liste_jouet.dart';
 import 'package:tolon/pages/Admins/admin_Bottom_NavigationBar.dart';
 import 'package:tolon/pages/Admins/admin_dashboard.dart';
 import 'package:tolon/pages/Admins/admin_profi.dart';
-import 'package:tolon/pages/Admins/ajout_defis.dart';
 import 'package:tolon/pages/Admins/ajout_tutos.dart';
 import 'package:tolon/pages/Admins/commande_detail.dart';
 import 'package:tolon/pages/Admins/commande_liste.dart';

@@ -29,8 +29,8 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
   @override
   void initState() {
     super.initState();
-    _nomController = TextEditingController(text: widget.enfant.nom ?? '');
-    _prenomController = TextEditingController(text: widget.enfant.prenom ?? '');
+    _nomController = TextEditingController(text: widget.enfant.nom);
+    _prenomController = TextEditingController(text: widget.enfant.prenom);
     _selectedDate = widget.enfant.naissance;
 
     if (_selectedDate != null) {
@@ -43,7 +43,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
 
     // Récupération et normalisation du sexe de l'enfant
     final initialSexe = widget.enfant.sexe;
-    if (initialSexe != null && initialSexe.isNotEmpty) {
+    if (initialSexe.isNotEmpty) {
       _selectedSexe = _sexeOptions.firstWhere(
         (option) => option.toLowerCase() == initialSexe.toLowerCase(),
         orElse: () => 'Garçon',
@@ -283,7 +283,7 @@ class _EditEnfantProfilScreenState extends State<EditEnfantProfilScreen> {
 
   Widget _buildDropdownSexe() {
     return DropdownButtonFormField<String>(
-      value: _selectedSexe,
+      initialValue: _selectedSexe,
       icon: Icon(Icons.keyboard_arrow_down, color: context.textDark),
       decoration: InputDecoration(
         prefixIcon: Icon(

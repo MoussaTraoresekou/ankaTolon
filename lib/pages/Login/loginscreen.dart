@@ -116,13 +116,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: Text(
-                        'Mot de passe oublié ?',
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: context.accentBlue,
-                          fontWeight: FontWeight.w600,
-                          decoration: TextDecoration.underline,
+                      child: RichText(
+                        textAlign: TextAlign.end,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Mot de passe oublié ?',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: context.accentBlue,
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

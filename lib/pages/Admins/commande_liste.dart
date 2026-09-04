@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tolon/commun_widget/admin_widgets/card_commande_liste.dart';
 import 'package:tolon/controller/admin_controller/listeCommande_providers.dart';
@@ -18,7 +19,7 @@ class _CommandeListeState extends ConsumerState<CommandeListe> {
   String selectedFilter = "Toutes"; 
 
   // Liste des catégories d'onglets de votre image
-  final List<String> filters = ["Toutes", "En cours", "Livrer", "Annuler"];
+  final List<String> filters = ["Toutes", "En cours", "Livrée"];
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,11 @@ class _CommandeListeState extends ConsumerState<CommandeListe> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
         scrolledUnderElevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -126,7 +132,7 @@ class _CommandeListeState extends ConsumerState<CommandeListe> {
                     final String s = order.status.toLowerCase().trim();
                     if (selectedFilter == "En cours") {
                       return s == "en cours" || s == "en preparation";
-                    } else if (selectedFilter == "Livrer") {
+                    } else if (selectedFilter == "Livrée") {
                       return s == "livrer" || s == "livree" || s == "confimée" || s == "confirmée";
                     } else if (selectedFilter == "Annuler") {
                       return s == "annuler" || s == "annulée";

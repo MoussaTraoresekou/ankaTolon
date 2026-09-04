@@ -92,9 +92,7 @@ class _AjouterCategoriePageState
               child: Column(
                 children: [
 
-                  // =========================
-                  // HEADER
-                  // =========================
+
 
                   Row(
                     children: [
@@ -164,10 +162,6 @@ class _AjouterCategoriePageState
                     height: 8,
                   ),
 
-                  // =========================
-                  // FORMULAIRE
-                  // =========================
-
                   Container(
                     width: double.infinity,
 
@@ -213,9 +207,7 @@ class _AjouterCategoriePageState
                           height: 15,
                         ),
 
-                        // =========================
-                        // NOM
-                        // =========================
+
 
                         TextFormField(
                           controller:
@@ -250,9 +242,7 @@ class _AjouterCategoriePageState
                           height: 15,
                         ),
 
-                        // =========================
-                        // TYPE
-                        // =========================
+
 
                         DropdownButtonFormField<String>(
                           value: typeSelectionne,
@@ -312,9 +302,7 @@ class _AjouterCategoriePageState
                     height: 14,
                   ),
 
-                  // =========================
-                  // BOUTONS
-                  // =========================
+
 
                   Row(
                     mainAxisAlignment:
