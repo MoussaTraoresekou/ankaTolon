@@ -24,12 +24,22 @@ class QuizData {
           text: "Quel empereur du Mali est célèbre pour son pèlerinage à La Mecca et son immense richesse en or ?",
           options: ["Mansa Moussa", "Askia Mohamed", "Kankou Moussa", "Modibo Keïta"],
           optionEmojis: [
-            "assets/images/quiz/manssa_mussa.png",
-            "assets/images/quiz/sumaro.png",
-            "assets/images/quiz/sundjata.png",
-            "assets/images/quiz/soni_aly.png"
+            "assets/images/quiz/hero1.png",
+            "assets/images/quiz/hero2.png",
+            "assets/images/quiz/hero3.png",
+            "assets/images/quiz/hero4.png"
           ],
           correctAnswerIndex: 0, // Mansa Moussa
+        ),QuizQuestion(
+          text: "Quel roi a fondé le Royaume bambara de Ségou au XVIIIe siècle ?",
+          options: ["Monzon Diarra", "Ngolo Diarra", "Biton Coulibaly", "Da Monzon"],
+          optionEmojis: [
+            "assets/images/quiz/ville.png",
+            "assets/images/quiz/ville.png",
+            "assets/images/quiz/ville.png",
+            "assets/images/quiz/ville.png"
+          ],
+          correctAnswerIndex: 2, // Biton Coulibaly
         ),
         QuizQuestion(
           text: "Quel roi-sorcier du royaume de Sosso était le grand rival de Sundjata Keïta ?",
@@ -42,18 +52,8 @@ class QuizData {
           ],
           correctAnswerIndex: 1, // Soumaoro Kanté
         ),
-        
-        QuizQuestion(
-          text: "Quel roi a fondé le Royaume bambara de Ségou au XVIIIe siècle ?",
-          options: ["Monzon Diarra", "Ngolo Diarra", "Biton Coulibaly", "Da Monzon"],
-          optionEmojis: [
-            "assets/images/quiz/manssa_mussa.png",
-            "assets/images/quiz/sumaro.png",
-            "assets/images/quiz/sundjata.png",
-            "assets/images/quiz/soni_aly.png"
-          ],
-          correctAnswerIndex: 2, // Biton Coulibaly
-        ),
+
+
         QuizQuestion(
           text: "Qui a arracher le baobao",
           options: ["Da Monzon", "Ngolo Diarra", "Soundjata Keita", "Mythe"],

@@ -13,6 +13,7 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/Commande/commandes_page.dart';
 import 'package:tolon/pages/DefisAdmin/liste_defis_page.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
@@ -653,6 +654,13 @@ GoRouter appRouter(Ref ref) {
           return GamesHomeScreen();
         },
       ),
+      GoRoute(
+  path: '/orders',
+  name: AppRoutes.orders.name,
+  builder: (context, state) {
+    return const CommandesPage();
+  },
+),
     ],
   );
 }
