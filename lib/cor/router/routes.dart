@@ -114,7 +114,7 @@ enum AppRoutes {
   espaceEnfantTuto,
   TutorielDetail,
   TutorielParents,
-  TutorielDetail, jeux,
+  jeux
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
