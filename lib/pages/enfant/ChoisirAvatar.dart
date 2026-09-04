@@ -35,7 +35,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
     'assets/images/avatars/avatar9.jpg',
     'assets/images/avatars/avatar10.jpg',
     'assets/images/avatars/avatar11.jpg',
-    'assets/images/avatars/avatar12.Jpg',
+    'assets/images/avatars/avatar12.jpg',
   ];
 
   late String _selectedAvatar;
@@ -181,7 +181,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: double.infinity,
-                                errorBuilder: (_, __, ___) => Container(
+                                errorBuilder: (_, _, _) => Container(
                                   color: Colors.grey.shade300,
                                   child: Icon(Icons.person, size: 40),
                                 ),

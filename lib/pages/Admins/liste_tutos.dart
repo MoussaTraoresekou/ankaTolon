@@ -5,6 +5,7 @@ import 'package:tolon/commun_widget/admin_widgets/liste_card_tutos.dart';
 import 'package:tolon/cor/app_colors.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/Admins/tuto_detail.dart';
 import 'package:tolon/repository/adminRepository/tutoriel_repository.dart';
 
 class ListeTutos extends ConsumerStatefulWidget {
@@ -345,7 +346,12 @@ class _ListeTutosState extends ConsumerState<ListeTutos> {
                 // Action 1 : voir detail
                 GestureDetector(
                   onTap: () {
-                    // Logique d'ouverture de la vidéo
+                    // Navigation native propre : Ouvre la page de détails vidéo
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TutoDetail(tutoriel: tuto),
+                      ),
+                    );
                   },
                   child: const Icon(
                     Icons.visibility_outlined,

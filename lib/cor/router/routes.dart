@@ -31,6 +31,7 @@ import 'package:tolon/pages/enfant/espace_enfant_screen.dart';
 import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 
 import 'package:tolon/pages/favoris/favoris_page.dart';
+import 'package:tolon/pages/jeux/accueil_jeux.dart';
 
 import 'package:tolon/pages/jouets/JouetsListNotes.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
@@ -112,6 +113,8 @@ enum AppRoutes {
   detailactive,
   espaceEnfantTuto,
   TutorielDetail,
+  TutorielParents,
+  jeux
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -640,6 +643,14 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final tutoriel = state.extra as TutorielModel;
           return TutorielDetailScreen(tutoriel: tutoriel);
+        },
+      ),
+      GoRoute(
+        path: '/jeux',
+        name: AppRoutes.jeux.name,
+        builder: (context, state) {
+          //final enfant = state.extra as EnfantModel;
+          return GamesHomeScreen();
         },
       ),
     ],

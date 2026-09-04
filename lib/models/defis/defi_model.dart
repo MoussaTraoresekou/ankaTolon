@@ -7,7 +7,6 @@ class Defi {
   int ageMin;
   int ageMax;
 
-  // Durée de validité en jours
   int dureeValidite;
 
   List<TacheDefi> activites;
@@ -25,9 +24,7 @@ class Defi {
     required this.quiz,
   });
 
-  // =====================================================
-  // TRANSFORMER EN DONNEES FIREBASE
-  // =====================================================
+
 
   Map<String, dynamic> toMap() {
     return {
@@ -50,9 +47,7 @@ class Defi {
     };
   }
 
-  // =====================================================
-  // TRANSFORMER FIREBASE EN OBJET
-  // =====================================================
+
 
   factory Defi.fromMap(
       Map<String, dynamic> map,
@@ -100,10 +95,6 @@ class Defi {
 }
 
 
-// =====================================================
-// TACHE ACTIVITE / QUIZ
-// =====================================================
-
 class TacheDefi {
   String categorieId;
   int nombre;
@@ -113,10 +104,6 @@ class TacheDefi {
     required this.nombre,
   });
 
-  // =====================================================
-  // TRANSFORMER EN FIREBASE
-  // =====================================================
-
   Map<String, dynamic> toMap() {
     return {
       'categorie_id': categorieId,
@@ -124,9 +111,7 @@ class TacheDefi {
     };
   }
 
-  // =====================================================
-  // TRANSFORMER FIREBASE EN OBJET
-  // =====================================================
+
 
   factory TacheDefi.fromMap(
       Map<String, dynamic> map,

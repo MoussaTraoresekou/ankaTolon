@@ -88,7 +88,7 @@ class AuthController extends _$AuthController {
     // SÉCURITÉ : Empêcher qu'un utilisateur s'inscrive frauduleusement avec l'email de l'admin
     if (email.trim().toLowerCase() == _adminEmail) {
       state = AsyncError(
-        'Cet email est réservé au système !',
+        'Cet email est réservé à l\'administrateur du système !',
         StackTrace.current,
       );
       return;

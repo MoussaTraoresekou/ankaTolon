@@ -30,7 +30,6 @@ class ModifierBenefices extends StatelessWidget {
 
             const Spacer(),
 
-            // PETIT PLUS À DROITE
             IconButton(
               onPressed: ajouterBenefice,
 

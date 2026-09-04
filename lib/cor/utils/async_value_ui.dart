@@ -133,6 +133,8 @@ extension AsyncValueUi on AsyncValue {
           return 'L’adresse email n’est pas valide.';
         case 'weak-password':
           return 'Le mot de passe choisi est trop faible.';
+        case 'invalid-credential':
+             return "mot de passe ou email incorrect!";
         default:
           return error.message ?? 'Une erreur d’authentification est survenue.';
       }
