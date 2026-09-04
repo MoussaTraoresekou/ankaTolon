@@ -12,6 +12,9 @@ final commandeRepositoryProvider = Provider<CommandeRepository>((ref) {
   );
 });
 
+final listeCommandeProvider=FutureProvider<List<Commande>>((Ref ref){
+    return ref.read(commandeRepositoryProvider).getMesCommandes();
+});
 class CommandeRepository {
   final FirebaseFirestore _db;
   final FirebaseAuth _auth;
@@ -38,6 +41,7 @@ class CommandeRepository {
     await _db.collection('Commandes').add(commande.toMap());
   }
    
+
    Future<List<Commande>> getMesCommandes() async {
     final user = _auth.currentUser;
 
