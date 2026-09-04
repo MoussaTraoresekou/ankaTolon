@@ -195,7 +195,7 @@ class GamesHomeScreen extends StatelessWidget {
                     title: "Quiz",
                     description:
                     "Réponds aux questions et teste tes connaissances.",
-                    buttonColor: const Color(0xFF5B8DEF),
+                    buttonColor: const Color(0xFFF3A447),
                     onTap: () {
                       Navigator.push(
                         context,

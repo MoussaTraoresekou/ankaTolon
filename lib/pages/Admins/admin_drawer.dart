@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tolon/controller/profil/profil_controller.dart';
 import 'package:tolon/cor/app_colors.dart';
 import 'package:tolon/cor/router/routes.dart';
+import 'package:tolon/pages/Admins/jouet_plusAchete.dart';
 
 class AdminDrawer extends ConsumerWidget {
   const AdminDrawer({super.key});
@@ -65,6 +66,27 @@ class AdminDrawer extends ConsumerWidget {
           ),
           ListTile(
             leading: const Icon(
+              Icons.bar_chart_rounded,
+              color: AppColors.greenPrimary,
+              size: 30,
+            ),
+            title: const Text(
+              'Jouets les plus achetés',
+              style: TextStyle(
+                fontFamily: 'Quicksand',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const JouetsPlusAchete(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
               Icons.shopping_bag_outlined,
               color: AppColors.orangeSecondary,
               size: 30,
@@ -87,7 +109,10 @@ class AdminDrawer extends ConsumerWidget {
 
           // BOUTON DÉCONNEXION DE TA MAQUETTE AVEC DIALOGUE DE SÉCURITÉ
           ListTile(
-            leading: const Icon(Icons.logout_rounded, color: AppColors.orangeSecondary),
+            leading: const Icon(
+              Icons.logout_rounded,
+              color: AppColors.orangeSecondary,
+            ),
             title: const Text(
               'Se déconnecter',
               style: TextStyle(

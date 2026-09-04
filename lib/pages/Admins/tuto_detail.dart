@@ -1,5 +1,5 @@
+import 'dart:async'; // INDISPENSABLE pour utiliser le Timer de disparition
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tolon/cor/app_colors.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
@@ -16,25 +16,56 @@ class TutoDetail extends StatefulWidget {
 class _TutoDetailScreenState extends State<TutoDetail> {
   late VideoPlayerController _videoController;
   bool _isInitialized = false;
+  
+  // GESTION DE L'AFFICHAGE DES CONTRÔLES
+  bool _showControls = true; 
+  Timer? _controlsTimer;
 
   @override
   void initState() {
     super.initState();
-    // LECTURE DIRECTE SUPABASE : On initialise le lecteur avec l'URL de votre base
+    
     _videoController = VideoPlayerController.networkUrl(
       Uri.parse(widget.tutoriel.videoUrl),
     )..initialize().then((_) {
         setState(() {
           _isInitialized = true;
         });
+        // On lance le compte à rebours pour masquer les contrôles au départ
+        _startControlsTimer();
       }).catchError((error) {
-        debugPrint("Impossible de charger la vidéo Supabase : $error");
+        debugPrint("Erreur de chargement vidéo : $error");
       });
+
+    _videoController.addListener(() {
+      if (mounted) setState(() {});
+    });
+  }
+
+  // Déclenche le compte à rebours de 1,5 seconde avant de masquer le bouton
+  void _startControlsTimer() {
+    _controlsTimer?.cancel(); // Annule l'ancien minuteur s'il y en avait un
+    _controlsTimer = Timer(const Duration(milliseconds: 1500), () {
+      if (mounted && _videoController.value.isPlaying) {
+        setState(() {
+          _showControls = false; // Ferme le bouton si la vidéo joue
+        });
+      }
+    });
+  }
+
+  // Inverse la visibilité des contrôles au clic sur la vidéo
+  void _toggleControls() {
+    setState(() {
+      _showControls = !_showControls;
+    });
+    if (_showControls) {
+      _startControlsTimer(); // Si on réaffiche, on planifie sa disparition future
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Formatage propre de la date de création
     final dt = widget.tutoriel.dateCreation;
     final String dateStr = '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
 
@@ -43,11 +74,6 @@ class _TutoDetailScreenState extends State<TutoDetail> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light,
-        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: AppColors.textDark),
           onPressed: () => Navigator.of(context).pop(),
@@ -62,7 +88,7 @@ class _TutoDetailScreenState extends State<TutoDetail> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 📺 1. LE LECTEUR VIDÉO EN GRAND EN HAUT
+            // 📺 LE LECTEUR VIDÉO PRO
             Container(
               width: double.infinity,
               height: 230,
@@ -79,6 +105,7 @@ class _TutoDetailScreenState extends State<TutoDetail> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
+                    // 1. Rendu vidéo
                     if (_isInitialized)
                       AspectRatio(
                         aspectRatio: _videoController.value.aspectRatio,
@@ -87,22 +114,61 @@ class _TutoDetailScreenState extends State<TutoDetail> {
                     else
                       const Center(child: CircularProgressIndicator(color: AppColors.greenPrimary)),
 
-                    // Bouton de contrôle Play/Pause superposé au centre
+                    // LE CAPTEUR DE CLIC INVISIBLE SUR TOUTE LA VIDÉO
                     if (_isInitialized)
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _videoController.value.isPlaying ? _videoController.pause() : _videoController.play();
-                          });
-                        },
-                        child: CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.black45,
-                          child: Icon(
-                            _videoController.value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                            color: Colors.white,
-                            size: 32,
+                      Positioned.fill(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: _toggleControls, // Un clic affiche ou cache l'en-tête du bouton
+                          child: Container(color: Colors.transparent),
+                        ),
+                      ),
+
+                    // LE BOUTON CENTRAL ANIMÉ : Apparaît ou disparaît selon l'état _showControls
+                    if (_isInitialized && (_showControls || !_videoController.value.isPlaying))
+                      AnimatedOpacity(
+                        opacity: (_showControls || !_videoController.value.isPlaying) ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 300),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (_videoController.value.isPlaying) {
+                                _videoController.pause();
+                              } else {
+                                _videoController.play();
+                                _startControlsTimer(); // Cache le bouton au démarrage
+                              }
+                            });
+                          },
+                          child: CircleAvatar(
+                            radius: 28,
+                            backgroundColor: Colors.black45,
+                            child: Icon(
+                              _videoController.value.isPlaying 
+                                  ? Icons.pause_rounded 
+                                  : Icons.play_arrow_rounded,
+                              color: Colors.white,
+                              size: 32,
+                        ),
+                      ),
+                        ),
+                      ),
+
+                    // La barre de défilement (Progression) en bas
+                    if (_isInitialized)
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: VideoProgressIndicator(
+                          _videoController,
+                          allowScrubbing: true,
+                          colors: const VideoProgressColors(
+                            playedColor: AppColors.greenPrimary,
+                            bufferedColor: Colors.white24,
+                            backgroundColor: Colors.black38,
                           ),
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                         ),
                       ),
                   ],
@@ -111,20 +177,17 @@ class _TutoDetailScreenState extends State<TutoDetail> {
             ),
             const SizedBox(height: 16),
 
-            // LES DÉTAILS DU TUTORIEL EN BAS (Feuille d'information)
+            // DESCRIPTION ET TITRES (Reste identique à votre design initial)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Titre principal
                   Text(
                     widget.tutoriel.titre,
                     style: const TextStyle(fontFamily: 'Quicksand', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
                   ),
                   const SizedBox(height: 12),
-
-                  // Ligne des badges d'informations (Date et Tranche d'âge)
                   Row(
                     children: [
                       _buildInfoBadge(Icons.calendar_month_rounded, 'Publié le $dateStr', const Color(0xFFE8F5E9), AppColors.greenPrimary),
@@ -133,8 +196,6 @@ class _TutoDetailScreenState extends State<TutoDetail> {
                     ],
                   ),
                   const SizedBox(height: 24),
-
-                  // Bloc de description
                   const Text(
                     'Objectifs pédagogiques & Description',
                     style: TextStyle(fontFamily: 'Quicksand', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textDark),
@@ -164,7 +225,6 @@ class _TutoDetailScreenState extends State<TutoDetail> {
     );
   }
 
-  // Petit widget d'aide pour dessiner de jolis badges d'informations colorés
   Widget _buildInfoBadge(IconData icon, String label, Color bgColor, Color textColor) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -182,8 +242,8 @@ class _TutoDetailScreenState extends State<TutoDetail> {
 
   @override
   void dispose() {
-    // TRÈS IMPORTANT : On coupe le flux vidéo quand on quitte l'écran pour libérer la mémoire RAM
     _videoController.dispose();
+    _controlsTimer?.cancel();
     super.dispose();
   }
 }
