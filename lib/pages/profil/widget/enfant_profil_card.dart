@@ -5,7 +5,11 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 class EnfantProfilCard extends StatelessWidget {
   final EnfantModel enfant;
 
-  const EnfantProfilCard({super.key, required this.enfant});
+  const EnfantProfilCard({
+    super.key,
+    required this.enfant,
+    required BuildContext context,
+  });
 
   int _calculerAge(DateTime dateNaissance) {
     final aujourdhui = DateTime.now();
@@ -21,7 +25,6 @@ class EnfantProfilCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final age = _calculerAge(enfant.naissance);
-
     final sexeTexte = enfant.sexe.trim();
 
     return Row(
@@ -56,35 +59,30 @@ class EnfantProfilCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8F3EA),
+                      color: context.primarySoft,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       '$age ans',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF4D8A52),
+                        color: context.primary,
                       ),
                     ),
                   ),
 
                   const SizedBox(width: 8),
 
-                  // BADGE SEXE (Affiche 'Non spécifié' si vide dans Firebase)
+                  // BADGE SEXE
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFEEDD),
+                      color: context.cardMenuYellow,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      sexeTexte.isNotEmpty
-                          ? sexeTexte
-                          : 'Féminin', // Remplacez 'Féminin' par votre valeur par défaut si besoin
+                      sexeTexte.isNotEmpty ? sexeTexte : 'Féminin',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -124,8 +122,8 @@ class EnfantProfilCard extends StatelessWidget {
     return Container(
       width: 55,
       height: 55,
-      decoration: const BoxDecoration(
-        color: Color(0xFFFFE8D2),
+      decoration: BoxDecoration(
+        color: context.cardMenuYellow,
         shape: BoxShape.circle,
       ),
       child: Icon(

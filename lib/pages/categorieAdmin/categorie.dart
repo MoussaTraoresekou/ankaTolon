@@ -99,7 +99,7 @@ class _CategoriePageState
     }
   }
 
-  // Message
+  // message à  affiche quand il y'a message de succes ou d'erreur
   void afficherMessage(
       String message,
       ) {

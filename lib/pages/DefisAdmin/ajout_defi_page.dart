@@ -18,15 +18,11 @@ _AjouterDefiPageState();
 }
 
 class _AjouterDefiPageState extends State<AjouterDefiPage> {
-// =====================================================
-// CONTROLLER
-// =====================================================
+
 
 final DefiController controller = DefiController();
 
-// =====================================================
-// CHAMPS
-// =====================================================
+
 
 final TextEditingController titreController =
 TextEditingController();
@@ -34,29 +30,21 @@ TextEditingController();
 final TextEditingController descriptionController =
 TextEditingController();
 
-// =====================================================
-// DUREE DE VALIDITE
-// =====================================================
+
 
 final TextEditingController dureeController =
 TextEditingController();
 
-// =====================================================
-// AGE
-// =====================================================
+
 
 int ageMin = 4;
 int ageMax = 12;
 
-// =====================================================
-// TACHES
-// =====================================================
+
 
 List<Map<String, dynamic>> taches = [];
 
-// =====================================================
-// INITIALISATION
-// =====================================================
+
 
 @override
 void initState() {
@@ -64,10 +52,8 @@ super.initState();
 
 controller.chargerCategories();
 
-// Durée par défaut : 24 heures
 dureeController.text = "24";
 
-// Une tâche par défaut
 taches.add({
 'type': null,
 'categorie': null,
@@ -75,9 +61,7 @@ taches.add({
 });
 }
 
-// =====================================================
-// DISPOSE
-// =====================================================
+
 
 @override
 void dispose() {
@@ -90,9 +74,6 @@ controller.dispose();
 super.dispose();
 }
 
-// =====================================================
-// MESSAGE
-// =====================================================
 
 void afficherMessage(String message) {
 ScaffoldMessenger.of(context).showSnackBar(
@@ -107,9 +88,7 @@ fontSize: 14,
 );
 }
 
-// =====================================================
-// AJOUTER TACHE
-// =====================================================
+
 
 void ajouterTache() {
 setState(() {
@@ -121,15 +100,12 @@ taches.add({
 });
 }
 
-// =====================================================
-// SUPPRIMER TACHE
-// =====================================================
+
 
 void supprimerTache(int index) {
 setState(() {
 taches.removeAt(index);
 
-// Garder au moins une tâche
 if (taches.isEmpty) {
 taches.add({
 'type': null,
@@ -140,14 +116,10 @@ taches.add({
 });
 }
 
-// =====================================================
-// ENREGISTRER
-// =====================================================
+
 
 Future<void> enregistrerDefi() async {
-// ===================================================
-// TITRE
-// ===================================================
+
 
 if (titreController.text.trim().isEmpty) {
 afficherMessage(
@@ -157,9 +129,7 @@ afficherMessage(
 return;
 }
 
-// ===================================================
-// DESCRIPTION
-// ===================================================
+
 
 if (descriptionController.text.trim().isEmpty) {
 afficherMessage(
@@ -169,9 +139,7 @@ afficherMessage(
 return;
 }
 
-// ===================================================
-// DUREE
-// ===================================================
+
 
 final int? duree = int.tryParse(
 dureeController.text.trim(),
@@ -185,28 +153,21 @@ afficherMessage(
 return;
 }
 
-// ===================================================
-// LISTES
-// ===================================================
 
 List<TacheDefi> activites = [];
 List<TacheDefi> quiz = [];
 
-// ===================================================
-// PARCOURIR LES TACHES
-// ===================================================
+
 
 for (int i = 0; i < taches.length; i++) {
 final tache = taches[i];
 
-// TYPE
 String? type;
 
 if (tache['type'] != null) {
 type = tache['type'].toString();
 }
 
-// CATEGORIE
 String? categorieId;
 
 if (tache['categorie'] != null) {
@@ -214,13 +175,11 @@ categorieId =
 tache['categorie'].toString();
 }
 
-// NOMBRE
 int nombre = int.tryParse(
 tache['nombre']?.toString() ?? '1',
 ) ??
 1;
 
-// VERIFIER TYPE
 if (type == null || type.isEmpty) {
 afficherMessage(
 "Veuillez sélectionner le type de la tâche ${i + 1}",
@@ -229,7 +188,6 @@ afficherMessage(
 return;
 }
 
-// VERIFIER CATEGORIE
 if (categorieId == null ||
 categorieId.isEmpty) {
 afficherMessage(
@@ -239,7 +197,6 @@ afficherMessage(
 return;
 }
 
-// VERIFIER NOMBRE
 if (nombre <= 0) {
 afficherMessage(
 "Le nombre doit être supérieur à 0",
@@ -248,13 +205,11 @@ afficherMessage(
 return;
 }
 
-// CREER TACHE
 final nouvelleTache = TacheDefi(
 categorieId: categorieId,
 nombre: nombre,
 );
 
-// ACTIVITE
 if (type == "activité" ||
 type == "activite") {
 activites.add(
@@ -262,7 +217,6 @@ nouvelleTache,
 );
 }
 
-// QUIZ
 else if (type == "quiz") {
 quiz.add(
 nouvelleTache,
@@ -270,9 +224,7 @@ nouvelleTache,
 }
 }
 
-// ===================================================
-// CREER LE DEFI
-// ===================================================
+
 
 final Defi defi = Defi(
 id: '',
@@ -286,9 +238,7 @@ activites: activites,
 quiz: quiz,
 );
 
-// ===================================================
-// ENREGISTRER
-// ===================================================
+
 
 try {
 await controller.ajouterDefi(
@@ -326,23 +276,17 @@ afficherMessage(
 }
 }
 
-// =====================================================
-// BUILD
-// =====================================================
+
 
 @override
 Widget build(BuildContext context) {
 return Scaffold(
-// =================================================
-// FOND
-// =================================================
+
 
 backgroundColor:
 const Color(0xFFFAFFFB),
 
-// =================================================
-// APP BAR
-// =================================================
+
 
 appBar: AppBar(
 backgroundColor:
@@ -375,18 +319,14 @@ fontWeight: FontWeight.bold,
 ),
 ),
 
-// =================================================
-// BODY
-// =================================================
+
 
 body: SafeArea(
 child: AnimatedBuilder(
 animation: controller,
 
 builder: (context, child) {
-// ===========================================
-// CHARGEMENT
-// ===========================================
+
 
 if (controller.isLoading &&
 controller.categories.isEmpty) {
@@ -408,9 +348,7 @@ crossAxisAlignment:
 CrossAxisAlignment.start,
 
 children: [
-// =====================================
-// IMAGE AU MILIEU
-// =====================================
+
 
 Center(
 child: Image.asset(
@@ -428,9 +366,6 @@ const SizedBox(
 height: 20,
 ),
 
-// =====================================
-// TITRE
-// =====================================
 
 const Text(
 "Titre du défi",
@@ -460,9 +395,7 @@ const SizedBox(
 height: 20,
 ),
 
-// =====================================
-// DESCRIPTION
-// =====================================
+
 
 const Text(
 "Description du défi",
@@ -494,9 +427,7 @@ const SizedBox(
 height: 22,
 ),
 
-// =====================================
-// LISTE DES TACHES
-// =====================================
+
 
 Container(
 width: double.infinity,
@@ -526,7 +457,6 @@ crossAxisAlignment:
 CrossAxisAlignment.start,
 
 children: [
-// TITRE + AJOUTER
 Row(
 mainAxisAlignment:
 MainAxisAlignment
@@ -647,7 +577,6 @@ null;
 });
 },
 
-// CATEGORIE
 onCategorieChanged:
 (value) {
 setState(() {
@@ -684,9 +613,7 @@ const SizedBox(
 height: 22,
 ),
 
-// =====================================
-// DUREE DE VALIDITE
-// =====================================
+
 
 Container(
 width: double.infinity,
@@ -860,9 +787,7 @@ const SizedBox(
 height: 25,
 ),
 
-// =====================================
-// BOUTON PUBLIER
-// =====================================
+
 
 Center(
 child: SizedBox(

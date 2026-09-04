@@ -18,12 +18,12 @@ extension AsyncValueUi on AsyncValue {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          icon: Icon(Icons.error, color: Color(0xFF680C07), size: 40),
+          icon: Icon(Icons.error, color: context.badgeRed, size: 40),
           title: Text(
             message,
             textAlign: TextAlign.center,
             style: context.normalTextStyle.copyWith(
-              color: const Color(0xFF680C07),
+              color: context.badgeRed,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -33,7 +33,7 @@ extension AsyncValueUi on AsyncValue {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF680C07),
+                    backgroundColor: context.badgeRed,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -71,7 +71,12 @@ extension AsyncValueUi on AsyncValue {
       barrierDismissible: false, // Oblige l'utilisateur à cliquer sur le bouton
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        icon: Icon(Icons.check_circle_outline, color: Colors.green, size: 54),
+        backgroundColor: context.bgColor,
+        icon: Icon(
+          Icons.check_circle_outline,
+          color: context.primary,
+          size: 54,
+        ),
         title: Text(
           message,
           textAlign: TextAlign.center,
@@ -86,7 +91,7 @@ extension AsyncValueUi on AsyncValue {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: context.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -128,6 +133,8 @@ extension AsyncValueUi on AsyncValue {
           return 'L’adresse email n’est pas valide.';
         case 'weak-password':
           return 'Le mot de passe choisi est trop faible.';
+        case 'invalid-credential':
+             return "mot de passe ou email incorrect!";
         default:
           return error.message ?? 'Une erreur d’authentification est survenue.';
       }
