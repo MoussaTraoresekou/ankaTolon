@@ -132,6 +132,7 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
                   },
                 ),
               ),
+            
             ],
           ),
         ),

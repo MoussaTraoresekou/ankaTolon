@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tolon/controller/profil/profil_controller.dart';
+import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/pages/profil/widget/bouton_commandes.dart';
 import 'package:tolon/pages/profil/widget/bouton_deconnexion.dart';
@@ -149,12 +151,13 @@ class _ProfilPageState extends ConsumerState<ProfilPage> {
                     const SizedBox(height: 20),
 
                     BoutonMesCommandes(
-                      onPressed: () => {},
-                      // onPressed: () async {
-                      //   await ref
-                      //       .read(profilControllerProvider.notifier)
-                      //       .deconnexion();
-                      // },
+                      onPressed: () => {
+                        context.pushNamed(
+                          AppRoutes
+                              .orders
+                              .name,
+                        ) 
+                      },
                     ),
 
                     const SizedBox(height: 20),

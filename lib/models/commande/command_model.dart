@@ -78,4 +78,8 @@ class Commande {
       jouets: json['jouets'] is List ? json['jouets'] as List<CommandeItem> : [],
     );
   }
+  @override
+  String toString(){
+       return this.adresse ;
+  }
 }
