@@ -174,13 +174,15 @@ if (!mounted) return;
 
 ScaffoldMessenger.of(context)
     .showSnackBar(
-
-const SnackBar(
-
-content: Text(
-"Défi supprimé avec succès",
-),
-),
+  const SnackBar(
+    content: Text(
+      "Défi supprimé avec succès",
+      style: TextStyle(
+        color: Colors.white,
+      ),
+    ),
+    backgroundColor: Colors.green,
+  ),
 );
 
 

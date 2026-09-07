@@ -75,17 +75,24 @@ super.dispose();
 }
 
 
-void afficherMessage(String message) {
-ScaffoldMessenger.of(context).showSnackBar(
-SnackBar(
-content: Text(
-message,
-style: const TextStyle(
-fontSize: 14,
-),
-),
-),
-);
+void afficherMessage(
+    String message, {
+      bool succes = false,
+    }) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+      ),
+      backgroundColor: succes
+          ? Colors.green
+          : Colors.red,
+    ),
+  );
 }
 
 
@@ -256,15 +263,16 @@ controller.erreur!,
 
 return;
 }
-
 afficherMessage(
-"Défi ajouté avec succès",
+  "Défi ajouté avec succès",
+  succes: true,
 );
 
 Navigator.pop(
-context,
-true,
+  context,
+  true,
 );
+
 } catch (e) {
 if (!mounted) {
 return;

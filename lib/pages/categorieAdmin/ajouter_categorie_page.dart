@@ -28,13 +28,11 @@ class _AjouterCategoriePageState
 
   // Ajouter une catégorie
   Future<void> ajouterCategorie() async {
-
     if (!formKey.currentState!.validate()) {
       return;
     }
 
     try {
-
       await controller.ajouterCategorie(
         nomController.text.trim(),
         typeSelectionne!,
@@ -44,27 +42,36 @@ class _AjouterCategoriePageState
         return;
       }
 
+      // Message de succès en vert
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
             'Catégorie ajoutée avec succès',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: Colors.green,
         ),
       );
 
       Navigator.pop(context);
 
     } catch (e) {
-
       if (!mounted) {
         return;
       }
 
+      // Message d'erreur en rouge
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             'Erreur : $e',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: Colors.red,
         ),
       );
     }
