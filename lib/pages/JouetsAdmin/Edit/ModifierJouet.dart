@@ -72,9 +72,7 @@ class _ModifierJouetPageState
       repository: JouetRepository(),
     );
 
-    // ============================
-    // REMPLIR LES CHAMPS
-    // ============================
+
 
     nomController.text =
         widget.jouet.nom;
@@ -102,9 +100,7 @@ class _ModifierJouetPageState
       widget.jouet.images,
     );
 
-    // ============================
-    // BENEFICES
-    // ============================
+
 
     for (
     String benefice
@@ -126,9 +122,6 @@ class _ModifierJouetPageState
     chargerCategories();
   }
 
-  // ============================
-  // CATEGORIES
-  // ============================
 
   Future<void> chargerCategories() async {
     try {
@@ -155,9 +148,6 @@ class _ModifierJouetPageState
     }
   }
 
-  // ============================
-  // BENEFICE
-  // ============================
 
   void ajouterChampBenefice() {
     setState(() {
@@ -179,9 +169,6 @@ class _ModifierJouetPageState
     });
   }
 
-  // ============================
-  // IMAGES
-  // ============================
 
   Future<void> selectionnerImages() async {
     await controller.selectionnerImages();
@@ -205,9 +192,6 @@ class _ModifierJouetPageState
     });
   }
 
-  // ============================
-  // MODIFIER
-  // ============================
 
   Future<void> modifierJouet() async {
     if (!formKey.currentState!.validate()) {
@@ -316,9 +300,7 @@ class _ModifierJouetPageState
     }
   }
 
-  // ============================
-  // MESSAGE
-  // ============================
+
 
   void afficherMessage(
       String message,
@@ -331,9 +313,7 @@ class _ModifierJouetPageState
     );
   }
 
-  // ============================
-  // BUILD
-  // ============================
+
 
   @override
   Widget build(BuildContext context) {
@@ -357,9 +337,7 @@ class _ModifierJouetPageState
               CrossAxisAlignment.stretch,
 
               children: [
-                // ============================
-                // HEADER
-                // ============================
+
 
                 Row(
                   children: [
@@ -421,9 +399,7 @@ class _ModifierJouetPageState
 
                 const SizedBox(height: 12),
 
-                // ============================
-                // CONTENU
-                // ============================
+
 
                 Container(
                   width: double.infinity,
@@ -440,7 +416,7 @@ class _ModifierJouetPageState
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black
-                            .withOpacity(0.10),
+                            .withValues(alpha: 0.10),
 
                         blurRadius: 8,
 
@@ -467,9 +443,7 @@ class _ModifierJouetPageState
 
                       const SizedBox(height: 15),
 
-                      // ============================
-                      // INFORMATIONS
-                      // ============================
+
 
                       if (chargementCategories)
                         const Center(
@@ -513,9 +487,7 @@ class _ModifierJouetPageState
 
                       const SizedBox(height: 20),
 
-                      // ============================
-                      // IMAGES
-                      // ============================
+
 
                       ModifierImages(
                         anciennesImages:
@@ -537,9 +509,7 @@ class _ModifierJouetPageState
 
                       const SizedBox(height: 20),
 
-                      // ============================
-                      // BENEFICES
-                      // ============================
+
 
                       ModifierBenefices(
                         controllers:
@@ -557,9 +527,7 @@ class _ModifierJouetPageState
 
                 const SizedBox(height: 15),
 
-                // ============================
-                // BOUTONS
-                // ============================
+
 
                 Row(
                   children: [

@@ -38,6 +38,6 @@ final userDisplayNameProvider = Provider<String>((ref) {
       return 'Utilisateur';
     },
     loading: () => '...',
-    error: (_, __) => 'Utilisateur',
+    error: (_, _) => 'Utilisateur',
   );
 });

@@ -46,9 +46,7 @@ class DefiCard extends StatelessWidget {
 
           children: [
 
-            // =================================================
-            // NOM DU DEFI
-            // =================================================
+
 
             Text(
 
@@ -70,9 +68,7 @@ class DefiCard extends StatelessWidget {
               height: 9,
             ),
 
-            // =================================================
-            // DESCRIPTION
-            // =================================================
+
 
             Text(
 
@@ -98,9 +94,7 @@ class DefiCard extends StatelessWidget {
               height: 18,
             ),
 
-            // =================================================
-            // INFORMATIONS
-            // =================================================
+
 
             Container(
 
@@ -130,9 +124,7 @@ class DefiCard extends StatelessWidget {
 
                 children: [
 
-                  // =========================================
-                  // AGE
-                  // =========================================
+
 
                   Expanded(
 
@@ -145,9 +137,7 @@ class DefiCard extends StatelessWidget {
                     ),
                   ),
 
-                  // =========================================
-                  // ACTIVITES
-                  // =========================================
+
 
                   Expanded(
 
@@ -161,9 +151,6 @@ class DefiCard extends StatelessWidget {
                     ),
                   ),
 
-                  // =========================================
-                  // QUIZ
-                  // =========================================
 
                   Expanded(
 
@@ -177,9 +164,7 @@ class DefiCard extends StatelessWidget {
                     ),
                   ),
 
-                  // =========================================
-                  // DUREE
-                  // =========================================
+
 
                   Expanded(
 
@@ -200,9 +185,6 @@ class DefiCard extends StatelessWidget {
               height: 18,
             ),
 
-            // =================================================
-            // SEPARATION
-            // =================================================
 
             Divider(
               color:
@@ -213,9 +195,7 @@ class DefiCard extends StatelessWidget {
               height: 5,
             ),
 
-            // =================================================
-            // BOUTONS
-            // =================================================
+
 
             Row(
 
@@ -224,9 +204,7 @@ class DefiCard extends StatelessWidget {
 
               children: [
 
-                // =============================================
-                // MODIFIER
-                // =============================================
+
 
                 TextButton(
 
@@ -251,9 +229,6 @@ class DefiCard extends StatelessWidget {
                   width: 5,
                 ),
 
-                // =============================================
-                // SUPPRIMER
-                // =============================================
 
                 TextButton(
 
@@ -286,9 +261,6 @@ class DefiCard extends StatelessWidget {
 }
 
 
-// =====================================================
-// WIDGET POUR UNE INFORMATION
-// =====================================================
 
 class _Information
     extends StatelessWidget {
@@ -315,9 +287,8 @@ class _Information
 
       children: [
 
-        // =================================================
-        // LABEL
-        // =================================================
+
+
 
         Text(
 
@@ -339,9 +310,7 @@ class _Information
           height: 5,
         ),
 
-        // =================================================
-        // VALEUR
-        // =================================================
+
 
         Text(
 

@@ -181,7 +181,7 @@ class _ChoisirAvatarScreenState extends ConsumerState<ChoisirAvatarScreen> {
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: double.infinity,
-                                errorBuilder: (_, __, ___) => Container(
+                                errorBuilder: (_, _, _) => Container(
                                   color: Colors.grey.shade300,
                                   child: Icon(Icons.person, size: 40),
                                 ),

@@ -92,9 +92,7 @@ class _AjouterCategoriePageState
               child: Column(
                 children: [
 
-                  // =========================
-                  // HEADER
-                  // =========================
+
 
                   Row(
                     children: [
@@ -164,10 +162,6 @@ class _AjouterCategoriePageState
                     height: 8,
                   ),
 
-                  // =========================
-                  // FORMULAIRE
-                  // =========================
-
                   Container(
                     width: double.infinity,
 
@@ -183,7 +177,7 @@ class _AjouterCategoriePageState
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black
-                              .withOpacity(0.15),
+                              .withValues(alpha: 0.15),
 
                           blurRadius: 7,
 
@@ -213,9 +207,7 @@ class _AjouterCategoriePageState
                           height: 15,
                         ),
 
-                        // =========================
-                        // NOM
-                        // =========================
+
 
                         TextFormField(
                           controller:
@@ -250,12 +242,10 @@ class _AjouterCategoriePageState
                           height: 15,
                         ),
 
-                        // =========================
-                        // TYPE
-                        // =========================
+
 
                         DropdownButtonFormField<String>(
-                          value: typeSelectionne,
+                          initialValue: typeSelectionne,
 
                           decoration:
                           const InputDecoration(
@@ -312,9 +302,7 @@ class _AjouterCategoriePageState
                     height: 14,
                   ),
 
-                  // =========================
-                  // BOUTONS
-                  // =========================
+
 
                   Row(
                     mainAxisAlignment:

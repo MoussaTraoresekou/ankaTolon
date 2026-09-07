@@ -18,8 +18,10 @@ class BoutonFavori extends ConsumerWidget {
       },
       child: Icon(
         isFavori ? Icons.favorite : Icons.favorite_border,
-        color: const Color.fromARGB(255, 214, 13, 13),
-        size: 22,
+        color: isFavori
+            ? const Color.fromARGB(255, 231, 81, 81)
+            : Colors.grey,
+        size: 22,  
       ),
     );
   }

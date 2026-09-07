@@ -226,13 +226,12 @@ class _EnfantProfilScreenState extends State<EnfantProfilScreen> {
                   color: Color(0xFF66BB6A),
                 ),
               ),
-              if (imagePath != null)
-                Image.asset(
-                  imagePath,
-                  width: 38,
-                  height: 38,
-                  fit: BoxFit.contain,
-                ),
+              Image.asset(
+                imagePath,
+                width: 38,
+                height: 38,
+                fit: BoxFit.contain,
+              ),
             ],
           ),
           const SizedBox(height: 4),

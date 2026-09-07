@@ -9,9 +9,6 @@ class DefiRepository {
       FirebaseFirestore.instance;
 
 
-  // =====================================================
-  // AJOUTER
-  // =====================================================
 
   Future<String> ajouterDefi(
       Defi defi) async {
@@ -27,9 +24,6 @@ class DefiRepository {
   }
 
 
-  // =====================================================
-  // RECUPERER
-  // =====================================================
 
   Future<List<Defi>> recupererDefis() async {
 
@@ -49,9 +43,6 @@ class DefiRepository {
   }
 
 
-  // =====================================================
-  // MODIFIER
-  // =====================================================
 
   Future<void> modifierDefi(
       Defi defi) async {
@@ -65,9 +56,7 @@ class DefiRepository {
   }
 
 
-  // =====================================================
-  // SUPPRIMER
-  // =====================================================
+
 
   Future<void> supprimerDefi(
       String id) async {

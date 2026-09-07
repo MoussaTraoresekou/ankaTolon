@@ -13,6 +13,7 @@ import 'package:tolon/models/enfant/enfant_modal.dart';
 import 'package:tolon/models/avis/avis_model.dart';
 import 'package:tolon/models/jouets/jouet_models.dart';
 import 'package:tolon/models/admin_model/tutoriel_model.dart';
+import 'package:tolon/pages/Commande/commandes_page.dart';
 import 'package:tolon/pages/DefisAdmin/liste_defis_page.dart';
 
 import 'package:tolon/pages/Login/loginscreen.dart';
@@ -31,6 +32,7 @@ import 'package:tolon/pages/enfant/espace_enfant_screen.dart';
 import 'package:tolon/pages/enfant/espace_enfant_tuto.dart';
 
 import 'package:tolon/pages/favoris/favoris_page.dart';
+import 'package:tolon/pages/jeux/accueil_jeux.dart';
 
 import 'package:tolon/pages/jouets/JouetsListNotes.dart';
 import 'package:tolon/pages/jouets/jouetDetail.dart';
@@ -112,6 +114,8 @@ enum AppRoutes {
   detailactive,
   espaceEnfantTuto,
   TutorielDetail,
+  TutorielParents,
+  jeux
 }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -642,6 +646,21 @@ GoRouter appRouter(Ref ref) {
           return TutorielDetailScreen(tutoriel: tutoriel);
         },
       ),
+      GoRoute(
+        path: '/jeux',
+        name: AppRoutes.jeux.name,
+        builder: (context, state) {
+          //final enfant = state.extra as EnfantModel;
+          return GamesHomeScreen();
+        },
+      ),
+      GoRoute(
+  path: '/orders',
+  name: AppRoutes.orders.name,
+  builder: (context, state) {
+    return const CommandesPage();
+  },
+),
     ],
   );
 }

@@ -26,22 +26,14 @@ _AjouterJouetPageState();
 class _AjouterJouetPageState
 extends State<AjouterJouetPage> {
 
-// =====================================================
-// CONTROLLER
-// =====================================================
-
 late JouetController controller;
 
-// =====================================================
-// FORMULAIRE
-// =====================================================
+
 
 final GlobalKey<FormState> formKey =
 GlobalKey<FormState>();
 
-// =====================================================
-// CHAMPS
-// =====================================================
+
 
 final TextEditingController nomController =
 TextEditingController();
@@ -61,25 +53,18 @@ TextEditingController();
 final TextEditingController descriptionController =
 TextEditingController();
 
-// =====================================================
-// CATEGORIE
-// =====================================================
 
 String? categorieIdSelectionnee;
 
 List<Categorie> categories = [];
 
-// =====================================================
-// BENEFICES
-// =====================================================
+
 
 List<TextEditingController> beneficesControllers = [
 TextEditingController(),
 ];
 
-// =====================================================
-// INIT STATE
-// =====================================================
+
 
 @override
 void initState() {
@@ -91,10 +76,6 @@ repository: JouetRepository(),
 
 chargerCategories();
 }
-
-// =====================================================
-// CHARGER LES CATEGORIES
-// =====================================================
 
 Future<void> chargerCategories() async {
 
@@ -113,9 +94,7 @@ categories = resultat;
 });
 }
 
-// =====================================================
-// AJOUTER BENEFICE
-// =====================================================
+
 
 void ajouterChampBenefice() {
 
@@ -127,9 +106,7 @@ TextEditingController(),
 });
 }
 
-// =====================================================
-// SUPPRIMER BENEFICE
-// =====================================================
+
 
 void supprimerBenefice(int index) {
 
@@ -141,9 +118,7 @@ beneficesControllers.removeAt(index);
 });
 }
 
-// =====================================================
-// SELECTIONNER IMAGES
-// =====================================================
+
 
 Future<void> selectionnerImages() async {
 
@@ -156,9 +131,7 @@ return;
 setState(() {});
 }
 
-// =====================================================
-// SUPPRIMER IMAGE
-// =====================================================
+
 
 void supprimerImage(int index) {
 
@@ -168,23 +141,16 @@ controller.supprimerImage(index);
 });
 }
 
-// =====================================================
-// AJOUTER JOUET
-// =====================================================
+
 
 Future<void> ajouterJouet() async {
 
-// -----------------------------------------------------
-// VALIDATION FORMULAIRE
-// -----------------------------------------------------
 
 if (!formKey.currentState!.validate()) {
 return;
 }
 
-// -----------------------------------------------------
-// CATEGORIE
-// -----------------------------------------------------
+
 
 if (categorieIdSelectionnee == null) {
 
@@ -195,9 +161,6 @@ afficherMessage(
 return;
 }
 
-// -----------------------------------------------------
-// IMAGE
-// -----------------------------------------------------
 
 if (controller.imagesSelectionnees.isEmpty) {
 
@@ -208,9 +171,6 @@ afficherMessage(
 return;
 }
 
-// -----------------------------------------------------
-// RECUPERATION DES VALEURS
-// -----------------------------------------------------
 
 final int ageMinimum =
 int.parse(
@@ -232,9 +192,6 @@ int.parse(
 stockController.text.trim(),
 );
 
-// -----------------------------------------------------
-// BENEFICES
-// -----------------------------------------------------
 
 List<String> benefices = [];
 
@@ -255,9 +212,7 @@ beneficeController.text.trim(),
 }
 }
 
-// -----------------------------------------------------
-// VERIFIER BENEFICES
-// -----------------------------------------------------
+
 
 if (benefices.isEmpty) {
 
@@ -268,9 +223,6 @@ afficherMessage(
 return;
 }
 
-// -----------------------------------------------------
-// AJOUTER
-// -----------------------------------------------------
 
 try {
 
@@ -323,9 +275,6 @@ afficherMessage(
 }
 }
 
-// =====================================================
-// MESSAGE
-// =====================================================
 
 void afficherMessage(String message) {
 
@@ -337,9 +286,6 @@ content: Text(message),
 );
 }
 
-// =====================================================
-// BUILD
-// =====================================================
 
 @override
 Widget build(BuildContext context) {
@@ -355,16 +301,10 @@ child: LayoutBuilder(
 
 builder: (context, constraints) {
 
-// =================================================
-// LARGEUR DE L'ECRAN
-// =================================================
 
 final double largeurEcran =
 constraints.maxWidth;
 
-// =================================================
-// MARGE ADAPTEE
-// =================================================
 
 double margeHorizontale;
 
@@ -381,9 +321,6 @@ margeHorizontale = 25;
 margeHorizontale = 40;
 }
 
-// =================================================
-// TAILLE IMAGE HEADER
-// =================================================
 
 double largeurImage;
 
@@ -417,9 +354,6 @@ child: Column(
 
 children: [
 
-// =================================================
-// HEADER
-// =================================================
 
 Row(
 
@@ -428,9 +362,6 @@ CrossAxisAlignment.center,
 
 children: [
 
-// -------------------------------------------------
-// RETOUR
-// -------------------------------------------------
 
 IconButton(
 
@@ -458,9 +389,6 @@ const SizedBox(
 width: 5,
 ),
 
-// -------------------------------------------------
-// TITRE
-// -------------------------------------------------
 
 Expanded(
 
@@ -518,9 +446,7 @@ TextOverflow.ellipsis,
 ),
 ),
 
-// -------------------------------------------------
-// IMAGE
-// -------------------------------------------------
+
 
 SizedBox(
 
@@ -545,10 +471,6 @@ BoxFit.contain,
 const SizedBox(
 height: 12,
 ),
-
-// =================================================
-// CONTENU
-// =================================================
 
 Container(
 
@@ -579,8 +501,8 @@ BoxShadow(
 
 color:
 Colors.black
-    .withOpacity(
-0.15,
+    .withValues(
+alpha: 0.15,
 ),
 
 blurRadius:
@@ -602,10 +524,6 @@ CrossAxisAlignment.start,
 
 children: [
 
-// =================================================
-// TITRE
-// =================================================
-
 Text(
 
 'Informations du jouet',
@@ -626,10 +544,6 @@ largeurEcran < 450
 const SizedBox(
 height: 12,
 ),
-
-// =================================================
-// INFORMATIONS
-// =================================================
 
 InformationsJouet(
 
@@ -672,9 +586,6 @@ const SizedBox(
 height: 15,
 ),
 
-// =================================================
-// IMAGES
-// =================================================
 
 ImagesJouet(
 
@@ -693,9 +604,6 @@ const SizedBox(
 height: 15,
 ),
 
-// =================================================
-// BENEFICES
-// =================================================
 
 BeneficesJouet(
 
@@ -716,17 +624,11 @@ const SizedBox(
 height: 15,
 ),
 
-// =================================================
-// BOUTONS
-// =================================================
 
 Row(
 
 children: [
 
-// -------------------------------------------------
-// ANNULER
-// -------------------------------------------------
 
 Expanded(
 
@@ -781,9 +683,6 @@ const SizedBox(
 width: 12,
 ),
 
-// -------------------------------------------------
-// AJOUTER
-// -------------------------------------------------
 
 Expanded(
 
@@ -850,9 +749,6 @@ height: 20,
 );
 }
 
-// =====================================================
-// DISPOSE
-// =====================================================
 
 @override
 void dispose() {

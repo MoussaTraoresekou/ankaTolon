@@ -135,7 +135,7 @@ class SuccessPage extends StatelessWidget {
     String label,
     String value, {
     bool isOrange = false,
-    context,
+    required BuildContext context,
   }) {
     return Row(
       children: [

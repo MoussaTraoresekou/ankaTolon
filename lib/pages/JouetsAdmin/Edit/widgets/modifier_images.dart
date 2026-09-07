@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tolon/cor/theme/app_theme.dart';
 
 class ModifierImages extends StatelessWidget {
   // Anciennes images venant de Firestore

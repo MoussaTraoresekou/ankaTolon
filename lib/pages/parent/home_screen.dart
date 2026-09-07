@@ -300,12 +300,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               backgroundColor: avatarBgColor,
               child: ClipOval(
                 child: avatarUrl != null && avatarUrl.isNotEmpty
-                    ? Image.asset(
+                    ? Image.network(
                         avatarUrl,
                         width: 56,
                         height: 56,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Icon(
+                        errorBuilder: (_, _, _) => Icon(
                           Icons.person,
                           size: 30,
                           color: context.textInverse,
@@ -669,7 +669,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ? Image.network(
                         imageUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) =>
+                        errorBuilder: (_, _, _) =>
                             Icon(Icons.extension, color: context.primary),
                       )
                     : Icon(Icons.extension, color: context.primary),

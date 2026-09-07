@@ -255,7 +255,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                                 width: double.infinity,
                                 height: double.infinity,
                                 alignment: Alignment.center,
-                                errorBuilder: (_, __, ___) => Center(
+                                errorBuilder: (_, _, _) => Center(
                                   child: Icon(
                                     Icons.image_not_supported_outlined,
                                     size: 64,
@@ -317,7 +317,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: jouet.image.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    separatorBuilder: (_, _) => const SizedBox(width: 10),
                     itemBuilder: (context, index) {
                       final selected = _selectedImage == index;
                       return GestureDetector(
@@ -357,7 +357,7 @@ class _JouetdetailState extends ConsumerState<Jouetdetail> {
                             child: Image.network(
                               jouet.image[index],
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Icon(
+                              errorBuilder: (_, _, _) => Icon(
                                 Icons.image_not_supported,
                                 size: 20,
                                 color: context.textMuted,
