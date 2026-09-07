@@ -290,7 +290,11 @@ class _ModifierJouetPageState
         'Jouet modifié avec succès',
       );
 
-      Navigator.pop(context);
+      Navigator.pop(
+        context,
+        true,
+      );
+
     } catch (e) {
       if (!mounted) return;
 

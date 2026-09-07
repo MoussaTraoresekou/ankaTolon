@@ -258,10 +258,12 @@ return;
 }
 
 afficherMessage(
-'Jouet ajouté avec succès',
+  'Jouet ajouté avec succès',
+  succes: true,
 );
 
 Navigator.pop(context);
+
 
 } catch (e) {
 
@@ -276,14 +278,23 @@ afficherMessage(
 }
 
 
-void afficherMessage(String message) {
-
-ScaffoldMessenger.of(context).showSnackBar(
-
-SnackBar(
-content: Text(message),
-),
-);
+void afficherMessage(
+    String message, {
+      bool succes = false,
+    }) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: succes
+          ? Colors.green
+          : Colors.red,
+    ),
+  );
 }
 
 

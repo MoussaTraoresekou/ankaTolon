@@ -64,10 +64,13 @@ class _ModifierCategoriePageState
         const SnackBar(
           content: Text(
             'Catégorie modifiée avec succès',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: Colors.green,
         ),
       );
-
       Navigator.pop(context);
 
     } catch (e) {

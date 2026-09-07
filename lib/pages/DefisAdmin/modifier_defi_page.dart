@@ -132,11 +132,21 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
   }
 
 
-  void afficherMessage(String message) {
-
+  void afficherMessage(
+      String message, {
+        bool succes = false,
+      }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: succes
+            ? Colors.green
+            : Colors.red,
       ),
     );
   }
@@ -402,13 +412,9 @@ class _ModifierDefiPageState extends State<ModifierDefiPage> {
       }
 
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Défi modifié avec succès",
-          ),
-        ),
+      afficherMessage(
+        "Défi modifié avec succès",
+        succes: true,
       );
 
       Navigator.pop(

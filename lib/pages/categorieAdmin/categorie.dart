@@ -101,14 +101,20 @@ class _CategoriePageState
 
   // message à  affiche quand il y'a message de succes ou d'erreur
   void afficherMessage(
-      String message,
-      ) {
-
+      String message, {
+        bool succes = false,
+      }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           message,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
         ),
+        backgroundColor: succes
+            ? Colors.green
+            : Colors.red,
       ),
     );
   }
