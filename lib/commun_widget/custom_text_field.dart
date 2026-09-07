@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.keyboardType = TextInputType.text,
     this.inputFormatters,
+    this.maxLines = 1,
   });
 
   final String label;
@@ -29,6 +30,8 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,7 @@ class CustomTextField extends StatelessWidget {
           validator: validator,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
+          maxLines: isPassword ? 1 : maxLines,
 
           style: context.normalTextStyle.copyWith(color: context.textMuted),
 

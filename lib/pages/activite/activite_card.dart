@@ -13,6 +13,8 @@ class ActiviteCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: 150,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: context.boxSurfaceLight,
           borderRadius: BorderRadius.circular(16),
@@ -24,19 +26,18 @@ class ActiviteCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              flex: 5,
+            SizedBox(
+              width: 135,
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(16),
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(16),
                 ),
                 child: activite.image != null && activite.image!.isNotEmpty
                     ? Image.network(
                         activite.image!,
-                        width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return _imagePlaceholder(context: context);
@@ -45,9 +46,7 @@ class ActiviteCard extends StatelessWidget {
                     : _imagePlaceholder(context: context),
               ),
             ),
-
             Expanded(
-              flex: 4,
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -58,25 +57,30 @@ class ActiviteCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: context.textDark,
                       ),
                     ),
 
                     const SizedBox(height: 6),
-
-                    Text(
-                      activite.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12, color: context.textMuted),
+                    Expanded(
+                      child: Text(
+                        activite.description,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          height: 1.4,
+                          color: context.textMuted,
+                        ),
+                      ),
                     ),
 
-                    const Spacer(),
-
+                    const SizedBox(height: 8),
                     Row(
                       children: [
+                        // Durée
                         Icon(
                           Icons.timer_outlined,
                           size: 16,
@@ -89,18 +93,30 @@ class ActiviteCard extends StatelessWidget {
                           '${activite.dureeMinutes} min',
                           style: TextStyle(
                             fontSize: 12,
+                            fontWeight: FontWeight.w500,
                             color: context.textMuted,
                           ),
                         ),
 
                         const Spacer(),
 
-                        Text(
-                          '${activite.ageMin}-${activite.ageMax} ans',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: context.textMuted,
+                        // Âge
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: context.avatarOrangeBg,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${activite.ageMin}-${activite.ageMax} ans',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: context.primaryOrange,
+                            ),
                           ),
                         ),
                       ],
@@ -118,6 +134,7 @@ class ActiviteCard extends StatelessWidget {
   Widget _imagePlaceholder({required BuildContext context}) {
     return Container(
       width: double.infinity,
+      height: double.infinity,
       color: context.boxSurfaceLight,
       child: Center(
         child: Icon(Icons.image_outlined, size: 45, color: context.textMuted),
