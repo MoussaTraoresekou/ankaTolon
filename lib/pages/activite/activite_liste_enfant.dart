@@ -27,10 +27,13 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
 
+    // Calcul de l'âge de l'enfant
     final age = _calculerAge(widget.enfant.naissance);
 
+    // Récupération des activités correspondant à l'âge
     final activitesAsync = ref.watch(activitesParAgeStreamProvider(age));
 
+    // Récupération des catégories
     final categoriesAsync = ref.watch(listeCategoryByTypeProvider('activite'));
 
     return Scaffold(
@@ -47,6 +50,7 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(context),
+
               const SizedBox(height: 20),
 
               Text(
@@ -88,8 +92,10 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
                   },
 
                   data: (activites) {
+                    // Filtrer les activités selon la catégorie sélectionnée
                     final activitesFiltrees = _filtrerActivites(activites);
 
+                    // Aucune activité
                     if (activitesFiltrees.isEmpty) {
                       return Center(
                         child: Text(
@@ -102,30 +108,31 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
                       );
                     }
 
-                    return GridView.builder(
+                    return ListView.builder(
                       padding: const EdgeInsets.only(bottom: 20),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 0.72,
-                          ),
+
+                      // Une activité après l'autre
                       itemCount: activitesFiltrees.length,
+
                       itemBuilder: (context, index) {
                         final activite = activitesFiltrees[index];
 
-                        return ActiviteCard(
-                          activite: activite,
-                          onTap: () {
-                            context.pushNamed(
-                              AppRoutes.detailactive.name,
-                              extra: {
-                                'activite': activite,
-                                'enfant': widget.enfant,
-                              },
-                            );
-                          },
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: ActiviteCard(
+                            activite: activite,
+
+                            // Navigation vers le détail
+                            onTap: () {
+                              context.pushNamed(
+                                AppRoutes.detailactive.name,
+                                extra: {
+                                  'activite': activite,
+                                  'enfant': widget.enfant,
+                                },
+                              );
+                            },
+                          ),
                         );
                       },
                     );
@@ -160,6 +167,7 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
           ),
         ),
 
+        // Permet de garder le titre centré
         const SizedBox(width: 48),
       ],
     );
@@ -180,10 +188,14 @@ class _ActivitesPageState extends ConsumerState<ActivitesPage> {
   }
 
   List<ActiviteModel> _filtrerActivites(List<ActiviteModel> activites) {
+    // Aucune catégorie sélectionnée
+    // => afficher toutes les activités
     if (_categorieId == null) {
       return activites;
     }
 
+    // Sinon, afficher uniquement les activités
+    // appartenant à la catégorie sélectionnée
     return activites.where((activite) {
       return activite.categorieId?.id == _categorieId;
     }).toList();
