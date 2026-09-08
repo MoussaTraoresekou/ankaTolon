@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tolon/controller/auth/auth_controller.dart';
+import 'package:tolon/controller/enfant/ProviderPoint/points_provider.dart';
 import 'package:tolon/cor/router/routes.dart';
 import 'package:tolon/cor/theme/app_theme.dart';
 import 'package:tolon/models/enfant/enfant_modal.dart';
@@ -12,8 +13,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
 
   const EspaceEnfantScreen({super.key, required this.enfant});
 
-  /// Affiche le dialogue de vérification du mot de passe parent.
-  /// Retourne `true` si le mot de passe est correct, sinon `false`.
   Future<bool> _demanderMotDePasseParent(
     BuildContext context,
     WidgetRef ref,
@@ -32,7 +31,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
     return result ?? false;
   }
 
-  /// Gère la tentative de sortie de l'espace enfant
   Future<void> _tenterSortie(BuildContext context, WidgetRef ref) async {
     final authentifie = await _demanderMotDePasseParent(context, ref);
     if (authentifie && context.mounted) {
@@ -44,6 +42,9 @@ class EspaceEnfantScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String prenom = enfant.prenom ?? 'Enfant';
     final String? avatarUrl = enfant.avatarUrl;
+
+    // Récupération dynamique locale des points (mises à jour réactives)
+    final int totalPoints = ref.watch(enfantPointsProvider);
 
     return PopScope(
       canPop: false,
@@ -64,7 +65,12 @@ class EspaceEnfantScreen extends ConsumerWidget {
               children: [
                 _buildHeader(context, ref, prenom, avatarUrl),
                 const SizedBox(height: 24),
-                _buildStatsCard(points: 450, badges: 100, context: context),
+                // Passation du solde dynamique de points
+                _buildStatsCard(
+                  points: totalPoints,
+                  badges: 100,
+                  context: context,
+                ),
                 const SizedBox(height: 24),
                 _buildGridMenu(context),
                 const SizedBox(height: 24),
@@ -78,7 +84,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
     );
   }
 
-  // Header avec bouton retour sécurisé, salut, notifications et avatar
   Widget _buildHeader(
     BuildContext context,
     WidgetRef ref,
@@ -125,7 +130,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
             ],
           ),
         ),
-        // Badge Notification
         Stack(
           clipBehavior: Clip.none,
           children: [
@@ -152,7 +156,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Text(
-                  '10',
+                  '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: context.textInverse,
@@ -165,7 +169,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(width: 10),
-        // Avatar Enfant
         CircleAvatar(
           radius: 22,
           backgroundColor: context.avatarOrangeBg,
@@ -191,7 +194,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
     );
   }
 
-  // Carte verte : Points et Badges
   Widget _buildStatsCard({
     required int points,
     required int badges,
@@ -204,7 +206,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color.fromARGB(255, 3, 3, 3).withValues(alpha: 0.3),
+            color: const Color.fromARGB(255, 3, 3, 3).withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -279,8 +281,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
     );
   }
 
-  // Grille 2x2 : Jeux, Tutoriels, Activités, Progression
-  // Grille 2x2 : Jeux, Tutoriels, Activités, Progress
   Widget _buildGridMenu(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
@@ -362,7 +362,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
                 width: 100,
                 height: 100,
                 fit: BoxFit.contain,
-                errorBuilder: (_, _, _) => Icon(
+                errorBuilder: (_, __, ___) => Icon(
                   iconData ?? Icons.extension,
                   size: 52,
                   color: iconColor ?? context.primary,
@@ -385,7 +385,6 @@ class EspaceEnfantScreen extends ConsumerWidget {
     );
   }
 
-  // Section Défis du jour
   Widget _buildDailyChallengeCard({required BuildContext context}) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -408,7 +407,7 @@ class EspaceEnfantScreen extends ConsumerWidget {
             width: 48,
             height: 48,
             fit: BoxFit.contain,
-            errorBuilder: (_, _, _) =>
+            errorBuilder: (_, __, ___) =>
                 Icon(Icons.emoji_events_rounded, size: 48, color: Colors.amber),
           ),
           const SizedBox(width: 12),

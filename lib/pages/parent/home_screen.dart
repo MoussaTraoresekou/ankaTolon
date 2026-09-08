@@ -135,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   shape: BoxShape.circle,
                 ),
                 child: Text(
-                  '10',
+                  '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: context.textInverse,
